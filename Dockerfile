@@ -15,10 +15,10 @@ RUN apt-get install --yes --quiet --no-install-recommends \
 RUN python -m pip install --upgrade pip
 
 WORKDIR /app
-COPY eodhp_web_presence/requirements.txt .
+COPY requirements/requirements.txt .
 RUN python -m pip install -r requirements.txt
  
 COPY eodhp_web_presence .
  
 EXPOSE 8000
-CMD ["gunicorn", "eodhp_website.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "eodhp_web_presence.wsgi:application", "--bind", "0.0.0.0:8000"]

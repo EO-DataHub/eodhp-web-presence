@@ -6,8 +6,8 @@ Python 3.11 environment.
 2. Install dependencies:
 
 ```commandline
-pip3 install -r eodhp_website/requrements.txt
-pip3 install -r eodhp_website/requrements-dev.txt
+pip3 install -r eodhp_web_presence/requirements.txt
+pip3 install -r eodhp_web_presence/requirements-dev.txt
 ```
 
 3. Run migrations
