@@ -147,7 +147,7 @@ STATICFILES_FINDERS = [
 ]
 
 STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, "static"),
+    os.path.join(PROJECT_DIR, "eodhp_web_presence", "static"),
 ]
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
@@ -177,3 +177,19 @@ WAGTAILSEARCH_BACKENDS = {
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "http://example.com"
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = "django-insecure-2m%np7riqs7^edos4qwwf+7oyima-nj82z1vcelqp)g&!ow#t4"
+
+# SECURITY WARNING: define the correct hosts in production!
+ALLOWED_HOSTS = ["*"]
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+try:
+    from .local import *
+except ImportError:
+    pass

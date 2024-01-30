@@ -13,8 +13,8 @@ pip3 install -r eodhp_website/requrements-dev.txt
 3. Run migrations
 
 ```commandline
-python manage.py makemigrations --settings=eodhp_website.settings.dev
-python manage.py migrate --settings=eodhp_website.settings.dev
+python manage.py makemigrations 
+python manage.py migrate 
 ```
 
 4. Set up a superuser
