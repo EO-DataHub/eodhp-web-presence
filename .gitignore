@@ -1,1 +1,5 @@
-/eodhp_web_presence/db.sqlite3
+*.sqlite3
+*.env
+
+__pycache__/
+.venv/
