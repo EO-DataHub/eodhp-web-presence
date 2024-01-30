@@ -1,5 +1,3 @@
-#FROM python:3.8.1-slim-buster
-#FROM python:3.9.5-slim-buster
 FROM python:3.11-slim-bullseye
 
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -24,4 +22,3 @@ COPY eodhp_web_presence .
  
 EXPOSE 8000
 CMD ["gunicorn", "eodhp_website.wsgi:application", "--bind", "0.0.0.0:8000"]
-# CMD ["python", "manage.py", "runserver"]
