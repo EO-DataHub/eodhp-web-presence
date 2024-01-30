@@ -24,6 +24,23 @@ python manage.py createsuperuser
 ```
 Follow the on-screen instructions
 
-5. Access website at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
-The admin panel can be accessed at [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+## Running webserver locally
+For non-production environments, run the following:
+
+```commandline
+cd eodhp_web_presence
+python migrate.py runserver
+```
+
+Access website at [http://127.0.0.1:8000/](http://127.0.0.1:8000/). The admin panel can be accessed at [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+
+
+## Building a dockerfile
+
+```commandline
+docker build -t eodhp-web-presence .
+docker run --rm -p 8000:8000 --env-file .env eodhp-web-presence
+```
+
+Access website at [http://127.0.0.1:8000/](http://127.0.0.1:8000/). The admin panel can be accessed at [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
