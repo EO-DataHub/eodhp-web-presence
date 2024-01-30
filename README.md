@@ -7,7 +7,7 @@ Python 3.11 environment.
 
 ```commandline
 pip3 install -r eodhp_website/requrements.txt
-pip3 install -r eodhp_website/dev-requrements.txt
+pip3 install -r eodhp_website/requrements-dev.txt
 ```
 
 3. Run migrations
