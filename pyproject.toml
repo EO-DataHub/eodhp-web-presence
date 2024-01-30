@@ -64,6 +64,13 @@ classifiers = [
 # For an analysis of this field vs pip's requirements files see:
 # https://packaging.python.org/discussions/install-requires-vs-requirements/
 dependencies = [
+    "Django>=4.2,<5.1",
+    "wagtail>=5.2,<5.3",
+    "mkdocs-material",
+    "gunicorn==20.0.4",
+    "pytest-django",
+    "psycopg2-binary==2.9.9",
+    "django-environ"
 ]
 
 # List additional groups of dependencies here (e.g. development
@@ -88,9 +95,9 @@ dev = ["pip-tools", "pytest", "pytest-xdist", "pytest-mock", "pytest-watcher", "
 # maintainers, and where to support the project financially. The key is
 # what's used to render the link text on PyPI.
 [project.urls]  # Optional
-homepage = "https://github.com/UKEODHP/"
-repository = "https://github.com/UKEODHP/eodhp-website"
-changelog = "https://github.com/UKEODHP/eodhp-website/main/CHANGELOG.md"
+homepage = "https://github.com/UKEODHP/eodhp-web-presence"
+repository = "https://github.com/UKEODHP/eodhp-web-presence
+changelog = "https://github.com/UKEODHP/eodhp-web-presence/main/CHANGELOG.md"
 
 [build-system]
 # These are the assumed default build requirements from pip:
@@ -106,13 +113,6 @@ markers = [
 
 [tool.setuptools]
 packages = [
-    "Django>=4.2,<5.1",
-    "wagtail>=5.2,<5.3",
-    "mkdocs-material",
-    "gunicorn==20.0.4",
-    "pytest-django",
-    "psycopg2-binary==2.9.9",
-    "django-environ"
 ]
 
 [tool.black]
