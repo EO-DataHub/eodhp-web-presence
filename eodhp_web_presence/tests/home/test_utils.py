@@ -1,4 +1,4 @@
-from eodhp_website.home.utils import my_function
+from eodhp_web_presence.home.utils import my_function
 
 
 def test_pass():
