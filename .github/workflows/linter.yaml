@@ -18,21 +18,15 @@ jobs:
         with:
           python-version: 3.11
           cache: 'pip'
-          cache-dependency-path: 'eodhp_website/*.txt'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r eodhp_website/requirements.txt
+          cache-dependency-path: 'eodhp_web_presence/*.txt'
 
       - name: Install isort
         run: pip install isort
 
       - name: Run isort
-        run: isort .
+        run: isort . --check --diff
 
       - name: Install black
-        run: pip install black
-
-      - name: Run black
-        run: black .
+        uses: psf/black@stable
+        with:
+          options: "--check --verbose"
