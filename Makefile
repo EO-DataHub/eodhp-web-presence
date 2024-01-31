@@ -1,7 +1,7 @@
 .PHONY: dockerbuild dockerpush test testonce ruff pylint black lint
 VERSION ?= latest
-IMAGENAME = CHANGEME-component-name
-DOCKERREPO ?= 312280911266.dkr.ecr.eu-west-2.amazonaws.com
+IMAGENAME = eodhp-web-presence
+DOCKERREPO ?= public.ecr.aws/n1b3o1k2/ukeodhp
 
 dockerbuild:
 	DOCKER_BUILDKIT=1 docker build -t ${IMAGENAME}:${VERSION} .
