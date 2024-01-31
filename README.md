@@ -30,7 +30,7 @@ For non-production environments, run the following:
 
 ```commandline
 cd eodhp_web_presence
-python migrate.py runserver
+python manage.py runserver
 ```
 
 Access website at [http://127.0.0.1:8000/](http://127.0.0.1:8000/). The admin panel can be accessed at [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
