@@ -96,7 +96,7 @@ dev = ["pip-tools", "pytest", "pytest-xdist", "pytest-mock", "pytest-watcher", "
 # what's used to render the link text on PyPI.
 [project.urls]  # Optional
 homepage = "https://github.com/UKEODHP/eodhp-web-presence"
-repository = "https://github.com/UKEODHP/eodhp-web-presence
+repository = "https://github.com/UKEODHP/eodhp-web-presence"
 changelog = "https://github.com/UKEODHP/eodhp-web-presence/main/CHANGELOG.md"
 
 [build-system]
