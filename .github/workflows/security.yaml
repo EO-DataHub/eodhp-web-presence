@@ -12,6 +12,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Security check - Bandit
+        uses: ioggstream/bandit-report-artifacts@v0.0.2
+        with:
+          project_path: .
+          ignore_failure: true
+
       - name: Bandit scan
         uses: mdegis/bandit-action@v1
         with:
