@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "tests",
     "eodhp_web_presence",
     "help",
+    "catalogue",
 ]
 
 MIDDLEWARE = [
@@ -102,6 +103,10 @@ DATABASES = {
         "HOST": env("SQL_HOST", default="localhost"),
         "PORT": env("SQL_PORT", default="5432"),
     }
+}
+
+RESOURCE_CATALOGUE = {
+    "version": env("RESOURCE_CATALOGUE_VERSION", default="v1.0.0")
 }
 
 
