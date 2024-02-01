@@ -1,4 +1,3 @@
-from django.db.models import CharField, DateField
 from wagtail.models import Page
 
 
