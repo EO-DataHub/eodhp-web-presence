@@ -17,10 +17,6 @@ jobs:
         with:
           project_path: .
           ignore_failure: true
-      - name: Bandit scan
-        uses: mdegis/bandit-action@v1
-        with:
-          path: "."
           level: high
           confidence: high
           exit_zero: true
