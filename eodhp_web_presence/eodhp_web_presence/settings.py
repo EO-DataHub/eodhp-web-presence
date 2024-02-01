@@ -105,9 +105,7 @@ DATABASES = {
     }
 }
 
-RESOURCE_CATALOGUE = {
-    "version": env("RESOURCE_CATALOGUE_VERSION", default="v1.0.0")
-}
+RESOURCE_CATALOGUE = {"version": env("RESOURCE_CATALOGUE_VERSION", default="v1.0.0")}
 
 
 # Password validation
