@@ -1,4 +1,3 @@
-[bandit]
 skips: B101
 level: high
 confidence: high
