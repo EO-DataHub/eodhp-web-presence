@@ -17,6 +17,4 @@ jobs:
         with:
           project_path: .
           ignore_failure: true
-          skips: B101
-          level: high
-          confidence: high
+          config_file: .bandit
