@@ -10,18 +10,14 @@ class HelpPage(Page):
     date = DateField("Date", blank=True, null=True, default=date.today)
     body = RichTextField(blank=True)
 
-    date_widget = widgets.AdminDateInput(
-        attrs={
-            'placeholder': 'dd-mm-yyyy'
-        }
-    )
+    date_widget = widgets.AdminDateInput(attrs={"placeholder": "dd-mm-yyyy"})
 
     content_panels = Page.content_panels + [
-        FieldPanel('date', widget=date_widget),
+        FieldPanel("date", widget=date_widget),
         FieldPanel("body"),
     ]
 
-    parent_page_types = ['help.HelpIndexPage']
+    parent_page_types = ["help.HelpIndexPage"]
 
 
 class HelpIndexPage(Page):
