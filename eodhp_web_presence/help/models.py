@@ -27,5 +27,5 @@ class HelpIndexPage(Page):
         context = super().get_context(request, *args, **kwargs)
 
         # Add extra variables and return the updated context
-        context['blog_entries'] = HelpPage.objects.child_of(self).live()
+        context["help_entries"] = HelpPage.objects.child_of(self).live()
         return context
