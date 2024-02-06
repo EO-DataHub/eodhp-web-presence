@@ -1,16 +1,27 @@
-# Create your models here.
-from django.db.models import CharField, DateField
+from datetime import date
+from django.db.models import DateField
+from wagtail.admin import widgets
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page
 
 
 class HelpPage(Page):
+    date = DateField("Date", blank=True, null=True, default=date.today)
     body = RichTextField(blank=True)
 
+    date_widget = widgets.AdminDateInput(
+        attrs={
+            'placeholder': 'dd-mm-yyyy'
+        }
+    )
+
     content_panels = Page.content_panels + [
+        FieldPanel('date', widget=date_widget),
         FieldPanel("body"),
     ]
+
+    parent_page_types = ['help.HelpIndexPage']
 
 
 class HelpIndexPage(Page):
@@ -18,12 +29,9 @@ class HelpIndexPage(Page):
 
     subpage_types = ["HelpPage"]
 
-    subtitle = CharField(blank=True, max_length=255)
-    date_published = DateField("Date article published", blank=True, null=True)
-
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
         # Add extra variables and return the updated context
-        context["help_entries"] = HelpPage.objects.child_of(self).live()
+        context["entries"] = HelpPage.objects.child_of(self).live()
         return context
