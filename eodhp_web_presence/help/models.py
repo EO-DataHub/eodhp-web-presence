@@ -1,8 +1,6 @@
 # Create your models here.
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import CharField, DateField
 from wagtail.admin.panels import FieldPanel
-from wagtail.contrib.routable_page.models import RoutablePageMixin
 from wagtail.fields import RichTextField
 from wagtail.models import Page
 
