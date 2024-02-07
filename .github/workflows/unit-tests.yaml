@@ -29,4 +29,6 @@ jobs:
 
       - name: Run tests
         working-directory: ./eodhp_web_presence
-        run: pytest -vv
+        run: |
+          python manage.py collectstatic
+          pytest -vv
