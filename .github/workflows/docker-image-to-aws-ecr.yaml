@@ -67,7 +67,7 @@ jobs:
 
       - name: Get image tag
         id: tag
-        if: github.ref_type == 'tag'
+#        if: github.ref_type == 'tag'
         run: |
           echo "${GITHUB_REF##refs/tags/*}"
           echo "${GITHUB_REF}"
