@@ -70,7 +70,7 @@ jobs:
         run: |
           echo "${GITHUB_REF##refs/tags/*}"
           echo "${GITHUB_REF}"
-          echo "IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/*}" == v*]]; then echo ${GITHUB_REF##refs/tags/*} else echo "latest"; fi)" >> $GITHUB_ENV
+          echo "IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/*}" == v*]] then echo ${GITHUB_REF##refs/tags/*} else echo "latest"; fi)" >> $GITHUB_ENV
 #        run: echo "IMAGE_TAG=$(if [ -z "${GITHUB_REF##refs/tags/*}" ]; then echo "latest"; else echo ${GITHUB_REF##refs/tags/*}; fi)" >> $GITHUB_ENV
 
 #      - name: Build Docker image
