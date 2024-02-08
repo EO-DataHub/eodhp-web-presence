@@ -9,6 +9,7 @@ on:
 
 env:
   IMAGE_NAME: hc-test
+  IMAGE_TAG: latest
 
 jobs:
   push_to_registry:
@@ -66,11 +67,12 @@ jobs:
 
       - name: Get image tag
         id: tag
-#        if: github.ref_type == 'tag'
+        if: github.ref_type == 'tag'
         run: |
           echo "${GITHUB_REF##refs/tags/*}"
           echo "${GITHUB_REF}"
-          echo "IMAGE_TAG=$(if [ "${GITHUB_REF##refs/tags/*}" == v* ]; then echo ${GITHUB_REF##refs/tags/*} else echo "latest" fi)" >> $GITHUB_ENV
+          echo $IMAGE_TAG
+          echo "IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/*}" == v* ]]; then echo ${GITHUB_REF##refs/tags/*} else echo "latest" fi)" >> $GITHUB_ENV
 #        run: echo "IMAGE_TAG=$(if [ -z "${GITHUB_REF##refs/tags/*}" ]; then echo "latest"; else echo ${GITHUB_REF##refs/tags/*}; fi)" >> $GITHUB_ENV
 
 #      - name: Build Docker image
