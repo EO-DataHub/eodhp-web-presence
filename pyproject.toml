@@ -66,9 +66,7 @@ classifiers = [
 dependencies = [
     "Django>=4.2,<5.1",
     "wagtail>=5.2,<5.3",
-    "mkdocs-material",
     "gunicorn==20.0.4",
-    "pytest-django",
     "psycopg2-binary==2.9.9",
     "django-environ"
 ]
@@ -82,7 +80,16 @@ dependencies = [
 # Similar to `dependencies` above, these must be valid existing
 # projects.
 [project.optional-dependencies] # Optional
-dev = ["pip-tools", "pytest", "pytest-xdist", "pytest-mock", "pytest-watcher", "black", "ruff"]
+dev = [
+    "pip-tools",
+    "pytest",
+    "pytest-xdist",
+    "pytest-mock",
+    "pytest-watcher",
+    "black",
+    "ruff",
+    "pytest-django",
+]
 
 # List URLs that are relevant to your project
 #
