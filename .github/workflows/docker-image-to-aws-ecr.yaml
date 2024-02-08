@@ -77,7 +77,7 @@ jobs:
       - name: Build Docker image
         env:
           IMAGE_TAG: ${{ steps.tag.outputs.IMAGE_TAG }}
-        run: docker build -t $IMAGE_NAME:${IMAGE_TAG} .
+        run: docker build -t $IMAGE_NAME:$IMAGE_TAG .
 #
 #      - name: Push to AWS ECR
 #        id: ecr
