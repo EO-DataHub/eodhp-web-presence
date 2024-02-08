@@ -1,0 +1,54 @@
+name: Publish Docker image to AWS ECR
+
+on:
+  push:
+#    tags:
+#      - '*.*.*'
+#    branches:
+#      - main
+  pull_request:
+
+env:
+  IMAGE_NAME: hc-test
+
+jobs:
+  push_to_registry:
+    name: Push Docker image to AWS ECR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+#      - name: Extract metadata (tags, labels)
+#        id: meta
+#        uses: docker/metadata-action@v5
+
+#      - name: Build and push Docker image to AWS
+#        run: |
+#          docker build -t eodhp-web-presence .
+#          docker tag eodhp-web-presence:latest 312280911266.dkr.ecr.eu-west-2.amazonaws.com/eodhp-web-presence:0.1.4
+#          docker push 312280911266.dkr.ecr.eu-west-2.amazonaws.com/eodhp-web-presence:0.1.4
+#        with:
+#          context: .
+#          file: ./Dockerfile
+#          push: true
+#          tags: ${{ steps.meta.outputs.tags }}
+#          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Get image tag
+        id: tag
+        run: echo "IMAGE_TAG=$(if [ -z "${GITHUB_REF##refs/tags/*}" ]; then echo "latest"; else echo ${GITHUB_REF##refs/tags/*}; fi)" >> $GITHUB_ENV
+
+      - name: Build Docker image
+        env:
+          IMAGE_TAG: ${{ steps.tag.outputs.IMAGE_TAG }}
+        run: docker build --t $IMAGE_NAME:${IMAGE_TAG} .
+
+      - name: Push to AWS ECR
+        id: ecr
+        uses: jwalton/gh-ecr-push@v1
+        with:
+          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: eu-west-1
+          image: $IMAGE_NAME:${IMAGE_TAG}
