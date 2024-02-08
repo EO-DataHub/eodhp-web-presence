@@ -37,7 +37,9 @@ jobs:
 
       - name: Get image tag
         id: tag
-        run: echo "${GITHUB_REF##refs/tags/*}"
+        run: |
+          echo "${GITHUB_REF##refs/tags/*}"
+          echo "${GITHUB_REF}"
 #        run: echo "IMAGE_TAG=$(if [ -z "${GITHUB_REF##refs/tags/*}" ]; then echo "latest"; else echo ${GITHUB_REF##refs/tags/*}; fi)" >> $GITHUB_ENV
 
 #      - name: Build Docker image
