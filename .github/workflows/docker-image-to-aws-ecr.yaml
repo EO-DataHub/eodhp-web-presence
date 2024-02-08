@@ -35,6 +35,9 @@ jobs:
 #          tags: ${{ steps.meta.outputs.tags }}
 #          labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Checks and tests
+        uses: ./.github/workflow/lint.yaml
+
       - name: Get image tag
         id: tag
         run: |
