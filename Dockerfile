@@ -17,8 +17,6 @@ RUN python -m pip install --upgrade pip
 WORKDIR /app
 COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
-COPY requirements-dev.txt .
-RUN python -m pip install -r requirements-dev.txt
  
 COPY eodhp_web_presence .
  
