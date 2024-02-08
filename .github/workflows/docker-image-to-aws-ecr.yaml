@@ -6,7 +6,6 @@ on:
 #      - '*.*.*'
 #    branches:
 #      - main
-  pull_request:
 
 env:
   IMAGE_NAME: hc-test
@@ -18,6 +17,34 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+
+#      - uses: psf/black@stable
+#        with:
+#          options: "--line-length 100 --check --verbose"
+#      - uses: chartboost/ruff-action@v1
+#      - run: pip install isort
+#      - run: isort . --check --diff
+#
+#      - name: Security check - Bandit
+#        uses: mdegis/bandit-action@v1.0.1
+#        with:
+#          path: "."
+#          level: high
+#          confidence: high
+#          exit_zero: true
+#          skips: B101
+#      - name: Security check - Trivy
+#        uses: aquasecurity/trivy-action@master
+#        with:
+#          scan-type: 'fs'
+#          ignore-unfixed: true
+#          vuln-type: 'os,library'
+#          severity: 'CRITICAL,HIGH'
+
+
+
+
 
 #      - name: Extract metadata (tags, labels)
 #        id: meta
@@ -35,35 +62,15 @@ jobs:
 #          tags: ${{ steps.meta.outputs.tags }}
 #          labels: ${{ steps.meta.outputs.labels }}
 
-      - uses: psf/black@stable
-        with:
-          options: "--line-length 100 --check --verbose"
-      - uses: chartboost/ruff-action@v1
-      - run: pip install isort
-      - run: isort . --check --diff
-
-      - name: Security check - Bandit
-        uses: mdegis/bandit-action@v1.0.1
-        with:
-          path: "."
-          level: high
-          confidence: high
-          exit_zero: true
-          skips: B101
-      - name: Security check - Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
 
 
       - name: Get image tag
         id: tag
+#        if: github.ref_type == 'tag'
         run: |
           echo "${GITHUB_REF##refs/tags/*}"
           echo "${GITHUB_REF}"
+          echo "IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/*}" == v*]]; then echo ${GITHUB_REF##refs/tags/*} else echo "latest";; fi)" >> $GITHUB_ENV
 #        run: echo "IMAGE_TAG=$(if [ -z "${GITHUB_REF##refs/tags/*}" ]; then echo "latest"; else echo ${GITHUB_REF##refs/tags/*}; fi)" >> $GITHUB_ENV
 
 #      - name: Build Docker image
