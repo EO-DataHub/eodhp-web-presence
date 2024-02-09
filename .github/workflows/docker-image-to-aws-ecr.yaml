@@ -143,7 +143,6 @@ on:
 env:
   IMAGE_NAME: hc-test
   IMAGE_TAG: latest
-#  AWS_REGION: eu-west-2
 
 jobs:
   docker:
@@ -153,17 +152,12 @@ jobs:
       id-token: write
       contents: read
 
-    outputs:
-      image_tag: ${{ steps.build-publish.outputs.image_tag }}
-      full_image: ${{ steps.build-publish.outputs.full_image }}
-
     steps:
       - uses: actions/checkout@v3
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-#          role-to-assume: arn:aws:iam::312280911266:role/github-actions-container-registry
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-container-registry
           aws-region: ${{ secrets.AWS_REGION }}
 
