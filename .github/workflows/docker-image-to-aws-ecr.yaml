@@ -167,6 +167,7 @@ jobs:
 #          role-to-assume: arn:aws:iam::${AWS_ACCOUNT_ID}:role/github-actions-container-registry
           aws-region: eu-west-2
 
+
 #      - name: Setup Terraform
 #        uses: hashicorp/setup-terraform@v2
 #        with:
