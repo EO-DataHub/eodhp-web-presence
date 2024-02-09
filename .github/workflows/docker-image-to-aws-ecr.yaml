@@ -201,10 +201,10 @@ jobs:
 #          ECR_REPOSITORY: ${{ env.IMAGE_NAME }}
 #          IMAGE_TAG: ${{ env.IMAGE_TAG }}
         run: |
-          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/n1b3o1k2
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR }}
           docker build -t $IMAGE_NAME .
-          docker tag $IMAGE_NAME:$IMAGE_TAG public.ecr.aws/n1b3o1k2/$IMAGE_NAME:$IMAGE_TAG
-          docker push public.ecr.aws/n1b3o1k2/$IMAGE_NAME:$IMAGE_TAG
+          docker tag $IMAGE_NAME:$IMAGE_TAG ${{ secrets.AWS_ECR }}/$IMAGE_NAME:$IMAGE_TAG
+          docker push ${{ secrets.AWS_ECR }}/$IMAGE_NAME:$IMAGE_TAG
           
           
 
