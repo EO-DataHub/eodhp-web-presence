@@ -201,11 +201,17 @@ jobs:
 #          ECR_REPOSITORY: ${{ env.IMAGE_NAME }}
 #          IMAGE_TAG: ${{ env.IMAGE_TAG }}
         run: |
-          echo AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-          # docker build . -f "${{ inputs.path_to_dockerfile }}" -t "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          echo "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          docker build . -t "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          docker push "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/IMAGE_NAME"
-          echo "image_tag=$IMAGE_TAG"
-          echo "full_image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          docker build -t hc-test .
+          docker tag hc-test:latest public.ecr.aws/n1b3o1k2/hc-test:latest
+          docker push public.ecr.aws/n1b3o1k2/hc-test:latest
+          
+          
+
+#          echo AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+#          # docker build . -f "${{ inputs.path_to_dockerfile }}" -t "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+#          echo "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+#          docker build . -t "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+#          docker push "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+#          echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/IMAGE_NAME"
+#          echo "image_tag=$IMAGE_TAG"
+#          echo "full_image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
