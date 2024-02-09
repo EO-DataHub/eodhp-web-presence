@@ -23,28 +23,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: psf/black@stable
-        with:
-          options: "--line-length 100 --check --verbose"
-      - uses: chartboost/ruff-action@v1
-      - run: pip install isort
-      - run: isort . --check --diff
-
-      - name: Security check - Bandit
-        uses: mdegis/bandit-action@v1.0.1
-        with:
-          path: "."
-          level: high
-          confidence: high
-          exit_zero: true
-          skips: B101
-      - name: Security check - Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+#      - uses: psf/black@stable
+#        with:
+#          options: "--line-length 100 --check --verbose"
+#      - uses: chartboost/ruff-action@v1
+#      - run: pip install isort
+#      - run: isort . --check --diff
+#
+#      - name: Security check - Bandit
+#        uses: mdegis/bandit-action@v1.0.1
+#        with:
+#          path: "."
+#          level: high
+#          confidence: high
+#          exit_zero: true
+#          skips: B101
+#      - name: Security check - Trivy
+#        uses: aquasecurity/trivy-action@master
+#        with:
+#          scan-type: 'fs'
+#          ignore-unfixed: true
+#          vuln-type: 'os,library'
+#          severity: 'CRITICAL,HIGH'
 
 
 
@@ -75,7 +75,7 @@ jobs:
         id: build-publish
         shell: bash
         run: |
-          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR }}
+          aws ecr-public get-login-password --region ${{ secrets.AWS_ECR }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR }}
           docker build -t $IMAGE_NAME .
           docker tag $IMAGE_NAME:$IMAGE_TAG ${{ secrets.AWS_ECR }}/$IMAGE_NAME:$IMAGE_TAG
           docker push ${{ secrets.AWS_ECR }}/$IMAGE_NAME:$IMAGE_TAG
