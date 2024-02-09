@@ -193,16 +193,16 @@ jobs:
           registries: ${{ inputs.AWS_ACCOUNT_ID }}
           mask-password: "true" # see: https://github.com/aws-actions/amazon-ecr-login#docker-credentials
 #
-#      - name: Build, tag, and push image to Amazon ECR
-#        id: build-publish
-#        shell: bash
-#        env:
-#          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-##          ECR_REPOSITORY: ${{ env.IMAGE_NAME }}
-##          IMAGE_TAG: ${{ env.IMAGE_TAG }}
-#        run: |
-#          docker build . -f "${{ inputs.path_to_dockerfile }}" -t "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-#          docker push "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-#          echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/IMAGE_NAME"
-#          echo "image_tag=$IMAGE_TAG"
-#          echo "full_image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-publish
+        shell: bash
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#          ECR_REPOSITORY: ${{ env.IMAGE_NAME }}
+#          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+        run: |
+          docker build . -f "${{ inputs.path_to_dockerfile }}" -t "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+          docker push "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+          echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/IMAGE_NAME"
+          echo "image_tag=$IMAGE_TAG"
+          echo "full_image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
