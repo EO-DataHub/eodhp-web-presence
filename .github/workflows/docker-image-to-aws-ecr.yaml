@@ -143,7 +143,7 @@ on:
 env:
   IMAGE_NAME: hc-test
   IMAGE_TAG: latest
-  AWS_REGION: eu-west-1
+  AWS_REGION: eu-west-2
 
 jobs:
   docker:
@@ -163,7 +163,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::${{ inputs.aws_account_id }}:role/github-actions-rmodi
+          role-to-assume: arn:aws:iam::${AWS_ACCOUNT_ID}:role/github-actions-container-registry
           aws-region: $AWS_REGION
 
       - name: Setup Terraform
@@ -199,8 +199,8 @@ jobs:
 ##          ECR_REPOSITORY: ${{ env.IMAGE_NAME }}
 ##          IMAGE_TAG: ${{ env.IMAGE_TAG }}
 #        run: |
-#          docker build "${{ inputs.docker_build_dir }}" -f "${{ inputs.path_to_dockerfile }}" -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-#          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-#          echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/$ECR_REPOSITORY"
+#          docker build . -f "${{ inputs.path_to_dockerfile }}" -t "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+#          docker push "$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+#          echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/IMAGE_NAME"
 #          echo "image_tag=$IMAGE_TAG"
 #          echo "full_image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
