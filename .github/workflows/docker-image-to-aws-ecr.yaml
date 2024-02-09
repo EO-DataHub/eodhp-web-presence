@@ -75,7 +75,7 @@ jobs:
         id: build-publish
         shell: bash
         run: |
-          aws ecr-public get-login-password --region ${{ secrets.AWS_ECR }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR }}
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR }}
           docker build -t $IMAGE_NAME .
           docker tag $IMAGE_NAME:$IMAGE_TAG ${{ secrets.AWS_ECR }}/$IMAGE_NAME:$IMAGE_TAG
           docker push ${{ secrets.AWS_ECR }}/$IMAGE_NAME:$IMAGE_TAG
