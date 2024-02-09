@@ -164,7 +164,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::${AWS_ACCOUNT_ID}:role/github-actions-container-registry
-          aws-region: $AWS_REGION
+          aws-region: ${AWS_REGION}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
