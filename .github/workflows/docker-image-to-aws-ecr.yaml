@@ -80,12 +80,19 @@ jobs:
         run: |
           echo $IMAGE_TAG
           docker build -t $IMAGE_NAME:$IMAGE_TAG .
-#
-      - name: Push to AWS ECR
-        id: ecr
-        uses: jwalton/gh-ecr-push@v1
-        with:
-          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          region: eu-west-1
-          image: $IMAGE_NAME:$IMAGE_TAG
+##
+#      - name: Push to AWS ECR
+#        id: ecr
+#        uses: jwalton/gh-ecr-push@v1
+#        with:
+#          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          region: eu-west-1
+#          image: $IMAGE_NAME:$IMAGE_TAG
+
+
+      - name: Build and push Docker image to AWS
+        run: |
+          docker build -t $IMAGE_NAME:$IMAGE_TAG .
+          docker tag $IMAGE_NAME:latest 312280911266.dkr.ecr.eu-west-2.amazonaws.com/$IMAGE_NAME:$IMAGE_TAG
+          docker push 312280911266.dkr.ecr.eu-west-2.amazonaws.com/$IMAGE_NAME:$IMAGE_TAG
