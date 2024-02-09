@@ -1,136 +1,4 @@
 name: Publish Docker image to AWS ECR
-#
-#on:
-#  push:
-##    tags:
-##      - '*.*.*'
-##    branches:
-##      - main
-#
-#env:
-#  IMAGE_NAME: hc-test
-#  IMAGE_TAG: latest
-#
-#jobs:
-#  push_to_registry:
-#    name: Push Docker image to AWS ECR
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout repo
-#        uses: actions/checkout@v4
-#
-#
-##      - uses: psf/black@stable
-##        with:
-##          options: "--line-length 100 --check --verbose"
-##      - uses: chartboost/ruff-action@v1
-##      - run: pip install isort
-##      - run: isort . --check --diff
-##
-##      - name: Security check - Bandit
-##        uses: mdegis/bandit-action@v1.0.1
-##        with:
-##          path: "."
-##          level: high
-##          confidence: high
-##          exit_zero: true
-##          skips: B101
-##      - name: Security check - Trivy
-##        uses: aquasecurity/trivy-action@master
-##        with:
-##          scan-type: 'fs'
-##          ignore-unfixed: true
-##          vuln-type: 'os,library'
-##          severity: 'CRITICAL,HIGH'
-#
-#
-#
-#
-#
-##      - name: Extract metadata (tags, labels)
-##        id: meta
-##        uses: docker/metadata-action@v5
-#
-##      - name: Build and push Docker image to AWS
-##        run: |
-##          docker build -t eodhp-web-presence .
-##          docker tag eodhp-web-presence:latest 312280911266.dkr.ecr.eu-west-2.amazonaws.com/eodhp-web-presence:0.1.4
-##          docker push 312280911266.dkr.ecr.eu-west-2.amazonaws.com/eodhp-web-presence:0.1.4
-##        with:
-##          context: .
-##          file: ./Dockerfile
-##          push: true
-##          tags: ${{ steps.meta.outputs.tags }}
-##          labels: ${{ steps.meta.outputs.labels }}
-#
-#
-#
-#      - name: Get image tag
-#        id: tag
-##        if: github.ref_type == 'tag'
-#        run: |
-#          echo "${GITHUB_REF##refs/tags/*}"
-#          echo "${GITHUB_REF}"
-#          echo "IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/*}" == v* ]]; then echo ${GITHUB_REF##refs/tags/*}; else echo "latest"; fi)" >> $GITHUB_ENV
-###        run: echo "IMAGE_TAG=$(if [ -z "${GITHUB_REF##refs/tags/*}" ]; then echo "latest"; else echo ${GITHUB_REF##refs/tags/*}; fi)" >> $GITHUB_ENV
-#
-##      - name: Build Docker image
-###        env:
-###          IMAGE_TAG: ${{ steps.tag.outputs.IMAGE_TAG }}
-##        run: |
-##          echo $IMAGE_TAG
-##          docker build -t $IMAGE_NAME:$IMAGE_TAG .
-###
-##      - name: Push to AWS ECR
-##        id: ecr
-##        uses: jwalton/gh-ecr-push@v1
-##        with:
-##          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-##          secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-##          region: eu-west-1
-##          image: $IMAGE_NAME:$IMAGE_TAG
-#
-#
-#      - name: Build and push Docker image to AWS
-#        run: |
-#          aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 312280911266.dkr.ecr.eu-west-2.amazonaws.com
-#          docker build -t $IMAGE_NAME:$IMAGE_TAG .
-#          docker tag $IMAGE_NAME:latest 312280911266.dkr.ecr.eu-west-2.amazonaws.com/$IMAGE_NAME:$IMAGE_TAG
-#          docker push 312280911266.dkr.ecr.eu-west-2.amazonaws.com/$IMAGE_NAME:$IMAGE_TAG
-
-
-
-#name: Docker image build and publish
-#on:
-#  workflow_dispatch:
-#    inputs:
-#      path_to_dockerfile:
-#        description: Path to the dockerfile (default = 'Dockerfile')
-#        default: "./dockerfile"
-#        type: string
-#      docker_build_dir:
-#        description: Docker build directory (default = '.')
-#        default: "."
-#        type: string
-#      image_tag:
-#        description: Tag to apply to images.
-#        type: string
-#        default: snapshot-artifact
-#      backend_iam_role:
-#        description: Name of the Terraform backend assumable IAM Role
-#        default: "workload-assumable-role"
-#        type: string
-#      github_iam_role:
-#        description: Name of the IAM Role for adding access to ECR repo
-#        default: "github-actions-role"
-#        type: string
-#      aws_account_id:
-#        description: AWS Account ID
-#        type: string
-#      aws_region:
-#        description: Target AWS Region
-#        default: "eu-west-1"
-#        type: string
 
 on:
   push:
@@ -155,11 +23,46 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - uses: psf/black@stable
+        with:
+          options: "--line-length 100 --check --verbose"
+      - uses: chartboost/ruff-action@v1
+      - run: pip install isort
+      - run: isort . --check --diff
+
+      - name: Security check - Bandit
+        uses: mdegis/bandit-action@v1.0.1
+        with:
+          path: "."
+          level: high
+          confidence: high
+          exit_zero: true
+          skips: B101
+      - name: Security check - Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-container-registry
           aws-region: ${{ secrets.AWS_REGION }}
+
+#      - name: Get image tag
+#        id: tag
+##        if: github.ref_type == 'tag'
+#        run: |
+#          echo "${GITHUB_REF##refs/tags/*}"
+#          echo "${GITHUB_REF}"
+#          echo "IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/*}" == v* ]]; then echo ${GITHUB_REF##refs/tags/*}; else echo "latest"; fi)" >> $GITHUB_ENV
+###        run: echo "IMAGE_TAG=$(if [ -z "${GITHUB_REF##refs/tags/*}" ]; then echo "latest"; else echo ${GITHUB_REF##refs/tags/*}; fi)" >> $GITHUB_ENV
+
 
       - name: Login to Amazon ECR
         id: login-ecr
