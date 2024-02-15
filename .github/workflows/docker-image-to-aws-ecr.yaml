@@ -51,7 +51,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Get image tag
-        run: echo IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/}" =~ ^v ]]; then echo ${GITHUB_REF##refs/tags/}; else echo "latest"; fi) >> "$GITHUB_ENV"
+        run: echo IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/}" =~ ^v ]]; then echo ${GITHUB_REF##refs/tags/v}; else echo "latest"; fi) >> "$GITHUB_ENV"
 
       - name: Login to Amazon ECR
         id: login-ecr
