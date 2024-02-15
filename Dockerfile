@@ -13,6 +13,7 @@ RUN apt-get install --yes --quiet --no-install-recommends \
  && rm -rf /var/lib/apt/lists/*
 
 RUN python -m pip install --upgrade pip
+RUN python -m pip install gunicorn==20.0.4
 
 WORKDIR /app
 COPY requirements.txt .
