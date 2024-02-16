@@ -8,6 +8,7 @@ on:
       - 'v[0-9]'
     branches:
       - main
+      - feature/EODHP-143-github-actions-3
 
 env:
   IMAGE_NAME: eodhp-web-presence
