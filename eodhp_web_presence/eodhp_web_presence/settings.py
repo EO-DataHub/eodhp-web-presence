@@ -29,7 +29,14 @@ env = environ.Env()
 # Application definition
 
 INSTALLED_APPS = [
-    "home",
+    # django
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "wagtail.contrib.routable_page",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
@@ -41,16 +48,11 @@ INSTALLED_APPS = [
     "wagtail.search",
     "wagtail.admin",
     "wagtail",
+    # 3rd party
     "modelcluster",
     "taggit",
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "wagtail.contrib.routable_page",
-    "tests",
+    # web presence
+    "home",
     "eodhp_web_presence",
     "help",
     "catalogue",

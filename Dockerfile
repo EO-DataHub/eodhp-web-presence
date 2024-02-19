@@ -13,12 +13,11 @@ RUN apt-get install --yes --quiet --no-install-recommends \
  && rm -rf /var/lib/apt/lists/*
 
 RUN python -m pip install --upgrade pip
+RUN python -m pip install gunicorn==20.0.4
 
 WORKDIR /app
 COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
-COPY requirements-dev.txt .
-RUN python -m pip install -r requirements-dev.txt
  
 COPY eodhp_web_presence .
  
