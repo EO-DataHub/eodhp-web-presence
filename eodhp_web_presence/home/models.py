@@ -1,6 +1,9 @@
+from django.shortcuts import render
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page
+
+from eodhp_web_presence import settings
 
 
 class HomePage(Page):
@@ -9,3 +12,10 @@ class HomePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel("body"),
     ]
+
+    def serve(self, request):
+        context = {"environment": settings.ENVIRONMENT["environment"]}
+
+        print(context)
+
+        return render(request, "home/home_page.html", context=context)

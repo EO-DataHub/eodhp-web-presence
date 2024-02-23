@@ -92,6 +92,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "eodhp_web_presence.wsgi.application"
 
+ENVIRONMENT = {"environment": env("ENVIRONMENT_NAME", default="dev")}
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
