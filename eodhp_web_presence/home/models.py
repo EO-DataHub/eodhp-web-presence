@@ -14,6 +14,6 @@ class HomePage(Page):
     ]
 
     def serve(self, request):
-        context = {"eoxserver_url": settings.ENVIRONMENT["eoxserver"]}
+        context = {"eox_viewserver_url": settings.EOX_VIEWSERVER["url"]}
 
         return render(request, "home/home_page.html", context=context)

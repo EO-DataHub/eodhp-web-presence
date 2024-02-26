@@ -92,7 +92,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "eodhp_web_presence.wsgi.application"
 
-ENVIRONMENT = {"eoxserver": env("EOXSERVER_URL", default=None)}
+EOX_VIEWSERVER = {"url": env("EOX_VIEWSERVER_URL", default=None)}
 
 
 # Database
