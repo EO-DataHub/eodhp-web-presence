@@ -26,6 +26,7 @@ Follow the on-screen instructions
 
 5. Set up environment
 
+Environment variables can be defined in a `.env` file and imported. `example.env` can be found in the top level.
 ```commandline
 set -a
 . .env
