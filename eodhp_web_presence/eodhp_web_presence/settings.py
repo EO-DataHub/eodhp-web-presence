@@ -109,7 +109,7 @@ DATABASES = {
 
 RESOURCE_CATALOGUE = {"version": env("RESOURCE_CATALOGUE_VERSION", default="v1.0.0")}
 
-STAC_BROWSER = {"url": env("STAC_BROWSER_URL", default='example.com')}
+STAC_BROWSER = {"url": env("STAC_BROWSER_URL")}
 
 
 # Password validation
