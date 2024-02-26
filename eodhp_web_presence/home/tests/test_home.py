@@ -15,5 +15,12 @@ def environment_variables():
 
 class TestHome(TestCase):
     def test_status_code__success(self):
-        response = self.client.get("/")
-        self.assertEqual(response.status_code, 200)
+        with mock.patch.dict(
+                os.environ, {"STAC_BROWSER_URL": "http://this-is-a-test-stac-browser-url.com"}
+        ):
+            response = self.client.get("/")
+            self.assertEqual(response.status_code, 200)
+
+        print('AAAAAAAAAAAAAAAAAA')
+        print(os.environ["STAC_BROWSER_URL"])
+        assert False
