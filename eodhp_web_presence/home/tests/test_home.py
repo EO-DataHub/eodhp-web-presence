@@ -1,16 +1,4 @@
-import os
-from unittest import mock
-
-import pytest
 from django.test import TestCase
-
-
-@pytest.fixture(autouse=True)
-def environment_variables():
-    with mock.patch.dict(
-        os.environ, {"STAC_BROWSER_URL": "http://this-is-a-test-stac-browser-url.com"}
-    ):
-        yield
 
 
 class TestHome(TestCase):

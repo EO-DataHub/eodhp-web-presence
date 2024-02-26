@@ -8,7 +8,9 @@ on:
 
 jobs:
   unit-testing:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
+    env:
+      STAC_BROWSER_URL: http://my-test-url.com
     
     steps:
       - name: Checkout repository
