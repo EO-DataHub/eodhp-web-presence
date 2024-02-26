@@ -118,8 +118,13 @@ markers = [
 ]
 #env = ["STAC_BROWSER_URL=http://this-is-a-test-stac-browser-url.com"]
 
-[tool.pytest_env]
-STAC_BROWSER_URL = "http://this-is-a-test-stac-browser-url.com"
+[tool.pytest]
+addopts = [
+    "-o", "env=STAC_BROWSER_URL=http://this-is-a-test-stac-browser-url.com"
+]
+
+#[tool.pytest_env]
+#STAC_BROWSER_URL = "http://this-is-a-test-stac-browser-url.com"
 
 [tool.setuptools]
 packages = [
