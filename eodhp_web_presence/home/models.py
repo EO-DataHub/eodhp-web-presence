@@ -16,6 +16,4 @@ class HomePage(Page):
     def serve(self, request):
         context = {"environment": settings.ENVIRONMENT["environment"]}
 
-        print(context)
-
         return render(request, "home/home_page.html", context=context)
