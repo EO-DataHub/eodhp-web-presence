@@ -24,6 +24,13 @@ python manage.py createsuperuser
 ```
 Follow the on-screen instructions
 
+5. Set up environment
+
+```commandline
+set -a
+. .env
+```
+
 
 ## Running webserver locally
 For non-production environments, run the following:

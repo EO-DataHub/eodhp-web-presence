@@ -4,5 +4,5 @@ from eodhp_web_presence import settings
 
 
 def catalogue_page_view(request):
-    context = {"version": settings.RESOURCE_CATALOGUE["version"]}
+    context = {"url": settings.STAC_BROWSER["url"]}
     return render(request, "catalogue/catalogue_page.html", context=context)
