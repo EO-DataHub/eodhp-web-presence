@@ -9,8 +9,6 @@ on:
 jobs:
   unit-testing:
     runs-on: ubuntu-latest
-    env:
-      EOXSERVER_URL: https://my-test-url.com
     
     steps:
       - name: Checkout repository
