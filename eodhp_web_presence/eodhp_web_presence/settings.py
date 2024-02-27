@@ -92,6 +92,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "eodhp_web_presence.wsgi.application"
 
+EOX_VIEWSERVER = {"url": env("EOX_VIEWSERVER_URL", default=None)}
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
