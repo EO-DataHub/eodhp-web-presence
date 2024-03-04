@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.1 (28-02-2024)
+
+- Updated to use environment variables for home page and resource catalogue
+
+
 ## v0.1.0 (07-02-2024)
 
 - Initial website structure:
