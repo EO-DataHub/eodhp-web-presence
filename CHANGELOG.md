@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.2 (05-03-2024)
+
+- Change resource catalogue home page link to be external rather than embedded
+
 ## v0.1.1 (28-02-2024)
 
 - Updated to use environment variables for home page and resource catalogue

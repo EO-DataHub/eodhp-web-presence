@@ -14,6 +14,9 @@ class HomePage(Page):
     ]
 
     def serve(self, request):
-        context = {"eox_viewserver_url": settings.EOX_VIEWSERVER["url"]}
+        context = {
+            "resource_catalogue_url": settings.STAC_BROWSER["url"],
+            "eox_viewserver_url": settings.EOX_VIEWSERVER["url"],
+        }
 
         return render(request, "home/home_page.html", context=context)
