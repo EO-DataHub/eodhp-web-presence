@@ -3,37 +3,31 @@
 
 {% block body_class %}template-homepage{% endblock %}
 
-{% block extra_css %}
-
-<!--{% comment %}-->
-<!--Delete the line below if you're just getting started and want to remove the welcome screen!-->
-<!--{% endcomment %}-->
-<!--<link rel="stylesheet" href="{% static 'css/welcome_page.css' %}">-->
-{% endblock extra_css %}
-
 {% block content %}
 
-<!--{% comment %}-->
-<!--Delete the line below if you're just getting started and want to remove the welcome screen!-->
-<!--{% endcomment %}-->
-<!--{% include 'home/welcome_page.html' %}-->
 
 <h1>EO DataHub Platform</h1>
 
 <br>
 
-<h2>Hello World</h2>
-
-<br>
-
-Useful links:
 <ul>
-    <li><a href="documentation.html">Documentation</a></li>
-    <li><a href="notebooks.html">Notebooks</a></li>
+    {% if documentation_url %}
+    <li><a href="{{ documentation_url }}">Documentation</a></li>
+    {% endif %}
+
+    {% if notebooks_url %}
+    <li><a href="{{ notebooks_url }}">Notebooks</a></li>
+    {% endif %}
+
+    {% if resource_catalogue_url %}
     <li><a href="{{ resource_catalogue_url }}">Resource Catalogue</a></li>
+    {% endif %}
+
     <li><a href="https://radiantearth.github.io/stac-browser/#/external/api.stac.ceda.ac.uk/">Static Catalogue</a></li>
+
+    {% if eox_viewserver_url %}
     <li><a href="{{ eox_viewserver_url }}">EOxServer Viewer</a></li>
-    <li>Other</li>
+    {% endif %}
 </ul>
 
 {% endblock content %}
