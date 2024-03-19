@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.3 (19-03-2024)
+
+- Change resource catalogue home page link to hosted S3 bucket
+
 ## v0.1.2 (05-03-2024)
 
 - Change resource catalogue home page link to be external rather than embedded
