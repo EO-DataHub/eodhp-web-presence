@@ -113,7 +113,7 @@ DATABASES = {
 
 RESOURCE_CATALOGUE = {
     "version": env("RESOURCE_CATALOGUE_VERSION", default="v1.0.0"),
-    "url": env("RESOURCE_CATALOGUE_URL", default=None)
+    "url": env("RESOURCE_CATALOGUE_URL", default=None),
 }
 
 CATALOGUE_DATA = {"url": env("CATALOGUE_DATA_URL", default=None)}
