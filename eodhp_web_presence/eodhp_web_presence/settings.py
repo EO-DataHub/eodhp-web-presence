@@ -111,10 +111,12 @@ DATABASES = {
     }
 }
 
-RESOURCE_CATALOGUE = {"version": env("RESOURCE_CATALOGUE_VERSION", default="v1.0.0")}
+RESOURCE_CATALOGUE = {
+    "version": env("RESOURCE_CATALOGUE_VERSION", default="v1.0.0"),
+    "url": env("RESOURCE_CATALOGUE_URL", default=None),
+}
 
-STAC_BROWSER = {"url": env("STAC_BROWSER_URL", default=None)}
-
+CATALOGUE_DATA = {"url": env("CATALOGUE_DATA_URL", default=None)}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

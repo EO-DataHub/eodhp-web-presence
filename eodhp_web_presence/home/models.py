@@ -15,7 +15,7 @@ class HomePage(Page):
 
     def serve(self, request):
         context = {
-            "resource_catalogue_url": settings.STAC_BROWSER["url"],
+            "resource_catalogue_url": "/catalogue",
             "eox_viewserver_url": settings.EOX_VIEWSERVER["url"],
             "documentation_url": settings.DOCUMENTATION["url"],
             "notebooks_url": settings.NOTEBOOKS["url"],
