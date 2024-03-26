@@ -191,7 +191,7 @@ if old_secret_keys := os.environ.get("OLD_SECRET_KEY"):
     SECRET_KEY_FALLBACKS = [old_secret_keys]
 
 # SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = json.loads(env("ALLOWED_HOSTS", default="['*']"))
+ALLOWED_HOSTS = json.loads(env("ALLOWED_HOSTS", default='["*"]'))
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
