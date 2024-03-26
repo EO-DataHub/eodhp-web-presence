@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import json
 import os
 
 import environ
@@ -193,7 +194,7 @@ if old_secret_keys := os.environ.get("OLD_SECRET_KEY"):
     SECRET_KEY_FALLBACKS = [old_secret_keys]
 
 # SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = json.loads(env('ALLOWED_HOSTS'))
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
