@@ -159,9 +159,6 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, "eodhp_web_presence", "static"),
 ]
 
-# ManifestStaticFilesStorage is recommended in production, to prevent outdated
-# JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
-# See https://docs.djangoproject.com/en/5.0/ref/contrib/staticfiles/#manifeststaticfilesstorage
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
@@ -194,7 +191,7 @@ if old_secret_keys := os.environ.get("OLD_SECRET_KEY"):
     SECRET_KEY_FALLBACKS = [old_secret_keys]
 
 # SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = json.loads(env('ALLOWED_HOSTS'))
+ALLOWED_HOSTS = json.loads(env("ALLOWED_HOSTS"))
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
