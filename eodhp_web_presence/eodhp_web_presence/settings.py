@@ -21,11 +21,6 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 env = environ.Env()
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -191,11 +186,11 @@ WAGTAILSEARCH_BACKENDS = {
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "http://example.com"
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG_MODE", default=False)
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-2m%np7riqs7^edos4qwwf+7oyima-nj82z1vcelqp)g&!ow#t4"
+SECRET_KEY = env("SECRET_KEY")
+if old_secret_keys := os.environ.get("OLD_SECRET_KEY"):
+    SECRET_KEY_FALLBACKS = [old_secret_keys]
 
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ["*"]
