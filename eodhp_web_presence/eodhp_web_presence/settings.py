@@ -192,7 +192,7 @@ WAGTAILSEARCH_BACKENDS = {
 WAGTAILADMIN_BASE_URL = "http://example.com"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env("DEBUG_MODE", default=False)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-2m%np7riqs7^edos4qwwf+7oyima-nj82z1vcelqp)g&!ow#t4"
