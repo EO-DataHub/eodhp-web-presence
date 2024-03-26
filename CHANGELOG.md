@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.5 (26-03-2024)
+
+- Turn off debug mode
+
 ## v0.1.4 (19-03-2024)
 
 - Increment version number
