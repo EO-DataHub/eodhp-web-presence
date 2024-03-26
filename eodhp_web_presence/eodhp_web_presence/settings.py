@@ -180,9 +180,7 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
-# Base URL to use when referring to full URLs within the Wagtail admin backend -
-# e.g. in notification emails. Don't include '/admin' or a trailing slash
-WAGTAILADMIN_BASE_URL = "http://example.com"
+WAGTAILADMIN_BASE_URL = env("BASE_URL", default="www.example.com")
 
 DEBUG = env("DEBUG_MODE", default=False)
 
@@ -190,7 +188,6 @@ SECRET_KEY = env("SECRET_KEY", default="None")
 if old_secret_keys := os.environ.get("OLD_SECRET_KEY"):
     SECRET_KEY_FALLBACKS = [old_secret_keys]
 
-# SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = json.loads(env("ALLOWED_HOSTS", default='["*"]'))
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
