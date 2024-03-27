@@ -25,10 +25,12 @@ AWS_STORAGE_BUCKET_NAME = env("WEB_PRESENCE_STATIC_S3_BUCKET", default=None)
 AWS_S3_SIGNATURE_NAME = ("s3v4",)
 AWS_S3_REGION_NAME = env("AWS_REGION_NAME", default=None)
 
-AWS_S3_FILE_OVERWRITE = False
-# AWS_DEFAULT_ACL = None
+AWS_S3_FILE_OVERWRITE = env("OVERWRITE_S3_FILES", cast=bool, default=False)
+AWS_DEFAULT_ACL = None
 AWS_S3_VERITY = True
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+AWS_LOCATION = f"{env('ENVIRONMENT_NAME', default='development')}/"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
