@@ -171,8 +171,8 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, "eodhp_web_presence", "static"),
 ]
 
-# django.contrib.staticfiles.storage.ManifestStaticFilesStorage is recommended in production, to prevent outdated
-# JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
+# django.contrib.staticfiles.storage.ManifestStaticFilesStorage is recommended in production, to
+# prevent outdated JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
 # See https://docs.djangoproject.com/en/5.0/ref/contrib/staticfiles/#manifeststaticfilesstorage
 STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
