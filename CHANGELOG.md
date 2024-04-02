@@ -1,8 +1,12 @@
 # Changelog
 
-## v0.1.6 (26-03-2024)
+## v0.1.7 (03-04-2024)
 
 - Change hardcoded settings to environment variables
+
+## v0.1.6 (02-04-2024)
+
+- Fix issues with static files
 
 ## v0.1.5 (26-03-2024)
 
