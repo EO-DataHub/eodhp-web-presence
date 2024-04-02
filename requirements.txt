@@ -4,3 +4,4 @@ mkdocs-material
 pytest-django
 psycopg2-binary==2.9.9
 django-environ
+whitenoise
