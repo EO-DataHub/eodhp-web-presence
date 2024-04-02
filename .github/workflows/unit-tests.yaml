@@ -31,4 +31,5 @@ jobs:
         working-directory: ./eodhp_web_presence
         run: |
           python manage.py collectstatic
+          python manage.py migrate
           pytest -vv
