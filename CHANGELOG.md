@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.6 (02-04-2024)
+
+- Fix issues with static files
+
 ## v0.1.5 (26-03-2024)
 
 - Turn off debug mode

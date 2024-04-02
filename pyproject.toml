@@ -14,7 +14,7 @@
 
 [project]
 name = "eodhp-website"
-version = "0.1.5"
+version = "0.1.6"
 description = "Wagtail-based website for EODHP"
 readme = "README.md"
 
@@ -67,7 +67,8 @@ dependencies = [
     "Django>=4.2,<5.1",
     "wagtail>=5.2,<5.3",
     "psycopg2-binary==2.9.9",
-    "django-environ"
+    "django-environ",
+    "whitenoise",
 ]
 
 # List additional groups of dependencies here (e.g. development
@@ -110,12 +111,6 @@ changelog = "https://github.com/UKEODHP/eodhp-web-presence/main/CHANGELOG.md"
 # https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
 requires = ["setuptools>=69.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
-
-[tool.pytest.ini_options]
-pythonpath = ["."]
-markers = [
-  "integrationtest: Integration test"
-]
 
 [tool.setuptools]
 packages = [

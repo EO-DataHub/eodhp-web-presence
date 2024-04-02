@@ -18,8 +18,10 @@ RUN python -m pip install gunicorn==20.0.4
 WORKDIR /app
 COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
- 
+
 COPY eodhp_web_presence .
- 
+
+RUN python manage.py collectstatic --noinput
+
 EXPOSE 8000
 CMD ["gunicorn", "eodhp_web_presence.wsgi:application", "--bind", "0.0.0.0:8000"]
