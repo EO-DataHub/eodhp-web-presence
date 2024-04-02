@@ -112,12 +112,6 @@ changelog = "https://github.com/UKEODHP/eodhp-web-presence/main/CHANGELOG.md"
 requires = ["setuptools>=69.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.pytest.ini_options]
-env = [
-    "DJANGO_SETTINGS_MODULE=eodhp_web_presence.settings",
-    "DEBUG=True",
-]
-
 [tool.setuptools]
 packages = [
 ]
