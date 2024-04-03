@@ -4,6 +4,10 @@
 
 - Fix issues with static files
 
+## v0.1.6 (26-03-2024)
+
+- Add logging
+
 ## v0.1.5 (26-03-2024)
 
 - Turn off debug mode
