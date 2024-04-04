@@ -191,8 +191,6 @@ WAGTAILADMIN_BASE_URL = env("BASE_URL", default="www.example.com")
 DEBUG = env("DEBUG", cast=bool, default=False)
 
 SECRET_KEY = env("SECRET_KEY", default="None")
-if old_secret_keys := os.environ.get("OLD_SECRET_KEY"):
-    SECRET_KEY_FALLBACKS = [old_secret_keys]
 
 ALLOWED_HOSTS = json.loads(env("ALLOWED_HOSTS", default='["*"]'))
 
