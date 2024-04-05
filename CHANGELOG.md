@@ -2,7 +2,10 @@
 
 ## v0.1.7 (04-04-2024)
 
-- Take SECRET_KEY from env
+- Take following from environment variables:
+  - SECRET_KEY
+  - WAGTAIL_BASE_URL
+  - ALLOWED_HOSTS
 
 ## v0.1.6 (02-04-2024)
 
