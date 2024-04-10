@@ -202,7 +202,9 @@ DEBUG = env("DEBUG", cast=bool, default=False)
 SECRET_KEY = "django-insecure-2m%np7riqs7^edos4qwwf+7oyima-nj82z1vcelqp)g&!ow#t4"
 
 # SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = [host.strip() for host in env("ALLOWED_HOSTS", default="localhost, 127.0.0.1").split(",")]
+ALLOWED_HOSTS = [
+    host.strip() for host in env("ALLOWED_HOSTS", default="localhost, 127.0.0.1").split(",")
+]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
