@@ -197,9 +197,7 @@ WAGTAILADMIN_BASE_URL = "http://example.com"
 DEBUG = env("DEBUG", cast=bool, default=False)
 
 # SECRET KEY (Used for cryptographic signing)
-SECRET_KEY = env(
-    "SECRET_KEY", default="None"
-)
+SECRET_KEY = env("SECRET_KEY", default="None")
 
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ["*"]
