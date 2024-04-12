@@ -198,7 +198,7 @@ DEBUG = env("DEBUG", cast=bool, default=False)
 
 # SECRET KEY (Used for cryptographic signing)
 SECRET_KEY = env(
-    "SECRET_KEY", default="django-insecure-2m%np7riqs7^edos4qwwf+7oyima-nj82z1vcelqp)g&!ow#t4"
+    "SECRET_KEY", default="None"
 )
 
 # SECURITY WARNING: define the correct hosts in production!
