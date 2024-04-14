@@ -1,0 +1,16 @@
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+$light-blue:    #BCCEEB;
+$blue:          #4C72BA;
+$dark-blue:     #2A3559;
+
+
+$theme-colors: (
+  "light": $light-blue,
+);
+
+$navbar-light-color: $blue;
+$navbar-light-hover-color: $black;
+$navbar-light-active-color: $black;
+
+@import "../node_modules/bootstrap/scss/bootstrap";

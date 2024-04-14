@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+
+<div class="logo"></div>
+
+
+
+<div class="titlebar_home_mobile">
+    <div class="titlebar_home_logo_mobile"><img class="logo" src="{% static 'img/home/EO-Data-Hub-logo_colour.svg' %}"></div>
+    <div class="titlebar_home_text_mobile">{{ page.title }}</div>
+</div>
+
+<div class="titlebar_home">
+    <div class="titlebar_home_logo"><img class="logo" src="{% static 'img/home/EO-Data-Hub-logo_colour.svg' %}"></div>
+    <div class="titlebar_home_text">{{ page.title }}</div>
+</div>
+
+<div class="content_home_wrapper">
+    <div class="content_home">
+        {{ page.body|richtext }}
+    </div>
+</div>
+
+
+{% endblock content %}

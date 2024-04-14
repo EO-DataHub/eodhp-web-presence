@@ -1,0 +1,10 @@
+#home_icon {
+    display: inline-block;
+    height: 1.5em;
+}
+
+@media (max-width: 600px) {
+    .home_menu {
+        display: none;
+    }
+}

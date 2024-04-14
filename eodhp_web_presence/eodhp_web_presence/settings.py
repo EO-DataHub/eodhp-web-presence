@@ -59,6 +59,9 @@ INSTALLED_APPS = [
     "catalogue",
 ]
 
+if os.environ.get('DEBUG'):
+    INSTALLED_APPS.append('django_sass')
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     # WhiteNoise Middleware above all but below Security
@@ -71,6 +74,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
+
+# WAGTAILIMAGES_IMAGE_MODEL = 'home.CustomImage'
+# WAGTAILIMAGES_IMAGE_MODEL = 'wagtail.images.models.image'
 
 ROOT_URLCONF = "eodhp_web_presence.urls"
 

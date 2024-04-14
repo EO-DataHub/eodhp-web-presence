@@ -1,87 +1,143 @@
 {% extends "base.html" %}
 {% load static %}
 
-<!--{% include "home_menu.html" %}-->
-
 {% block content %}
 
+<div class="logo"></div>
 
-<h1>EO DataHub Platform</h1>
-
-<br>
-
-<ul>
-    {% if documentation_url %}
-    <li><a href="{{ documentation_url }}">Documentation</a></li>
-    {% endif %}
-
-    {% if notebooks_url %}
-    <li><a href="{{ notebooks_url }}">Notebooks</a></li>
-    {% endif %}
-
-    {% if resource_catalogue_url %}
-    <li><a href="{{ resource_catalogue_url }}">Resource Catalogue</a></li>
-    {% endif %}
-
-    <li><a href="https://radiantearth.github.io/stac-browser/#/external/api.stac.ceda.ac.uk/">Static Catalogue</a></li>
-
-    {% if eox_viewserver_url %}
-    <li><a href="{{ eox_viewserver_url }}">EOxServer Viewer</a></li>
-    {% endif %}
-</ul>
+<div class="main_content_home">
 
 
-<ul>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-</ul>
+</div>
+
+
+
+
+<div class="home_centre_h">
+    <div class="home_logo"><img class="logo" src="{% static 'img/home/EO-Data-Hub-logo_colour.svg' %}"></div>
+</div>
+<!--    <div class="content_home">-->
+<div class="home_image"><img src="{% static 'img/home/background_home.svg' %}"></div>
+<div class="home_text">
+                <ul>
+                    {% if documentation_url %}
+                    <li><a href="{{ documentation_url }}">Documentation</a></li>
+                    {% endif %}
+
+                    {% if notebooks_url %}
+                    <li><a href="{{ notebooks_url }}"><div class="menu_icon"><img src="{% static 'img/menu/notebooks.svg' %}"></div><div class="menu_text">&nbsp; Notebooks</div></a></li>
+                    {% endif %}
+
+
+                    {% if resource_catalogue_url %}
+                    <li><a href="{{ resource_catalogue_url }}"><div class="menu_text">&nbsp; Resource Catalogue</div></a></li>
+                    {% endif %}
+
+                    <li><a href="https://radiantearth.github.io/stac-browser/#/external/api.stac.ceda.ac.uk/"><div class="menu_text">&nbsp; Static Catalogue</div></a></li>
+
+                    {% if eox_viewserver_url %}
+                    <li><a href="{{ eox_viewserver_url }}"><div class="menu_text">&nbsp; EOxServer Viewer</div></a></li>
+                    {% endif %}
+                    </ul>
+    Known bugs/issues/incomplete:
+    <ul>
+        <li>Text colours on home menu should change to black when page is active
+        <li>Mobile menu needs dropdowns for subpages
+        <li>Mobile menu colours</li>
+        <li>Most links don't work</li>
+        <li>Uses CSS, not SCSS</li>
+        <LI>Update dockerfile to re-compile bootstrap</LI>
+        <li>Consistency with cases for variable names</li>
+        <li>Background image</li>
+
+
+    </ul>
+    Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text
+
+
+</div>
+<!--    </div>-->
+
+
+
+
+<!--<h1>EO DataHub Platform</h1>-->
+
+<!--<br>-->
+
+
+<!--<ul>-->
+<!--    {% if documentation_url %}-->
+<!--    <li><a href="{{ documentation_url }}">Documentation</a></li>-->
+<!--    {% endif %}-->
+
+<!--    {% if notebooks_url %}-->
+<!--    <li><a href="{{ notebooks_url }}">Notebooks</a></li>-->
+<!--    {% endif %}-->
+
+<!--    {% if resource_catalogue_url %}-->
+<!--    <li><a href="{{ resource_catalogue_url }}">Resource Catalogue</a></li>-->
+<!--    {% endif %}-->
+
+<!--    <li><a href="https://radiantearth.github.io/stac-browser/#/external/api.stac.ceda.ac.uk/">Static Catalogue</a></li>-->
+
+<!--    {% if eox_viewserver_url %}-->
+<!--    <li><a href="{{ eox_viewserver_url }}">EOxServer Viewer</a></li>-->
+<!--    {% endif %}-->
+<!--</ul>-->
+
+
+<!--<ul>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--    <li></li>-->
+<!--</ul>-->
 
 {% endblock content %}
