@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import logging
 import os
 
 import environ
@@ -191,7 +192,7 @@ WAGTAILSEARCH_BACKENDS = {
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-WAGTAILADMIN_BASE_URL = "http://example.com"
+WAGTAILADMIN_BASE_URL = env("BASE_URL", default="www.example.com")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG", cast=bool, default=False)
@@ -200,9 +201,27 @@ DEBUG = env("DEBUG", cast=bool, default=False)
 SECRET_KEY = env("SECRET_KEY", default="None")
 
 # SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    host.strip() for host in env("ALLOWED_HOSTS", default="localhost, 127.0.0.1").split(",")
+]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": logging.DEBUG if DEBUG else logging.WARNING,
+        },
+    },
+}
 
 try:
     from .local import *  # noqa: F403
