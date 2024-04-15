@@ -197,8 +197,8 @@ WAGTAILADMIN_BASE_URL = env("BASE_URL", default="www.example.com")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG", cast=bool, default=False)
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-2m%np7riqs7^edos4qwwf+7oyima-nj82z1vcelqp)g&!ow#t4"
+# SECRET KEY (Used for cryptographic signing)
+SECRET_KEY = env("SECRET_KEY", default="None")
 
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = [

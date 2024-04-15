@@ -1,8 +1,8 @@
 # Changelog
 
-## v0.1.7 (10-04-2024)
-
+## v0.1.7 (04-04-2024)
 - Reference following from external sources:
+  - SECRET_KEY
   - WAGTAIL_BASE_URL
   - ALLOWED_HOSTS
 
