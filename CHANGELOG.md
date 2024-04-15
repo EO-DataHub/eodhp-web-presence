@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.7 (10-04-2024)
+
+- Reference following from external sources:
+  - WAGTAIL_BASE_URL
+  - ALLOWED_HOSTS
+
 ## v0.1.6 (02-04-2024)
 
 - Fix issues with static files
