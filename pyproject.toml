@@ -69,8 +69,6 @@ dependencies = [
     "psycopg2-binary==2.9.9",
     "django-environ",
     "whitenoise",
-    "sqlparse>=0.5.0",
-    "idna>=3.7",
 ]
 
 # List additional groups of dependencies here (e.g. development
@@ -88,11 +86,9 @@ dev = [
     "pytest-xdist",
     "pytest-mock",
     "pytest-watcher",
-    "black>=24.3.0",
+    "black",
     "ruff",
     "pytest-django",
-    "sqlparse>=0.5.0",
-    "idna>=3.7",
 ]
 
 # List URLs that are relevant to your project
