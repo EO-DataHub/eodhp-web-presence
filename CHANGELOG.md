@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.1.8 (26-04-2024)
+- Update package versions
+
 ## v0.1.7 (04-04-2024)
 - Reference following from external sources:
   - SECRET_KEY
