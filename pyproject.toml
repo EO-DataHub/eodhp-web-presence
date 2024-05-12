@@ -14,7 +14,7 @@
 
 [project]
 name = "eodhp-website"
-version = "0.1.6"
+version = "0.1.9"
 description = "Wagtail-based website for EODHP"
 readme = "README.md"
 
@@ -69,6 +69,7 @@ dependencies = [
     "psycopg2-binary==2.9.9",
     "django-environ",
     "whitenoise",
+    "django-sass"
 ]
 
 # List additional groups of dependencies here (e.g. development

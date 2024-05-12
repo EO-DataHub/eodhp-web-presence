@@ -4,24 +4,20 @@
 
 {% block content %}
 
-<div class="logo"></div>
+<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+{% include "home_menu.html" %}
 
+<div class="main_content_home">
 
-
-<div class="titlebar_home_mobile">
-    <div class="titlebar_home_logo_mobile"><img class="logo" src="{% static 'img/home/EO-Data-Hub-logo_colour.svg' %}"></div>
-    <div class="titlebar_home_text_mobile">{{ page.title }}</div>
-</div>
-
-<div class="titlebar_home">
-    <div class="titlebar_home_logo"><img class="logo" src="{% static 'img/home/EO-Data-Hub-logo_colour.svg' %}"></div>
-    <div class="titlebar_home_text">{{ page.title }}</div>
-</div>
-
-<div class="content_home_wrapper">
-    <div class="content_home">
-        {{ page.body|richtext }}
+    <div class="homePageBorder">
+        <div class="homePageTitle">
+            {{ page.title|richtext }}
+        </div>
+        <div class="homePageContent">
+            <div class="homePageText100">{{ page.body|richtext }}</div>
+        </div>
     </div>
+
 </div>
 
 

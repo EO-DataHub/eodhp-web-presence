@@ -25,13 +25,22 @@
         <base target="_blank">
         {% endif %}
 
+        {# Global javascript #}
+        <script src="{% static 'js/jquery.js' %}"></script>
+        <script type="text/javascript" src='{% static 'js/bootstrap.min.js' %}'></script>
+
+
+
         {# Global stylesheets #}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/menu.css' %}">
         <link rel="stylesheet" href="{% static 'css/fira.css' %}">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/home_menu.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/home_menu.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/menu.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+
+
+        <link rel="icon" type="image/x-icon" href="{% static 'img/menu/favicon.svg' %}">
 
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
@@ -41,25 +50,14 @@
     <body class="{% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
 
-            <div id="mobile-menu" class="menu">
-                {% include "mobile_menu.html" %}
-            </div>
+            {% include "menu.html" %}
 
-            <div id="main-content" class="main-content">
-                {% include "home_menu.html" %}
-
-                {% block content %}
-                {% endblock %}
-            </div>
-
-            <div id="menu" class="menu">
-                {% include "main_menu.html" %}
-            </div>
+            {% block content %}
+            {% endblock %}
 
 
+            {% include "footer.html" %}
 
-        {# Global javascript #}
-        <script type="text/javascript" src="{% static 'js/eodhp_web_presence.js' %}"></script>
 
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}

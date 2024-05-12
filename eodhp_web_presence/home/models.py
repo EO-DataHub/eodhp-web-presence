@@ -32,19 +32,32 @@ from eodhp_web_presence import settings
 class HomePage(Page):
     body = RichTextField(blank=True)
 
+
+    image = models.ForeignKey(
+            "wagtailimages.Image",
+            null=True,
+            blank=True,
+            on_delete=models.SET_NULL,
+            related_name="+",
+            help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
+        )
+
     content_panels = Page.content_panels + [
         FieldPanel("body"),
+        FieldPanel("image"),
     ]
 
-    def serve(self, request):
-        context = {
-            "resource_catalogue_url": "/catalogue",
-            "eox_viewserver_url": settings.EOX_VIEWSERVER["url"],
-            "documentation_url": settings.DOCUMENTATION["url"],
-            "notebooks_url": settings.NOTEBOOKS["url"],
-        }
-
-        return render(request, "home/home_page.html", context=context)
+    # print('AAAAAAAAAAAAAAAA')
+    # print(Page.__dict__)
+    # def serve(self, request):
+    #     context = {
+    #         "resource_catalogue_url": "/catalogue",
+    #         "eox_viewserver_url": settings.EOX_VIEWSERVER["url"],
+    #         "documentation_url": settings.DOCUMENTATION["url"],
+    #         "notebooks_url": settings.NOTEBOOKS["url"],
+    #     }
+    #
+    #     return render(request, "home/home_page.html", context=context)
 
 
 class AboutPage(Page):
@@ -63,7 +76,6 @@ class AboutPage(Page):
         FieldPanel("body"),
         FieldPanel("image"),
     ]
-
 
     template = "home/about_page.html"
 

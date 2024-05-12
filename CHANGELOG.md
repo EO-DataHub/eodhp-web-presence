@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.9 (10-05-2024)
+
+- Implement design
+
 ## v0.1.6 (02-04-2024)
 
 - Fix issues with static files
