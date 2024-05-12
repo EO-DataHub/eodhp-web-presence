@@ -74,9 +74,6 @@ MIDDLEWARE = [
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
-# WAGTAILIMAGES_IMAGE_MODEL = 'home.CustomImage'
-# WAGTAILIMAGES_IMAGE_MODEL = 'wagtail.images.models.image'
-
 ROOT_URLCONF = "eodhp_web_presence.urls"
 
 TEMPLATES = [

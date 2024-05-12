@@ -7,17 +7,13 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
 {% include "home_menu.html" %}
 
-<div class="main_content_home">
-
-    <div class="homePageBorder">
-        <div class="homePageTitle">
-            {{ page.title|richtext }}
-        </div>
-        <div class="homePageContent">
-            <div class="homePageText100">{{ page.body|richtext }}</div>
-        </div>
+<div class="homePageBorder">
+    <div class="homePageTitle">
+        {{ page.title|richtext }}
     </div>
-
+    <div class="homePageContent">
+        <div class="homePageText100">{{ page.body|richtext }}</div>
+    </div>
 </div>
 
 

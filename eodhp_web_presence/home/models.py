@@ -1,21 +1,8 @@
-from datetime import date
-
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import models
-from django.db.models import CASCADE, ForeignKey
-from django.forms import CharField, DateField
-from django.shortcuts import render
-from eodhp_web_presence import settings
-from wagtail import blocks
-from wagtail.admin import widgets
 from wagtail.admin.panels import FieldPanel
-from wagtail.api import APIField
-from wagtail.blocks import BaseStreamBlock
-from wagtail.fields import RichTextField, StreamField
-from wagtail.images.blocks import ImageChooserBlock
-from wagtail.images.models import AbstractImage, Image
+from wagtail.fields import RichTextField
 from wagtail.models import Page
-from wagtail.templatetags import wagtailcore_tags
 
 
 class HomePage(Page):

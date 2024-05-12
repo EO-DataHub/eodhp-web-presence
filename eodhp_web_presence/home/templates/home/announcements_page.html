@@ -7,34 +7,24 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
 {% include "home_menu.html" %}
 
-
-
-<div class="main_content_home">
-
-    <div class="homePageBorder">
-        <div class="homePageTitle">
-            {{ page.title|richtext }}
-        </div>
-
-        <div class="homePageContent">
-            {% for announcement in announcements %}
-                <div class="homePageAnnouncement">
-                    <a href="{{ announcement.slug }}">
-                        {% if announcement.image %}
-                            <div class="homePageImage100">{% image announcement.image max-320x150 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}" class="homePageImage"></div>
-                        {% endif %}
-                        <div class="homePageAnnouncementTitle">{{ announcement.title }}</div>
-                        <div class="homePageAnnouncementSummary">{{ announcement.summary|truncatechars:255 }}</div>
-                    </a>
-                </div>
-            {% endfor %}
-
-
-
-        </div>
+<div class="homePageBorder">
+    <div class="homePageTitle">
+        {{ page.title|richtext }}
     </div>
 
+    <div class="homePageContent">
+        {% for announcement in announcements %}
+            <div class="homePageAnnouncement">
+                <a href="{{ announcement.slug }}">
+                    {% if announcement.image %}
+                        <div class="homePageImage100">{% image announcement.image max-320x150 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}" class="homePageImage"></div>
+                    {% endif %}
+                    <div class="homePageAnnouncementTitle">{{ announcement.title }}</div>
+                    <div class="homePageAnnouncementSummary">{{ announcement.summary|truncatechars:255 }}</div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock content %}
-

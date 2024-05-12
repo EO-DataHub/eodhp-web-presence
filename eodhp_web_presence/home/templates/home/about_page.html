@@ -7,35 +7,14 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
 {% include "home_menu.html" %}
 
-<div class="main_content_home">
-
-    <div class="homePageBorder">
-        <div class="homePageTitle">
-            {{ page.title|richtext }}
-        </div>
-        <div class="homePageContent">
-
-            {% image page.image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}" class="homePageImage50">
-            <div class="homePageText50">{{ page.body|richtext }}</div>
-
-
-        </div>
+<div class="homePageBorder">
+    <div class="homePageTitle">
+        {{ page.title|richtext }}
     </div>
-
+    <div class="homePageContent">
+        {% image page.image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}" class="homePageImage50">
+        <div class="homePageText50">{{ page.body|richtext }}</div>
+    </div>
 </div>
 
 {% endblock content %}
-
-
-
-
-
-
-<!--<div class="content_home_wrapper">-->
-<!--    <div class="content_home">-->
-<!--        <div class="home_about_text">{{ page.body|richtext }}</div>-->
-<!--        <div class="home_about_image">{% image page.image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}" class="responsive"></div>-->
-<!--    </div>-->
-<!--</div>-->
-
-
