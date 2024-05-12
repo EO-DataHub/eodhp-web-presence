@@ -1,5 +1,5 @@
-@import "../node_modules/bootstrap/scss/bootstrap";
-// /usr/lib
+@import "/usr/lib/node_modules/bootstrap/scss/bootstrap";
+
 $light-blue:    #BCCEEB;
 $blue:          #4C72BA;
 $dark-blue:     #2A3559;
@@ -19,4 +19,4 @@ html * {
     font-family: "Fira Sans";
 }
 
-@import "../node_modules/bootstrap/scss/bootstrap";
+@import "/usr/lib/node_modules/bootstrap/scss/bootstrap";

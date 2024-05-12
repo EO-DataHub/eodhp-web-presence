@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     "taggit",
     # web presence
     "home",
-    "search",
     "eodhp_web_presence",
     "help",
     "catalogue",
