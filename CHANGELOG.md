@@ -4,6 +4,15 @@
 
 - Implement design
 
+## v0.1.8 (26-04-2024)
+- Update package versions
+
+## v0.1.7 (04-04-2024)
+- Reference following from external sources:
+  - SECRET_KEY
+  - WAGTAIL_BASE_URL
+  - ALLOWED_HOSTS
+
 ## v0.1.6 (02-04-2024)
 
 - Fix issues with static files
