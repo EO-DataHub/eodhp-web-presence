@@ -1,5 +1,5 @@
 from django.test import TestCase
-from eodhp_web_presence import home
+from eodhp_web_presence import home  #noqa: F401
 
 
 class TestHome(TestCase):
