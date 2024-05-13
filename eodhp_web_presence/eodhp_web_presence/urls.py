@@ -24,7 +24,7 @@ urlpatterns = [
         name="wagtailimages_serve",
     ),
     path("catalogue/", include("catalogue.urls")),
-    path("", root_redirect),
+    # path("", root_redirect),
     path("", include(wagtail_urls)),  # This entry should always be at the end of urlpatterns
 ]
 
