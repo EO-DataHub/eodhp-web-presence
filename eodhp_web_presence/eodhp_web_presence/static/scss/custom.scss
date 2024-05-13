@@ -1,22 +1,18 @@
-@import "/usr/lib/node_modules/bootstrap/scss/bootstrap";
-
 $light-blue:    #BCCEEB;
 $blue:          #4C72BA;
 $dark-blue:     #2A3559;
 $white:         #FFFFFF;
 $light-grey:    #F6F6F6;
 $grey:          #EFEFEF;
-$black:          #000000;
-
+$black:         #000000;
 
 $theme-colors: (
   "light": $light-blue,
-  "dark": $dark-blue,
-  "primary": $blue,
+  "primary": $dark-blue,
 );
 
 html * {
     font-family: "Fira Sans";
 }
 
-@import "/usr/lib/node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/bootstrap/scss/bootstrap";

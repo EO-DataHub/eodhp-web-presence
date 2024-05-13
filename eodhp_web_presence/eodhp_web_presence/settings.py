@@ -52,12 +52,12 @@ INSTALLED_APPS = [
     # 3rd party
     "modelcluster",
     "taggit",
+    "django_sass",
     # web presence
     "home",
     "eodhp_web_presence",
     "help",
     "catalogue",
-    "django_sass",
 ]
 
 

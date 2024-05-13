@@ -20,23 +20,21 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
 RUN node -v
 RUN npm -v
 
-RUN npm install -g bootstrap@5.3.3
-
 RUN python -m pip install --upgrade pip
 RUN python -m pip install gunicorn==20.0.4
 
 WORKDIR /app
 COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
+COPY package*.json .
+RUN npm install
 
 COPY eodhp_web_presence .
 
-RUN python manage.py sass eodhp_web_presence/static/scss/custom.scss eodhp_web_presence/static/css/custom.css
-RUN python manage.py sass eodhp_web_presence/static/scss/fira.scss eodhp_web_presence/static/css/fira.css
-RUN python manage.py sass eodhp_web_presence/static/scss/footer.scss eodhp_web_presence/static/css/footer.css
-RUN python manage.py sass eodhp_web_presence/static/scss/home.scss eodhp_web_presence/static/css/home.css
-RUN python manage.py sass eodhp_web_presence/static/scss/home_menu.scss eodhp_web_presence/static/css/home_menu.css
-RUN python manage.py sass eodhp_web_presence/static/scss/menu.scss eodhp_web_presence/static/css/menu.css
+COPY compile_css.sh .
+RUN chmod +x compile_css.sh
+RUN ./compile_css.sh
+
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
