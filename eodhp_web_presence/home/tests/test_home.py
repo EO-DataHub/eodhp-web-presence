@@ -1,5 +1,8 @@
 from django.test import TestCase
 
+import os
+os.environ['DJANGO_SETTINGS_MODULE'] = 'eodhp_web_presence.home'
+
 
 class TestHome(TestCase):
     def test_status_code__success(self):
