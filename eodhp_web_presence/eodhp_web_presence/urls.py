@@ -9,9 +9,9 @@ from wagtail.images.views.serve import ServeView
 from wagtail.models import Page
 
 
-def root_redirect(request):
-    root_page = Page.objects.get(slug="index")
-    return HttpResponseRedirect(root_page.url)
+# def root_redirect(request):
+#     root_page = Page.objects.get(slug="index")
+#     return HttpResponseRedirect(root_page.url)
 
 
 urlpatterns = [
