@@ -4,6 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>
             {% block title %}
             {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
@@ -23,8 +24,16 @@
         <base target="_blank">
         {% endif %}
 
+        {# Global javascript #}
+
         {# Global stylesheets #}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/eodhp_web_presence.css' %}">
+        <link rel="stylesheet" href="{% static 'css/fira.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/home_menu.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/menu.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+
+        <link rel="icon" type="image/x-icon" href="{% static 'img/menu/favicon.svg' %}">
 
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
@@ -34,10 +43,14 @@
     <body class="{% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
 
-        {% block content %}{% endblock %}
+            {% include "menu.html" %}
 
-        {# Global javascript #}
-        <script type="text/javascript" src="{% static 'js/eodhp_web_presence.js' %}"></script>
+            {% block content %}
+            {% endblock %}
+
+
+            {% include "footer.html" %}
+
 
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}

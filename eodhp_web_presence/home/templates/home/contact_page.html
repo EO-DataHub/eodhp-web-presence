@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+{% include "home_menu.html" %}
+
+<div class="homePageBorder">
+    <div class="homePageTitle">
+        {{ page.title|richtext }}
+    </div>
+
+    <div class="homePageContent">
+        <div class="homePageText50">
+            {{ page.body|richtext }}
+            <p>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+

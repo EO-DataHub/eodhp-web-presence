@@ -52,13 +52,14 @@ INSTALLED_APPS = [
     # 3rd party
     "modelcluster",
     "taggit",
+    "django_sass",
     # web presence
     "home",
-    "search",
     "eodhp_web_presence",
     "help",
     "catalogue",
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -88,6 +89,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "eodhp_web_presence.context_processors.menu_links",
             ],
         },
     },

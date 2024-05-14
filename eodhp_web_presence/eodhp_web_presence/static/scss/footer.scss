@@ -1,0 +1,11 @@
+$white: #FFFFFF;
+$dark-blue: #2A3559;
+
+.footer {
+	background-color: $dark-blue;
+	text-align: center;
+}
+.footerLink {
+	color: $white;
+	text-decoration: none;
+}

@@ -1,33 +1,25 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block body_class %}template-homepage{% endblock %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+{% include "home_menu.html" %}
 
-<h1>EO DataHub Platform</h1>
+    <div class="homePageBorder">
+        <div class="homePageBanner">
+            EO DataHub
+        </div>
 
-<br>
+        <div class="homePageContent">
+            {% image page.image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}" class="homePageImage50">
+            <div class="homePageText50">{{ page.body|richtext }}
 
-<ul>
-    {% if documentation_url %}
-    <li><a href="{{ documentation_url }}">Documentation</a></li>
-    {% endif %}
+                <p>
 
-    {% if notebooks_url %}
-    <li><a href="{{ notebooks_url }}">Notebooks</a></li>
-    {% endif %}
-
-    {% if resource_catalogue_url %}
-    <li><a href="{{ resource_catalogue_url }}">Resource Catalogue</a></li>
-    {% endif %}
-
-    <li><a href="https://radiantearth.github.io/stac-browser/#/external/api.stac.ceda.ac.uk/">Static Catalogue</a></li>
-
-    {% if eox_viewserver_url %}
-    <li><a href="{{ eox_viewserver_url }}">EOxServer Viewer</a></li>
-    {% endif %}
-</ul>
+            </div>
+        </div>
+    </div>
 
 {% endblock content %}
