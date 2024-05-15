@@ -207,6 +207,8 @@ ALLOWED_HOSTS = [
     host.strip() for host in env("ALLOWED_HOSTS", default="localhost, 127.0.0.1").split(",")
 ]
 
+CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
+
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 LOGGING = {
