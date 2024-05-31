@@ -29,13 +29,10 @@ RUN python -m pip install -r requirements.txt
 COPY package*.json .
 RUN npm install
 
-COPY eodhp_web_presence .
+COPY . .
 
-COPY compile_css.sh .
-RUN chmod +x compile_css.sh
-RUN ./compile_css.sh
-
-RUN python manage.py collectstatic --noinput
+WORKDIR /app/eodhp_web_presence
+RUN npm run build
 
 EXPOSE 8000
 CMD ["gunicorn", "eodhp_web_presence.wsgi:application", "--bind", "0.0.0.0:8000"]
