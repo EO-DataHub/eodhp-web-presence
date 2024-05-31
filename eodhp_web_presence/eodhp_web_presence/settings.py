@@ -72,7 +72,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    "eodhp_web_presence.middleware.middleware.CacheHeaderMiddleware",
 ]
+
+WHITENOISE_MAX_AGE = 3600
 
 ROOT_URLCONF = "eodhp_web_presence.urls"
 

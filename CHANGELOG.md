@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.10 (21-05-2024)
+
+- Add caching
+
 ## v0.1.9 (10-05-2024)
 
 - Implement design
