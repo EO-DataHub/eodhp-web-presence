@@ -29,6 +29,8 @@ RUN python -m pip install -r requirements.txt
 COPY package*.json .
 RUN npm install
 
+ENV PATH /app/node_modules/.bin:$PATH
+
 COPY . .
 
 RUN npm run build
