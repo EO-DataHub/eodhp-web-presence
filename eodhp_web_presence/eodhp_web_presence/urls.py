@@ -8,6 +8,8 @@ from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.images.views.serve import ServeView
 from wagtail.models import Page
 
+from eodhp_web_presence.robots import robots_txt
+
 
 def root_redirect(request):
     root_page = Page.objects.get(slug="index")
@@ -25,6 +27,7 @@ urlpatterns = [
     ),
     path("catalogue/", include("catalogue.urls")),
     path("", root_redirect),
+    path("robots.txt", robots_txt),
     path("", include(wagtail_urls)),  # This entry should always be at the end of urlpatterns
 ]
 
