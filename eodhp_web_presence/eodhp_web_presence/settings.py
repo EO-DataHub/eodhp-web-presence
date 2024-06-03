@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "modelcluster",
     "taggit",
     "django_sass",
+    "wagtailcache",
     # web presence
     "home",
     "eodhp_web_presence",
@@ -62,6 +63,8 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
+    # UpdateCacheMiddleware to be at top
+    'wagtailcache.cache.UpdateCacheMiddleware',
     "django.middleware.security.SecurityMiddleware",
     # WhiteNoise Middleware above all but below Security
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -72,10 +75,18 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
-    "eodhp_web_presence.middleware.middleware.CacheHeaderMiddleware",
+    "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
 ]
 
 WHITENOISE_MAX_AGE = 3600
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cache'),
+        'KEY_PREFIX': 'wagtailcache',
+        'TIMEOUT': 300,  # seconds
+    }
+}
 
 ROOT_URLCONF = "eodhp_web_presence.urls"
 

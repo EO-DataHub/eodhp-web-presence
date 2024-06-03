@@ -3,9 +3,10 @@ from django.db import models
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page
+from wagtailcache.cache import WagtailCacheMixin
 
 
-class HomePage(Page):
+class HomePage(WagtailCacheMixin, Page):
     body = RichTextField(blank=True)
 
     image = models.ForeignKey(
@@ -23,7 +24,7 @@ class HomePage(Page):
     ]
 
 
-class AboutPage(Page):
+class AboutPage(WagtailCacheMixin, Page):
     body = RichTextField(blank=True)
 
     image = models.ForeignKey(
@@ -43,7 +44,7 @@ class AboutPage(Page):
     template = "home/about_page.html"
 
 
-class AnnouncementsPage(Page):
+class AnnouncementsPage(WagtailCacheMixin, Page):
     # Can only have AnnouncementPage children
     subpage_types = ["AnnouncementPage"]
 
@@ -90,7 +91,7 @@ class AnnouncementsPage(Page):
         return context
 
 
-class AnnouncementPage(Page):
+class AnnouncementPage(WagtailCacheMixin, Page):
     body = RichTextField(blank=True, default="")
     summary = models.TextField(help_text="Text to describe the page", blank=True)
 
@@ -111,7 +112,7 @@ class AnnouncementPage(Page):
     template = "home/announcement_page.html"
 
 
-class ContactPage(Page):
+class ContactPage(WagtailCacheMixin, Page):
     body = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
