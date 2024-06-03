@@ -1,6 +1,6 @@
+import environ
 from django.http import HttpResponse
 from django.views.decorators.http import require_GET
-import environ
 
 env = environ.Env()
 IS_PROD = env("IS_PROD", default=False)
