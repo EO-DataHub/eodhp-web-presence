@@ -31,8 +31,8 @@ RUN npm install
 
 COPY . .
 
-WORKDIR /app/eodhp_web_presence
 RUN npm run build
+WORKDIR /app/eodhp_web_presence
 
 EXPOSE 8000
 CMD ["gunicorn", "eodhp_web_presence.wsgi:application", "--bind", "0.0.0.0:8000"]
