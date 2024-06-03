@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.1.10 (21-05-2024)
+
+- Add `docker-compose.yaml` configuration
+- Implemented `gevent` worker class and increased number of workers to 4
+- Integrated `django-webpack-loader` for static builds
+- Enabled static file compilation for webpack
+
 ## v0.1.9 (10-05-2024)
 
 - Implement design

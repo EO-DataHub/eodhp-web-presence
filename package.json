@@ -1,6 +1,6 @@
 {
   "name": "eodhp-web-presence",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "description": "Web presence for EODHP",
   "main": "index.js",
   "scripts": {
