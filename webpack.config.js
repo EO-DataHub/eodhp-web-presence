@@ -6,11 +6,12 @@ module.exports = {
     mode: 'development',
     entry: './eodhp_web_presence/eodhp_web_presence/static/scss/main.scss',
     output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'eodhp_web_presence/eodhp_web_presence/static/dist'),
+        filename: "[name]-[contenthash].js",
+        path: path.resolve(__dirname, "assets/webpack_bundles/"),
+        publicPath: "/static/"
     },
     plugins: [
-        new BundleTracker({ filename: 'webpack-stats.json' }),
+        new BundleTracker({ path: __dirname, filename: 'webpack-stats.json' }),
     ],
     module: {
         rules: [
