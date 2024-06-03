@@ -181,7 +181,7 @@ WEBPACK_LOADER = {
 # prevent outdated JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
 # See https://docs.djangoproject.com/en/5.0/ref/contrib/staticfiles/#manifeststaticfilesstorage
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "eodhp_web_presence", "media")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
 
