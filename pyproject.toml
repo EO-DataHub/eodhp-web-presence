@@ -70,7 +70,8 @@ dependencies = [
     "django-environ",
     "whitenoise",
     "django-sass",
-    "django-webpack-loader"
+    "django-webpack-loader==3.1.0",
+    "gevent==24.2.1"
 ]
 
 # List additional groups of dependencies here (e.g. development

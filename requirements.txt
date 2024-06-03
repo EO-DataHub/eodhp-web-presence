@@ -51,6 +51,10 @@ et-xmlfile==1.1.0
     # via openpyxl
 filetype==1.2.0
     # via willow
+gevent==24.2.1
+    # via eodhp-website (pyproject.toml)
+greenlet==3.0.3
+    # via gevent
 html5lib==1.1
     # via wagtail
 idna==3.7
@@ -97,3 +101,7 @@ willow[heif]==1.6.3
     # via
     #   wagtail
     #   willow
+zope-event==5.0
+    # via gevent
+zope-interface==6.4.post2
+    # via gevent
