@@ -3,6 +3,7 @@
 ## v0.1.10 (21-05-2024)
 
 - Add caching
+- Addition of robots.txt and headers
 
 ## v0.1.9 (10-05-2024)
 
