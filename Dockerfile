@@ -36,5 +36,8 @@ COPY . .
 RUN npm run build
 WORKDIR /app/eodhp_web_presence
 
+COPY entrypoint.sh /usr/src/app/entrypoint.sh
+RUN chmod +x /usr/src/app/entrypoint.sh
+
 EXPOSE 8000
-CMD ["gunicorn", "eodhp_web_presence.wsgi:application", "--bind", "0.0.0.0:8000", "--timeout=30", "--worker-class=gevent", "--workers=4"]
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
