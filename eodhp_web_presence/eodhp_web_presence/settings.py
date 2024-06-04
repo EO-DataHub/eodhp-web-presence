@@ -78,13 +78,13 @@ MIDDLEWARE = [
     "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
 ]
 
-WHITENOISE_MAX_AGE = 3600
+WHITENOISE_MAX_AGE = env("STATIC_FILE_CACHE_LENGTH", cast=int, default=3600)
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
         "LOCATION": os.path.join(BASE_DIR, "cache"),
         "KEY_PREFIX": "wagtailcache",
-        "TIMEOUT": 300,  # seconds
+        "TIMEOUT": env("PAGE_CACHE_LENGTH", cast=int, default=300),  # seconds
     }
 }
 
