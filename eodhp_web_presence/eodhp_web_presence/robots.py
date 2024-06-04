@@ -13,9 +13,11 @@ def robots_txt(request):
 
 if IS_PROD:
     robots_txt_file = """\
-    """
+User-agent: *
+Disallow:
+"""
 else:
     robots_txt_file = """\
-    User-Agent: *
-    Disallow: /
-    """
+User-Agent: *
+Disallow: /
+"""
