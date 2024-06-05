@@ -40,13 +40,13 @@ set -a
 3. Create a superuser (optional)
 
 ```commandline
-docker compose exec web python manage.py sh
+docker compose exec web sh
 python manage.py createsuperuser
 ```
 
 ### Development Environment (Live reloading)
 1. Ensure `DJANGO_ENV` is set to `development`
-2. Run `docker-compose -f docker-compose.dev.yaml up --build`
+2. Run `docker compose -f docker-compose.dev.yaml up --build`
 3. Create a superuser similarly to step 3 in production
 4. Navigate to port 8000 to view the site
 
