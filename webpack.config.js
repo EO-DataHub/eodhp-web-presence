@@ -43,6 +43,19 @@ module.exports = {
                     'sass-loader',
                 ],
             },
+            {
+                test: /\.(png|jpg|jpeg|gif|svg|eot|ttf|woff|woff2)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name]-[contenthash].[ext]',
+                            publicPath: DJANGO_ENV === 'development' ? 'http://localhost:3000/static/' : '/static/',
+                            outputPath: 'images/',
+                        },
+                    },
+                ],
+            }
         ],
     },
 };
