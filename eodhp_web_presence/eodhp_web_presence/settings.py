@@ -166,10 +166,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "assets", "webpack_bundles"),)
 
-if env("DJANGO_ENV", default="development") == "development":
-    STATIC_URL = "http://localhost:3000/static/"
-else:
-    STATIC_URL = "/static/"
+STATIC_URL = "/static/"
 
 WEBPACK_LOADER = {
     "DEFAULT": {
