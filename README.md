@@ -34,20 +34,18 @@ set -a
 
 ## Docker Compose Setup
 ### Production
-1. Ensure `DJANGO_ENV` is set to `production` and `DEBUG` is set to `False`
-2. Run `docker compose up --build` to build and run the docker container. This will run the webserver on port 8000
+1. Run `docker compose up --build` to build and run the docker container. This will run the webserver on port 8000
 
-3. Create a superuser (optional)
+2. Create a superuser (optional)
 
 ```commandline
 docker compose exec web python manage.py createsuperuser
 ```
 
 ### Development Environment (Live reloading)
-1. Ensure `DJANGO_ENV` is set to `development` and `DEBUG` is set to `True`
-2. Run `docker compose -f docker-compose.dev.yaml up --build`
-3. Create a superuser similarly to step 3 in production
-4. Navigate to port 8000 to view the site
+1. Run `docker compose -f docker-compose.dev.yaml up --build`
+2. Create a superuser similarly to step 3 in production
+3. Navigate to port 8000 to view the site
 
 
 ## Running webserver locally
