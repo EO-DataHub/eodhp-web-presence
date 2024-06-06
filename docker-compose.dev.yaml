@@ -5,6 +5,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - media_volume:/app/media
     env_file:
       - .env
     command: /usr/src/app/entrypoint.sh
@@ -17,3 +18,6 @@ services:
     volumes:
       - .:/app
     command: /bin/sh -c "npm install && npm start"
+
+volumes:
+  media_volume:
