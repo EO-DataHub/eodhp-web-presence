@@ -1,23 +1,35 @@
 services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        NODE_ENV: development
+        DEBUG: 1
     ports:
       - "8000:8000"
     volumes:
       - .:/app
       - media_volume:/app/media
+      - /app/node_modules
     env_file:
       - .env
-    command: /usr/src/app/entrypoint.sh
+    environment:
+      - DJANGO_ENV=development
     depends_on:
       - webpack
   webpack:
-    build: .
+    build:
+      context: .
+      args:
+        NODE_ENV: development
+        DEBUG: 0
     ports:
       - "3000:3000"
     volumes:
       - .:/app
-    command: /bin/sh -c "npm install && npm start"
+      - /app/node_modules
+    command: npm start
+    entrypoint: ""
 
 volumes:
   media_volume:

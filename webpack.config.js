@@ -2,11 +2,6 @@ const path = require('path');
 const BundleTracker = require('webpack-bundle-tracker');
 const webpack = require('webpack');
 
-const dotenv = require('dotenv');
-
-require('dotenv').config();
-dotenv.config();
-const DJANGO_ENV = process.env.DJANGO_ENV;
 
 module.exports = {
     context: __dirname,
@@ -15,7 +10,7 @@ module.exports = {
     output: {
         filename: "[name]-[contenthash].js",
         path: path.resolve(__dirname, "assets/webpack_bundles/"),
-        publicPath: DJANGO_ENV === 'development' ? 'http://localhost:3000/static/' : '/static/'
+        publicPath: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/static/' : '/static/'
     },
     devServer: {
         compress: true,
