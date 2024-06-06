@@ -40,8 +40,7 @@ set -a
 3. Create a superuser (optional)
 
 ```commandline
-docker compose exec web sh
-python manage.py createsuperuser
+docker compose exec web python manage.py createsuperuser
 ```
 
 ### Development Environment (Live reloading)
