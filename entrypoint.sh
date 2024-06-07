@@ -16,19 +16,13 @@ check_webpack_ready() {
     exit 1
 }
 
-run_django_prereqs() {
-    echo "Running Django prerequisites..."
+if [ "$DJANGO_ENV" == "development" ]; then
+    check_webpack_ready
+    run_django_prereqs
     python manage.py migrate
     python manage.py collectstatic --no-input
-}
-
-if [ "$DJANGO_ENV" == "development" ]; then
-    # Wait for webpack to be ready
-    check_webpack_ready
-    # Run Django prerequisites
-    run_django_prereqs
     python manage.py runserver 0.0.0.0:8000
 else
-    run_django_prereqs
+    python manage.py collectstatic --no-input
     exec gunicorn eodhp_web_presence.wsgi:application --bind 0.0.0.0:8000 "$@"
 fi
