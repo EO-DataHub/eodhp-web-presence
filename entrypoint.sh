@@ -18,7 +18,6 @@ check_webpack_ready() {
 
 if [ "$DJANGO_ENV" == "development" ]; then
     check_webpack_ready
-    run_django_prereqs
     python manage.py migrate
     python manage.py collectstatic --no-input
     python manage.py runserver 0.0.0.0:8000
