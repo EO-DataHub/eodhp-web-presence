@@ -32,16 +32,20 @@ set -a
 . .env
 ```
 
-## Alternate first time installation
-1. Run `docker compose up` to build and run the docker container. This will run the webserver on port 8000.
+## Docker Compose Setup
+### Production
+1. Run `docker compose up --build` to build and run the docker container. This will run the webserver on port 8000
 
 2. Create a superuser (optional)
 
 ```commandline
-docker compose exec web python manage.py sh
-python manage.py createsuperuser
+docker compose exec web python manage.py createsuperuser
 ```
 
+### Development Environment (Live reloading)
+1. Run `docker compose -f docker-compose.dev.yaml up --build`
+2. Create a superuser similarly to step 3 in production
+3. Navigate to port 8000 to view the site
 
 
 ## Running webserver locally

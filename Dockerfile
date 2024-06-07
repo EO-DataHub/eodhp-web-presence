@@ -33,6 +33,11 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 COPY . .
 
+ARG NODE_ENV
+ENV NODE_ENV $NODE_ENV
+ARG DEBUG
+ENV DEBUG $DEBUG
+
 RUN npm run build
 WORKDIR /app/eodhp_web_presence
 
@@ -41,3 +46,4 @@ RUN chmod +x /usr/src/app/entrypoint.sh
 
 EXPOSE 8000
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+CMD ["--timeout=30", "--worker-class=gevent", "--workers=4"]
