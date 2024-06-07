@@ -5,8 +5,8 @@ const webpack = require('webpack');
 
 module.exports = {
     context: __dirname,
-    mode: 'development',
-    entry: './eodhp_web_presence/eodhp_web_presence/static/scss/main.scss',
+    mode: process.env.NODE_ENV,
+    entry: './eodhp_web_presence/eodhp_web_presence/static/entrypoint.js',
     output: {
         filename: "[name]-[contenthash].js",
         path: path.resolve(__dirname, "assets/webpack_bundles/"),
@@ -31,7 +31,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.scss$/,
+                test: /\.(scss|css)$/,
                 use: [
                     'style-loader',
                     'css-loader',

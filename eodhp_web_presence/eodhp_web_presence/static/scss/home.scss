@@ -34,7 +34,7 @@ body {
 }
 .homePageContent {
 	background-color: $white;
-	masargin: auto;
+	margin: auto;
 	display: flex;
 	justify-content: center;
 }
@@ -58,7 +58,7 @@ body {
 	padding: 10px;
 	max-width: 100%;
 }
-homePageImage100 {
+.homePageImage100 {
 	img {
 		max-width: 100%;
 		height: auto;
@@ -69,7 +69,6 @@ homePageImage100 {
 	margin: 10px;
 	justify-content: center;
 	padding: 10px;
-	text-color: #000000;
 	max-height: 250px;
 	a {
 		text-decoration: none;
@@ -103,7 +102,7 @@ homePageImage100 {
 	.homePageImage {
 		max-width: 100%;
 	}
-	homePageText50 {
+	.homePageText50 {
 		max-width: 100%;
 	}
 }

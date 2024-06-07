@@ -4,8 +4,6 @@
 <html lang="en">
     <head>
 
-        {% load render_bundle from webpack_loader %}
-        {% render_bundle 'main' %}
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -37,6 +35,10 @@
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
+
+        {% load render_bundle from webpack_loader %}
+        {% render_bundle 'main' %}
+
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
