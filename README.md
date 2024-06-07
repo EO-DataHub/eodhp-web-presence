@@ -44,7 +44,12 @@ docker compose exec web python manage.py createsuperuser
 
 ### Development Environment (Live reloading)
 1. Run `docker compose -f docker-compose.dev.yaml up --build`
-2. Create a superuser similarly to step 3 in production
+2. Create a superuser
+
+```commandline
+docker compose exec web python manage.py createsuperuser
+```
+
 3. Navigate to port 8000 to view the site
 
 
