@@ -70,6 +70,7 @@ dependencies = [
     "django-environ",
     "whitenoise",
     "django-sass",
+    "wagtail-cache",
     "django-webpack-loader",
     "gevent"
 ]

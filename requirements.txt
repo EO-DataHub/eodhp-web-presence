@@ -92,6 +92,10 @@ telepath==0.3.1
 urllib3==2.2.1
     # via requests
 wagtail==5.2.4
+    # via
+    #   eodhp-website (pyproject.toml)
+    #   wagtail-cache
+wagtail-cache==2.4.0
     # via eodhp-website (pyproject.toml)
 webencodings==0.5.1
     # via html5lib
