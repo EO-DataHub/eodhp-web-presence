@@ -76,6 +76,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    "eodhp_web_presence.middleware.middleware.HeaderMiddleware",
     "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
 ]
 
