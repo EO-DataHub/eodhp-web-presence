@@ -1,7 +1,7 @@
 import environ
 
 env = environ.Env()
-IS_PROD = env("IS_PROD", default=False)
+IS_PROD = env("IS_PROD", default=False, cast=bool)
 
 
 class HeaderMiddleware:

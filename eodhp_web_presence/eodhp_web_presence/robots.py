@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.views.decorators.http import require_GET
 
 env = environ.Env()
-IS_PROD = env("IS_PROD", default=False)
+IS_PROD = env("IS_PROD", default=False, cast=bool)
 
 
 @require_GET
