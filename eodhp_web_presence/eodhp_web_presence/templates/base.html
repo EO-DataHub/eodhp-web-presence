@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+
+
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>
@@ -20,24 +22,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {# Force all links in the live preview panel to be opened in a new tab #}
-        {% if request.in_preview_panel %}
+        {% if request and request.is_preview %}
         <base target="_blank">
         {% endif %}
 
         {# Global javascript #}
 
         {# Global stylesheets #}
-        <link rel="stylesheet" href="{% static 'css/fira.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/home_menu.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/menu.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
 
         <link rel="icon" type="image/x-icon" href="{% static 'img/menu/favicon.svg' %}">
 
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
+
+        {% load render_bundle from webpack_loader %}
+        {% render_bundle 'main' %}
+
     </head>
 
     <body class="{% block body_class %}{% endblock %}">

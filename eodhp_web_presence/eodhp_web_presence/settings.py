@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "wagtail.search",
     "wagtail.admin",
     "wagtail",
+    "webpack_loader",
     # 3rd party
     "modelcluster",
     "taggit",
@@ -79,13 +80,13 @@ MIDDLEWARE = [
     "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
 ]
 
-WHITENOISE_MAX_AGE = 3600
+WHITENOISE_MAX_AGE = env("STATIC_FILE_CACHE_LENGTH", cast=int, default=3600)
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
         "LOCATION": os.path.join(BASE_DIR, "cache"),
         "KEY_PREFIX": "wagtailcache",
-        "TIMEOUT": 300,  # seconds
+        "TIMEOUT": env("PAGE_CACHE_LENGTH", cast=int, default=300),  # seconds
     }
 }
 
@@ -174,21 +175,27 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
 
-STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, "eodhp_web_presence", "static"),
-]
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "assets", "webpack_bundles"),)
+
+
+WEBPACK_LOADER = {
+    "DEFAULT": {
+        "BUNDLE_DIR_NAME": "webpack_bundles/",
+        "STATS_FILE": os.path.join(BASE_DIR, "webpack-stats.json"),
+        "POLL_INTERVAL": 0.1,
+        "IGNORE": [r".+\.hot-update.js", r".+\.map"],
+    }
+}
+
 
 # django.contrib.staticfiles.storage.ManifestStaticFilesStorage is recommended in production, to
 # prevent outdated JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
 # See https://docs.djangoproject.com/en/5.0/ref/contrib/staticfiles/#manifeststaticfilesstorage
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")

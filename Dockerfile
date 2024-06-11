@@ -29,13 +29,21 @@ RUN python -m pip install -r requirements.txt
 COPY package*.json .
 RUN npm install
 
-COPY eodhp_web_presence .
+ENV PATH /app/node_modules/.bin:$PATH
 
-COPY compile_css.sh .
-RUN chmod +x compile_css.sh
-RUN ./compile_css.sh
+COPY . .
 
-RUN python manage.py collectstatic --noinput
+ARG NODE_ENV
+ENV NODE_ENV $NODE_ENV
+ARG DEBUG
+ENV DEBUG $DEBUG
+
+RUN npm run build
+WORKDIR /app/eodhp_web_presence
+
+COPY entrypoint.sh /usr/src/app/entrypoint.sh
+RUN chmod +x /usr/src/app/entrypoint.sh
 
 EXPOSE 8000
-CMD ["gunicorn", "eodhp_web_presence.wsgi:application", "--bind", "0.0.0.0:8000"]
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+CMD ["--timeout=30", "--worker-class=gevent", "--workers=4"]
