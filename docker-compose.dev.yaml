@@ -1,0 +1,35 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        NODE_ENV: development
+        DEBUG: 1
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - media_volume:/app/media
+      - /app/node_modules
+    env_file:
+      - .env
+    environment:
+      - DJANGO_ENV=development
+    depends_on:
+      - webpack
+  webpack:
+    build:
+      context: .
+      args:
+        NODE_ENV: development
+        DEBUG: 0
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm start
+    entrypoint: ""
+
+volumes:
+  media_volume:
