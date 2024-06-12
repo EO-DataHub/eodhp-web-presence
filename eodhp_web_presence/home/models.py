@@ -120,3 +120,13 @@ class ContactPage(WagtailCacheMixin, Page):
     ]
 
     template = "home/contact_page.html"
+
+
+class AccessPage(WagtailCacheMixin, Page):
+    body = RichTextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("body"),
+    ]
+
+    template = "home/access_page.html"
