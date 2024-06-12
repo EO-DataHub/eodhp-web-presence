@@ -6,21 +6,86 @@
 
 {% include "home_menu.html" %}
 
-<div class="homePageBorder">
+<div class="homePageBorder mb-4">
     <div class="homePageTitle">
-        {{ page.title|richtext }}
+        <h2 class="text-center my-4">{{ page.title|richtext }}</h2>
     </div>
 
-    <div class="homePageContent">
-        <div class="homePageText50">
+    <div class="homePageContent d-flex flex-column align-items-center">
+        <div class="homePageText50 mb-0 pb-0 text-justify">
             {{ page.body|richtext }}
-            <p>
         </div>
 
+        <div class="container mb-4">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="my-2">S3 Credentials</h4>
+                        </div>
+                        <div class="card-body bg-light">
+                            <!-- Credentials management section -->
+                            <div id="CredentialsManagement" class="mb-4 d-none">
+                                <div class="mb-3">
+                                    <label for="activeCredentials" class="form-label">Access Key</label>
+                                    <input type="text" class="form-control mb-3" id="accessKey" placeholder="Access Key"
+                                        readonly disabled>
+
+                                    <label for="activeCredentials" class="form-label">Secret Key</label>
+                                    <input type="text" class="form-control" id="secretKey" placeholder="Secret Key"
+                                        readonly disabled>
+                                </div>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button type="button" class="btn btn-primary btn-lg"
+                                        onclick="refreshCredentials()">Refresh Credentials</button>
+                                    <button type="button" class="btn btn-danger btn-lg"
+                                        onclick="revokeCredentials()">Revoke
+                                        Credentials</button>
+                                </div>
+                            </div>
+                            <!-- Username entry form -->
+                            <form id="usernameForm" class="mb-4" autocomplete="off">
+                                <div class="form-group d-flex flex-column mb-3">
+                                    <label for="username" class="form-label mb-0">Username</label>
+                                    <small class="mb-3 text-muted small font-italic">Entering your username is currently
+                                        a temporary
+                                        measure while we work on enhancing the authentication system</small>
+                                    <input type="text" class="form-control" id="username"
+                                        placeholder="Enter your username" required autocomplete="off" />
+                                </div>
+                                <div class="mb-3">
+                                    <button type="button" class="btn btn-primary btn-lg"
+                                        onclick="getUserCredentials()">Get
+                                        Credentials</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
+<script>
+    const getUserCredentials = () => {
+        const username = document.getElementById('username').value;
+
+        document.getElementById('accessKey').value = 'Fake Key';
+        document.getElementById('secretKey').value = 'Fake Secret';
+        document.getElementById('CredentialsManagement').classList.remove('d-none');
+    }
+
+    const refreshCredentials = () => {
+        document.getElementById('accessKey').value = 'New Fake Key';
+        document.getElementById('secretKey').value = 'New Fake Secret';
+    }
+
+    const revokeCredentials = () => {
+        document.getElementById('accessKey').value = '';
+        document.getElementById('secretKey').value = '';
+        document.getElementById('CredentialsManagement').classList.add('d-none');
+    }
+</script>
 
 {% endblock content %}
-
-
