@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.11 (14-06-2024)
+
+- Add API for receiving temporary credentials for AWS Access Points
+
 ## v0.1.10 (21-05-2024)
 
 - Add caching

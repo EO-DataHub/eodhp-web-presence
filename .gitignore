@@ -11,3 +11,4 @@ assets/
 webpack-stats.json
 staticfiles/
 *.egg-info/
+cache/
