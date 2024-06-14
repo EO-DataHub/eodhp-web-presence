@@ -67,8 +67,8 @@ def get_temp_credentials(request):
         print(f"Error: {str(e)}")
         return JsonResponse(
             {
-                "error": """The username provided is incorrect or 
-                does not have relevant permissions. 
+                "error": """The username provided is incorrect or
+                does not have relevant permissions.
                 Please try again later."""
             },
             status=500,
