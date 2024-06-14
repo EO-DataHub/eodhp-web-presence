@@ -6,7 +6,10 @@ const webpack = require('webpack');
 module.exports = {
     context: __dirname,
     mode: process.env.NODE_ENV,
-    entry: './eodhp_web_presence/eodhp_web_presence/static/entrypoint.js',
+    entry: {
+        main: './eodhp_web_presence/eodhp_web_presence/static/entrypoint.js',
+        access_page: './eodhp_web_presence/eodhp_web_presence/home/static/js/access_page.js',
+    },
     output: {
         filename: "[name]-[contenthash].js",
         path: path.resolve(__dirname, "assets/webpack_bundles/"),

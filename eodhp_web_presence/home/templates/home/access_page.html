@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags %}
+{% load render_bundle from webpack_loader %}
 
 {% block content %}
 
@@ -74,4 +75,6 @@
         </div>
     </div>
 </div>
+
+{% render_bundle 'access_page' %}
 {% endblock content %}

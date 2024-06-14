@@ -4,5 +4,3 @@ import './scss/menu.scss';
 import './scss/footer.scss';
 import './scss/home.scss';
 import './scss/home_menu.scss';
-
-import '../../home/static/js/access_page.js';
