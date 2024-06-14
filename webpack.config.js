@@ -8,10 +8,10 @@ module.exports = {
     mode: process.env.NODE_ENV,
     entry: {
         main: './eodhp_web_presence/eodhp_web_presence/static/entrypoint.js',
-        access_page: './eodhp_web_presence/eodhp_web_presence/home/static/js/access_page.js',
+        access_page: './eodhp_web_presence/home/static/js/access_page.js',
     },
     output: {
-        filename: "[name]-[contenthash].js",
+        filename: process.env.NODE_ENV === 'development' ? '[name].js' : '[name]-[contenthash].js',
         path: path.resolve(__dirname, "assets/webpack_bundles/"),
         publicPath: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/static/' : '/static/'
     },

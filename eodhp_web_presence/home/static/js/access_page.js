@@ -73,3 +73,7 @@ const refreshCredentials = async () => {
 const revokeCredentials = () => {
     clearForm();
 }
+
+window.getCredentials = getCredentials;
+window.refreshCredentials = refreshCredentials;
+window.revokeCredentials = revokeCredentials;
