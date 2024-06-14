@@ -30,10 +30,13 @@
                                     <label for="activeCredentials" class="form-label">Access Key</label>
                                     <input type="text" class="form-control mb-3" id="accessKey" placeholder="Access Key"
                                         readonly disabled>
-
                                     <label for="activeCredentials" class="form-label">Secret Key</label>
-                                    <input type="text" class="form-control" id="secretKey" placeholder="Secret Key"
+                                    <input type="text" class="form-control mb-3" id="secretKey" placeholder="Secret Key"
                                         readonly disabled>
+
+                                    <label for="activeCredentials" class="form-label">Session Token</label>
+                                    <input type="text" class="form-control" id="sessionToken"
+                                        placeholder="Session Token" readonly disabled>
                                 </div>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                     <button type="button" class="btn btn-primary btn-lg"
@@ -54,11 +57,16 @@
                                         placeholder="Enter your username" required autocomplete="off" />
                                 </div>
                                 <div class="mb-3">
-                                    <button type="button" class="btn btn-primary btn-lg"
-                                        onclick="getUserCredentials()">Get
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="getCredentials()">Get
                                         Credentials</button>
                                 </div>
                             </form>
+                            <!-- Loading Spinner -->
+                            <div id="loadingSpinner" class="text-center mt-4 d-none">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -66,26 +74,4 @@
         </div>
     </div>
 </div>
-
-<script>
-    const getUserCredentials = () => {
-        const username = document.getElementById('username').value;
-
-        document.getElementById('accessKey').value = 'Fake Key';
-        document.getElementById('secretKey').value = 'Fake Secret';
-        document.getElementById('CredentialsManagement').classList.remove('d-none');
-    }
-
-    const refreshCredentials = () => {
-        document.getElementById('accessKey').value = 'New Fake Key';
-        document.getElementById('secretKey').value = 'New Fake Secret';
-    }
-
-    const revokeCredentials = () => {
-        document.getElementById('accessKey').value = '';
-        document.getElementById('secretKey').value = '';
-        document.getElementById('CredentialsManagement').classList.add('d-none');
-    }
-</script>
-
 {% endblock content %}

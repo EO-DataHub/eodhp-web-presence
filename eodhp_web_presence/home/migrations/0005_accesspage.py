@@ -9,20 +9,30 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0004_announcementspage_contactpage_homepage_image_and_more'),
-        ('wagtailcore', '0089_log_entry_data_json_null_to_object'),
+        ("home", "0004_announcementspage_contactpage_homepage_image_and_more"),
+        ("wagtailcore", "0089_log_entry_data_json_null_to_object"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AccessPage',
+            name="AccessPage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('body', wagtail.fields.RichTextField(blank=True)),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                ("body", wagtail.fields.RichTextField(blank=True)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=(wagtailcache.cache.WagtailCacheMixin, 'wagtailcore.page'),
+            bases=(wagtailcache.cache.WagtailCacheMixin, "wagtailcore.page"),
         ),
     ]

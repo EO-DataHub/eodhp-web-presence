@@ -26,6 +26,7 @@ urlpatterns = [
         name="wagtailimages_serve",
     ),
     path("catalogue/", include("catalogue.urls")),
+    path("home/", include("home.urls")),
     path("", root_redirect),
     path("robots.txt", robots_txt),
     path("", include(wagtail_urls)),  # This entry should always be at the end of urlpatterns

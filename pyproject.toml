@@ -72,7 +72,8 @@ dependencies = [
     "django-sass",
     "wagtail-cache",
     "django-webpack-loader",
-    "gevent"
+    "gevent",
+    "boto3"
 ]
 
 # List additional groups of dependencies here (e.g. development
