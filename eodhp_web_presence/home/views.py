@@ -10,6 +10,7 @@ retrieve the following from the users session:
 - access_point_arn
 - workspace_access_role_arn
 """
+
 import logging
 
 import boto3
@@ -19,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 def check_user_has_access_point_access(username):
-    
+
     # TODO: Hardcoded for now, in future this will come from the users session.
     access_point_arn = f"arn:aws:s3:eu-west-2:#:accesspoint/eodhp-dev-y4jfxod4-{username}-s3"
     s3_client = boto3.client(
@@ -34,7 +35,7 @@ def get_temp_credentials(request):
 
     if not username:
         return JsonResponse({"error": "The username parameter is required."}, status=400)
-    
+
     # TODO: Hardcoded for now, in future this will come from the users session.
     workspace_access_role_arn = "arn:aws:iam::#:role/jh-s3-workspace-access"
 
