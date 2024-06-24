@@ -2,7 +2,7 @@ FROM python:3.11-slim-bullseye
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV TZ=Europe/London
+ENV TZ=Etc/UTC
 ENV DEBIAN_FRONTEND=noninteractive
  
 RUN apt-get update --yes --quiet
@@ -27,6 +27,8 @@ WORKDIR /app
 COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
 COPY package*.json .
+COPY database_dump_pg.py .
+COPY database_load_pg.py .
 RUN npm install
 
 ENV PATH /app/node_modules/.bin:$PATH
