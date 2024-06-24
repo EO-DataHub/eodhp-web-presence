@@ -14,7 +14,7 @@ SQL_PASSWORD = "password"
 SQL_HOST = "localhost"
 SQL_PORT = "5432"
 
-table_prefixes = ["home", "help"]
+table_prefixes = ["home", "help", "wagtailimages"]
 
 pg_dump_path = "pg_dump"
 
