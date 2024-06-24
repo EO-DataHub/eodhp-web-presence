@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+
+{% include "home_menu.html" %}
+
+<div style="background-image: url('{% static 'img/fake-catalogue/UKMap.png' %}'); width: 2653px; height: 1900px;">
+    <div style="margin-left: auto; 
+                margin-right: auto; 
+                width: 80%; 
+                max-width: 1100px;
+                background-color: black; 
+                padding-left: 1rem;
+                padding-right: 1rem;
+                color: white">
+
+        <input type="text" name="searchterm" style="margin-top: 1rem; width: 100%; margin-bottom: 1rem;"
+            placeholder="Search term">
+        <span id="expand" style="float: right; margin-right: 1rem; font-size: 2rem; margin-top: -0.5rem">⤢</span>
+        <div id="search-results" style="width: 100%; padding-bottom: 2rem; display: none;">
+            <table>
+                <thead>
+                    <tr style="border-bottom: 2px;
+                               border-color: white;
+                               border-style: solid;">
+                        <th></th>
+                        <th>Search Results for "Sentinel"</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px;
+                               border-color: #777777;
+                               border-style: solid;
+                               padding-top: 5px;">
+                        <td><input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked=""></td>
+                        <td style="margin-right: 1rem;">Sentinel 1</td>
+                    </tr>
+                    <tr style="border-bottom: 1px;
+                               border-color: #777777;
+                               border-style: solid;
+                               padding-top: 5px;">
+                        <td><input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked=""></td>
+                        <td>Sentinel 2</td>
+                    </tr>
+                    <tr style="border-bottom: 1px;
+                               border-color: #777777;
+                               border-style: solid;
+                               padding-top: 5px;">
+                        <td><input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked=""></td>
+                        <td style="padding-right: 1rem;">Defra and JNCC Sentinel-2 Analysis Ready Data (ARD)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <div id="all-search-results" style="width: 100%; padding-bottom: 2rem;">
+            <table>
+                <thead>
+                    <tr style="border-bottom: 2px;
+                           border-color: white;
+                           border-style: solid;">
+                        <th></th>
+                        <th>All Results</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px;
+                           border-color: #777777;
+                           border-style: solid;
+                           padding-top: 5px;">
+                        <td><input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked=""></td>
+                        <td style="margin-right: 1rem;">Sentinel 1</td>
+                    </tr>
+                    <tr style="border-bottom: 1px;
+                           border-color: #777777;
+                           border-style: solid;
+                           padding-top: 5px;">
+                        <td><input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked=""></td>
+                        <td>Sentinel 2</td>
+                    </tr>
+                    <tr style="border-bottom: 1px;
+                           border-color: #777777;
+                           border-style: solid;
+                           padding-top: 5px;">
+                        <td><input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked=""></td>
+                        <td>Landsat 5</td>
+                    </tr>
+                    <tr style="border-bottom: 1px;
+                           border-color: #777777;
+                           border-style: solid;
+                           padding-top: 5px;">
+                        <td><input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked=""></td>
+                        <td>Landsat 8</td>
+                    </tr>
+                    <tr style="border-bottom: 1px;
+                           border-color: #777777;
+                           border-style: solid;
+                           padding-top: 5px;">
+                        <td><input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked=""></td>
+                        <td style="padding-right: 1rem;">Defra and JNCC Sentinel-2 Analysis Ready Data (ARD)</td>
+                    </tr>
+                    <tr style="border-bottom: 1px;
+                           border-color: #777777;
+                           border-style: solid;
+                           padding-top: 5px;">
+                        <td><input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked=""></td>
+                        <td style="padding-right: 1rem;">Planet PlanetScope</td>
+                    </tr>
+                    <tr style="border-bottom: 1px;
+                           border-color: #777777;
+                           border-style: solid;
+                           padding-top: 5px;">
+                        <td></td>
+                        <td style="padding-right: 1rem;">NDVI Workflow</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    {% endblock content %}
