@@ -70,12 +70,12 @@ if __name__ == "__main__":
 
     tables_str = get_tables()
 
-    output_file = f'{os.environ.get("ENV_NAME", "default")}-wagtail_dump-{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.sql'
+    output_file = f'{os.environ.get("ENV_NAME", "default")}-wagtail_dump-{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.sql'  # noqa: E501
 
     with tempfile.NamedTemporaryFile() as tf:
         tf.name = output_file
 
-        command = f"{pg_dump_path} -U {SQL_USER} -h {SQL_HOST} -p {SQL_PORT} -d {SQL_DATABASE} {tables_str} -F c -f {output_file}"
+        command = f"{pg_dump_path} -U {SQL_USER} -h {SQL_HOST} -p {SQL_PORT} -d {SQL_DATABASE} {tables_str} -F c -f {output_file}"  # noqa: E501
 
         os.environ["PGPASSWORD"] = SQL_PASSWORD
         subprocess.run(command, shell=True, check=True)

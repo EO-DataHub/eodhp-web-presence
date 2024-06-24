@@ -78,7 +78,7 @@ if __name__ == "__main__":
     with tempfile.TemporaryDirectory() as tmpdir:
         s3.download_file(bucket_name, file, f"{tmpdir}/{file}")
 
-        command = f"{pg_load_path} -c -U {SQL_USER} -h {SQL_HOST} -p {SQL_PORT} -d {SQL_DATABASE} < {tmpdir}/{file}"
+        command = f"{pg_load_path} -c -U {SQL_USER} -h {SQL_HOST} -p {SQL_PORT} -d {SQL_DATABASE} < {tmpdir}/{file}"  # noqa: E501
 
         os.environ["PGPASSWORD"] = SQL_PASSWORD
         subprocess.run(command, shell=True, check=True)
