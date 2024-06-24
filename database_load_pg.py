@@ -1,4 +1,3 @@
-import datetime
 import logging
 import os
 import subprocess
@@ -18,7 +17,7 @@ table_prefixes = ["home", "help"]
 
 pg_load_path = "pg_restore"
 
-bucket_name = 'hc-test-bucket-can-be-deleted'
+bucket_name = "hc-test-bucket-can-be-deleted"
 
 
 def get_tables():
@@ -58,7 +57,7 @@ def match_file(path: str, s3_contents: list, folder: str, s3_folder: str):
         return None
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     logging.getLogger("database_dump").setLevel(logging.DEBUG)
 
@@ -72,7 +71,7 @@ if __name__ == '__main__':
     else:
         s3 = boto3.client("s3")
 
-    file = 'dev-wagtail_dump-20240621_155130.sql'
+    file = "dev-wagtail_dump-20240621_155130.sql"
 
     s3_object = s3.get_object(Bucket=bucket_name, Key=file)
 

@@ -18,7 +18,7 @@ table_prefixes = ["home", "help", "wagtailimages"]
 
 pg_dump_path = "pg_dump"
 
-bucket_name = 'hc-test-bucket-can-be-deleted'
+bucket_name = "hc-test-bucket-can-be-deleted"
 
 
 def get_tables():
@@ -47,16 +47,14 @@ def get_tables():
     return " ".join(f"-t {table}" for table in table_names)
 
 
-def update_file(
-    path: str, s3_bucket_name: str, s3: boto3.resource
-) -> None:
+def update_file(path: str, s3_bucket_name: str, s3: boto3.resource) -> None:
     """Updates file in S3 from local directory"""
     logging.info(f"Updating {path} into {s3_bucket_name}")
 
     s3.Bucket(s3_bucket_name).upload_file(f"{path}", f"{path}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     logging.getLogger("database_dump").setLevel(logging.DEBUG)
 
