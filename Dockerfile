@@ -27,8 +27,6 @@ WORKDIR /app
 COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
 COPY package*.json .
-COPY database_dump_pg.py .
-COPY database_load_pg.py .
 RUN npm install
 
 ENV PATH /app/node_modules/.bin:$PATH
@@ -44,6 +42,8 @@ RUN npm run build
 WORKDIR /app/eodhp_web_presence
 
 COPY entrypoint.sh /usr/src/app/entrypoint.sh
+COPY database_dump_pg.py /usr/src/app/database_dump_pg.py
+COPY database_load_pg.py /usr/src/app/database_load_pg.py
 RUN chmod +x /usr/src/app/entrypoint.sh
 
 EXPOSE 8000
