@@ -13,6 +13,7 @@ RUN apt-get install --yes --quiet --no-install-recommends \
     zlib1g-dev \
     libwebp-dev \
     curl \
+    postgresql-client \
  && rm -rf /var/lib/apt/lists/*
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
     apt-get install -y nodejs
