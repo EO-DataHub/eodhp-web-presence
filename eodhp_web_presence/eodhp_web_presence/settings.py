@@ -202,11 +202,11 @@ STATIC_URL = "/static/"
 
 if os.getenv("USE_S3") == "TRUE":
     # Set the required AWS credentials
-    AWS_STORAGE_BUCKET_NAME = "eodhp-static-web-artefacts"
-    AWS_S3_REGION_NAME = "eu-west-2"
+    AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME", default="eodhp-static-web-artefacts")
+    AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME", default="eu-west-2")
 
     # Set the media files locations relative to the S3 bucket
-    MEDIAFILES_LOCATION = "static-apps/web-presence-media/media"
+    MEDIAFILES_LOCATION = env("MEDIAFILES_LOCATION", default="static-apps/web-presence-media/media")
 
     # Configure media files storage
     class MediaStorage(S3Boto3Storage):
