@@ -2,7 +2,7 @@ FROM python:3.11-slim-bullseye
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV TZ=Europe/London
+ENV TZ=Etc/UTC
 ENV DEBIAN_FRONTEND=noninteractive
  
 RUN apt-get update --yes --quiet
