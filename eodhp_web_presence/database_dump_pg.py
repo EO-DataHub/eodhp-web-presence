@@ -70,8 +70,11 @@ if __name__ == "__main__":
 
         command = f'{pg_dump_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} {tables_str} -F c -f {output_file}'  # noqa: E501
 
+        logging.info(f"Running: {command}")
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
         subprocess.run(command, shell=True, check=True)
         del os.environ["PGPASSWORD"]
 
+        logging.info(f"Updating {output_file} into {bucket_name}")
         update_file(output_file, bucket_name, s3)
+        logging.info("Complete")
