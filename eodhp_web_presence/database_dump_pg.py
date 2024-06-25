@@ -7,12 +7,6 @@ import tempfile
 import boto3
 import psycopg2
 
-SQL_ENGINE = "django.db.backends.postgresql_psycopg2"
-SQL_DATABASE = "wagtail_pgdb"
-SQL_USER = "postgres"
-SQL_PASSWORD = "password"
-SQL_HOST = "localhost"
-SQL_PORT = "5432"
 
 table_prefixes = ["home", "help", "wagtailimages"]
 
@@ -75,7 +69,7 @@ if __name__ == "__main__":
     with tempfile.NamedTemporaryFile() as tf:
         tf.name = output_file
 
-        command = f"{pg_dump_path} -U {SQL_USER} -h {SQL_HOST} -p {SQL_PORT} -d {SQL_DATABASE} {tables_str} -F c -f {output_file}"  # noqa: E501
+        command = f'{pg_dump_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} {tables_str} -F c -f {output_file}'  # noqa: E501
 
         os.environ["PGPASSWORD"] = SQL_PASSWORD
         subprocess.run(command, shell=True, check=True)

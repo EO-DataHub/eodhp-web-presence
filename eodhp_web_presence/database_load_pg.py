@@ -6,12 +6,6 @@ import tempfile
 import boto3
 import psycopg2
 
-SQL_ENGINE = "django.db.backends.postgresql_psycopg2"
-SQL_DATABASE = "wagtail_pgdb"
-SQL_USER = "postgres"
-SQL_PASSWORD = "password"
-SQL_HOST = "localhost"
-SQL_PORT = "5432"
 
 table_prefixes = ["home", "help"]
 
@@ -78,7 +72,7 @@ if __name__ == "__main__":
     with tempfile.TemporaryDirectory() as tmpdir:
         s3.download_file(bucket_name, file, f"{tmpdir}/{file}")
 
-        command = f"{pg_load_path} -c -U {SQL_USER} -h {SQL_HOST} -p {SQL_PORT} -d {SQL_DATABASE} < {tmpdir}/{file}"  # noqa: E501
+        command = f'{pg_load_path} -c -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} < {tmpdir}/{file}'  # noqa: E501
 
         os.environ["PGPASSWORD"] = SQL_PASSWORD
         subprocess.run(command, shell=True, check=True)
