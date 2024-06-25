@@ -11,7 +11,7 @@ table_prefixes = ["home", "help", "wagtailimages"]
 
 pg_dump_path = "pg_dump"
 
-bucket_name = "hc-test-bucket-can-be-deleted"
+bucket_name = "web-database-exports"
 
 
 def get_tables():

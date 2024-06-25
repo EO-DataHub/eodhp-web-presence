@@ -10,7 +10,7 @@ table_prefixes = ["home", "help", "wagtailimages"]
 
 pg_load_path = "pg_restore"
 
-bucket_name = "hc-test-bucket-can-be-deleted"
+bucket_name = "web-database-exports"
 
 
 def get_tables():
