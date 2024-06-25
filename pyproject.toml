@@ -128,7 +128,6 @@ target-version = ['py311']
 [tool.ruff]
 line-length = 110
 target-version = "py311"
-select = ["E", "F", "B", "W"]
 
 exclude = [
     ".bzr",
@@ -153,6 +152,9 @@ exclude = [
     "node_modules",
     "venv",
 ]
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "W"]
 
 [tool.pylint.'MESSAGES CONTROL']
 disable = '''

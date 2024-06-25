@@ -20,7 +20,7 @@ pylint:
 	./venv/bin/pylint CHANGEME-package-names
 
 ruff:
-	./venv/bin/ruff .
+	./venv/bin/ruff check .
 
 black:
 	./venv/bin/black .
