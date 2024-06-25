@@ -66,13 +66,14 @@ classifiers = [
 dependencies = [
     "Django>=4.2,<5.1",
     "wagtail>=5.2,<5.3",
-    "psycopg2-binary==2.9.9",
+    "psycopg2-binary",
     "django-environ",
     "whitenoise",
     "django-sass",
     "wagtail-cache",
     "django-webpack-loader",
-    "gevent"
+    "gevent",
+    "gunicorn>=22.0.0",
 ]
 
 # List additional groups of dependencies here (e.g. development
