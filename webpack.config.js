@@ -8,11 +8,15 @@ const webpack = require('webpack');
 module.exports = {
     context: __dirname,
     mode: process.env.NODE_ENV,
-    entry: './eodhp_web_presence/eodhp_web_presence/static/entrypoint.js',
+    entry: {
+        // This is included on every page.
+        'main': './eodhp_web_presence/eodhp_web_presence/js-src/entrypoint.js',
+
+    },
     output: {
         filename: "[name]-[contenthash].js",
         path: path.resolve(__dirname, "assets/webpack_bundles/"),
-        publicPath: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/static/' : '/static/'
+        publicPath: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/static/' : '/static/webpack_bundles/'
     },
     devServer: {
         compress: true,
