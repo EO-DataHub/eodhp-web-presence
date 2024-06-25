@@ -7,7 +7,6 @@ import tempfile
 import boto3
 import psycopg2
 
-
 table_prefixes = ["home", "help", "wagtailimages"]
 
 pg_dump_path = "pg_dump"

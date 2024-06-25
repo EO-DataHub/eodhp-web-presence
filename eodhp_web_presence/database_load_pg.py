@@ -6,8 +6,7 @@ import tempfile
 import boto3
 import psycopg2
 
-
-table_prefixes = ["home", "help"]
+table_prefixes = ["home", "help", "wagtailimages"]
 
 pg_load_path = "pg_restore"
 
