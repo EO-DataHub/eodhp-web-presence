@@ -10,9 +10,9 @@ asgiref==3.8.1
     # via django
 beautifulsoup4==4.11.2
     # via wagtail
-boto3==1.34.126
+boto3==1.34.132
     # via eodhp-website (pyproject.toml)
-botocore==1.34.126
+botocore==1.34.132
     # via
     #   boto3
     #   s3transfer
@@ -28,6 +28,7 @@ django==5.0.4
     #   django-modelcluster
     #   django-permissionedforms
     #   django-sass
+    #   django-storages
     #   django-taggit
     #   django-treebeard
     #   djangorestframework
@@ -42,6 +43,8 @@ django-modelcluster==6.3
 django-permissionedforms==0.1
     # via wagtail
 django-sass==1.1.0
+    # via eodhp-website (pyproject.toml)
+django-storages==1.14.3
     # via eodhp-website (pyproject.toml)
 django-taggit==4.0.0
     # via wagtail
@@ -91,7 +94,7 @@ pytz==2024.1
     #   l18n
 requests==2.31.0
     # via wagtail
-s3transfer==0.10.1
+s3transfer==0.10.2
     # via boto3
 six==1.16.0
     # via
