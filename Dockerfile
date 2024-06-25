@@ -4,6 +4,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV TZ=Etc/UTC
 ENV DEBIAN_FRONTEND=noninteractive
+ENV SETUPTOOLS_USE_DISTUTILS=stdlib
  
 RUN apt-get update --yes --quiet
 RUN apt-get install --yes --quiet --no-install-recommends \
