@@ -200,7 +200,7 @@ STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesSto
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
 
-if os.getenv("USE_S3") == "TRUE":
+if str(os.getenv("USE_S3", default="False")).lower() == "true":
     # Set the required AWS credentials
     AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME", default="eodhp-static-web-artefacts")
     AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME", default="eu-west-2")
