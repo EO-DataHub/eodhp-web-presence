@@ -10,6 +10,12 @@ asgiref==3.8.1
     # via django
 beautifulsoup4==4.11.2
     # via wagtail
+boto3==1.34.132
+    # via eodhp-website (pyproject.toml)
+botocore==1.34.132
+    # via
+    #   boto3
+    #   s3transfer
 certifi==2024.2.2
     # via requests
 charset-normalizer==3.3.2
@@ -59,6 +65,10 @@ html5lib==1.1
     # via wagtail
 idna==3.7
     # via requests
+jmespath==1.0.1
+    # via
+    #   boto3
+    #   botocore
 l18n==2021.3
     # via wagtail
 libsass==0.23.0
@@ -73,16 +83,21 @@ pillow-heif==0.16.0
     # via willow
 psycopg2-binary==2.9.9
     # via eodhp-website (pyproject.toml)
+python-dateutil==2.9.0.post0
+    # via botocore
 pytz==2024.1
     # via
     #   django-modelcluster
     #   l18n
 requests==2.31.0
     # via wagtail
+s3transfer==0.10.2
+    # via boto3
 six==1.16.0
     # via
     #   html5lib
     #   l18n
+    #   python-dateutil
 soupsieve==2.5
     # via beautifulsoup4
 sqlparse==0.5.0
@@ -90,7 +105,9 @@ sqlparse==0.5.0
 telepath==0.3.1
     # via wagtail
 urllib3==2.2.1
-    # via requests
+    # via
+    #   botocore
+    #   requests
 wagtail==5.2.4
     # via
     #   eodhp-website (pyproject.toml)
@@ -109,3 +126,6 @@ zope-event==5.0
     # via gevent
 zope-interface==6.4.post2
     # via gevent
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
