@@ -26,3 +26,6 @@ black:
 	./venv/bin/black .
 
 lint: ruff black
+
+run:
+	DEBUG=True PAGE_CACHE_LENGTH=0 STATIC_FILE_CACHE_LENGTH=0 ./venv/bin/python ./eodhp_web_presence/manage.py runserver
