@@ -12,6 +12,10 @@ module.exports = {
         // This is included on every page.
         'main': './eodhp_web_presence/eodhp_web_presence/js-src/entrypoint.js',
 
+        'fake-catalogue': {
+            import: ['./eodhp_web_presence/eodhp_web_presence/js-src/fake-catalogue/index.js'],
+            dependOn: ['main'],
+        },
     },
     output: {
         filename: "[name]-[contenthash].js",
