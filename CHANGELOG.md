@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.11 (25-06-2024)
+
+- Add scripts for database importing/exporting
+
+
 ## v0.1.10 (21-05-2024)
 
 - Add caching

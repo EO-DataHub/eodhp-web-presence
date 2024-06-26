@@ -12,6 +12,12 @@ beautifulsoup4==4.11.2
     # via wagtail
 black==24.4.2
     # via eodhp-website (pyproject.toml)
+boto3==1.34.132
+    # via eodhp-website (pyproject.toml)
+botocore==1.34.132
+    # via
+    #   boto3
+    #   s3transfer
 build==1.2.1
     # via pip-tools
 certifi==2024.2.2
@@ -29,6 +35,7 @@ django==5.0.4
     #   django-filter
     #   django-modelcluster
     #   django-permissionedforms
+    #   django-sass
     #   django-taggit
     #   django-treebeard
     #   djangorestframework
@@ -42,10 +49,14 @@ django-modelcluster==6.3
     # via wagtail
 django-permissionedforms==0.1
     # via wagtail
+django-sass==1.1.0
+    # via eodhp-website (pyproject.toml)
 django-taggit==4.0.0
     # via wagtail
 django-treebeard==4.7.1
     # via wagtail
+django-webpack-loader==3.1.0
+    # via eodhp-website (pyproject.toml)
 djangorestframework==3.15.1
     # via wagtail
 draftjs-exporter==2.1.7
@@ -56,14 +67,24 @@ execnet==2.1.1
     # via pytest-xdist
 filetype==1.2.0
     # via willow
+gevent==24.2.1
+    # via eodhp-website (pyproject.toml)
+greenlet==3.0.3
+    # via gevent
 html5lib==1.1
     # via wagtail
 idna==3.7
     # via requests
 iniconfig==2.0.0
     # via pytest
+jmespath==1.0.1
+    # via
+    #   boto3
+    #   botocore
 l18n==2021.3
     # via wagtail
+libsass==0.23.0
+    # via django-sass
 mypy-extensions==1.0.0
     # via black
 openpyxl==3.1.2
@@ -107,6 +128,8 @@ pytest-watcher==0.4.2
     # via eodhp-website (pyproject.toml)
 pytest-xdist==3.5.0
     # via eodhp-website (pyproject.toml)
+python-dateutil==2.9.0.post0
+    # via botocore
 pytz==2024.1
     # via
     #   django-modelcluster
@@ -115,10 +138,13 @@ requests==2.31.0
     # via wagtail
 ruff==0.4.2
     # via eodhp-website (pyproject.toml)
+s3transfer==0.10.2
+    # via boto3
 six==1.16.0
     # via
     #   html5lib
     #   l18n
+    #   python-dateutil
 soupsieve==2.5
     # via beautifulsoup4
 sqlparse==0.5.0
@@ -126,8 +152,14 @@ sqlparse==0.5.0
 telepath==0.3.1
     # via wagtail
 urllib3==2.2.1
-    # via requests
+    # via
+    #   botocore
+    #   requests
 wagtail==5.2.4
+    # via
+    #   eodhp-website (pyproject.toml)
+    #   wagtail-cache
+wagtail-cache==2.4.0
     # via eodhp-website (pyproject.toml)
 watchdog==4.0.0
     # via pytest-watcher
@@ -141,6 +173,10 @@ willow[heif]==1.6.3
     # via
     #   wagtail
     #   willow
+zope-event==5.0
+    # via gevent
+zope-interface==6.4.post2
+    # via gevent
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
