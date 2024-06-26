@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.1.11 (26-06-2024)
+- Serve the wagtail media files using S3
+
 ## v0.1.10 (21-05-2024)
 
 - Add caching
