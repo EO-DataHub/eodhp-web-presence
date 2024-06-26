@@ -11,33 +11,41 @@ pip3 install -r requirements.txt
 pip3 install -r requirements-dev.txt
 ```
 
-3. Set up .env
+3. Set up environment
 
-Copy `example.env` to `.env` and check its contents are suitable for your environment. If you wish to use
+Copy `example.env` to `.env` and check its contents are suitable for your environment. If you wish
+to use PostgreSQL (to match the production environment) then install it now, create a user and use
+something like this in place of the existing settings:
 
-3. Run migrations
+```commandline
+SQL_ENGINE="django.db.backends.postgresql"
+SQL_DATABASE="web"
+SQL_USER="<username>"
+SQL_PASSWORD="..."
+```
 
-This will use a SQLite database. If you want to use a Post
+You will then need
+
+```commandline
+set -a
+. .env
+```
+
+to be able to run `manage.py` from your shell (not necessary for `make run`).
+
+4. Run migrations
 
 ```commandline
 python manage.py makemigrations 
 python manage.py migrate 
 ```
 
-4. Set up a superuser
+5. Set up a superuser
 
 ```commandline
 python manage.py createsuperuser
 ```
 Follow the on-screen instructions
-
-5. Set up environment
-
-Environment variables can be defined in a `.env` file and imported. `example.env` can be found in the top level.
-```commandline
-set -a
-. .env
-```
 
 ## Docker Compose Setup
 ### Production
