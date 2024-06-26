@@ -2,7 +2,7 @@ FROM python:3.11-slim-bullseye
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV TZ=Europe/London
+ENV TZ=Etc/UTC
 ENV DEBIAN_FRONTEND=noninteractive
  
 RUN apt-get update --yes --quiet
@@ -13,9 +13,17 @@ RUN apt-get install --yes --quiet --no-install-recommends \
     zlib1g-dev \
     libwebp-dev \
     curl \
+    postgresql-client \
+    lsb-release \
  && rm -rf /var/lib/apt/lists/*
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
     apt-get install -y nodejs
+RUN install -d /usr/share/postgresql-common/pgdg
+RUN curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+RUN sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+
+RUN apt update
+RUN apt -y install postgresql
 
 RUN node -v
 RUN npm -v
