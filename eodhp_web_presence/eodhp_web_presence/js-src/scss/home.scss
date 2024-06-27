@@ -1,0 +1,108 @@
+$white: #FFFFFF;
+$black: #000000;
+$blue: #4C72BA;
+$grey: #EFEFEF;
+
+body {
+	background-color: $black;
+}
+.homePageBorder {
+	margin: auto;
+	width: 95%;
+	padding: 10px;
+	padding-top: 50px;
+}
+.homePageBanner {
+	background-color: $blue;
+	color: $white;
+	font-size: 56px;
+	font-weight: bold;
+	padding-left: 20px;
+	width: 100%;
+	height: 200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.homePageTitle {
+	background-color: $blue;
+	color: $white;
+	font-size: 56px;
+	font-weight: bold;
+	padding-left: 20px;
+	width: 100%;
+}
+.homePageContent {
+	background-color: $white;
+	margin: auto;
+	display: flex;
+	justify-content: center;
+}
+.homePageText50 {
+	padding: 10px;
+	max-width: 50%;
+}
+.homePageText100 {
+	padding: 10px;
+	max-width: 100%;
+}
+.homePageImage50 {
+	padding: 10px;
+	max-width: 50%;
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+}
+.homePageImage100 {
+	padding: 10px;
+	max-width: 100%;
+}
+.homePageImage100 {
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+}
+.homePageAnnouncement {
+	background-color: $grey;
+	margin: 10px;
+	justify-content: center;
+	padding: 10px;
+	max-height: 250px;
+	a {
+		text-decoration: none;
+		color: black;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+.homePageAnnouncementTitle {
+	font-weight: bold;
+	text-decoration: underline;
+}
+@media (max-width: 600px) {
+	.homePageBorder {
+		margin: auto;
+		width: 100%;
+		padding: 0px;
+		padding-top: 50px;
+	}
+	.homePageTitle {
+		padding-left: 0px;
+		text-align: center;
+	}
+	.homePageContent {
+		flex-direction: column;
+	}
+	.homePageText50 {
+		order: 1;
+	}
+	.homePageImage {
+		max-width: 100%;
+	}
+	.homePageText50 {
+		max-width: 100%;
+	}
+}

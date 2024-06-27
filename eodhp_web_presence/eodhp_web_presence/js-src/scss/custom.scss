@@ -1,0 +1,18 @@
+$light-blue:    #BCCEEB;
+$blue:          #4C72BA;
+$dark-blue:     #2A3559;
+$white:         #FFFFFF;
+$light-grey:    #F6F6F6;
+$grey:          #EFEFEF;
+$black:         #000000;
+
+$theme-colors: (
+  "light": $light-blue,
+  "primary": $dark-blue,
+);
+
+html * {
+    font-family: "Fira Sans";
+}
+
+@import "bootstrap/scss/bootstrap";

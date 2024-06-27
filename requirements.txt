@@ -64,6 +64,8 @@ gevent==24.2.1
     # via eodhp-website (pyproject.toml)
 greenlet==3.0.3
     # via gevent
+gunicorn==22.0.0
+    # via eodhp-website (pyproject.toml)
 html5lib==1.1
     # via wagtail
 idna==3.7
@@ -78,6 +80,8 @@ libsass==0.23.0
     # via django-sass
 openpyxl==3.1.2
     # via wagtail
+packaging==24.1
+    # via gunicorn
 pillow==10.3.0
     # via
     #   pillow-heif
@@ -122,9 +126,7 @@ webencodings==0.5.1
 whitenoise==6.6.0
     # via eodhp-website (pyproject.toml)
 willow[heif]==1.6.3
-    # via
-    #   wagtail
-    #   willow
+    # via wagtail
 zope-event==5.0
     # via gevent
 zope-interface==6.4.post2

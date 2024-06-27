@@ -1,0 +1,34 @@
+$black: #000000;
+$light-blue: #BCCEEB;
+$blue: #4C72BA;
+
+.homeMenu {
+	background-color: $light-blue;
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	padding: 10px;
+}
+.homeMenuItem {
+	display: flex;
+	padding-left: 50px;
+	padding-right: 50px;
+	a {
+		color: $black;
+		text-decoration: none;
+	}
+	&:hover {
+		background-color: $blue;
+	}
+}
+@media (max-width: 600px) {
+	.homeMenu {
+		display: table;
+	}
+	.homeMenuItem {
+		width: 90vw;
+		margin-left: auto;
+		margin-right: auto;
+		justify-content: center;
+	}
+}
