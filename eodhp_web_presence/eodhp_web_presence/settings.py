@@ -15,6 +15,7 @@ import logging
 import os
 
 import environ
+from storages.backends.s3boto3 import S3Boto3Storage
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "storages",
     "wagtail.contrib.routable_page",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -200,8 +202,24 @@ STORAGES = {
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
+if env("USE_S3", default=False, cast=bool):
+    # Set the required AWS credentials
+    AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME", default="eodhp-static-web-artefacts")
+    AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME", default="eu-west-2")
+
+    # Set the media files locations relative to the S3 bucket
+    MEDIAFILES_LOCATION = env("MEDIAFILES_LOCATION", default="static-apps/web-presence-media/media")
+
+    # Configure media files storage
+    class MediaStorage(S3Boto3Storage):
+        location = MEDIAFILES_LOCATION
+        file_overwrite = False
+
+    DEFAULT_FILE_STORAGE = "eodhp_web_presence.settings.MediaStorage"
+    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{MEDIAFILES_LOCATION}/"
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+    MEDIA_URL = "/media/"
 
 
 # Wagtail settings

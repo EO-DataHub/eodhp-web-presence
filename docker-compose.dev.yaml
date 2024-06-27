@@ -15,6 +15,7 @@ services:
       - .env
     environment:
       - DJANGO_ENV=development
+      - USE_S3=False
     depends_on:
       - webpack
   webpack:

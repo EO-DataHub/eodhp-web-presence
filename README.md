@@ -94,3 +94,15 @@ docker run --rm -p 8000:8000 --env-file .env eodhp-web-presence
 ```
 
 Access website at [http://127.0.0.1:8000/](http://127.0.0.1:8000/). The admin panel can be accessed at [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+
+
+
+## Database importing and exporting
+
+To export the contents of the current database, run `database_dump.py`. The user-added contents of the database are 
+exported to the `web-database-exports` S3 bucket.
+
+To overwrite the user-added tables, run `database_load.py <my_file_name.sql>` where `my_file_name.sql` can be found in 
+the S3 bucket.
+
+Both database scripts can be found in the same folder as `manage.py`

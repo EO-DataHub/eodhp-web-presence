@@ -14,7 +14,7 @@
 
 [project]
 name = "eodhp-website"
-version = "0.1.10"
+version = "0.1.11"
 description = "Wagtail-based website for EODHP"
 readme = "README.md"
 
@@ -74,6 +74,8 @@ dependencies = [
     "django-webpack-loader",
     "gevent",
     "gunicorn>=22.0.0",
+    "boto3",
+    "django-storages"
 ]
 
 # List additional groups of dependencies here (e.g. development
