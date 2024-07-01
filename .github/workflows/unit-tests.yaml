@@ -29,7 +29,7 @@ jobs:
 
       - name: Build
         run: |
-          npm build
+          npm run build
           python ./eodhp_web_presence/manage.py collectstatic
 
       - name: Run tests
