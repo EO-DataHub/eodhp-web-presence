@@ -1,6 +1,109 @@
-$grey:          #EFEFEF;
+$white:         #FFFFFF;
+$light-grey:    #F6F6F6;
+$light-blue:    #BCCEEB;
+$blue:          #4C72BA;
+$dark-blue:     #2A3559;
+$black:         #000000;
 
 .logo {
-    background-color: $grey;
-    width: 200px;
+    width: 300px;
+}
+#navbar-menu
+{
+  margin: -10px;
+  height: 130px;
+}
+.navbar-brand
+{
+  margin: 10px;
+}
+.navBarContainerBlank {
+    height: 130px;
+}
+.navbar-nav > ul li a
+{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+        max-height: 60px;
+}
+.block {
+    margin-right: auto;
+    display: flex;
+    font-size: 24px;
+    display: flex;
+    padding-top: 10px;
+    line-height: 2.2;
+    white-space: nowrap;
+    z-index: 99999;
+    border-left: 20px solid $light-grey;
+    border-right: 20px solid $light-grey;
+}
+.nav-link:hover {
+    background-color: $blue !important;
+    color: white !important;
+}
+.solid {
+
+    border-left: 20px solid $dark-blue;
+    border-right: 20px solid $dark-blue;
+}
+.solid .nav-link {
+    background-color: $dark-blue;
+    color: $white !important;
+}
+.block:after {
+    background: red;
+  display: block;
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  right: -50px;
+  bottom: -50px;
+  z-index: -2;
+}
+
+@media (max-width: 1200px) { //bootstrap 3 collapses navbar at 768px
+    .block {
+        width: 90vw;
+        z-index: 9999;
+        text-align: center;
+        border-left: none;
+        border-right: none;
+    }
+    .block:hover {
+        background: $light-blue;
+    }
+    .nav-link:hover {
+        background: $light-blue !important;
+        color: $black !important;
+    }
+    .navbar .navbar-nav {
+        display: inline-block;
+        float: none;
+        vertical-align: top;
+        text-align: center;
+    }
+    .navbar .navbar-collapse {
+        text-align: center;
+        background-color: $blue;
+        padding-bottom: 20px
+    }
+    .navBarContainerBlank {
+        width: 100vw;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .navbar-nav .nav-item {
+        display: inline-block;
+    }
+    .nav-item {
+        text-align: center;
+    }
+    .nav-link {
+        background: none !important;
+        color: white !important;
+    }
 }
