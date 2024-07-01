@@ -82,6 +82,8 @@ idna==3.7
     # via requests
 iniconfig==2.0.0
     # via pytest
+isort==5.13.2
+    # via eodhp-website (pyproject.toml)
 jmespath==1.0.1
     # via
     #   boto3

@@ -8,7 +8,6 @@ from wagtail.images.views.serve import ServeView
 
 from eodhp_web_presence.robots import robots_txt
 
-
 urlpatterns = [
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
