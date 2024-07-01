@@ -1,6 +1,15 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
 #map-image {
     max-width: 2653px;
-    height: 1900px;
+    // height: 1900px;
+    height: 100%;
 
     // This is here so that the map becomes the containing block to #search-area.
     position: relative;
@@ -49,4 +58,35 @@
 
 .filter-box-section-heading {
     padding-bottom: 0.2rem;
+}
+
+#point-search-results-box {
+    position: absolute;
+    max-height: 80%;
+    top: 10%;
+    width: 220px;
+    display: none;
+    background-color: black;
+    color: white;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    overflow-y: auto;
+}
+
+.point-search-result-box {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.point-search-result-image {
+    width: 100px;
+    height: 100px;
+}
+
+.point-search-result-text-box {
+    margin-left: 1rem;
+    min-width: 5rem;
 }

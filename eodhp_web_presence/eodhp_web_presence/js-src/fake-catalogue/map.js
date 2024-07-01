@@ -1,4 +1,3 @@
-
 import $ from 'jquery'
 
 function displaySearchResults() {
@@ -32,8 +31,19 @@ function hideSearchForFocusClickElsewhere(event) {
     if (clickOutsideSearch) hideSearchResults()
 }
 
+function showPointItemSearchResults(event) {
+    // console.debug(event)
+    if (event.target.id == 'map-image') {
+        $('#point-search-results-box').show()
+        $('#point-search-results-box').css('left', (event.x + 10) + 'px')
+    } else {
+        if (!$(event.target).parents('#point-search-results-box').length) $('#point-search-results-box').hide()
+    }
+}
+
 $(() => {
     document.getElementById('search-area').addEventListener("focusin", showHideSearchForFocusChange)
     document.body.addEventListener("click", hideSearchForFocusClickElsewhere)
+    document.getElementById("map-image").addEventListener("click", showPointItemSearchResults)
     document.getElementById('search-form').addEventListener("submit", displaySearchResults)
 })
