@@ -11,11 +11,6 @@ from wagtail.models import Page
 from eodhp_web_presence.robots import robots_txt
 
 
-def root_redirect(request):
-    root_page = Page.objects.get(slug="index")
-    return HttpResponseRedirect(root_page.url)
-
-
 urlpatterns = [
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
@@ -26,7 +21,6 @@ urlpatterns = [
         name="wagtailimages_serve",
     ),
     path("catalogue/", include("catalogue.urls")),
-    path("", root_redirect),
     path("robots.txt", robots_txt),
     path("", include(wagtail_urls)),  # This entry should always be at the end of urlpatterns
 ]
