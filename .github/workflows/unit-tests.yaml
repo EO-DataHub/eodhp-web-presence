@@ -27,5 +27,8 @@ jobs:
           pip install -r requirements-dev.txt
           pip install -r requirements.txt
 
+      - name: Collect static files
+        run: python ./eodhp_web_presence/manage.py collectstatic
+
       - name: Run tests
         run: pytest ./eodhp_web_presence -vv
