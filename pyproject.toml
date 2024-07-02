@@ -96,6 +96,7 @@ dev = [
     "black",
     "ruff",
     "pytest-django",
+    "isort",
 ]
 
 # List URLs that are relevant to your project
