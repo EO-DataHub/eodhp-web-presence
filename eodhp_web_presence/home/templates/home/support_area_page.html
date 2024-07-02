@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+
+{% include "home_menu.html" %}
+
+<div class="homePageBannerContainer">
+    {% image page.banner_image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}"
+                                                       class="homePageBannerImage">
+
+    <div class="homePageBannerText">
+        {{ page.title|richtext }}
+    </div>
+</div>
+
+<div class="homePageBorder">
+    <div class="homePageContent">
+        <div class="homePageText50">
+        <h1>Help and Support Topics</h1>
+        <p>
+        SEARCH BOX GOES HERE
+        <div class="list-group">
+            {% for topic in support_topics %}
+                <a href="{{ area.slug }}" class="list-group-item">{{ topic.title }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="homePageText50">
+        <h1>FAQs</h1>
+
+        {% for faq in support_faqs %}
+        <div class="accordion accordion-flush" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#{{ faq.slug }}" aria-expanded="false">
+                        {{ faq.title }}
+                    </button>
+                </h2>
+                <div id="{{ faq.slug }}" class="accordion-collapse collapse"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        {{ faq.summary }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+</div>
+
+{% endblock content %}

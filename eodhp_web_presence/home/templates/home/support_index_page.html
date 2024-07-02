@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+
+{% include "home_menu.html" %}
+
+<div class="homePageBannerContainer">
+    {% image page.banner_image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}"
+                                                       class="homePageBannerImage">
+
+    <div class="homePageBannerText">
+        {{ page.title|richtext }}
+    </div>
+</div>
+
+<div class="homePageBorder">
+    <div class="homePageContent">
+        SEARCH BOX GOES HERE
+        <p>
+
+        <div class="homePageText100">
+            {% for area in support_areas %}
+            <div class="homePageItem">
+                <a href="{{ area.slug }}">
+                    {% if area.image %}
+                    <div class="homePageImage100">{% image area.image max-320x150 as img %}<img src="{{ img.url }}"
+                                                                                                alt="{{ img.alt }}"
+                                                                                                class="homePageImage">
+                    </div>
+                    {% endif %}
+                    <div class="homePageItemTitleBig"><h3>{{ area.title }}</h3></div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

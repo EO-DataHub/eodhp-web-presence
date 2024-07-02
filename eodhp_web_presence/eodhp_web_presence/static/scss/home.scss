@@ -94,11 +94,11 @@ body {
 }
 .homePageText50 {
 	padding: 10px;
-	max-width: 50%;
+	width: 50%;
 }
 .homePageText100 {
 	padding: 10px;
-	max-width: 100%;
+	width: 100%;
 }
 .homePageImage50 {
     max-width: 50%;
@@ -133,6 +133,10 @@ body {
 		}
 	}
 }
+.homePageItemTitleBig {
+// 	font-weight: bold;
+	text-align: center;
+}
 .homePageItemTitle {
 	font-weight: bold;
 	text-decoration: underline;
@@ -158,7 +162,7 @@ body {
 		max-width: 100%;
 	}
 	.homePageText50 {
-		max-width: 100%;
+		width: 100%;
 	}
 	.homePageImage50 {
 		max-width: 100%;
