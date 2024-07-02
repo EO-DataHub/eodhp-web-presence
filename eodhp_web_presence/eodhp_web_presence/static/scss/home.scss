@@ -86,11 +86,11 @@ body {
 
 }
 .homePageContent {
-	background-color: $white;
 	margin: auto;
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
+	flex-wrap: wrap;
 }
 .homePageText50 {
 	padding: 10px;
@@ -108,6 +108,7 @@ body {
 .homePageImage100 {
 	padding: 10px;
 	max-width: 100%;
+	text-align: center;
 }
 .homePageImage100 {
 	img {
@@ -115,12 +116,15 @@ body {
 		height: auto;
 	}
 }
-.homePageAnnouncement {
+.homePageItem {
 	background-color: $grey;
 	margin: 10px;
 	justify-content: center;
 	padding: 10px;
+	width: 400px;
 	max-height: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 	a {
 		text-decoration: none;
 		color: black;
@@ -129,7 +133,7 @@ body {
 		}
 	}
 }
-.homePageAnnouncementTitle {
+.homePageItemTitle {
 	font-weight: bold;
 	text-decoration: underline;
 }

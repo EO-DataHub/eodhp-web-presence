@@ -17,13 +17,13 @@
 <div class="homePageBorder">
     <div class="homePageContent">
         {% for article in news_articles %}
-            <div class="homePageAnnouncement">
+            <div class="homePageItem">
                 <a href="{{ article.slug }}">
                     {% if article.image %}
                         <div class="homePageImage100">{% image article.image max-320x150 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}" class="homePageImage"></div>
                     {% endif %}
-                    <div class="homePageAnnouncementTitle">{{ article.title }}</div>
-                    <div class="homePageAnnouncementSummary">{{ article.summary|truncatechars:255 }}</div>
+                    <div class="homePageItemTitle">{{ article.title }}</div>
+                    <div class="homePageItemSummary">{{ article.summary|truncatechars:255 }}</div>
                 </a>
             </div>
         {% endfor %}
