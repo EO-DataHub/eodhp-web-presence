@@ -282,17 +282,6 @@ class SupportAreaPage(WagtailCacheMixin, Page):
 
     template = "home/support_area_page.html"
 
-    # Returns a queryset of HelpTopicPage objects that are live, that are direct
-    # descendants of this index page with most recent first
-    def get_support_topics(self):
-        return (
-            SupportTopicPage.objects.live()  # .descendant_of(self).order_by("-first_published_at")
-        )
-    def get_support_faqs(self):
-        return (
-            SupportFAQPage.objects.live()  # .descendant_of(self).order_by("-first_published_at")
-        )
-
     def get_banner_image(self):
         if self.banner_image:
             return self.banner_image
@@ -323,10 +312,8 @@ class SupportAreaPage(WagtailCacheMixin, Page):
     def get_context(self, request):
         context = super(SupportAreaPage, self).get_context(request)
 
-        # SupportTopicPage objects (get_help_areas) are passed through pagination
-        # support_topics = self.paginate(request, self.get_support_areas())
-        support_topics = self.get_support_topics()
-        support_faqs = self.get_support_faqs()
+        support_topics = SupportTopicPage.objects.live()
+        support_faqs = SupportFAQPage.objects.live()
 
         context["support_topics"] = support_topics
         context["support_faqs"] = support_faqs

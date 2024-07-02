@@ -16,6 +16,21 @@
 
 <div class="homePageBorder">
     <div class="homePageContent">
+
+        <div class="breadcrumb-content">
+            {% if self.get_ancestors|length > 1 %}
+                <ul class="breadcrumb">
+                    {% for p in self.get_ancestors %}
+                        {% if p.is_root == False %}
+                            <li><a href="{{ p.url }}">{{ p.title }}</a></li> &nbsp; &gt; &nbsp;
+                        {% endif %}
+                    {% endfor %}
+
+                    <li class="active">{{ self.title }}</li>
+                </ul>
+            {% endif %}
+        </div>
+
         <div class="homePageText100">{{ page.body|richtext }}</div>
     </div>
 </div>
