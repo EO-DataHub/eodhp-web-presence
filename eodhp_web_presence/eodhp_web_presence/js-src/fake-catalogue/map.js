@@ -49,9 +49,14 @@ function showPointItemSearchResults(event) {
     }
 }
 
+function copyURLButtonPress(event) {
+    navigator.clipboard.writeText($(event.target).attr('data-stac-url'))
+}
+
 $(() => {
     document.getElementById('search-area').addEventListener("focusin", showHideSearchForFocusChange)
     document.body.addEventListener("click", hideSearchForFocusClickElsewhere)
     document.getElementById("map-image").addEventListener("click", showPointItemSearchResults)
     document.getElementById('search-form').addEventListener("submit", displaySearchResults)
+    $('.point-search-copy-button').on("click", copyURLButtonPress)
 })
