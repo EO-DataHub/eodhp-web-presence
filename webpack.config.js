@@ -16,6 +16,11 @@ module.exports = {
             import: ['./eodhp_web_presence/eodhp_web_presence/js-src/fake-catalogue/index.js'],
             dependOn: ['main'],
         },
+
+        'fake-projects': {
+            import: ['./eodhp_web_presence/eodhp_web_presence/js-src/fake-projects/index.js'],
+            dependOn: ['main'],
+        },
     },
     output: {
         filename: "[name]-[contenthash].js",
