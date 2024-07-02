@@ -11,6 +11,7 @@ class FakeCataloguePage(WagtailCacheMixin, Page):
 
     template = "fake-catalogue/map-search.html"
 
+
 class FakeProjectsPage(WagtailCacheMixin, Page):
     content_panels = Page.content_panels
 
