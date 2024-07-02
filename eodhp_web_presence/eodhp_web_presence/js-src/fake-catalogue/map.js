@@ -1,12 +1,19 @@
 import $ from 'jquery'
 
 function displaySearchResults() {
+    document.getElementById('search-results-container').style.display = 'block'
+
     const searchTerm = document.getElementById('searchterm').value
     const resultBlockId = searchTerm == '' ? 'all-search-results' : 'search-results'
     const nonResultBlockId = searchTerm != '' ? 'all-search-results' : 'search-results'
-    document.getElementById('search-results-container').style.display = 'block'
     document.getElementById(resultBlockId).style.display = 'block'
     document.getElementById(nonResultBlockId).style.display = 'none'
+
+    const activeFilterBlock = searchTerm == '' ? 'filter-box-all' : 'filter-box-search'
+    const inactiveFilterBlock = searchTerm != '' ? 'filter-box-all' : 'filter-box-search'
+    document.getElementById(activeFilterBlock).style.display = 'inline-block'
+    document.getElementById(inactiveFilterBlock).style.display = 'none'
+
 }
 
 function hideSearchResults() {
@@ -33,7 +40,8 @@ function hideSearchForFocusClickElsewhere(event) {
 
 function showPointItemSearchResults(event) {
     // console.debug(event)
-    if (event.target.id == 'map-image') {
+    const currentlyShown = $('#point-search-results-box').css('display') != 'none'
+    if (event.target.id == 'map-image' && !currentlyShown) {
         $('#point-search-results-box').show()
         $('#point-search-results-box').css('left', (event.x + 10) + 'px')
     } else {

@@ -11,47 +11,122 @@
 
 <div style="background-image: url('{% static 'img/fake-catalogue/UKMap.png' %}');" id="map-image">
 
-    <div id="filter-box">
-        <div style="font-weight: bold" id="filter-box-heading">Filter By</div>
+    <div id="filter-box-all" class="filter-box">
+        <div style="font-weight: bold" id="filter-box-heading" class="filter-box-heading">Filter By</div>
         <div class="filter-box-section">
             <div class="filter-box-section-heading">Product Type</div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
-                Satellite Observation
+                Satellite Observation (6)
             </div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
-                Re-analysis
+                Re-analysis (0)
             </div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
-                Climate projections
+                Climate projections (1)
             </div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
-                In-site observations
+                In-situ observations (0)
             </div>
         </div>
         <div class="filter-box-section">
             <div class="filter-box-section-heading">Sensor Type</div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
-                Optical
+                Optical (5)
             </div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
-                SAR
+                SAR (1)
             </div>
         </div>
         <div class="filter-box-section">
             <div class="filter-box-section-heading">Licence Type</div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
-                Open
+                Open (6)
             </div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
-                Commercial
+                Commercial (1)
+            </div>
+        </div>
+        <div class="filter-box-section">
+            <div class="filter-box-section-heading">QA</div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                Has passing QA checks (5)
+            </div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                Has QA checks (6)
+            </div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                No QA checks (1)
+            </div>
+        </div>
+    </div>
+
+    <div id="filter-box-search" class="filter-box">
+        <div style="font-weight: bold" id="filter-box-heading" class="filter-box-heading">Filter By</div>
+        <div class="filter-box-section">
+            <div class="filter-box-section-heading">Product Type</div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                Satellite Observation (3)
+            </div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                Re-analysis (0)
+            </div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                Climate projections (0)
+            </div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                In-situ observations (0)
+            </div>
+        </div>
+        <div class="filter-box-section">
+            <div class="filter-box-section-heading">Sensor Type</div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                Optical (2)
+            </div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                SAR (1)
+            </div>
+        </div>
+        <div class="filter-box-section">
+            <div class="filter-box-section-heading">Licence Type</div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                Open (3)
+            </div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                Commercial (0)
+            </div>
+        </div>
+        <div class="filter-box-section">
+            <div class="filter-box-section-heading">QA</div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                Has passing QA checks (3)
+            </div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                Has QA checks (3)
+            </div>
+            <div class="filter-box-item">
+                <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
+                No QA checks (0)
             </div>
         </div>
     </div>
@@ -159,6 +234,13 @@
                            border-color: #777777;
                            border-style: solid;
                            padding-top: 5px;">
+                            <td><input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked=""></td>
+                            <td style="padding-right: 1rem;">CMIP6</td>
+                        </tr>
+                        <tr style="border-bottom: 1px;
+                           border-color: #777777;
+                           border-style: solid;
+                           padding-top: 5px;">
                             <td></td>
                             <td style="padding-right: 1rem;">NDVI Workflow</td>
                         </tr>
@@ -177,6 +259,7 @@
             <div class="point-search-result-text-box">
                 <div class="point-search-result-collection">Sentinel 2</div>
                 <div class="point-search-result-date">2023-11-20</div>
+                <button class="point-search-copy-button">Copy URL</button>
             </div>
         </div>
 
@@ -186,6 +269,7 @@
             <div class="point-search-result-text-box">
                 <div class="point-search-result-collection">Sentinel 2</div>
                 <div class="point-search-result-date">2023-11-25</div>
+                <button class="point-search-copy-button">Copy URL</button>
             </div>
         </div>
 
@@ -195,6 +279,7 @@
             <div class="point-search-result-text-box">
                 <div class="point-search-result-collection">Sentinel 2</div>
                 <div class="point-search-result-date">2023-11-30</div>
+                <button class="point-search-copy-button">Copy URL</button>
             </div>
         </div>
 
@@ -204,6 +289,7 @@
             <div class="point-search-result-text-box">
                 <div class="point-search-result-collection">Sentinel 2</div>
                 <div class="point-search-result-date">2023-12-05</div>
+                <button class="point-search-copy-button">Copy URL</button>
             </div>
         </div>
 

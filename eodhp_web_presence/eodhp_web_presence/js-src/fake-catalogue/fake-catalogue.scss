@@ -33,7 +33,7 @@ body {
     right: 0
 }
 
-#filter-box {
+.filter-box {
     background-color: black;
     height: 100%;
     padding-left: 1rem;
@@ -43,8 +43,13 @@ body {
     display: inline-block;
 }
 
-#filter-box-heading {
+.filter-box-heading {
     font-size: 1.4rem;
+}
+
+// Box shown when search results are simulated. Shows fewer filters.
+#filter-box-search {
+    display: none;
 }
 
 .filter-box-section {
@@ -89,4 +94,8 @@ body {
 .point-search-result-text-box {
     margin-left: 1rem;
     min-width: 5rem;
+}
+
+.point-search-copy-button {
+    margin-top: 0.2rem;
 }
