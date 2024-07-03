@@ -7,15 +7,20 @@ $black:         #000000;
 
 .logo {
     width: 300px;
+    margin-left: 1em;
 }
-#navbar-menu
-{
-  margin: -10px;
-  height: 130px;
+.navbar {
+    padding: 0px;
 }
-.navbar-brand
-{
-  margin: 10px;
+.container-fluid {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+.navbarToggler {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 0;
+    margin-left: auto;
 }
 .navBarContainerBlank {
     height: 130px;
@@ -32,8 +37,7 @@ $black:         #000000;
     display: flex;
     font-size: 24px;
     display: flex;
-    padding-top: 10px;
-    line-height: 2.2;
+    line-height: 2.7;
     white-space: nowrap;
     z-index: 99999;
     border-left: 20px solid $light-grey;
@@ -44,7 +48,6 @@ $black:         #000000;
     color: white !important;
 }
 .solid {
-
     border-left: 20px solid $dark-blue;
     border-right: 20px solid $dark-blue;
 }
@@ -52,18 +55,8 @@ $black:         #000000;
     background-color: $dark-blue;
     color: $white !important;
 }
-.block:after {
-    background: red;
-  display: block;
-  position: absolute;
-  top: -50px;
-  left: -50px;
-  right: -50px;
-  bottom: -50px;
-  z-index: -2;
-}
 
-@media (max-width: 1200px) { //bootstrap 3 collapses navbar at 768px
+@media (max-width: 1200px) {
     .block {
         width: 90vw;
         z-index: 9999;

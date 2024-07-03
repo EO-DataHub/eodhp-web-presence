@@ -1,59 +1,55 @@
 {% load static %}
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+<script crossorigin="anonymous"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
-        crossorigin="anonymous"></script>
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 
-<nav class="navbar navbar-expand-xl navbar-light bg-light d-lg-flex align-items-center navbar-fixed-top"
-     id="navbar-menu">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="/"><img class="logo"
                                               src="{% static 'img/menu/EO-Data-Hub-logo_colour.svg' %}"></a>
-        <div class="buttonBorder">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
-                    aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
+        <button aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+                data-bs-target="#navbarToggler" data-bs-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarToggler">
-            <ul class="navbar-nav me-auto mb-3 mb-lg-0"></ul>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+
             <div class="d-flex">
                 <div class="navBarContainerBlank">
-                    <ul class="navbar-nav align-items-end">
+                    <ul class="navbar-nav align-items-start">
                         <li class="nav-item block">
-                            <a class="nav-link active" aria-current="page" href="/about">About</a>
+                            <a aria-current="page" class="nav-link active" href="/about">About</a>
                         </li>
                         <li class="nav-item block">
-                            <a class="nav-link active" aria-current="page" href="/news">News</a>
+                            <a aria-current="page" class="nav-link active" href="/news">News</a>
                         </li>
                         <li class="nav-item block">
-                            <a class="nav-link active" aria-current="page" href="/contact">Contact</a>
+                            <a aria-current="page" class="nav-link active" href="/contact">Contact</a>
                         </li>
                         <li class="nav-item block">
-                            <a class="nav-link active" aria-current="page" href="/support">Support</a>
+                            <a aria-current="page" class="nav-link active" href="/support">Support</a>
                         </li>
                         {% if menu_links.resource_catalogue_url %}
                         <li class="nav-item block solid">
-                            <a class="nav-link active" aria-current="page" href="/catalogue">Catalogue</a>
+                            <a aria-current="page" class="nav-link active" href="/catalogue">Catalogue</a>
                         </li>
                         {% endif %}
                         {% if menu_links.eox_viewserver_url %}
                         <li class="nav-item block solid">
-                            <a class="nav-link active" aria-current="page" href="{{ menu_links.eox_viewserver_url }}">Maps</a>
+                            <a aria-current="page" class="nav-link active" href="{{ menu_links.eox_viewserver_url }}">Maps</a>
                         </li>
                         {% endif %}
                         {% if menu_links.notebooks_url %}
                         <li class="nav-item block solid">
-                            <a class="nav-link active" aria-current="page"
+                            <a aria-current="page" class="nav-link active"
                                href="{{ menu_links.notebooks_url }}">Project</a>
                         </li>
                         {% endif %}
                         <li class="nav-item block solid">
-                            <a class="nav-link active" aria-current="page" href="/signin">Sign in</a>
+                            <a aria-current="page" class="nav-link active" href="/signin">Sign in</a>
                         </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">&nbsp;</li>
                     </ul>
                 </div>
             </div>
