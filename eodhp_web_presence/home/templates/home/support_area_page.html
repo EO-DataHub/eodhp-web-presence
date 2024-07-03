@@ -60,8 +60,8 @@
 
 <script>
     function filterItems() {
-    var input = document.getElementById('searchBox').value;
-    var request = new XMLHttpRequest();
+    const input = document.getElementById('searchBox').value;
+    const request = new XMLHttpRequest();
     request.open('GET', '/support/search_items?query=' + encodeURIComponent(input), true);
     request.onreadystatechange = function() {
         if (request.readyState == 4 && request.status == 200) {
