@@ -260,7 +260,6 @@ class SupportIndexPage(WagtailCacheMixin, Page):
     ]
 
 
-
 class SupportAreaPage(WagtailCacheMixin, Page):
     # Can only have SupportTopicPage children
     subpage_types = ["SupportTopicPage", "SupportFAQPage"]
@@ -325,7 +324,6 @@ class SupportAreaPage(WagtailCacheMixin, Page):
         FieldPanel("banner_image"),
         FieldPanel("image"),
     ]
-
 
 
 class SupportTopicPage(WagtailCacheMixin, Page):
