@@ -97,6 +97,8 @@ dev = [
     "ruff",
     "pytest-django",
     "isort",
+    "validate-pyproject[all]",
+    "pre-commit",
 ]
 
 # List URLs that are relevant to your project
@@ -157,7 +159,7 @@ exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["E", "F", "B", "W"]
+select = ["E", "F", "B", "W", "I"]
 
 [tool.pylint.'MESSAGES CONTROL']
 disable = '''
