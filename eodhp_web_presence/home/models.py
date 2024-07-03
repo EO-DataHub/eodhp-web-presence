@@ -247,10 +247,11 @@ class SupportIndexPage(WagtailCacheMixin, Page):
         context = super(SupportIndexPage, self).get_context(request)
 
         # SupportAreaPage objects (get_support_areas) are passed through pagination
-        # support_areas = self.paginate(request, self.get_help_areas())
         support_areas = self.get_support_areas()
-
         context["support_areas"] = support_areas
+
+        support_topics = self.children().type(SupportTopicPage)
+        context["support_topics"] = support_topics
 
         return context
 
@@ -312,8 +313,8 @@ class SupportAreaPage(WagtailCacheMixin, Page):
     def get_context(self, request):
         context = super(SupportAreaPage, self).get_context(request)
 
-        support_topics = SupportTopicPage.objects.live()
-        support_faqs = SupportFAQPage.objects.live()
+        support_topics = self.children().type(SupportTopicPage)
+        support_faqs = self.children().type(SupportFAQPage)
 
         context["support_topics"] = support_topics
         context["support_faqs"] = support_faqs
@@ -329,7 +330,6 @@ class SupportAreaPage(WagtailCacheMixin, Page):
 
 class SupportTopicPage(WagtailCacheMixin, Page):
     body = RichTextField(blank=True, default="")
-    summary = models.TextField(help_text="Text to describe the page", blank=True)
 
     image = models.ForeignKey(
         "wagtailimages.Image",
@@ -340,7 +340,6 @@ class SupportTopicPage(WagtailCacheMixin, Page):
     )
 
     content_panels = Page.content_panels + [
-        FieldPanel("summary"),
         FieldPanel("image"),
         FieldPanel("body"),
     ]

@@ -137,12 +137,20 @@ body {
 	}
 }
 .homePageItemTitleBig {
-// 	font-weight: bold;
 	text-align: center;
 }
 .homePageItemTitle {
 	font-weight: bold;
 	text-decoration: underline;
+}
+.searchBox50 {
+    width: 50%;
+}
+.searchBox100 {
+    width: 100%;
+}
+.list-group-item, .accordion-button {
+    z-index: 0;
 }
 @media (max-width: 1100px) {
 	.homePageBorder {
@@ -172,5 +180,8 @@ body {
 	}
     .boxLinkImage {
         width: 100vw;
+    }
+    .searchBox50 {
+        width: 100%;
     }
 }

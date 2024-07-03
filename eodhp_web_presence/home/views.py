@@ -7,9 +7,21 @@ def search_topics(request):
     query = request.GET.get('query', '')
 
     if query:
-        search_results = SupportTopicPage.objects.live().search(query)
+        search_results = SupportTopicPage.objects.live().autocomplete(query)
     else:
         search_results = SupportTopicPage.objects.live().all()
+
+    html = render_to_string('home/search_results.html', {'support_topics': search_results})
+
+    return HttpResponse(html)
+
+def search_topics_blank(request):
+    query = request.GET.get('query', '')
+
+    if query:
+        search_results = SupportTopicPage.objects.live().autocomplete(query)
+    else:
+        search_results = None
 
     html = render_to_string('home/search_results.html', {'support_topics': search_results})
 
