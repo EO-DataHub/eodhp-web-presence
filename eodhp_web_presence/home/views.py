@@ -1,6 +1,5 @@
 from django.http import HttpResponse
 from django.template.loader import render_to_string
-from wagtail.search.models import Query
 from .models import SupportTopicPage
 
 
@@ -26,7 +25,7 @@ def search_topics_blank(request):
         search_results = None
 
     for s in search_results:
-        s.slug = s.url_path.lstrip("/home/support")
+        s.slug = s.url_path.removeprefix("/home")
 
     html = render_to_string("home/search_results.html", {"support_topics": search_results})
 
