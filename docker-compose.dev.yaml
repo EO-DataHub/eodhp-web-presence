@@ -29,7 +29,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm start
+    command: bash -c 'npm install && npm start'
     entrypoint: ""
 
 volumes:

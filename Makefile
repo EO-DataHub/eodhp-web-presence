@@ -20,9 +20,15 @@ pylint:
 	./venv/bin/pylint CHANGEME-package-names
 
 ruff:
-	./venv/bin/ruff .
+	./venv/bin/ruff check .
 
 black:
 	./venv/bin/black .
 
-lint: ruff black
+isort:
+	./venv/bin/isort . --check --diff
+
+lint: ruff black isort
+
+run:
+	(set -a; . ./.env; DEBUG=True PAGE_CACHE_LENGTH=0 STATIC_FILE_CACHE_LENGTH=0 ./venv/bin/python ./eodhp_web_presence/manage.py runserver)
