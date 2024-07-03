@@ -4,11 +4,9 @@
 
 {% block content %}
 
-{% include "home_menu.html" %}
-
 <div class="homePageBannerContainer">
-    {% image page.banner_image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}"
-                                                       class="homePageBannerImage">
+    {% image page.banner_image scale-100 as img %}<img alt="{{ img.alt }}" class="homePageBannerImage"
+                                                       src="{{ img.url }}">
 
     <div class="homePageBannerText">
         {{ page.title|richtext }}
@@ -20,32 +18,32 @@
 
         <div class="breadcrumb-content">
             {% if self.get_ancestors|length > 1 %}
-                <ul class="breadcrumb">
-                    {% for p in self.get_ancestors %}
-                        {% if p.is_root == False %}
-                            <li><a href="{{ p.url }}">{{ p.title }}</a></li> &nbsp; &gt; &nbsp;
-                        {% endif %}
-                    {% endfor %}
+            <ul class="breadcrumb">
+                {% for p in self.get_ancestors %}
+                {% if p.is_root == False %}
+                <li><a href="{{ p.url }}">{{ p.title }}</a></li> &nbsp; &gt; &nbsp;
+                {% endif %}
+                {% endfor %}
 
-                    <li class="active">{{ self.title }}</li>
-                </ul>
+                <li class="active">{{ self.title }}</li>
+            </ul>
             {% endif %}
         </div>
 
         <div class="homePageText50">
             <h1>Help and Support Topics</h1>
             <p>
-            <input type="text" id="searchBox" placeholder="I want to..." onkeyup="filterItems()">
+                <input aria-describedby="basic-addon2" aria-label="Search" class="form-control searchBox100"
+                       id="searchBox"
+                       onkeyup="filterItems()" placeholder="I want to..." type="text">
 
-            <div class="list-group" id="support-topic-search-results">
-
+            <div class="list-group" id="supportTopicSearchResults">
                 {% for topic in support_topics %}
-                    <a href="{{ topic.slug }}" class="list-group-item">{{ topic.title }}</a>
+                <a class="list-group-item" href="{{ topic.slug }}">{{ topic.title }}</a>
                 {% endfor %}
             </div>
-
-
         </div>
+
         <div class="homePageText50">
             <h1>FAQs</h1>
 
@@ -53,13 +51,14 @@
             <div class="accordion accordion-flush" id="accordionExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#{{ faq.slug }}" aria-expanded="false">
+                        <button aria-expanded="false" class="accordion-button collapsed"
+                                data-bs-target="#{{ faq.slug }}"
+                                data-bs-toggle="collapse" type="button">
                             {{ faq.title }}
                         </button>
                     </h2>
-                    <div id="{{ faq.slug }}" class="accordion-collapse collapse"
-                         data-bs-parent="#accordionExample">
+                    <div class="accordion-collapse collapse" data-bs-parent="#accordionExample"
+                         id="{{ faq.slug }}">
                         <div class="accordion-body">
                             {{ faq.summary }}
                         </div>
@@ -75,11 +74,10 @@
     function filterItems() {
     var input = document.getElementById('searchBox').value;
     var request = new XMLHttpRequest();
-    var area = document.getElementById('homePageBannerText').value;
     request.open('GET', '/support/search_items?query=' + encodeURIComponent(input), true);
     request.onreadystatechange = function() {
         if (request.readyState == 4 && request.status == 200) {
-            document.getElementById('support-topic-search-results').innerHTML = request.responseText;
+            document.getElementById('supportTopicSearchResults').innerHTML = request.responseText;
         }
     }
     request.send()
