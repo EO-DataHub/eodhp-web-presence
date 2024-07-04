@@ -1,14 +1,13 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, re_path
+from home.views import catalogue_page_view
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.images.views.serve import ServeView
 
 from eodhp_web_presence.robots import robots_txt
-
-from home.views import catalogue_page_view
 
 urlpatterns = [
     path("django-admin/", admin.site.urls),
