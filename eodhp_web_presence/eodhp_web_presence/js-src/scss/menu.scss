@@ -25,21 +25,10 @@ $black:         #000000;
 .navBarContainerBlank {
     height: 130px;
 }
-.navbar-nav > ul li a
-{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-        max-height: 60px;
-}
 .block {
-    margin-right: auto;
-    display: flex;
     font-size: 24px;
-    display: flex;
     line-height: 2.7;
-    white-space: nowrap;
-    z-index: 99999;
+    z-index: 9999;
     border-left: 20px solid $light-grey;
     border-right: 20px solid $light-grey;
 }
