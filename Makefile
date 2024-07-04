@@ -31,31 +31,36 @@ validate-pyproject:
 lint: ruff black isort validate-pyproject
 
 run:
-	(set -a; . ./.env; \
-	 trap 'kill 0' INT; \
+	bash -c '(set -a; . ./.env; \
+	 trap "kill 0" INT QUIT HUP TERM; \
 	 DEBUG=True PAGE_CACHE_LENGTH=0 STATIC_FILE_CACHE_LENGTH=0 ./venv/bin/python ./eodhp_web_presence/manage.py runserver & \
 	 npm run dev-watch & \
 	 ./venv/bin/ptw ./eodhp_web_presence & \
-	 wait \
-	)
+	 wait -f \
+	)'
 
-requirements.txt: pyproject.toml
-	pip-compile
+runserver:
+	(set -a; . ./.env; DEBUG=True PAGE_CACHE_LENGTH=0 STATIC_FILE_CACHE_LENGTH=0 ./venv/bin/python ./eodhp_web_presence/manage.py runserver)
 
-requirements-dev.txt: pyproject.toml
-	pip-compile --extra dev -o requirements-dev.txt
+requirements.txt: venv pyproject.toml
+	./venv/bin/pip-compile
+
+requirements-dev.txt: venv pyproject.toml
+	./venv/bin/pip-compile --extra dev -o requirements-dev.txt
 
 requirements: requirements.txt requirements-dev.txt
 
-requirements-update:
-	pip-compile -U
-	pip-compile --extra dev -o requirements-dev.txt -U
+requirements-update: venv
+	./venv/bin/pip-compile -U
+	./venv/bin/pip-compile --extra dev -o requirements-dev.txt -U
 
 venv:
 	virtualenv -p python3.11 venv
+	./venv/bin/python -m ensurepip -U 
+	./venv/bin/pip3 install pip-tools
 
 .make-venv-installed: venv requirements.txt requirements-dev.txt
-	./venv/bin/pip install -r requirements.txt -r requirements-dev.txt
+	./venv/bin/pip3 install -r requirements.txt -r requirements-dev.txt
 	touch .make-venv-installed
 
 .make-node_modules-installed: package-lock.json
