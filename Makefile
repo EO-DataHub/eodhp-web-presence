@@ -31,7 +31,13 @@ validate-pyproject:
 lint: ruff black isort validate-pyproject
 
 run:
-	(set -a; . ./.env; DEBUG=True PAGE_CACHE_LENGTH=0 STATIC_FILE_CACHE_LENGTH=0 ./venv/bin/python ./eodhp_web_presence/manage.py runserver)
+	(set -a; . ./.env; \
+	 trap 'kill 0' INT; \
+	 DEBUG=True PAGE_CACHE_LENGTH=0 STATIC_FILE_CACHE_LENGTH=0 ./venv/bin/python ./eodhp_web_presence/manage.py runserver & \
+	 npm run dev-watch & \
+	 ./venv/bin/ptw ./eodhp_web_presence & \
+	 wait \
+	)
 
 requirements.txt: pyproject.toml
 	pip-compile
@@ -52,8 +58,12 @@ venv:
 	./venv/bin/pip install -r requirements.txt -r requirements-dev.txt
 	touch .make-venv-installed
 
+.make-node_modules-installed: package-lock.json
+	npm install --from-lock-file
+	touch .make-node_modules-installed
+
 .git/hooks/pre-commit:
 	./venv/bin/pre-commit install
 
-setup: venv requirements .make-venv-installed .git/hooks/pre-commit
+setup: venv requirements .make-venv-installed .make-node_modules-installed .git/hooks/pre-commit
 
