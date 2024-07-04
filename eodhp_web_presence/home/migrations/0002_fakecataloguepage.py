@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("catalogue", "0001_initial_catalogue"),
+        ("home", "0001_initial_catalogue"),
         ("wagtailcore", "0089_log_entry_data_json_null_to_object"),
     ]
 
