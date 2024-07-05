@@ -9,6 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("home", "0001_initial_catalogue"),
+        ("home", "0005_rename_announcementpage_newsarticlepage_and_more"),
         ("wagtailcore", "0089_log_entry_data_json_null_to_object"),
     ]
 
