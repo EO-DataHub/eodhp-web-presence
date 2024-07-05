@@ -37,7 +37,8 @@ module.exports = {
             directory: path.join(__dirname, 'assets/webpack_bundles/'),
             publicPath: '/static/',
             watch: true,
-        }
+        },
+        watchFiles: ["node_modules/**/*", "eodhp_web_presence/**/*"],
     },
     plugins: [
         new BundleTracker({ path: __dirname, filename: 'webpack-stats.json' }),

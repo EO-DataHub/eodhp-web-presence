@@ -36,8 +36,16 @@ body {
     font-weight: bold;
 }
 
+.project-menu-project-title>a {
+    color: black;
+    text-decoration: none;
+}
+
 .project-menu-item {
     padding-left: 1rem;
+    display: block;
+    color: black;
+    text-decoration: none;
 }
 
 .project-menu-item:hover,
@@ -138,4 +146,91 @@ body {
     font-weight: bold;
     text-decoration: underline;
     margin-top: 0.5rem;
+}
+
+
+#linked-accounts-list {
+    background-color: colours.$light-grey;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+#linked-accounts-list>li {
+    border: 1px solid colours.$light-blue;
+    border-collapse: collapse;
+    display: block;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+#linked-accounts-list>li:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#linked-accounts-list>li:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.linked-name {
+    font-size: 1.4rem;
+    font-weight: bold;
+    // margin-bottom: 0.2rem;
+    // color: colours.$blue;
+}
+
+.linked-descr {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+button.linked-remove {
+    background-color: colours.$blue;
+    color: white;
+}
+
+
+#home-list {
+    background-color: colours.$light-grey;
+    padding: 0;
+    margin-top: 1rem;
+    display: inline-block;
+}
+
+#home-list>li {
+    border: 1px solid colours.$light-blue;
+    border-collapse: collapse;
+    display: block;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+#home-list>li:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#home-list>li:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+a.project-home-link {
+    display: block;
+    width: 20rem;
+    // background-color: colours.$light-grey;
+    border: 1px solid colours.$light-blue;
+    background-color: colours.$blue;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
 }

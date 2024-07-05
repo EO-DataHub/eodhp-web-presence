@@ -9,7 +9,7 @@
 
 {% include "home_menu.html" %}
 
-<div style="background-image: url('{% static 'img/fake-catalogue/UKMap.png' %}');" id="map-image">
+<div style="background-image: url('{% static 'img/fake-catalogue/PlanetUKMap.png' %}');" id="map-image">
 
     <div id="filter-box-all" class="filter-box">
         <div style="font-weight: bold" id="filter-box-heading" class="filter-box-heading">Filter By</div>
@@ -17,7 +17,7 @@
             <div class="filter-box-section-heading">Product Type</div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
-                Satellite Observation (6)
+                Satellite Observation (8)
             </div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
@@ -36,11 +36,11 @@
             <div class="filter-box-section-heading">Sensor Type</div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
-                Optical (5)
+                Optical (6)
             </div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
-                SAR (1)
+                SAR (2)
             </div>
         </div>
         <div class="filter-box-section">
@@ -51,7 +51,7 @@
             </div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
-                Commercial (1)
+                Commercial (3)
             </div>
         </div>
         <div class="filter-box-section">
@@ -66,7 +66,7 @@
             </div>
             <div class="filter-box-item">
                 <input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked="">
-                No QA checks (1)
+                No QA checks (3)
             </div>
         </div>
     </div>
@@ -229,6 +229,20 @@
                            padding-top: 5px;">
                             <td><input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked=""></td>
                             <td style="padding-right: 1rem;">Planet PlanetScope</td>
+                        </tr>
+                        <tr style="border-bottom: 1px;
+                           border-color: #777777;
+                           border-style: solid;
+                           padding-top: 5px;">
+                            <td><input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked=""></td>
+                            <td style="padding-right: 1rem;">Airbus Pléiades</td>
+                        </tr>
+                        <tr style="border-bottom: 1px;
+                           border-color: #777777;
+                           border-style: solid;
+                           padding-top: 5px;">
+                            <td><input type="checkbox" style="margin-right: 1rem; margin-left: 0.5rem;" checked=""></td>
+                            <td style="padding-right: 1rem;">Airbus Radar</td>
                         </tr>
                         <tr style="border-bottom: 1px;
                            border-color: #777777;

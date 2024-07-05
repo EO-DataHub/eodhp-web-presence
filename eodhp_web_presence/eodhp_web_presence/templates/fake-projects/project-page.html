@@ -15,9 +15,9 @@
 
     <div id="projects-page-main">
         <div id="projects-page-main-projectname">My Personal Project</div>
-        {% if request.GET.active == "stores" %}
-        {% include "./stores.html" with active=request.GET.active %}
-        {% endif %}
+        {% if not request.GET.active %}{% include "./project-home.html" with active=request.GET.active %}{% endif %}
+        {% if request.GET.active == "stores" %}{% include "./stores.html" with active=request.GET.active %}{% endif %}
+        {% if request.GET.active == "linked" %}{% include "./linked.html" with active=request.GET.active %}{% endif %}
     </div>
 </div>
 

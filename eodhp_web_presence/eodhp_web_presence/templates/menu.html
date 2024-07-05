@@ -1,41 +1,50 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/"><div class="logo"><img class="logo" src="{% static 'img/menu/EO-Data-Hub-logo_colour.svg' %}"></div></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarToggler">
+<script crossorigin="anonymous" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        {% if menu_links.resource_catalogue_url %}
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/catalogue">Resource Catalogue</a>
-        </li>
-        {% endif %}
-        {% if menu_links.eox_viewserver_url %}
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ menu_links.eox_viewserver_url }}">Map Viewer</a>
-        </li>
-        {% endif %}
-        {% if menu_links.notebooks_url %}
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ menu_links.notebooks_url }}">Workspaces</a>
-        </li>
-        {% endif %}
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/help-and-support">Help and Support</a>
-        </li>
-      </ul>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/"><img class="logo"
+                src="{% static 'img/menu/EO-Data-Hub-logo_colour.svg' %}"></a>
+        <button aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"
+            class="navbar-toggler" data-bs-target="#navbarToggler" data-bs-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
 
-      <div class="d-flex">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/signin">Sign in</a>
-          </li>
-        </ul>
-      </div>
+            <div class="d-flex">
+                <div class="navBarContainerBlank">
+                    <ul class="navbar-nav align-items-start">
+                        <li class="nav-item block">
+                            <a aria-current="page" class="nav-link active" href="/about">About</a>
+                        </li>
+                        <li class="nav-item block">
+                            <a aria-current="page" class="nav-link active" href="/news">News</a>
+                        </li>
+                        <li class="nav-item block">
+                            <a aria-current="page" class="nav-link active" href="/contact">Contact</a>
+                        </li>
+                        <li class="nav-item block">
+                            <a aria-current="page" class="nav-link active" href="/support">Support</a>
+                        </li>
+                        <li class="nav-item block solid">
+                            <a aria-current="page" class="nav-link active" href="/catalogue-map">Catalogue</a>
+                        </li>
+                        <li class="nav-item block solid">
+                            <a aria-current="page" class="nav-link active"
+                                href="{{ menu_links.eox_viewserver_url }}">Maps</a>
+                        </li>
+                        <li class="nav-item block solid">
+                            <a aria-current="page" class="nav-link active" href="/projects">Project</a>
+                        </li>
+                        <li class="nav-item block solid">
+                            <a aria-current="page" class="nav-link active" href="/signin">Sign out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </nav>
