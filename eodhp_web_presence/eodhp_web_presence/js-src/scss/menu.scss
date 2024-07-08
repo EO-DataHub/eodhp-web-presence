@@ -4,12 +4,12 @@
     width: 300px;
     margin-left: 1em;
 }
-.navbar {
+#menuNavBar {
     padding: 0px;
-}
-.container-fluid {
-    padding-right: 0px !important;
-    padding-left: 0px !important;
+    .container-fluid {
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+    }
 }
 .header {
     display: flex;
