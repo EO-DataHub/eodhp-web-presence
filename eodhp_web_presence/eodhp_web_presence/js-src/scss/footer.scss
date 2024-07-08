@@ -1,21 +1,20 @@
-$white: #FFFFFF;
-$blue: #4C72BA;
+@use '../scss/custom.scss';
 
 #navbar-footer {
     height: auto;
-    color: $white;
+    color: custom.$white;
     font-size: 24px;
 }
 .footer {
-	background-color: $blue;
+	background-color: custom.$blue;
 	text-align: center;
-	color: $white;
+	color: custom.$white;
 	display: flex;
 	padding-left: 10px;
 	padding-right: 10px;
 }
 .footer a {
-	color: $white;
+	color: custom.$white;
 	text-decoration: none;
 }
 .left {

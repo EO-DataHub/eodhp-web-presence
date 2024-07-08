@@ -1,9 +1,4 @@
-$white:         #FFFFFF;
-$light-grey:    #F6F6F6;
-$light-blue:    #BCCEEB;
-$blue:          #4C72BA;
-$dark-blue:     #2A3559;
-$black:         #000000;
+@use '../scss/custom.scss';
 
 .logo {
     width: 300px;
@@ -29,20 +24,20 @@ $black:         #000000;
     font-size: 24px;
     line-height: 2.7;
     z-index: 9999;
-    border-left: 20px solid $light-grey;
-    border-right: 20px solid $light-grey;
+    border-left: 20px solid custom.$light-grey;
+    border-right: 20px solid custom.$light-grey;
 }
 .nav-link:hover {
-    background-color: $blue !important;
+    background-color: custom.$blue !important;
     color: white !important;
 }
 .solid {
-    border-left: 20px solid $dark-blue;
-    border-right: 20px solid $dark-blue;
+    border-left: 20px solid custom.$dark-blue;
+    border-right: 20px solid custom.$dark-blue;
 }
 .solid .nav-link {
-    background-color: $dark-blue;
-    color: $white !important;
+    background-color: custom.$dark-blue;
+    color: custom.$white !important;
 }
 
 @media (max-width: 1200px) {
@@ -54,11 +49,11 @@ $black:         #000000;
         border-right: none;
     }
     .block:hover {
-        background: $light-blue;
+        background: custom.$light-blue;
     }
     .nav-link:hover {
-        background: $light-blue !important;
-        color: $black !important;
+        background: custom.$light-blue !important;
+        color: custom.$black !important;
     }
     .navbar .navbar-nav {
         display: inline-block;
@@ -68,7 +63,7 @@ $black:         #000000;
     }
     .navbar .navbar-collapse {
         text-align: center;
-        background-color: $blue;
+        background-color: custom.$blue;
         padding-bottom: 20px
     }
     .navBarContainerBlank {
@@ -86,6 +81,6 @@ $black:         #000000;
     }
     .nav-link {
         background: none !important;
-        color: white !important;
+        color: custom.$white !important;
     }
 }

@@ -1,11 +1,7 @@
-$white: #FFFFFF;
-$black: #000000;
-$blue: #4C72BA;
-$grey: #EFEFEF;
-$light-grey: #F6F6F6;
+@use '../scss/custom.scss';
 
 body {
-	background-color: $white;
+	background-color: custom.$white;
 }
 .homePageBorder {
 	margin: auto;
@@ -15,7 +11,7 @@ body {
 }
 .boxes {
 	width: 100%;
-	background-color: $light-grey;
+	background-color: custom.$light-grey;
     text-align: justify;
     -ms-text-justify: distribute-all-lines;
     text-justify: distribute-all-lines;
@@ -37,20 +33,20 @@ body {
     width: 320px;
     height: 170px;
     object-fit: cover;
-    background-color: $blue;
+    background-color: custom.$blue;
 }
 .boxLinkText, .boxLinkText a {
     position: relative;
     text-align: center;
     height: 100%;
     width: 100%;
-    color: $white;
+    color: custom.$white;
     font-size: 24px;
     transform: translate(0%, -97px);
 }
 .homePageBannerContainer {
-	background-color: $blue;
-	color: $white;
+	background-color: custom.$blue;
+	color: custom.$white;
 	font-size: 56px;
 	font-weight: bold;
 	width: 100%;
@@ -118,7 +114,7 @@ body {
 	}
 }
 .homePageItem {
-	background-color: $grey;
+	background-color: custom.$grey;
 	margin: 10px;
 	justify-content: center;
 	padding: 10px;
@@ -128,7 +124,7 @@ body {
     text-overflow: ellipsis;
 	a {
 		text-decoration: none;
-		color: black;
+		color: custom.$black;
 		&:hover {
 			text-decoration: underline;
 		}
