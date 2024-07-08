@@ -45,14 +45,19 @@
 <script>
     function filterItems() {
     const input = document.getElementById('searchBox').value;
-    const request = new XMLHttpRequest();
-    request.open('GET', '/support/search_items_blank?query=' + encodeURIComponent(input), true);
-    request.onreadystatechange = function() {
-        if (request.readyState == 4 && request.status == 200) {
-            document.getElementById('supportTopicSearchResults').innerHTML = request.responseText;
-        }
+    if (input === '') {
+        document.getElementById('supportTopicSearchResults').innerHTML = '';
     }
-    request.send()
+    else {
+        const request = new XMLHttpRequest();
+        request.open('GET', '/support/search_items?query=' + encodeURIComponent(input), true);
+        request.onreadystatechange = function() {
+            if (request.readyState == 4 && request.status == 200) {
+                document.getElementById('supportTopicSearchResults').innerHTML = request.responseText;
+            }
+        }
+        request.send()
+    }
 }
 </script>
 
