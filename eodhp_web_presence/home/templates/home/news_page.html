@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="homePageBannerContainer">
-    {% image page.banner_image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}" class="homePageBannerImage">
+    {% image page.banner_image scale-100 as img %}<img src="{{ img.url }}" class="homePageBannerImage">
 
         <div class="homePageBannerText">
             {{ page.title|richtext }}
@@ -18,7 +18,7 @@
             <div class="homePageItem">
                 <a href="{{ article.slug }}">
                     {% if article.image %}
-                        <div class="homePageImage100">{% image article.image max-320x150 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}" class="homePageImage"></div>
+                        <div class="homePageImage100">{% image article.image max-320x150 as img %}<img src="{{ img.url }}" class="homePageImage"></div>
                     {% endif %}
                     <div class="homePageItemTitle">{{ article.title }}</div>
                     <div class="homePageItemSummary">{{ article.summary|truncatechars:255 }}</div>

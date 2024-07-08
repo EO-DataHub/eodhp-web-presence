@@ -1,5 +1,6 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import models
+from django.db.models import TextField
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page
@@ -26,6 +27,8 @@ class HomePage(WagtailCacheMixin, Page):
         related_name="+",
         help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
     )
+
+    video_url = TextField(blank=True)
 
     about_image = models.ForeignKey(
         "wagtailimages.Image",
@@ -59,6 +62,7 @@ class HomePage(WagtailCacheMixin, Page):
         FieldPanel("about_image"),
         FieldPanel("contact_image"),
         FieldPanel("news_image"),
+        FieldPanel("video_url"),
     ]
 
 

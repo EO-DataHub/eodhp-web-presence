@@ -1,59 +1,47 @@
 {% load static %}
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
-        crossorigin="anonymous"></script>
-
-<nav class="navbar navbar-expand-xl navbar-light bg-light d-lg-flex align-items-center navbar-fixed-top"
-     id="navbar-menu">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/"><img class="logo"
-                                              src="{% static 'img/menu/EO-Data-Hub-logo_colour.svg' %}"></a>
-        <div class="buttonBorder">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
-                    aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-xxl bg-light" id="menuNavBar">
+    <div class="container-fluid d-flex">
+        <div class="header col-xxl-3">
+            <a class="navbar-brand" href="/"><img class="logo"
+                                                  src="{% static 'img/menu/EO-Data-Hub-logo_colour.svg' %}"></a>
+            <button aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"
+                    class="navbar-toggler d-xxl-none" data-bs-target="#navbarToggler"
+                    data-bs-toggle="collapse" id="navbar-toggler-button" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
-        <div class="collapse navbar-collapse" id="navbarToggler">
-            <ul class="navbar-nav me-auto mb-3 mb-lg-0"></ul>
+        <div class="collapse navbar-collapse col-xxl-9" id="navbarToggler">
+            <ul class="navbar-nav me-auto mb-2 mb-xxl-0"></ul>
+
             <div class="d-flex">
                 <div class="navBarContainerBlank">
-                    <ul class="navbar-nav align-items-end">
-                        <li class="nav-item block">
-                            <a class="nav-link active" aria-current="page" href="/about">About</a>
+                    <ul class="navbar-nav align-items-start">
+                        <li class="nav-item blockTransparent">
+                            <a aria-current="page" class="nav-link" href="/about">About</a>
                         </li>
-                        <li class="nav-item block">
-                            <a class="nav-link active" aria-current="page" href="/news">News</a>
+                        <li class="nav-item blockTransparent">
+                            <a aria-current="page" class="nav-link" href="/news">News</a>
                         </li>
-                        <li class="nav-item block">
-                            <a class="nav-link active" aria-current="page" href="/contact">Contact</a>
+                        <li class="nav-item blockTransparent">
+                            <a aria-current="page" class="nav-link" href="/contact">Contact</a>
                         </li>
-                        <li class="nav-item block">
-                            <a class="nav-link active" aria-current="page" href="/support">Support</a>
+                        <li class="nav-item blockTransparent">
+                            <a aria-current="page" class="nav-link" href="/support">Support</a>
                         </li>
-                        {% if menu_links.resource_catalogue_url %}
-                        <li class="nav-item block solid">
-                            <a class="nav-link active" aria-current="page" href="/catalogue">Catalogue</a>
+                        <li class="nav-item blockSolid">
+                            <a aria-current="page" class="nav-link" href="/catalogue">Catalogue</a>
                         </li>
-                        {% endif %}
-                        {% if menu_links.eox_viewserver_url %}
-                        <li class="nav-item block solid">
-                            <a class="nav-link active" aria-current="page" href="{{ menu_links.eox_viewserver_url }}">Maps</a>
+                        <li class="nav-item blockSolid">
+                            <a aria-current="page" class="nav-link" href="{{ menu_links.eox_viewserver_url }}">Maps</a>
                         </li>
-                        {% endif %}
-                        {% if menu_links.notebooks_url %}
-                        <li class="nav-item block solid">
-                            <a class="nav-link active" aria-current="page"
+                        <li class="nav-item blockSolid">
+                            <a aria-current="page" class="nav-link"
                                href="{{ menu_links.notebooks_url }}">Project</a>
                         </li>
-                        {% endif %}
-                        <li class="nav-item block solid">
-                            <a class="nav-link active" aria-current="page" href="/signin">Sign in</a>
+                        <li class="nav-item blockSolid">
+                            <a aria-current="page" class="nav-link" href="/signin">Sign in</a>
                         </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">&nbsp;</li>
                     </ul>
                 </div>
             </div>

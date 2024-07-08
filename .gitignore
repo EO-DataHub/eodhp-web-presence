@@ -10,4 +10,10 @@ node_modules/
 assets/
 webpack-stats.json
 staticfiles/
+cache/
 *.egg-info/
+.make-venv-installed
+.stignore
+
+*.bak
+*.swp

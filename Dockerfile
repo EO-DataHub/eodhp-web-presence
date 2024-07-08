@@ -4,7 +4,8 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV TZ=Etc/UTC
 ENV DEBIAN_FRONTEND=noninteractive
- 
+ENV SETUPTOOLS_USE_DISTUTILS=stdlib
+
 RUN apt-get update --yes --quiet
 RUN apt-get install --yes --quiet --no-install-recommends \
     build-essential \
@@ -15,7 +16,7 @@ RUN apt-get install --yes --quiet --no-install-recommends \
     curl \
     postgresql-client \
     lsb-release \
- && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
     apt-get install -y nodejs
 RUN install -d /usr/share/postgresql-common/pgdg
@@ -29,7 +30,6 @@ RUN node -v
 RUN npm -v
 
 RUN python -m pip install --upgrade pip
-RUN python -m pip install gunicorn==20.0.4
 
 WORKDIR /app
 COPY requirements.txt .

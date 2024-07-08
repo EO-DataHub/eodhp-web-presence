@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.12 (05-07-2024)
+- Update website design
+- Add help pages
+
 ## v0.1.11 (26-06-2024)
 - Serve the wagtail media files using S3
 - Add scripts for database importing/exporting
