@@ -7,8 +7,7 @@
 {% include "home_menu.html" %}
 
 <div class="homePageBannerContainer" id="big">
-    {% image page.banner_image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}"
-                                                       class="homePageBannerImage">
+    {% image page.banner_image scale-100 as img %}<img src="{{ img.url }}" class="homePageBannerImage">
 
     <div class="homePageBannerText" id="centre">
         {{ page.title|richtext }}
@@ -19,7 +18,7 @@
     <div class="homePageContent">
 
         {% if page.image %}
-        {% image page.image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}" class="homePageImage50">
+        {% image page.image scale-100 as img %}<img src="{{ img.url }}" class="homePageImage50">
         <div class="homePageText50">{{ page.body|richtext }}</div>
         {% else %}
         <div class="homePageText100">{{ page.body|richtext }}</div>
@@ -40,22 +39,19 @@
     <div class="homePageBorder" id="footer">
         <div class="boxLink">
             <a href="/about">
-                {% image page.about_image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}"
-                                                                  class="boxLinkImage">
+                {% image page.about_image scale-100 as img %}<img src="{{ img.url }}" class="boxLinkImage">
                 <div class="boxLinkText">About</div>
             </a>
         </div>
         <div class="boxLink">
             <a href="/news">
-                {% image page.news_image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}"
-                                                                 class="boxLinkImage">
+                {% image page.news_image scale-100 as img %}<img src="{{ img.url }}" class="boxLinkImage">
                 <div class="boxLinkText">News</div>
             </a>
         </div>
         <div class="boxLink">
             <a href="/contact">
-                {% image page.contact_image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}"
-                                                                    class="boxLinkImage">
+                {% image page.contact_image scale-100 as img %}<img src="{{ img.url }}" class="boxLinkImage">
                 <div class="boxLinkText">Contact</div>
             </a>
         </div>

@@ -7,8 +7,7 @@
 {% include "home_menu.html" %}
 
 <div class="homePageBannerContainer">
-    {% image page.banner_image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}"
-                                                       class="homePageBannerImage">
+    {% image page.banner_image scale-100 as img %}<img src="{{ img.url }}" class="homePageBannerImage">
 
     <div class="homePageBannerText">
         {{ page.title|richtext }}
@@ -18,7 +17,7 @@
 <div class="homePageBorder">
     <div class="homePageContent">
         {% if page.image %}
-        {% image page.image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}" class="homePageImage50">
+        {% image page.image scale-100 as img %}<img src="{{ img.url }}" class="homePageImage50">
         <div class="homePageText50">{{ page.body|richtext }}</div>
         {% else %}
         <div class="homePageText100">{{ page.body|richtext }}</div>

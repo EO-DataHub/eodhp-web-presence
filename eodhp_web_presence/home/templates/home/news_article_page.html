@@ -7,7 +7,7 @@
 {% include "home_menu.html" %}
 
 <div class="homePageBannerContainer">
-    {% image page.get_parent.specific.get_banner_image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}" class="homePageBannerImage">
+    {% image page.get_parent.specific.get_banner_image scale-100 as img %}<img src="{{ img.url }}" class="homePageBannerImage">
 
         <div class="homePageBannerText">
             {{ page.title|richtext }}
