@@ -9,4 +9,4 @@ def catalogue_page_view(request):
     resource_catalogue_url = f"{resource_catalogue_base_url}/{resource_catalogue_version}"
     context = {"url": resource_catalogue_url, "catalogue_data_url": settings.CATALOGUE_DATA["url"]}
 
-    return render(request, "catalogue/catalogue_page.html", context=context)
+    return render(request, "home/catalogue_page.html", context=context)

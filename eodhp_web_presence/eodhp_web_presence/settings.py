@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     "home",
     "eodhp_web_presence",
     "help",
-    "catalogue",
 ]
 
 
