@@ -13,6 +13,7 @@ services:
       - media_volume:/app/media
       - node_modules_volume:/app/node_modules
       - cache_volume:/app/cache
+
     env_file:
       - .env
     environment:

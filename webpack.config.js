@@ -43,18 +43,14 @@ module.exports = {
             files: ['**/*.sass'],
             context: 'js-src',
             quiet: false,
-            emitError: false,
+            emitError: true,
             cache: true,
             customSyntax: 'postcss-sass'
         }),
         new ESLintPlugin({
             formatter: require('eslint-friendly-formatter'),
             cache: true,
-            emitWarning: true,
-            outputReport: {
-                filePath: "../../target/checkstyle.xml",
-                formatter: 'checkstyle'
-            }
+            emitError: true,
         }),
     ],
     module: {
