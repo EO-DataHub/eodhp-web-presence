@@ -5,6 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
+        ("home", "0002_fakecataloguepage"),
         ("home", "0005_rename_announcementpage_newsarticlepage_and_more"),
     ]
 
