@@ -24,6 +24,14 @@
         {% else %}
         <div class="homePageText100">{{ page.body|richtext }}</div>
         {% endif %}
+
+        {% if page.video_url %}
+        <p>
+        <div class="homePageText100">
+            <video width="100%" class="homePageContent" controls src={{ page.video_url }}></video>
+        </div>
+        {% endif %}
+
         <p>
     </div>
 </div>
