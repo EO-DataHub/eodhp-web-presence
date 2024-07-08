@@ -7,8 +7,8 @@
 #menuNavBar {
     padding: 0px;
     .container-fluid {
-        padding-right: 0px !important;
-        padding-left: 0px !important;
+        padding-right: 0px;
+        padding-left: 0px;
     }
 }
 .header {
@@ -25,40 +25,45 @@
 .navBarContainerBlank {
     height: 130px;
 }
-.block {
+.blockTransparent {
     font-size: 24px;
     line-height: 2.7;
     z-index: 9999;
     border-left: 20px solid custom.$light-grey;
     border-right: 20px solid custom.$light-grey;
 }
-.nav-link:hover {
-    background-color: custom.$blue !important;
-    color: white !important;
-}
-.solid {
+.blockSolid {
+    font-size: 24px;
+    line-height: 2.7;
+    z-index: 9999;
+    background-color: custom.$dark-blue;
+    color: custom.$white;
     border-left: 20px solid custom.$dark-blue;
     border-right: 20px solid custom.$dark-blue;
 }
-.solid .nav-link {
-    background-color: custom.$dark-blue;
-    color: custom.$white !important;
+.blockSolid .nav-link {
+    color: custom.$white;
+}
+.blockSolid .nav-link:hover, .blockTransparent .nav-link:hover {
+    background-color: custom.$blue;
+    color: custom.$white;
 }
 
 @media (max-width: 1399px) {
-    .block {
+    .blockTransparent, .blockSolid {
         width: 90vw;
         z-index: 9999;
         text-align: center;
         border-left: none;
         border-right: none;
+        background: custom.$blue;
     }
-    .block:hover {
-        background: custom.$light-blue;
-    }
-    .nav-link:hover {
+    .blockTransparent .nav-link:hover, .blockSolid .nav-link:hover  {
         background: custom.$light-blue !important;
         color: custom.$black !important;
+    }
+    .blockTransparent .nav-link, .blockSolid .nav-link  {
+        color: custom.$white !important;
     }
     .navbar .navbar-nav {
         display: inline-block;
@@ -83,10 +88,6 @@
     }
     .nav-item {
         text-align: center;
-    }
-    .nav-link {
-        background: none !important;
-        color: custom.$white !important;
     }
     .navbar-expand-xl {
         .navbar-toggler {
