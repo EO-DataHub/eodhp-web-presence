@@ -37,9 +37,6 @@ def search_topics_blank(request):
     else:
         search_results = None
 
-    for s in search_results:
-        s.slug = s.url_path.removeprefix("/home")
-
     html = render_to_string("home/search_results.html", {"support_topics": search_results})
 
     return HttpResponse(html)
