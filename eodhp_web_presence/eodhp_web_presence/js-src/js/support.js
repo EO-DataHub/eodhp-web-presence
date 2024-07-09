@@ -2,12 +2,9 @@ import $ from 'jquery'
 
 const runSearch = async(input) => {
     const request = new XMLHttpRequest();
-    await request.open('GET', '/support/search_items?query=' + encodeURIComponent(input), true);
-    request.onreadystatechange = function() {
-        if (request.readyState == 4 && request.status == 200) {
-            document.getElementById('supportTopicSearchResults').innerHTML = request.responseText;
-        }
-    }
+    $.get({'url': '/support/search_items', 'data': {'query': encodeURIComponent(input)}}).done((result) => {
+        $('#supportTopicSearchResults').html(result);
+    })
     await request.send()
 }
 
