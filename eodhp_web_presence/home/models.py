@@ -227,7 +227,7 @@ class SupportIndexPage(WagtailCacheMixin, Page):
     # descendants of this index page with most recent first
     def get_support_areas(self):
         return (
-            SupportAreaPage.objects.live()  # .descendant_of(self).order_by("-first_published_at")
+            SupportAreaPage.objects.descendant_of(self).order_by("-first_published_at").live()
         )
 
     def get_banner_image(self):
@@ -312,7 +312,7 @@ class SupportAreaPage(WagtailCacheMixin, Page):
     # method on the model rather than within a view function
     def paginate(self, request, *args):
         page = request.GET.get("page")
-        paginator = Paginator(self.get_help_areas(), 12)
+        paginator = Paginator(self.get_support_areas(), 12)
         try:
             pages = paginator.page(page)
         except PageNotAnInteger:

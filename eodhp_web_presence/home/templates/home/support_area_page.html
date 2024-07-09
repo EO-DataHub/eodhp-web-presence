@@ -22,8 +22,8 @@
             <h1>Help and Support Topics</h1>
             <p>
                 <input aria-describedby="basic-addon2" aria-label="Search" class="form-control searchBox100"
-                       id="searchBox"
-                       onkeyup="filterItems()" placeholder="I want to..." type="text">
+                       id="searchBoxArea"
+                       onkeyup="filterItemsArea()" placeholder="I want to..." type="text">
 
             <div class="list-group" id="supportTopicSearchResults">
                 {% for topic in support_topics %}
@@ -52,24 +52,10 @@
                         </div>
                     </div>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
-
-<script>
-    function filterItems() {
-    const input = document.getElementById('searchBox').value;
-    const request = new XMLHttpRequest();
-    request.open('GET', '/support/search_items?query=' + encodeURIComponent(input), true);
-    request.onreadystatechange = function() {
-        if (request.readyState == 4 && request.status == 200) {
-            document.getElementById('supportTopicSearchResults').innerHTML = request.responseText;
-        }
-    }
-    request.send()
-}
-</script>
 
 {% endblock content %}

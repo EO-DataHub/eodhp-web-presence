@@ -19,8 +19,8 @@
 
         {% include "breadcrumbs.html" %}
 
-        <input aria-describedby="basic-addon2" aria-label="Search" class="form-control searchBox50" id="searchBox"
-               onkeyup="filterItems()" placeholder="I want to..." type="text">
+        <input aria-describedby="basic-addon2" aria-label="Search" class="form-control searchBox50" id="searchBoxIndex"
+               onkeyup="filterItemsIndex()" placeholder="I want to..." type="text">
         <p>
         <div class="homePageText100">
             <div class="list-group" id="supportTopicSearchResults"></div>
@@ -41,24 +41,5 @@
         {% endfor %}
     </div>
 </div>
-
-<script>
-    function filterItems() {
-    const input = document.getElementById('searchBox').value;
-    if (input === '') {
-        document.getElementById('supportTopicSearchResults').innerHTML = '';
-    }
-    else {
-        const request = new XMLHttpRequest();
-        request.open('GET', '/support/search_items?query=' + encodeURIComponent(input), true);
-        request.onreadystatechange = function() {
-            if (request.readyState == 4 && request.status == 200) {
-                document.getElementById('supportTopicSearchResults').innerHTML = request.responseText;
-            }
-        }
-        request.send()
-    }
-}
-</script>
 
 {% endblock content %}
