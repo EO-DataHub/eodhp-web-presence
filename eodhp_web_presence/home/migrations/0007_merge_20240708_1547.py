@@ -4,11 +4,9 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('home', '0005_homepage_about_image_homepage_contact_image_and_more'),
-        ('home', '0006_homepage_video_url'),
+        ("home", "0005_homepage_about_image_homepage_contact_image_and_more"),
+        ("home", "0006_homepage_video_url"),
     ]
 
-    operations = [
-    ]
+    operations = []
