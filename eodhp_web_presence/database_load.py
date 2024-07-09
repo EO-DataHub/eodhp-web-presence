@@ -6,7 +6,7 @@ import tempfile
 
 import boto3
 
-table_prefixes = ["home", "help", "wagtailimages"]
+table_prefixes = ["home", "help", "wagtailimages", "wagtailcore"]
 
 pg_load_path = "pg_restore"
 
