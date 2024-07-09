@@ -113,8 +113,8 @@ class NewsPage(WagtailCacheMixin, Page):
     # descendants of this index page with most recent first
     def get_news_articles(self):
         return (
-            NewsArticlePage.objects.live()  # .descendant_of(self).order_by("-first_published_at")
-        ).reverse()
+            NewsArticlePage.objects.descendant_of(self).order_by("-last_published_at").live()
+        )
 
     def get_banner_image(self):
         if self.banner_image:
@@ -301,7 +301,7 @@ class SupportAreaPage(WagtailCacheMixin, Page):
             return self.banner_image
         return None
 
-    # Allows child objects (e.g. NewsArticlePage objects) to be accessible via the
+    # Allows child objects (e.g. SupportTopicPage objects) to be accessible via the
     # template. We use this on the HomePage to display child items of featured
     # content
     def children(self):

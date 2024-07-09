@@ -14,7 +14,11 @@
 
 <div class="homePageBorder">
     <div class="homePageContent">
-        <div class="homePageText100">{{ page.body|richtext }}</div>
+        <div class="homePageText100">
+            <div class="emphasis">Published: {{ page.last_published_at|date:"d M Y" }}</div>
+            <p>
+            {{ page.body|richtext }}
+        </div>
     </div>
 </div>
 
