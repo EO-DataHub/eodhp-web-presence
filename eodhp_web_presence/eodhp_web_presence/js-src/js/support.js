@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 const filterItemsIndex = async() => {
     const input = document.getElementById('searchBoxIndex').value;
     if (input === '') {
@@ -27,5 +29,7 @@ const filterItemsArea = async() => {
     await request.send()
 }
 
-window.filterItemsIndex = filterItemsIndex;
-window.filterItemsArea = filterItemsArea;
+$(() => {
+    $('#searchBoxIndex').on("keyup", filterItemsIndex)
+    $('#searchBoxArea').on("keyup", filterItemsArea)
+})
