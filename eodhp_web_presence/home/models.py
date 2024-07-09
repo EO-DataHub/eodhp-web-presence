@@ -112,9 +112,7 @@ class NewsPage(WagtailCacheMixin, Page):
     # Returns a queryset of NewsArticlePage objects that are live, that are direct
     # descendants of this index page with most recent first
     def get_news_articles(self):
-        return (
-            NewsArticlePage.objects.descendant_of(self).order_by("-last_published_at").live()
-        )
+        return NewsArticlePage.objects.descendant_of(self).order_by("-last_published_at").live()
 
     def get_banner_image(self):
         if self.banner_image:
@@ -226,9 +224,7 @@ class SupportIndexPage(WagtailCacheMixin, Page):
     # Returns a queryset of SupportAreaPage objects that are live, that are direct
     # descendants of this index page with most recent first
     def get_support_areas(self):
-        return (
-            SupportAreaPage.objects.descendant_of(self).order_by("-first_published_at").live()
-        )
+        return SupportAreaPage.objects.descendant_of(self).order_by("-first_published_at").live()
 
     def get_banner_image(self):
         if self.banner_image:
