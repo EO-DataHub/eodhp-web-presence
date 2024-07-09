@@ -60,7 +60,6 @@ INSTALLED_APPS = [
     # web presence
     "home",
     "eodhp_web_presence",
-    "help",
 ]
 
 

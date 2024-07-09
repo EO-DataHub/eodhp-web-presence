@@ -42,43 +42,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name="homepage",
-            name="about_image",
-            field=models.ForeignKey(
-                blank=True,
-                help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                related_name="+",
-                to="wagtailimages.image",
-            ),
-        ),
-        migrations.AddField(
-            model_name="homepage",
             name="banner_image",
-            field=models.ForeignKey(
-                blank=True,
-                help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                related_name="+",
-                to="wagtailimages.image",
-            ),
-        ),
-        migrations.AddField(
-            model_name="homepage",
-            name="contact_image",
-            field=models.ForeignKey(
-                blank=True,
-                help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                related_name="+",
-                to="wagtailimages.image",
-            ),
-        ),
-        migrations.AddField(
-            model_name="homepage",
-            name="news_image",
             field=models.ForeignKey(
                 blank=True,
                 help_text="Landscape mode only; horizontal width between 1000px and 3000px.",

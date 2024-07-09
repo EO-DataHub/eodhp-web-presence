@@ -112,9 +112,7 @@ class NewsPage(WagtailCacheMixin, Page):
     # Returns a queryset of NewsArticlePage objects that are live, that are direct
     # descendants of this index page with most recent first
     def get_news_articles(self):
-        return (
-            NewsArticlePage.objects.live()  # .descendant_of(self).order_by("-first_published_at")
-        )
+        return NewsArticlePage.objects.descendant_of(self).order_by("-last_published_at").live()
 
     def get_banner_image(self):
         if self.banner_image:
@@ -207,3 +205,169 @@ class FakeCataloguePage(WagtailCacheMixin, Page):
     content_panels = Page.content_panels
 
     template = "fake-catalogue/map-search.html"
+
+
+class SupportIndexPage(WagtailCacheMixin, Page):
+    # Can only have SupportAreaPage children
+    subpage_types = ["SupportAreaPage"]
+
+    banner_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    template = "home/support_index_page.html"
+
+    # Returns a queryset of SupportAreaPage objects that are live, that are direct
+    # descendants of this index page with most recent first
+    def get_support_areas(self):
+        return SupportAreaPage.objects.descendant_of(self).order_by("-first_published_at").live()
+
+    def get_banner_image(self):
+        if self.banner_image:
+            return self.banner_image
+        return None
+
+    # Allows child objects (e.g. SupportAreaPage objects) to be accessible via the
+    # template. We use this on the HomePage to display child items of featured
+    # content
+    def children(self):
+        return self.get_children().specific().live()
+
+    # Pagination for the index page. We use the `django.core.paginator` as any
+    # standard Django app would, but the difference here being we have it as a
+    # method on the model rather than within a view function
+    def paginate(self, request, *args):
+        page = request.GET.get("page")
+        paginator = Paginator(self.get_support_areas(), 12)
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+        return pages
+
+    # Returns the above to the get_context method that is used to populate the
+    # template
+    def get_context(self, request):
+        context = super(SupportIndexPage, self).get_context(request)
+
+        # SupportAreaPage objects (get_support_areas) are passed through pagination
+        support_areas = self.get_support_areas()
+        context["support_areas"] = support_areas
+
+        support_topics = self.children().type(SupportTopicPage)
+        context["support_topics"] = support_topics
+
+        return context
+
+    content_panels = Page.content_panels + [
+        FieldPanel("banner_image"),
+    ]
+
+
+class SupportAreaPage(WagtailCacheMixin, Page):
+    # Can only have SupportTopicPage children
+    subpage_types = ["SupportTopicPage", "SupportFAQPage"]
+
+    banner_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    template = "home/support_area_page.html"
+
+    def get_banner_image(self):
+        if self.banner_image:
+            return self.banner_image
+        return None
+
+    # Allows child objects (e.g. SupportTopicPage objects) to be accessible via the
+    # template. We use this on the HomePage to display child items of featured
+    # content
+    def children(self):
+        return self.get_children().specific().live()
+
+    # Pagination for the index page. We use the `django.core.paginator` as any
+    # standard Django app would, but the difference here being we have it as a
+    # method on the model rather than within a view function
+    def paginate(self, request, *args):
+        page = request.GET.get("page")
+        paginator = Paginator(self.get_support_areas(), 12)
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+        return pages
+
+    # Returns the above to the get_context method that is used to populate the
+    # template
+    def get_context(self, request):
+        context = super(SupportAreaPage, self).get_context(request)
+
+        support_topics = self.children().type(SupportTopicPage)
+        support_faqs = self.children().type(SupportFAQPage)
+
+        context["support_topics"] = support_topics
+        context["support_faqs"] = support_faqs
+
+        return context
+
+    content_panels = Page.content_panels + [
+        FieldPanel("banner_image"),
+        FieldPanel("image"),
+    ]
+
+
+class SupportTopicPage(WagtailCacheMixin, Page):
+    body = RichTextField(blank=True, default="")
+
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("image"),
+        FieldPanel("body"),
+    ]
+
+    template = "home/support_topic_page.html"
+
+
+class SupportFAQPage(WagtailCacheMixin, Page):
+    summary = models.TextField(help_text="Text to describe the page", blank=True)
+
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("summary"),
+    ]
+
+    # template = "home/news_article_page.html"

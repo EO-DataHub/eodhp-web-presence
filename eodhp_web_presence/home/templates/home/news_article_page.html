@@ -4,8 +4,6 @@
 
 {% block content %}
 
-{% include "home_menu.html" %}
-
 <div class="homePageBannerContainer">
     {% image page.get_parent.specific.get_banner_image scale-100 as img %}<img src="{{ img.url }}" class="homePageBannerImage">
 
@@ -16,7 +14,11 @@
 
 <div class="homePageBorder">
     <div class="homePageContent">
-        <div class="homePageText100">{{ page.body|richtext }}</div>
+        <div class="homePageText100">
+            <div class="emphasis">Published: {{ page.last_published_at|date:"d M Y" }}</div>
+            <p>
+            {{ page.body|richtext }}
+        </div>
     </div>
 </div>
 

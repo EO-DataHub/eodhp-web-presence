@@ -1,5 +1,7 @@
 from django.urls import path
 
-from .views import catalogue_page_view
+from .views import search_topics
 
-urlpatterns = [path("", catalogue_page_view, name="home/catalogue_page")]
+urlpatterns = [
+    path("search_items", search_topics, name="search_topics"),
+]

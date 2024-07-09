@@ -19,6 +19,7 @@ urlpatterns = [
         name="wagtailimages_serve",
     ),
     path("catalogue/", catalogue_page_view),
+    path("support/", include("home.urls")),
     path("robots.txt", robots_txt),
     path("", include(wagtail_urls)),  # This entry should always be at the end of urlpatterns
 ]

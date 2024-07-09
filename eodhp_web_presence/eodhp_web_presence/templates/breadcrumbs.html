@@ -1,0 +1,14 @@
+{% load static %}
+
+<nav class="breadcrumbs" aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+    {% if self.get_ancestors|length > 1 %}
+    <ol class="breadcrumb">
+        {% for p in self.get_ancestors %}
+        {% if p.is_root == False %}
+        <li class="breadcrumb-item"><a href="{{ p.url }}">{{ p.title }}</a></li>
+        {% endif %}
+        {% endfor %}
+        <li aria-current="page" class="breadcrumb-item active">{{ self.title }}</li>
+    </ol>
+    {% endif %}
+</nav>
