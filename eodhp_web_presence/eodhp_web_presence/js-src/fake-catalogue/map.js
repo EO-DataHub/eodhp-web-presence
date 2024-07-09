@@ -39,13 +39,40 @@ function hideSearchForFocusClickElsewhere(event) {
 }
 
 function showPointItemSearchResults(event) {
-    // console.debug(event)
     const currentlyShown = $('#point-search-results-box').css('display') != 'none'
-    if (event.target.id == 'map-image' && !currentlyShown) {
+    if ((event.target.id == 'map-image' || event.target.id == 'aoi') && !currentlyShown) {
         $('#point-search-results-box').show()
         $('#point-search-results-box').css('left', (event.x + 10) + 'px')
+
+        // For some reason the images and accompanying text sometimes appear selected.
+        getSelection().empty()
     } else {
-        if (!$(event.target).parents('#point-search-results-box').length) $('#point-search-results-box').hide()
+        if (!$(event.target).parents('#point-search-results-box').length) {
+            $('#point-search-results-box').hide()
+            $('.point-dataset-search-results-box').hide()
+        }
+    }
+}
+
+function showPointItemDatasetSearchResults(event) {
+    const target = $(event.target)
+    const initialSearchBox = $('#point-search-results-box')
+    const targetBox = target.parents('.point-search-result-box')
+    const boxToShow =
+        targetBox[0].id == "point-search-result-s2" ? "point-dataset-search-results-box-s2" :
+            targetBox[0].id == "point-search-result-ard" ? "point-dataset-search-results-box-ard" :
+                "point-dataset-search-results-box-planet"
+    const currentlyShown = $('#' + boxToShow).css('display') != 'none'
+    if (target.parents('.point-search-result-box') && !currentlyShown) {
+        $('.point-dataset-search-results-box').hide()
+        $('#' + boxToShow).show()
+        $('#' + boxToShow).css(
+            'left',
+            (initialSearchBox.position().left + initialSearchBox.width() + 10) + 'px')
+    } else {
+        if (!$(event.target).parents('.point-dataset-search-results-box').length) {
+            $('.point-dataset-search-results-box').hide()
+        }
     }
 }
 
@@ -59,4 +86,5 @@ $(() => {
     document.getElementById("map-image").addEventListener("click", showPointItemSearchResults)
     document.getElementById('search-form').addEventListener("submit", displaySearchResults)
     $('.point-search-copy-button').on("click", copyURLButtonPress)
+    $('#point-search-results-box').on("click", showPointItemDatasetSearchResults)
 })
