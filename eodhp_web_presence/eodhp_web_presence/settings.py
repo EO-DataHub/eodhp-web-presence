@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     "home",
     "eodhp_web_presence",
     "help",
-    "catalogue",
 ]
 
 
@@ -215,7 +214,7 @@ if env("USE_S3", default=False, cast=bool):
         location = MEDIAFILES_LOCATION
         file_overwrite = False
 
-    DEFAULT_FILE_STORAGE = "eodhp_web_presence.settings.MediaStorage"
+    STORAGES["default"]["BACKEND"] = "eodhp_web_presence.settings.MediaStorage"
     MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{MEDIAFILES_LOCATION}/"
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")

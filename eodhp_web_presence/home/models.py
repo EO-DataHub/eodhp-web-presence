@@ -1,5 +1,6 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import models
+from django.db.models import TextField
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page
@@ -9,7 +10,43 @@ from wagtailcache.cache import WagtailCacheMixin
 class HomePage(WagtailCacheMixin, Page):
     body = RichTextField(blank=True)
 
+    banner_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
+    )
+
     image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
+    )
+
+    video_url = TextField(blank=True)
+
+    about_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
+    )
+    contact_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
+    )
+    news_image = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
         blank=True,
@@ -20,13 +57,26 @@ class HomePage(WagtailCacheMixin, Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("body"),
+        FieldPanel("banner_image"),
         FieldPanel("image"),
+        FieldPanel("about_image"),
+        FieldPanel("contact_image"),
+        FieldPanel("news_image"),
+        FieldPanel("video_url"),
     ]
 
 
 class AboutPage(WagtailCacheMixin, Page):
     body = RichTextField(blank=True)
 
+    banner_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
+    )
     image = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -38,26 +88,40 @@ class AboutPage(WagtailCacheMixin, Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("body"),
+        FieldPanel("banner_image"),
         FieldPanel("image"),
     ]
 
     template = "home/about_page.html"
 
 
-class AnnouncementsPage(WagtailCacheMixin, Page):
-    # Can only have AnnouncementPage children
-    subpage_types = ["AnnouncementPage"]
+class NewsPage(WagtailCacheMixin, Page):
+    # Can only have NewsArticlePage children
+    subpage_types = ["NewsArticlePage"]
 
-    template = "home/announcements_page.html"
+    banner_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
 
-    # Returns a queryset of AnnouncementPage objects that are live, that are direct
+    template = "home/news_page.html"
+
+    # Returns a queryset of NewsArticlePage objects that are live, that are direct
     # descendants of this index page with most recent first
-    def get_announcements(self):
+    def get_news_articles(self):
         return (
-            AnnouncementPage.objects.live()  # .descendant_of(self).order_by("-first_published_at")
+            NewsArticlePage.objects.live()  # .descendant_of(self).order_by("-first_published_at")
         )
 
-    # Allows child objects (e.g. AnnouncementPage objects) to be accessible via the
+    def get_banner_image(self):
+        if self.banner_image:
+            return self.banner_image
+        return None
+
+    # Allows child objects (e.g. NewsArticlePage objects) to be accessible via the
     # template. We use this on the HomePage to display child items of featured
     # content
     def children(self):
@@ -68,7 +132,7 @@ class AnnouncementsPage(WagtailCacheMixin, Page):
     # method on the model rather than within a view function
     def paginate(self, request, *args):
         page = request.GET.get("page")
-        paginator = Paginator(self.get_announcements(), 12)
+        paginator = Paginator(self.get_news_articles(), 12)
         try:
             pages = paginator.page(page)
         except PageNotAnInteger:
@@ -80,18 +144,22 @@ class AnnouncementsPage(WagtailCacheMixin, Page):
     # Returns the above to the get_context method that is used to populate the
     # template
     def get_context(self, request):
-        context = super(AnnouncementsPage, self).get_context(request)
+        context = super(NewsPage, self).get_context(request)
 
-        # AnnouncementPage objects (get_accounecements) are passed through pagination
-        # announcements = self.paginate(request, self.get_announcements())
-        announcements = self.get_announcements()
+        # NewsArticlePage objects (get_news_articles) are passed through pagination
+        # news_articles = self.paginate(request, self.get_news_articles())
+        news_articles = self.get_news_articles()
 
-        context["announcements"] = announcements
+        context["news_articles"] = news_articles
 
         return context
 
+    content_panels = Page.content_panels + [
+        FieldPanel("banner_image"),
+    ]
 
-class AnnouncementPage(WagtailCacheMixin, Page):
+
+class NewsArticlePage(WagtailCacheMixin, Page):
     body = RichTextField(blank=True, default="")
     summary = models.TextField(help_text="Text to describe the page", blank=True)
 
@@ -109,14 +177,33 @@ class AnnouncementPage(WagtailCacheMixin, Page):
         FieldPanel("body"),
     ]
 
-    template = "home/announcement_page.html"
+    template = "home/news_article_page.html"
 
 
 class ContactPage(WagtailCacheMixin, Page):
     body = RichTextField(blank=True)
 
+    banner_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     content_panels = Page.content_panels + [
         FieldPanel("body"),
+        FieldPanel("banner_image"),
     ]
 
     template = "home/contact_page.html"
+
+
+class CataloguePage(Page):
+    content_panels = Page.content_panels
+
+
+class FakeCataloguePage(WagtailCacheMixin, Page):
+    content_panels = Page.content_panels
+
+    template = "fake-catalogue/map-search.html"

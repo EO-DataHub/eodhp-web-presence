@@ -37,6 +37,7 @@ jobs:
         run: |
           npm run build
           python ./eodhp_web_presence/manage.py collectstatic
+          python ./eodhp_web_presence/manage.py migrate
 
       - name: Run tests
         run: pytest ./eodhp_web_presence -vv

@@ -6,19 +6,58 @@
 
 {% include "home_menu.html" %}
 
-    <div class="homePageBorder">
-        <div class="homePageBanner">
-            EO DataHub
-        </div>
+<div class="homePageBannerContainer" id="big">
+    {% image page.banner_image scale-100 as img %}<img src="{{ img.url }}" class="homePageBannerImage">
 
-        <div class="homePageContent">
-            {% image page.image scale-100 as img %}<img src="{{ img.url }}" alt="{{ img.alt }}" class="homePageImage50">
-            <div class="homePageText50">{{ page.body|richtext }}
-
-                <p>
-
-            </div>
-        </div>
+    <div class="homePageBannerText" id="centre">
+        {{ page.title|richtext }}
     </div>
+</div>
+
+<div class="homePageBorder">
+    <div class="homePageContent">
+
+        {% if page.image %}
+        {% image page.image scale-100 as img %}<img src="{{ img.url }}" class="homePageImage50">
+        <div class="homePageText50">{{ page.body|richtext }}</div>
+        {% else %}
+        <div class="homePageText100">{{ page.body|richtext }}</div>
+        {% endif %}
+
+        {% if page.video_url %}
+        <p>
+        <div class="homePageText100">
+            <video width="100%" class="homePageContent" controls src={{ page.video_url }}></video>
+        </div>
+        {% endif %}
+
+        <p>
+    </div>
+</div>
+
+<div class="boxes">
+    <div class="homePageBorder" id="footer">
+        <div class="boxLink">
+            <a href="/about">
+                {% image page.about_image scale-100 as img %}<img src="{{ img.url }}" class="boxLinkImage">
+                <div class="boxLinkText">About</div>
+            </a>
+        </div>
+        <div class="boxLink">
+            <a href="/news">
+                {% image page.news_image scale-100 as img %}<img src="{{ img.url }}" class="boxLinkImage">
+                <div class="boxLinkText">News</div>
+            </a>
+        </div>
+        <div class="boxLink">
+            <a href="/contact">
+                {% image page.contact_image scale-100 as img %}<img src="{{ img.url }}" class="boxLinkImage">
+                <div class="boxLinkText">Contact</div>
+            </a>
+        </div>
+        <span class="stretch"></span>
+
+    </div>
+</div>
 
 {% endblock content %}

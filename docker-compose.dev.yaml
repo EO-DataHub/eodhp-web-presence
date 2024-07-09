@@ -12,6 +12,8 @@ services:
       - .:/app
       - media_volume:/app/media
       - node_modules_volume:/app/node_modules
+      - cache_volume:/app/cache
+
     env_file:
       - .env
     environment:
@@ -31,9 +33,11 @@ services:
     volumes:
       - .:/app
       - node_modules_volume:/app/node_modules
+      - cache_volume:/app/cache
     command: bash -c 'npm install && npm start'
     entrypoint: ""
 
 volumes:
   media_volume:
   node_modules_volume:
+  cache_volume:
