@@ -22,6 +22,8 @@ build==1.2.1
     # via pip-tools
 certifi==2024.6.2
     # via requests
+cfgv==3.4.0
+    # via pre-commit
 charset-normalizer==3.3.2
     # via requests
 click==8.1.7
@@ -30,6 +32,8 @@ click==8.1.7
     #   pip-tools
 defusedxml==0.7.1
     # via willow
+distlib==0.3.8
+    # via virtualenv
 django==5.0.6
     # via
     #   django-filter
@@ -68,6 +72,10 @@ et-xmlfile==1.1.0
     # via openpyxl
 execnet==2.1.1
     # via pytest-xdist
+fastjsonschema==2.20.0
+    # via validate-pyproject
+filelock==3.15.4
+    # via virtualenv
 filetype==1.2.0
     # via willow
 gevent==24.2.1
@@ -78,6 +86,8 @@ gunicorn==22.0.0
     # via eodhp-website (pyproject.toml)
 html5lib==1.1
     # via wagtail
+identify==2.5.36
+    # via pre-commit
 idna==3.7
     # via requests
 iniconfig==2.0.0
@@ -94,6 +104,8 @@ libsass==0.23.0
     # via django-sass
 mypy-extensions==1.0.0
     # via black
+nodeenv==1.9.1
+    # via pre-commit
 openpyxl==3.1.5
     # via wagtail
 packaging==24.1
@@ -102,6 +114,7 @@ packaging==24.1
     #   build
     #   gunicorn
     #   pytest
+    #   validate-pyproject
 pathspec==0.12.1
     # via black
 pillow==10.4.0
@@ -113,9 +126,13 @@ pillow-heif==0.16.0
 pip-tools==7.4.1
     # via eodhp-website (pyproject.toml)
 platformdirs==4.2.2
-    # via black
+    # via
+    #   black
+    #   virtualenv
 pluggy==1.5.0
     # via pytest
+pre-commit==3.7.1
+    # via eodhp-website (pyproject.toml)
 psycopg2-binary==2.9.9
     # via eodhp-website (pyproject.toml)
 pyproject-hooks==1.1.0
@@ -142,6 +159,8 @@ pytz==2024.1
     # via
     #   django-modelcluster
     #   l18n
+pyyaml==6.0.1
+    # via pre-commit
 requests==2.32.3
     # via wagtail
 ruff==0.5.0
@@ -159,10 +178,16 @@ sqlparse==0.5.0
     # via django
 telepath==0.3.1
     # via wagtail
+trove-classifiers==2024.7.2
+    # via validate-pyproject
 urllib3==2.2.2
     # via
     #   botocore
     #   requests
+validate-pyproject[all]==0.18
+    # via eodhp-website (pyproject.toml)
+virtualenv==20.26.3
+    # via pre-commit
 wagtail==5.2.5
     # via
     #   eodhp-website (pyproject.toml)

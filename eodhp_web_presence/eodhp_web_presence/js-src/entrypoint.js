@@ -3,4 +3,5 @@ import './scss/fira.scss';
 import './scss/menu.scss';
 import './scss/footer.scss';
 import './scss/home.scss';
-import './scss/home_menu.scss';
+import './js/bootstrap.min.js';
+import './js/support.js';

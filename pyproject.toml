@@ -14,7 +14,7 @@
 
 [project]
 name = "eodhp-website"
-version = "0.1.11"
+version = "0.1.12-rc1"
 description = "Wagtail-based website for EODHP"
 readme = "README.md"
 
@@ -97,6 +97,8 @@ dev = [
     "ruff",
     "pytest-django",
     "isort",
+    "validate-pyproject[all]",
+    "pre-commit",
 ]
 
 # List URLs that are relevant to your project
@@ -157,7 +159,7 @@ exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["E", "F", "B", "W"]
+select = ["E", "F", "B", "W", "I"]
 
 [tool.pylint.'MESSAGES CONTROL']
 disable = '''

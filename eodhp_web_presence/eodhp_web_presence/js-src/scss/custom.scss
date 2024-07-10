@@ -7,8 +7,9 @@ $grey:          #EFEFEF;
 $black:         #000000;
 
 $theme-colors: (
-  "light": $light-blue,
-  "primary": $dark-blue,
+  "light": $light-grey,
+  "primary": $blue,
+  "dark": $dark-blue,
 );
 
 html * {

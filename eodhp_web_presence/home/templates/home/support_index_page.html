@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+
+
+<div class="homePageBannerContainer">
+    {% image page.banner_image scale-100 as img %}<img alt="{{ img.alt }}" class="homePageBannerImage"
+                                                       src="{{ img.url }}">
+
+    <div class="homePageBannerText">
+        {{ page.title|richtext }}
+    </div>
+</div>
+
+<div class="homePageBorder">
+    <div class="homePageContent">
+
+        {% include "breadcrumbs.html" %}
+
+        <input aria-describedby="basic-addon2" aria-label="Search" class="form-control searchBox50" id="searchBoxIndex"
+               placeholder="I want to..." type="text">
+        <p>
+        <div class="homePageText100">
+            <div class="list-group" id="supportTopicSearchResults"></div>
+        </div>
+    </div>
+    <div class="homePageContent">
+        {% for area in support_areas %}
+        <div class="homePageItem">
+            <a href="{{ area.slug }}">
+                {% if area.image %}
+                <div class="homePageImage100">{% image area.image max-320x150 as img %}<img alt="{{ img.alt }}"
+                                                                                            class="homePageImage"
+                                                                                            src="{{ img.url }}"></div>
+                {% endif %}
+                <div class="homePageItemTitleBig">{{ area.title }}</div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

@@ -71,5 +71,6 @@
         "no-self-compare": "error",
         "no-shadow": "error",
         "import/no-named-as-default-member": "off"
-    }
+    },
+    "ignorePatterns": ["*.min.js"]
 }
