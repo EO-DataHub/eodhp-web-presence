@@ -7,7 +7,7 @@ dockerbuild:
 	DOCKER_BUILDKIT=1 docker build -t ${IMAGENAME}:${VERSION} .
 
 dockerpush: dockerbuild testdocker
-	docker tag ${IMAGENAME}:${VERSION} ${}DOCKERREPO}/${IMAGENAME}:${VERSION}
+	docker tag ${IMAGENAME}:${VERSION} ${DOCKERREPO}/${IMAGENAME}:${VERSION}
 	docker push ${DOCKERREPO}/${IMAGENAME}:${VERSION}
 
 test:
