@@ -42,7 +42,7 @@ function showPointItemSearchResults(event) {
     const currentlyShown = $('#point-search-results-box').css('display') != 'none'
     if ((event.target.id == 'map-image' || event.target.id == 'aoi') && !currentlyShown) {
         $('#point-search-results-box').show()
-        $('#point-search-results-box').css('left', (event.x + 10) + 'px')
+        $('#point-search-results-box').css('left', (event.pageX + 10) + 'px')
 
         // For some reason the images and accompanying text sometimes appear selected.
         getSelection().empty()
@@ -81,10 +81,10 @@ function copyURLButtonPress(event) {
 }
 
 $(() => {
-    document.getElementById('search-area').addEventListener("focusin", showHideSearchForFocusChange)
-    document.body.addEventListener("click", hideSearchForFocusClickElsewhere)
-    document.getElementById("map-image").addEventListener("click", showPointItemSearchResults)
-    document.getElementById('search-form').addEventListener("submit", displaySearchResults)
+    $('#search-area').on('focusin', showHideSearchForFocusChange)
+    $(document.body).on('click', hideSearchForFocusClickElsewhere)
+    $('#map-image').on('click', showPointItemSearchResults)
+    $('#search-form').on('submit', displaySearchResults)
     $('.point-search-copy-button').on("click", copyURLButtonPress)
     $('#point-search-results-box').on("click", showPointItemDatasetSearchResults)
 })
