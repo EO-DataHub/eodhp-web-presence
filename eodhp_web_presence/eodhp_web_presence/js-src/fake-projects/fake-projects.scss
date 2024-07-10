@@ -1,4 +1,4 @@
-@use '../scss/_colours.scss';
+@use '../scss/custom.scss';
 
 html {
     height: 100%;
@@ -17,7 +17,7 @@ body {
 }
 
 #projects-list-container {
-    background-color: colours.$light-grey;
+    background-color: custom.$light-grey;
     padding-left: 1rem;
     padding-right: 1rem;
 }
@@ -50,7 +50,7 @@ body {
 
 .project-menu-item:hover,
 .project-menu-item.selected {
-    background-color: colours.$grey;
+    background-color: custom.$grey;
     font-weight: bold;
 }
 
@@ -79,17 +79,17 @@ body {
 
 #stores-count {
     font-size: 0.8rem;
-    color: colours.$blue;
+    color: custom.$blue;
 }
 
 #stores-list {
-    background-color: colours.$light-grey;
+    background-color: custom.$light-grey;
     padding: 0;
     margin-top: 1rem;
 }
 
 #stores-list>li {
-    border: 1px solid colours.$light-blue;
+    border: 1px solid custom.$light-blue;
     border-collapse: collapse;
     display: block;
     padding-left: 1rem;
@@ -112,11 +112,11 @@ body {
     font-size: 1.4rem;
     font-weight: bold;
     // margin-bottom: 0.2rem;
-    // color: colours.$blue;
+    // color: custom.$blue;
 }
 
 .store-name {
-    color: colours.$blue;
+    color: custom.$blue;
     margin-bottom: 0.2rem;
     font-size: 0.8rem;
 }
@@ -131,9 +131,9 @@ body {
 }
 
 .store-info code {
-    background-color: colours.$grey;
+    background-color: custom.$grey;
     border-radius: 5px;
-    border-color: colours.$light-blue;
+    border-color: custom.$light-blue;
     border-width: 1px;
     border-style: solid;
     display: inline-block;
@@ -150,13 +150,13 @@ body {
 
 
 #linked-accounts-list {
-    background-color: colours.$light-grey;
+    background-color: custom.$light-grey;
     padding: 0;
     margin-top: 1rem;
 }
 
 #linked-accounts-list>li {
-    border: 1px solid colours.$light-blue;
+    border: 1px solid custom.$light-blue;
     border-collapse: collapse;
     display: block;
     padding-left: 1rem;
@@ -179,7 +179,7 @@ body {
     font-size: 1.4rem;
     font-weight: bold;
     // margin-bottom: 0.2rem;
-    // color: colours.$blue;
+    // color: custom.$blue;
 }
 
 .linked-descr {
@@ -188,20 +188,20 @@ body {
 }
 
 button.linked-remove {
-    background-color: colours.$blue;
+    background-color: custom.$blue;
     color: white;
 }
 
 
 #home-list {
-    background-color: colours.$light-grey;
+    background-color: custom.$light-grey;
     padding: 0;
     margin-top: 1rem;
     display: inline-block;
 }
 
 #home-list>li {
-    border: 1px solid colours.$light-blue;
+    border: 1px solid custom.$light-blue;
     border-collapse: collapse;
     display: block;
     padding-left: 1rem;
@@ -223,9 +223,9 @@ button.linked-remove {
 a.project-home-link {
     display: block;
     width: 20rem;
-    // background-color: colours.$light-grey;
-    border: 1px solid colours.$light-blue;
-    background-color: colours.$blue;
+    // background-color: custom.$light-grey;
+    border: 1px solid custom.$light-blue;
+    background-color: custom.$blue;
     color: white;
     text-decoration: none;
     text-align: center;

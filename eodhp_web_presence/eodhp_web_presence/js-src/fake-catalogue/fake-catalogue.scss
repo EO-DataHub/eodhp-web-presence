@@ -1,4 +1,4 @@
-@use '../scss/_colours.scss';
+@use '../scss/custom.scss';
 
 html {
     height: 100%;
@@ -23,7 +23,7 @@ body {
 #search-area {
     width: 80%;
     max-width: 1100px;
-    background-color: colours.$grey;
+    background-color: custom.$grey;
     padding-left: 1rem;
     padding-right: 1rem;
     color: black;
@@ -42,18 +42,18 @@ body {
 #search-area thead tr {
     border-bottom: 2px;
     border-style: solid;
-    border-color: colours.$blue
+    border-color: custom.$blue
 }
 
 #search-area tbody tr {
     border-bottom: 1px;
-    border-color: colours.$blue;
+    border-color: custom.$blue;
     border-style: solid;
     padding-top: 5px;
 }
 
 .filter-box {
-    background-color: colours.$grey;
+    background-color: custom.$grey;
     height: 100%;
     padding-left: 1rem;
     padding-right: 0.5rem;
@@ -73,7 +73,7 @@ body {
 
 .filter-box-section {
     border-bottom-width: 1px;
-    border-bottom-color: colours.$blue;
+    border-bottom-color: custom.$blue;
     border-bottom-style: solid;
     padding-right: 0.5rem;
     padding-top: 1rem;
@@ -90,7 +90,7 @@ body {
     top: 10%;
     width: 260px;
     display: none;
-    background-color: colours.$grey;
+    background-color: custom.$grey;
     color: black;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
@@ -104,7 +104,7 @@ body {
     top: 10%;
     width: 400px;
     display: none;
-    background-color: colours.$grey;
+    background-color: custom.$grey;
     color: black;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
@@ -150,7 +150,7 @@ body {
     width: 100px;
     height: 100px;
     border: 1px solid black;
-    background-color: colours.$blue;
+    background-color: custom.$blue;
     position: absolute;
 }
 
