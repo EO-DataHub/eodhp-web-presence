@@ -16,6 +16,11 @@ module.exports = {
             import: ['./eodhp_web_presence/eodhp_web_presence/js-src/fake-catalogue/index.js'],
             dependOn: ['main'],
         },
+
+        'fake-projects': {
+            import: ['./eodhp_web_presence/eodhp_web_presence/js-src/fake-projects/index.js'],
+            dependOn: ['main'],
+        },
     },
     output: {
         filename: "[name]-[contenthash].js",
@@ -32,7 +37,8 @@ module.exports = {
             directory: path.join(__dirname, 'assets/webpack_bundles/'),
             publicPath: '/static/',
             watch: true,
-        }
+        },
+        watchFiles: ["node_modules/**/*", "eodhp_web_presence/**/*"],
     },
     plugins: [
         new BundleTracker({ path: __dirname, filename: 'webpack-stats.json' }),
