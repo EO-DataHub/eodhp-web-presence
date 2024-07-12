@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-container-registry
           aws-region: ${{ secrets.AWS_REGION }}
@@ -41,19 +41,18 @@ jobs:
       - name: Get image tag
         run: echo IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/}" =~ ^v ]]; then echo ${GITHUB_REF##refs/tags/v}; elif [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then echo "latest"; else echo "${GITHUB_REF##refs/heads/}-latest" | sed "s/[^a-zA-Z0-9]/-/g" ; fi) >> "$GITHUB_ENV"
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
         with:
           registries: ${{ inputs.AWS_ACCOUNT_ID }}
           mask-password: "true" # see: https://github.com/aws-actions/amazon-ecr-login#docker-credentials
 
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-publish
-        shell: bash
-        run: |
-          FQ_IMAGE_NAME=${{ secrets.AWS_ECR }}/$IMAGE_NAME:$IMAGE_TAG
-          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR }}
-          docker build -t $IMAGE_NAME .
-          docker build -t $FQ_IMAGE_NAME .
-          docker push $FQ_IMAGE_NAME
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ${{ secrets.AWS_ECR }}/$IMAGE_NAME:$IMAGE_TAG
