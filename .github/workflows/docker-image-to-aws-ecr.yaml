@@ -55,4 +55,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{ secrets.AWS_ECR }}/$IMAGE_NAME:$IMAGE_TAG
+          tags: ${{ secrets.AWS_ECR }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
