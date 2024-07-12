@@ -10,12 +10,18 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
       - 'v[0-9]+.[0-9]+.[0-9]+-*'
     branches:
-      - main
+      - '**'
 
 env:
   IMAGE_NAME: eodhp-web-presence
 
 jobs:
+  pre-commit:
+    uses: "./.github/workflows/pre-commit.yml"
+  security:
+    uses: "./.github/workflows/security.yaml"
+  unit-tests:
+    uses: "./.github/workflows/unit-tests.yaml"
   docker:
     runs-on: ubuntu-latest
 
@@ -24,30 +30,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: psf/black@stable
-        with:
-          options: "--line-length 100 --check --verbose"
-      - uses: chartboost/ruff-action@v1
-      - run: pip install isort
-      - run: isort . --check --diff
-
-      - name: Security check - Bandit
-        uses: mdegis/bandit-action@v1.0.1
-        with:
-          path: "."
-          level: high
-          confidence: high
-          exit_zero: true
-          skips: B101
-      - name: Security check - Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+      - uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -56,7 +39,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Get image tag
-        run: echo IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/}" =~ ^v ]]; then echo ${GITHUB_REF##refs/tags/v}; else echo "latest"; fi) >> "$GITHUB_ENV"
+        run: echo IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/}" =~ ^v ]]; then echo ${GITHUB_REF##refs/tags/v}; elif [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then echo "latest"; else echo "${GITHUB_REF##refs/heads/}-latest" | sed "s/[^a-zA-Z0-9]/-/g" ; fi) >> "$GITHUB_ENV"
 
       - name: Login to Amazon ECR
         id: login-ecr
