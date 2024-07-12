@@ -53,7 +53,7 @@ RUN npm run build
 # collectstatic is done here so that production builds can have permission to modify their root
 # filesystem (or at least the code itself) removed. In development collectstatic is run during
 # startup and/or isn't necessary.
-RUN sh -c '[ "$NODE_ENV" == "development" ] || python /app/eodhp_web_presence/manage.py collectstatic --noinput'
+RUN sh -c '[ "$NODE_ENV" = "development" ] || python /app/eodhp_web_presence/manage.py collectstatic --noinput'
 WORKDIR /app/eodhp_web_presence
 
 COPY entrypoint.sh /usr/src/app/entrypoint.sh
