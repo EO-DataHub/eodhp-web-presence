@@ -50,12 +50,7 @@ jobs:
         with:
           registries: ${{ inputs.AWS_ACCOUNT_ID }}
           mask-password: "true" # see: https://github.com/aws-actions/amazon-ecr-login#docker-credentials
-
-      - name: Docker login
-        id: docker-login
-        shell: bash
-        run: |
-          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR }}
+          registry-type: public
 
       - name: Build and push
         uses: docker/build-push-action@v6
