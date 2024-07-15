@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Security check - Bandit
-        uses: mdegis/bandit-action@v1.0.1
+        uses: mdegis/bandit-action@v1.1
         with:
           path: "."
           level: high
@@ -24,7 +24,7 @@ jobs:
           skips: B101
 
       - name: Security check - Trivy
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@0.24.0
         with:
           scan-type: 'fs'
           ignore-unfixed: true
