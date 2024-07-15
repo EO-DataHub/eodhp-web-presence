@@ -53,7 +53,7 @@ ENV DEBUG $DEBUG
 ARG GIT_REF_NAME="no-ref-name"
 ENV GIT_REF_NAME $GIT_REF_NAME
 ARG GIT_SHA="no-sha"
-ENV GIT_SHA $GIT_REF_NAME
+ENV GIT_SHA $GIT_SHA
 
 RUN npm run build
 # collectstatic is done here so that production builds can have permission to modify their root
