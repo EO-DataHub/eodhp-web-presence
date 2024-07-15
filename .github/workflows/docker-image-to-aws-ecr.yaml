@@ -57,8 +57,13 @@ jobs:
         run: |
           aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR }}
 
+        # This will cache Docker layers.
+        # We could also cache the cache mounts used in the Dockerfile but do not,
+        # see https://docs.docker.com/build/ci/github-actions/cache/
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           push: true
           tags: ${{ secrets.AWS_ECR }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
