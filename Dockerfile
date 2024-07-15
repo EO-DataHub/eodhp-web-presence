@@ -49,6 +49,12 @@ ENV NODE_ENV $NODE_ENV
 ARG DEBUG
 ENV DEBUG $DEBUG
 
+# Only set in GitHub Actions.
+ARG GIT_REF_NAME="no-ref-name"
+ENV GIT_REF_NAME $GIT_REF_NAME
+ARG GIT_SHA="no-sha"
+ENV GIT_SHA $GIT_REF_NAME
+
 RUN npm run build
 # collectstatic is done here so that production builds can have permission to modify their root
 # filesystem (or at least the code itself) removed. In development collectstatic is run during
