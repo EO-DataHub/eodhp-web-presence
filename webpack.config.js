@@ -5,8 +5,6 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const webpack = require('webpack');
 const { GitRevisionPlugin } = require('git-revision-webpack-plugin')
 
-const gitRevisionPlugin = new GitRevisionPlugin()
-
 
 module.exports = {
     context: __dirname,
@@ -55,16 +53,6 @@ module.exports = {
             cache: true,
             emitError: true,
         }),
-
-        // This allows us to use git-revision-version, git-revision-hash and git-revision-branch
-        // in path substitutions later.
-        gitRevisionPlugin,
-
-        // This defines constants which are replaced in the generated JS bundle.
-        // This is more similar to a search-and-replace than setting a variable.
-        new webpack.DefinePlugin({
-            __VERSION__: JSON.stringify(gitRevisionPlugin.version()),
-        }),
     ],
     module: {
         rules: [
@@ -91,3 +79,22 @@ module.exports = {
         ],
     },
 };
+
+
+// This adds a __VERSION__ variable (more like a search-and-replace than a variable)
+// so that we can put the Git revision in the HTML in version.js.
+if (process.env.GITHUB_REF_NAME) {
+    module.exports.plugins.push(new webpack.DefinePlugin({
+        __VERSION__: JSON.stringify(process.env.GITHUB_REF_NAME),
+    }))
+} else {
+    const gitRevisionPlugin = new GitRevisionPlugin()
+
+    module.exports.plugins.push(
+        gitRevisionPlugin,
+
+        new webpack.DefinePlugin({
+            __VERSION__: JSON.stringify(gitRevisionPlugin.version()),
+        }),
+    )
+}
