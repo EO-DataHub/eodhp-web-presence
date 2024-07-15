@@ -3,6 +3,9 @@ const BundleTracker = require('webpack-bundle-tracker');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const webpack = require('webpack');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin')
+
+const gitRevisionPlugin = new GitRevisionPlugin()
 
 
 module.exports = {
@@ -51,6 +54,16 @@ module.exports = {
             formatter: require('eslint-friendly-formatter'),
             cache: true,
             emitError: true,
+        }),
+
+        // This allows us to use git-revision-version, git-revision-hash and git-revision-branch
+        // in path substitutions later.
+        gitRevisionPlugin,
+
+        // This defines constants which are replaced in the generated JS bundle.
+        // This is more similar to a search-and-replace than setting a variable.
+        new webpack.DefinePlugin({
+            __VERSION__: JSON.stringify(gitRevisionPlugin.version()),
         }),
     ],
     module: {
