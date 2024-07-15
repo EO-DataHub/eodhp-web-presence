@@ -85,7 +85,7 @@ module.exports = {
 // so that we can put the Git revision in the HTML in version.js.
 if (process.env.GITHUB_REF_NAME) {
     module.exports.plugins.push(new webpack.DefinePlugin({
-        __VERSION__: JSON.stringify(process.env.GITHUB_REF_NAME),
+        __VERSION__: JSON.stringify(process.env.GITHUB_REF_NAME + "-" + GITHUB_SHA),
     }))
 } else {
     const gitRevisionPlugin = new GitRevisionPlugin()
