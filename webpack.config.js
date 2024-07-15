@@ -3,7 +3,6 @@ const BundleTracker = require('webpack-bundle-tracker');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const webpack = require('webpack');
-const { GitRevisionPlugin } = require('git-revision-webpack-plugin')
 
 
 module.exports = {
@@ -88,6 +87,7 @@ if (process.env.GITHUB_REF_NAME) {
         __VERSION__: JSON.stringify(process.env.GITHUB_REF_NAME + "-" + process.env.GITHUB_SHA),
     }))
 } else {
+    const { GitRevisionPlugin } = require('git-revision-webpack-plugin')
     const gitRevisionPlugin = new GitRevisionPlugin()
 
     module.exports.plugins.push(
