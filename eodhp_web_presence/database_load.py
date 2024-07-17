@@ -40,7 +40,7 @@ def truncate_tables() -> str:
                 conn.commit()
             except psycopg2.errors.UndefinedTable:
                 logging.info(
-                    f"Error truncating {table} - check that it exists and consider deleting unused table from original database"
+                    f"Error truncating {table} - check that it exists and consider deleting unused table from original database"  # noqa: E501
                 )
                 conn.rollback()
 
