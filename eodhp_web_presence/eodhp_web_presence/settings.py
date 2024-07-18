@@ -131,7 +131,7 @@ DATABASES = {
         "PORT": env("SQL_PORT", default="5432"),
         "OPTIONS": {
             "options": f"-c search_path {os.environ['ENV_NAME']}",
-        }
+        },
     }
 }
 
