@@ -129,9 +129,6 @@ DATABASES = {
         "PASSWORD": env("SQL_PASSWORD", default="password"),
         "HOST": env("SQL_HOST", default="localhost"),
         "PORT": env("SQL_PORT", default="5432"),
-        "OPTIONS": {
-            "options": f"-c search_path {os.environ.get('ENV_NAME', 'public')}",
-        },
     }
 }
 
