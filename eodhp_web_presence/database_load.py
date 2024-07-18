@@ -7,7 +7,7 @@ import tempfile
 import boto3
 import psycopg2
 
-table_prefixes = ["home", "help", "wagtailimages", "wagtailcore"]
+table_prefixes = ["home", "wagtailimages", "wagtailcore"]
 
 bucket_name = "web-database-exports"
 
@@ -27,8 +27,8 @@ def truncate_tables() -> str:
 
     for prefix in table_prefixes:
         cur.execute(
-            "SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename LIKE %s;",
-            (prefix + "%",),
+            "SELECT tablename FROM pg_tables WHERE schemaname = %s AND tablename LIKE %s;",
+            (os.environ["ENV_NAME"], prefix + "%",),
         )
         table_names.extend([row[0] for row in cur.fetchall()])
 
