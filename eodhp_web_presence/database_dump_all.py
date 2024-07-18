@@ -7,7 +7,21 @@ import tempfile
 import boto3
 import psycopg2
 
-table_prefixes = ["home", "wagtailimages", "wagtailcore", "auth", "django", "taggit", "wagtailadmin", "wagtaildocs", "wagtailembeds", "wagtailforms", "wagtailredirects", "wagtailsearch", "wagtailusers"]
+table_prefixes = [
+    "home",
+    "wagtailimages",
+    "wagtailcore",
+    "auth",
+    "django",
+    "taggit",
+    "wagtailadmin",
+    "wagtaildocs",
+    "wagtailembeds",
+    "wagtailforms",
+    "wagtailredirects",
+    "wagtailsearch",
+    "wagtailusers",
+]
 
 pg_dump_path = "pg_dump"
 
@@ -30,7 +44,10 @@ def get_tables() -> str:
     for prefix in table_prefixes:
         cur.execute(
             "SELECT tablename FROM pg_tables WHERE schemaname = %s AND tablename LIKE %s;",
-            (os.environ["ENV_NAME"], prefix + "%",),
+            (
+                os.environ["ENV_NAME"],
+                prefix + "%",
+            ),
         )
         table_names.extend([row[0] for row in cur.fetchall()])
 

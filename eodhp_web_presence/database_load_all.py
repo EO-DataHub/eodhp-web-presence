@@ -36,13 +36,13 @@ if __name__ == "__main__":
         logging.info(f"Collecting {file} from {bucket_name}")
         s3.download_file(bucket_name, file, f"{tmpdir}/{file}")
 
-        source = file.split('-')[0]
-        target = os.environ['ENV_NAME']
+        source = file.split("-")[0]
+        target = os.environ["ENV_NAME"]
 
-        output_file = 'new_schema.sql'
-        with open(output_file, 'w') as f:
-            for line in open(f'{tmpdir}/{file}').readlines():
-                line = line.replace(f'{source}.', f'{target}.')
+        output_file = "new_schema.sql"
+        with open(output_file, "w") as f:
+            for line in open(f"{tmpdir}/{file}").readlines():
+                line = line.replace(f"{source}.", f"{target}.")
                 f.write(line)
 
         command = f'{pg_load_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} < {output_file}'  # noqa: E501
