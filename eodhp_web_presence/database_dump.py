@@ -30,7 +30,7 @@ if __name__ == "__main__":
     else:
         s3 = boto3.resource("s3")
 
-    output_file = f'{os.environ.get("ENV_NAME", "default")}-wagtail_dump-{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.sql'  # noqa: E501
+    output_file = f'{os.environ.get("ENV_NAME", "default")}-wagtail_dump-{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.json'  # noqa: E501
 
     with tempfile.NamedTemporaryFile() as tf:
         tf.name = output_file
