@@ -7,7 +7,7 @@ import tempfile
 import boto3
 import psycopg2
 
-table_prefixes = ["home", "help", "wagtailimages", "wagtailcore"]
+table_prefixes = ["home", "wagtailimages", "wagtailcore", "auth", "django", "taggit", "wagtailadmin", "wagtaildocs", "wagtailembeds", "wagtailforms", "wagtailredirects", "wagtailsearch", "wagtailusers"]
 
 pg_dump_path = "pg_dump"
 
@@ -29,8 +29,8 @@ def get_tables() -> str:
 
     for prefix in table_prefixes:
         cur.execute(
-            "SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename LIKE %s;",
-            (prefix + "%",),
+            "SELECT tablename FROM pg_tables WHERE schemaname = %s AND tablename LIKE %s;",
+            (os.environ["ENV_NAME"], prefix + "%",),
         )
         table_names.extend([row[0] for row in cur.fetchall()])
 
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     with tempfile.NamedTemporaryFile() as tf:
         tf.name = output_file
 
-        command = f'{pg_dump_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} {tables_str} -F c -f {output_file}'  # noqa: E501
+        command = f'{pg_dump_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} {tables_str} -f {output_file}'  # noqa: E501
 
         logging.info(f"Running: {command}")
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]

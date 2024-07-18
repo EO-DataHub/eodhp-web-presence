@@ -6,9 +6,7 @@ import tempfile
 
 import boto3
 
-table_prefixes = ["home", "help", "wagtailimages", "wagtailcore"]
-
-pg_load_path = "pg_restore"
+pg_load_path = "psql"
 
 bucket_name = "web-database-exports"
 
@@ -38,7 +36,16 @@ if __name__ == "__main__":
         logging.info(f"Collecting {file} from {bucket_name}")
         s3.download_file(bucket_name, file, f"{tmpdir}/{file}")
 
-        command = f'{pg_load_path} -c -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} < {tmpdir}/{file}'  # noqa: E501
+        source = file.split('-')[0]
+        target = os.environ['ENV_NAME']
+
+        output_file = 'new_schema.sql'
+        with open(output_file, 'w') as f:
+            for line in open(f'{tmpdir}/{file}').readlines():
+                line = line.replace(f'{source}.', f'{target}.')
+                f.write(line)
+
+        command = f'{pg_load_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} < {output_file}'  # noqa: E501
 
         logging.info(f"Running: {command}")
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
