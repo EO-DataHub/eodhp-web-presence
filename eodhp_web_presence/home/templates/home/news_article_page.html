@@ -5,11 +5,14 @@
 {% block content %}
 
 <div class="homePageBannerContainer">
-    {% image page.get_parent.specific.get_banner_image scale-100 as img %}<img src="{{ img.url }}" class="homePageBannerImage">
 
-        <div class="homePageBannerText">
-            {{ page.title|richtext }}
-        </div>
+    {% if page.get_parent.specific.banner_image %}
+        {% image page.get_parent.specific.get_banner_image scale-100 as img %}<img src="{{ img.url }}" class="homePageBannerImage">
+    {% endif %}
+
+    <div class="homePageBannerText">
+        {{ page.title|richtext }}
+    </div>
 </div>
 
 <div class="homePageBorder">
