@@ -1,15 +1,15 @@
 import $ from 'jquery'
 
-const runSearch = async(input) => {
-    try {
-        await $.get({'url': '/support/search_items', 'data': {'query': input}}).done((result) => {
-            $('#supportTopicSearchResults').html(result);
-        })
-    }
-    catch(err) {
+const runSearch = (input) => {
+    $.get({
+        url: '/support/search_items',
+        data: { query: input }
+    }).done((result) => {
+        $('#supportTopicSearchResults').html(result);
+    }).fail((error) => {
         console.log("Unable to search");
-        alert(err);
-    }
+        alert("Error: " + error.statusText);
+    });
 }
 
 function filterItemsIndex() {
