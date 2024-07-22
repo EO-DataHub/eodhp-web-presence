@@ -7,7 +7,8 @@
 <div class="homePageBannerContainer">
 
     {% if page.banner_image %}
-        {% image page.banner_image scale-100 as img %}<img alt="{{ img.alt }}" class="homePageBannerImage"
+        {% image page.banner_image scale-100 as img %}<img alt="Banner image"
+                                                           class="homePageBannerImage"
                                                            src="{{ img.url }}">
     {% endif %}
 
