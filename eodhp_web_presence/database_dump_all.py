@@ -7,54 +7,11 @@ import tempfile
 import boto3
 import psycopg2
 
-table_prefixes = [
-    "home",
-    "wagtailimages",
-    "wagtailcore",
-    "auth",
-    "django",
-    "taggit",
-    "wagtailadmin",
-    "wagtaildocs",
-    "wagtailembeds",
-    "wagtailforms",
-    "wagtailredirects",
-    "wagtailsearch",
-    "wagtailusers",
-]
-
 pg_dump_path = "pg_dump"
 
 bucket_name = "web-database-exports"
 
-
-def get_tables() -> str:
-    conn = psycopg2.connect(
-        dbname=os.environ["SQL_DATABASE"],
-        user=os.environ["SQL_USER"],
-        password=os.environ["SQL_PASSWORD"],
-        host=os.environ["SQL_HOST"],
-        port=os.environ["SQL_PORT"],
-    )
-
-    cur = conn.cursor()
-
-    table_names = []
-
-    for prefix in table_prefixes:
-        cur.execute(
-            "SELECT tablename FROM pg_tables WHERE schemaname = %s AND tablename LIKE %s;",
-            (
-                os.environ["ENV_NAME"],
-                prefix + "%",
-            ),
-        )
-        table_names.extend([row[0] for row in cur.fetchall()])
-
-    cur.close()
-    conn.close()
-
-    return " ".join(f"-t {table}" for table in table_names)
+temp_schema_name = "base_content"
 
 
 def update_file(path: str, s3_bucket_name: str, s3: boto3.resource) -> None:
@@ -62,6 +19,10 @@ def update_file(path: str, s3_bucket_name: str, s3: boto3.resource) -> None:
     logging.info(f"Updating {path} into {s3_bucket_name}")
 
     s3.Bucket(s3_bucket_name).upload_file(f"{path}", f"{path}")
+
+
+def run_sql_command(sql: str) -> str:
+    return f'psql -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} -c \'{sql}\''
 
 
 if __name__ == "__main__":
@@ -78,18 +39,28 @@ if __name__ == "__main__":
     else:
         s3 = boto3.resource("s3")
 
-    tables_str = get_tables()
-
     output_file = f'{os.environ.get("ENV_NAME", "default")}-wagtail_dump-{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.sql'  # noqa: E501
 
     with tempfile.NamedTemporaryFile() as tf:
         tf.name = output_file
 
-        command = f'{pg_dump_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} {tables_str} -f {output_file}'  # noqa: E501
+        change_schema_name_command = f'ALTER SCHEMA {os.environ["ENV_NAME"]} RENAME TO {temp_schema_name}'
+        dump_command = f'{pg_dump_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} -n {temp_schema_name} -f {output_file}'  # noqa: E501
+        change_schema_name_back_command = f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
 
-        logging.info(f"Running: {command}")
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
-        subprocess.run(command, shell=True, check=True)
+
+        try:
+            logging.info(f"Running: {change_schema_name_command}")
+            subprocess.run(run_sql_command(change_schema_name_command), shell=True, check=True)
+            logging.info(f"Running: {dump_command}")
+            subprocess.run(dump_command, shell=True, check=True)
+        except Exception as e:
+            logging.error(e)
+        finally:
+            logging.info(f"Running: {change_schema_name_back_command}")
+            subprocess.run(run_sql_command(change_schema_name_back_command), shell=True, check=True)
+
         del os.environ["PGPASSWORD"]
 
         logging.info(f"Updating {output_file} into {bucket_name}")

@@ -10,6 +10,12 @@ pg_load_path = "psql"
 
 bucket_name = "web-database-exports"
 
+temp_schema_name = "base_content"
+
+
+def run_sql_command(sql: str) -> str:
+    return f'psql -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} -c \'{sql}\''
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -45,11 +51,19 @@ if __name__ == "__main__":
                 line = line.replace(f"{source}.", f"{target}.")
                 f.write(line)
 
-        command = f'{pg_load_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} < {output_file}'  # noqa: E501
+        load_command = f'{pg_load_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} -f {output_file} --single-transaction'  # noqa: E501
+        set_admin_command = f'UPDATE {temp_schema_name}.auth_user SET password=password, is_active=false;'
+        change_schema_name_back_command = f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
 
-        logging.info(f"Running: {command}")
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
-        subprocess.run(command, shell=True, check=True)
+
+        logging.info(f"Running: {load_command}")
+        subprocess.run(load_command, shell=True, check=True)
+        logging.info(f"Running: {set_admin_command}")
+        subprocess.run(run_sql_command(set_admin_command), shell=True, check=True)
+        logging.info(f"Running: {change_schema_name_back_command}")
+        subprocess.run(run_sql_command(change_schema_name_back_command), shell=True, check=True)
+
         del os.environ["PGPASSWORD"]
 
         logging.info("Complete")
