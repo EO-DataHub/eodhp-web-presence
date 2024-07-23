@@ -13,6 +13,7 @@ staticfiles/
 cache/
 *.egg-info/
 .make-venv-installed
+.make-node_modules-installed
 .stignore
 
 *.bak

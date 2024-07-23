@@ -41,10 +41,10 @@
     border-left: 20px solid custom.$dark-blue;
     border-right: 20px solid custom.$dark-blue;
 }
-.blockSolid .nav-link {
+.blockSolid a.nav-link {
     color: custom.$white;
 }
-.blockSolid .nav-link:hover, .blockTransparent .nav-link:hover {
+.blockSolid a.nav-link:hover, .blockTransparent a.nav-link:hover {
     background-color: custom.$blue;
     color: custom.$white;
 }
@@ -58,11 +58,11 @@
         border-right: none;
         background: custom.$blue;
     }
-    .blockTransparent .nav-link:hover, .blockSolid .nav-link:hover  {
+    .blockTransparent a.nav-link:hover, .blockSolid a.nav-link:hover {
         background: custom.$light-blue !important;
         color: custom.$black !important;
     }
-    .blockTransparent .nav-link, .blockSolid .nav-link  {
+    .blockTransparent a.nav-link, .blockSolid a.nav-link {
         color: custom.$white !important;
     }
     .navbar .navbar-nav {

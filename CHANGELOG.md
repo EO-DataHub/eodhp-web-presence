@@ -3,6 +3,11 @@
 ## v0.1.15 (23-07-2024)
 - Add authZ integration
 
+## v0.1.14 (23-07-2024))
+- Bugfixes:
+  - Update menu hover colours
+  - Fix search with spaces
+
 ## v0.1.12 (05-07-2024)
 - Update website design
 - Add help pages
