@@ -2,11 +2,11 @@ from dataclasses import dataclass, field
 from http import HTTPStatus
 from unittest import mock
 
+import jwt
 from django.http import HttpResponse
 from django.test import TestCase
 
 from .. import AuthMiddleware, extract_roles
-import jwt
 
 
 @dataclass(frozen=True)
