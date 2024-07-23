@@ -14,7 +14,7 @@
 
 [project]
 name = "eodhp-website"
-version = "0.1.12-rc1"
+version = "0.1.15"
 description = "Wagtail-based website for EODHP"
 readme = "README.md"
 
@@ -75,7 +75,8 @@ dependencies = [
     "gevent",
     "gunicorn>=22.0.0",
     "boto3",
-    "django-storages"
+    "django-storages",
+    "pyjwt"
 ]
 
 # List additional groups of dependencies here (e.g. development

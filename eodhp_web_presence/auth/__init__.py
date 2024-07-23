@@ -1,6 +1,11 @@
+import json
+import os
 from collections.abc import Callable
 from dataclasses import dataclass
+from urllib.parse import urljoin
 
+import jwt
+import requests
 from django.http import HttpRequest, HttpResponse
 
 
@@ -15,26 +20,44 @@ class AuthMiddleware:
         self.get_response = get_response
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
-        if is_authenticated := "Authorization" in request.headers:
-            roles: list[str] = extract_roles(request.headers["Authorization"])
-        else:
-            roles = []
+        print(request.headers)
+        if os.environ.get("ENABLE_OPA"):
+            if is_authenticated := "Authorization" in request.headers:
+                roles: list[str] = extract_roles(request.headers["Authorization"])
+            else:
+                roles = []
+            print(roles)
 
-        if is_allowed(AuthRequest(roles, request.path)):
-            response = self.get_response(request)
-        elif not is_authenticated:
-            return HttpResponse("Unauthorized", status=401)
+            if is_allowed(AuthRequest(roles, request.path)):
+                response = self.get_response(request)
+            elif not is_authenticated:
+                return HttpResponse("Unauthorized", status=401)
+            else:
+                return HttpResponse("Forbidden", status=403)
+
         else:
-            return HttpResponse("Forbidden", status=403)
+            response = self.get_response(request)
 
         return response
 
 
 def extract_roles(auth_header: str) -> list[str]:
-    # extract roles from the auth header
-    return []  # default for initial testing
+    token = auth_header.split()[1]
+
+    data = jwt.decode(token, options={"verify_signature": False}, algorithms=["HS256"])
+
+    if realm_access := data.get("realm_access"):
+        return realm_access.get("roles", [])
+    return []
 
 
 def is_allowed(request: AuthRequest) -> bool:
-    # call opa to determine if the request is allowed
-    return True  # default for initial testing
+    opal_server_url = urljoin(os.environ["OPAL_SERVER"], "/v1/data/eodhp/allow")
+
+    response = requests.post(
+        opal_server_url,
+        headers={"Content-Type": "application/json"},
+        json={"input": {"path": request.path, "roles": request.user_roles}},
+    )
+
+    return json.loads(response.content.decode())["result"]

@@ -8,6 +8,7 @@ from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.images.views.serve import ServeView
 
 from eodhp_web_presence.robots import robots_txt
+from eodhp_web_presence.authenticated import authenticated
 
 urlpatterns = [
     path("django-admin/", admin.site.urls),
@@ -21,6 +22,7 @@ urlpatterns = [
     path("catalogue/", catalogue_page_view),
     path("support/", include("home.urls")),
     path("robots.txt", robots_txt),
+    path("authenticated", authenticated),
     path("", include(wagtail_urls)),  # This entry should always be at the end of urlpatterns
 ]
 
