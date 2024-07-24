@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
         logging.info(f"Running: {command}")
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
-        subprocess.run(command, shell=True, check=True)  # noqa: B602
+        subprocess.run(command, shell=True, check=True)  # nosec B602
         del os.environ["PGPASSWORD"]
 
         logging.info("Complete")
