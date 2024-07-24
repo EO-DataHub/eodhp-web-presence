@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.1.15 (23-07-2024)
+- Add authZ integration
+
 ## v0.1.14 (23-07-2024))
 - Bugfixes:
   - Update menu hover colours
