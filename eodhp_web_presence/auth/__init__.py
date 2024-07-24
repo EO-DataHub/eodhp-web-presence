@@ -45,9 +45,9 @@ class AuthMiddleware:
 def extract_roles(auth_header: str) -> list[str]:
     token = auth_header.split()[1]
 
-    data = jwt.decode(token, options={"verify_signature": False}, algorithms=["HS256"])
+    claims = jwt.decode(token, options={"verify_signature": False}, algorithms=["HS256"])
 
-    if realm_access := data.get("realm_access"):
+    if realm_access := claims.get("realm_access"):
         return realm_access.get("roles", [])
     return []
 
