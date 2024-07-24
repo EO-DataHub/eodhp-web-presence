@@ -90,6 +90,8 @@ pillow-heif==0.16.0
     # via willow
 psycopg2-binary==2.9.9
     # via eodhp-website (pyproject.toml)
+pyjwt==2.8.0
+    # via eodhp-website (pyproject.toml)
 python-dateutil==2.9.0.post0
     # via botocore
 pytz==2024.1
