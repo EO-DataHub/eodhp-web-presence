@@ -47,8 +47,8 @@ def extract_roles(auth_header: str) -> list[str]:
 
     claims = jwt.decode(token, options={"verify_signature": False}, algorithms=["HS256"])
 
-    if realm_access := claims.get("realm_access"):
-        return realm_access.get("roles", [])
+    if "realm_access" in claims:
+        return claims.get("realm_access", {}).get("roles", [])
     return []
 
 
