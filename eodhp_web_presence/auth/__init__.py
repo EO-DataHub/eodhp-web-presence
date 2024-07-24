@@ -53,7 +53,7 @@ def extract_roles(auth_header: str) -> list[str]:
 
 
 def is_allowed(request: AuthRequest) -> bool:
-    opal_server_url = urljoin(os.environ["OPAL_SERVER"], "/v1/data/eodhp/allow")
+    opal_server_url = urljoin(os.environ["OPAL_SERVER"], os.environ["OPAL_PATH"])
 
     response = requests.post(
         opal_server_url,
