@@ -18,7 +18,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     libwebp-dev \
     curl \
     postgresql-client \
-    lsb-release
+    lsb-release \
+    git
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
@@ -43,6 +44,9 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 COPY run_migrations.sh webpack.config.js .eslintrc.json .stylelintrc .
 COPY eodhp_web_presence eodhp_web_presence/
+
+COPY .pre-commit-config.yaml .
+RUN git init . && pre-commit install-hooks
 
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
