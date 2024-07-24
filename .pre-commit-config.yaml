@@ -28,7 +28,7 @@ repos:
   hooks:
     # Run the linter.
     - id: ruff
-    - args: [ --ignore I001 ]
+      args: [ --ignore I001 ]
 
 # Currently failing, but ruff is configured to check this.
 # This would be able to reformat, though.
