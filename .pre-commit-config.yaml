@@ -9,6 +9,13 @@ repos:
     -   id: check-merge-conflict
     -   id: detect-private-key
 
+-   repo: https://github.com/pycqa/isort
+    rev: 5.11.2
+    hooks:
+      - id: isort
+        name: isort python
+        args: [  ., --check, --diff ]
+
 -   repo: https://github.com/psf/black
     rev: 22.10.0
     hooks:
@@ -28,12 +35,3 @@ repos:
   hooks:
     # Run the linter.
     - id: ruff
-
-# Currently failing, but ruff is configured to check this.
-# This would be able to reformat, though.
-#-   repo: https://github.com/pycqa/isort
-#    rev: 5.11.2
-#    hooks:
-#      - id: isort
-#        name: isort python
-
