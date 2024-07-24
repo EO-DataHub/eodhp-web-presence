@@ -69,6 +69,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     # WhiteNoise Middleware above all but below Security
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "auth.AuthMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
