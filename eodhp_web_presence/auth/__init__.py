@@ -4,9 +4,12 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from urllib.parse import urljoin
 
+import environ
 import jwt
 import requests
 from django.http import HttpRequest, HttpResponse
+
+env = environ.Env()
 
 
 @dataclass(frozen=True)
@@ -20,13 +23,11 @@ class AuthMiddleware:
         self.get_response = get_response
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
-        print(request.headers)
-        if os.environ.get("ENABLE_OPA"):
+        if env("ENABLE_OPA", cast=bool, default=False):
             if is_authenticated := "Authorization" in request.headers:
                 roles: list[str] = extract_roles(request.headers["Authorization"])
             else:
                 roles = []
-            print(roles)
 
             if is_allowed(AuthRequest(roles, request.path)):
                 response = self.get_response(request)

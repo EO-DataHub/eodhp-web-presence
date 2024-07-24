@@ -6,9 +6,9 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.images.views.serve import ServeView
 
-from home.views import catalogue_page_view
 from eodhp_web_presence.authenticated import authenticated
 from eodhp_web_presence.robots import robots_txt
+from home.views import catalogue_page_view
 
 urlpatterns = [
     path("django-admin/", admin.site.urls),

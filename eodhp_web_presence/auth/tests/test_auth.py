@@ -1,3 +1,4 @@
+import os
 from dataclasses import dataclass, field
 from http import HTTPStatus
 from unittest import mock
@@ -18,7 +19,7 @@ class HTTPRequestMock:
 class TestAuthMiddleware(TestCase):
     def test_extract_roles__valid_token__success(self):
         roles = ["valid_role"]
-        bearer_token = jwt.encode(
+        bearer_token = "Bearer " + jwt.encode(
             {
                 "realm_access": {
                     "roles": roles,
@@ -31,26 +32,29 @@ class TestAuthMiddleware(TestCase):
         assert extract_roles(bearer_token) == roles
 
     def test_extract_roles__valid_token_no_roles__success(self):
-        bearer_token = jwt.encode({"realm_access": {}}, "secret", algorithm="HS256")
+        bearer_token = "Bearer " + jwt.encode({"realm_access": {}}, "secret", algorithm="HS256")
 
         assert extract_roles(bearer_token) == []
 
     def test_extract_roles__valid_token_no_realm__success(self):
-        bearer_token = jwt.encode({}, "secret", algorithm="HS256")
+        bearer_token = "Bearer " + jwt.encode({}, "secret", algorithm="HS256")
 
         assert extract_roles(bearer_token) == []
 
     @mock.patch("auth.is_allowed", return_value=True)
     def test_authorized_path__unauthenticated__return_200(self, _: mock.MagicMock):
+        os.environ["ENABLE_OPA"] = "True"
         get_response = mock.MagicMock(return_value=HttpResponse("OK", status=200))
         mw = AuthMiddleware(get_response=get_response)
         request = HTTPRequestMock()
         response = mw(request)
         self.assertEqual(response.status_code, HTTPStatus.OK)
+        os.environ["ENABLE_OPA"] = "False"
 
     @mock.patch("auth.is_allowed", return_value=True)
     def test_authorized_path__authenticated__return_200(self, _: mock.MagicMock):
-        bearer_token = jwt.encode(
+        os.environ["ENABLE_OPA"] = "True"
+        bearer_token = "Bearer " + jwt.encode(
             {
                 "realm_access": {
                     "roles": ["hub_user"],
@@ -65,18 +69,22 @@ class TestAuthMiddleware(TestCase):
         request = HTTPRequestMock(headers={"Authorization": bearer_token})
         response = mw(request)
         self.assertEqual(response.status_code, HTTPStatus.OK)
+        os.environ["ENABLE_OPA"] = "False"
 
     @mock.patch("auth.is_allowed", return_value=False)
     def test_unauthorized_path__unauthenticated__return_401(self, _: mock.MagicMock):
+        os.environ["ENABLE_OPA"] = "True"
         get_response = mock.MagicMock(return_value=HttpResponse("OK", status=200))
         mw = AuthMiddleware(get_response=get_response)
         request = HTTPRequestMock()
         response = mw(request)
         self.assertEqual(response.status_code, HTTPStatus.UNAUTHORIZED)
+        os.environ["ENABLE_OPA"] = "False"
 
     @mock.patch("auth.is_allowed", return_value=False)
     def test_unauthorized_path__authenticated__return_403(self, _: mock.MagicMock):
-        bearer_token = jwt.encode(
+        os.environ["ENABLE_OPA"] = "True"
+        bearer_token = "Bearer " + jwt.encode(
             {
                 "realm_access": {
                     "roles": ["not_a_hub_user"],
@@ -91,3 +99,4 @@ class TestAuthMiddleware(TestCase):
         request = HTTPRequestMock(headers={"Authorization": bearer_token})
         response = mw(request)
         self.assertEqual(response.status_code, HTTPStatus.FORBIDDEN)
+        os.environ["ENABLE_OPA"] = "False"
