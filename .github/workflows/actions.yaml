@@ -21,7 +21,7 @@ jobs:
       - name: Install pre-commit
         run: pip install pre-commit
       - name: Collect config file
-        run: cp EO-DataHub/github-actions/.pre-commit-config.yaml .
+        run: cp github-actions/.pre-commit-config.yaml .pre-commit-config.yaml
       - name: Install pre-commit hooks
         run: pre-commit install --install-hooks
       - name: Run pre-commit hooks
