@@ -19,6 +19,7 @@ jobs:
           python-version: '3.11'
       - name: Install pre-commit
         run: pip install pre-commit
+      - run: ls
       - name: Collect config file
         run: cp github-actions/.pre-commit-config.yaml .pre-commit-config.yaml
       - name: Install pre-commit hooks
