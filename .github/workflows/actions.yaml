@@ -40,12 +40,6 @@ jobs:
           pre-commit install --install-hooks
           pre-commit run --all-files
 
-#      - name: Install pre-commit hooks
-#        run: pre-commit install --install-hooks
-#
-#      - name: Run pre-commit hooks
-#        run: pre-commit run --all-files
-
   security-scan:
     name: Call Security Scan
     uses: EO-DataHub/github-actions/.github/workflows/security.yaml@main
