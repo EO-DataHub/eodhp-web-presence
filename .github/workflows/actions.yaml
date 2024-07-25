@@ -11,23 +11,32 @@ jobs:
       - uses: actions/checkout@v3
         with:
           path: repository
+
       - uses: actions/checkout@v3
         with:
           repository: EO-DataHub/github-actions
           ref: main
           path: pre-commit
-      - run: ls -R
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y git
+
       - name: Install pre-commit
         run: pip install pre-commit
+
       - name: Install pre-commit hooks
         run: pre-commit install --install-hooks
+
       - name: Run pre-commit hooks
         run: pre-commit run --all-files
-      - run: ls -R
+
   security-scan:
     name: Call Security Scan
     uses: EO-DataHub/github-actions/.github/workflows/security.yaml@main
