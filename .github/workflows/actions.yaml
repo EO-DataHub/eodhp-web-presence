@@ -1,4 +1,12 @@
+name: All checks
+
+on:
+  pull_request:
+  workflow_call:
+
 jobs:
-  call-workflow-passing-data:
+  pre-commit:
+    uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml
+  security-scan:
     uses: EO-DataHub/github-actions/.github/workflows/security.yaml
 
