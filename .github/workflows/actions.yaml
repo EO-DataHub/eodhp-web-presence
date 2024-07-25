@@ -4,8 +4,12 @@ on:
   workflow_call:
 
 jobs:
+  pre-commit:
+    name: Pre-commit
+    permissions:
+      contents: read
+    uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml@main
   security-scan:
-
     name: Call Security Scan
     permissions:
       contents: read
