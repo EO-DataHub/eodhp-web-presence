@@ -1,0 +1,4 @@
+jobs:
+  call-workflow-passing-data:
+    uses: EO-DataHub/github-actions/.github/workflows/security.yaml@feature/EODHP-540-reusable-github-actions
+
