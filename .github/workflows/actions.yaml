@@ -10,8 +10,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-#      - name: Pre-commit
-#        uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml
+      - name: Pre-commit
+        uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml
 
       - name: Security check - Bandit
         uses: mdegis/bandit-action@v1.0.1
