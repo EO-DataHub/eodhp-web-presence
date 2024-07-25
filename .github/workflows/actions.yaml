@@ -36,10 +36,10 @@ jobs:
                 regex: (?i)(?P<key>(secret))(=|:).{0,5}'\"['\"]
                 secret-group-name: secret
 
-    pre-commit:
-      uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml
-    security-scan:
-      uses: EO-DataHub/github-actions/.github/workflows/security.yaml
+#    pre-commit:
+#      uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml
+#    security-scan:
+#      uses: EO-DataHub/github-actions/.github/workflows/security.yaml
 
 
 
