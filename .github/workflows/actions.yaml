@@ -2,6 +2,33 @@ name: All checks
 on:
   pull_request:
   workflow_call:
+
+jobs:
+  call-super-linter:
+
+    name: Call Super-Linter
+
+    permissions:
+      contents: read # clone the repo to lint
+      statuses: write # read/write to repo custom statuses
+
+    ### use Reusable Workflows to call my workflow remotely
+    ### https://docs.github.com/en/actions/learn-github-actions/reusing-workflows
+    ### you can also call workflows from inside the same repo via file path
+
+    # FIXME: customize uri to point to your own reusable linter repository
+    uses: bretfisher/super-linter-workflow/.github/workflows/reusable-super-linter.yaml@main
+
+    ### Optional settings examples
+
+    # with:
+      ### For a DevOps-focused repository. Prevents some code-language linters from running
+      ### defaults to false
+      # devops-only: false
+
+      ### A regex to exclude files from linting
+      ### defaults to empty
+      # filter-regex-exclude: html/.*
 #jobs:
 #  build:
 #    name: Check for vulnerabilities
@@ -43,10 +70,11 @@ on:
 #    name: Pre-commit
 #    uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml@main
 
-  security-scan:
-    uses: EO-DataHub/github-actions/.github/workflows/security.yaml@main
-
-
+#  security-scan:
+##    uses: EO-DataHub/github-actions/.github/workflows/security.yaml@main
+#
+#    uses:  bretfisher/super-linter-workflow/.github/workflows/reusable-super-linter.yaml@main
+#
 
 #jobs:
 #
