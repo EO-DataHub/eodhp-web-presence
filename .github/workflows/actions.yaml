@@ -1,9 +1,7 @@
-name: All checks
-
+name: Security scan
 on:
   pull_request:
   workflow_call:
-
 jobs:
   build:
     name: Check for vulnerabilities
@@ -37,9 +35,3 @@ jobs:
                   - secret
                 regex: (?i)(?P<key>(secret))(=|:).{0,5}'\"['\"]
                 secret-group-name: secret
-
-  pre-commit:
-    uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml
-  security-scan:
-    uses: EO-DataHub/github-actions/.github/workflows/security.yaml
-
