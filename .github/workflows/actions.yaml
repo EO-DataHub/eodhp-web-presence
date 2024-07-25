@@ -2,49 +2,49 @@ name: All checks
 on:
   pull_request:
   workflow_call:
-jobs:
-  build:
-    name: Check for vulnerabilities
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+#jobs:
+#  build:
+#    name: Check for vulnerabilities
+#    runs-on: ubuntu-20.04
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      - name: Pre-commit
+#        uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml
+#
+#      - name: Security check - Bandit
+#        uses: mdegis/bandit-action@v1.0.1
+#        with:
+#          path: "."
+#          level: high
+#          confidence: high
+#          skips: B101
+#
+#      - name: Security check - Trivy
+#        uses: aquasecurity/trivy-action@0.24.0
+#        with:
+#          scan-type: 'fs'
+#          scan-ref: '.'
+#          severity: 'MEDIUM,CRITICAL,HIGH'
+#          exit-code: '1'
+#          trivy-config: |
+#            rules:
+#              - id: rule1
+#                category: general
+#                title: Generic Rule
+#                severity: 'MEDIUM,CRITICAL,HIGH'
+#                keywords:
+#                  - secret
+#                regex: (?i)(?P<key>(secret))(=|:).{0,5}'\"['\"]
+#                secret-group-name: secret
 
-      - name: Pre-commit
-        uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml
-
-      - name: Security check - Bandit
-        uses: mdegis/bandit-action@v1.0.1
-        with:
-          path: "."
-          level: high
-          confidence: high
-          skips: B101
-
-      - name: Security check - Trivy
-        uses: aquasecurity/trivy-action@0.24.0
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          severity: 'MEDIUM,CRITICAL,HIGH'
-          exit-code: '1'
-          trivy-config: |
-            rules:
-              - id: rule1
-                category: general
-                title: Generic Rule
-                severity: 'MEDIUM,CRITICAL,HIGH'
-                keywords:
-                  - secret
-                regex: (?i)(?P<key>(secret))(=|:).{0,5}'\"['\"]
-                secret-group-name: secret
-
-#  pre_commit:
-#    name: Pre-commit
-#    uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml
-#  security_scan:
-#    name: Security scan
-#    uses: EO-DataHub/github-actions/.github/workflows/security.yaml
+pre_commit:
+  name: Pre-commit
+  uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml
+security_scan:
+  name: Security scan
+  uses: EO-DataHub/github-actions/.github/workflows/security.yaml
 
 
 
