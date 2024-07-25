@@ -6,7 +6,26 @@ on:
 jobs:
   pre-commit:
     name: Pre-commit
-    uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml@main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        with:
+          repository: EO-DataHub/github-actions
+          path: .github/workflows/pre-commit.yaml
+          ref: main
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+      - name: Install pre-commit
+        run: pip install pre-commit
+      - name: Collect config file
+        run: cp EO-DataHub/github-actions/.pre-commit-config.yaml .
+      - name: Install pre-commit hooks
+        run: pre-commit install --install-hooks
+      - name: Run pre-commit hooks
+        run: pre-commit run --all-files
   security-scan:
     name: Call Security Scan
     uses: EO-DataHub/github-actions/.github/workflows/security.yaml@main
