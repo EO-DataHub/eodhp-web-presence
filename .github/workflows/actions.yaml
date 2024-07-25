@@ -9,8 +9,6 @@ jobs:
     name: Call Security Scan
     permissions:
       contents: read
-      statuses: write
-
     uses: EO-DataHub/github-actions/.github/workflows/security.yaml@main
 
 
