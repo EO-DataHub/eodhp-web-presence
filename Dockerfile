@@ -18,7 +18,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     libwebp-dev \
     curl \
     postgresql-client \
-    lsb-release
+    lsb-release \
+    git
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
@@ -44,6 +45,9 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY run_migrations.sh webpack.config.js .eslintrc.json .stylelintrc .
 COPY eodhp_web_presence eodhp_web_presence/
 
+COPY .pre-commit-config.yaml .
+RUN git init . && pre-commit install-hooks
+
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
 ARG DEBUG
@@ -55,6 +59,7 @@ ENV GIT_REF_NAME $GIT_REF_NAME
 ARG GIT_SHA="no-sha"
 ENV GIT_SHA $GIT_SHA
 
+RUN npm install --save-dev webpack
 RUN npm run build
 # collectstatic is done here so that production builds can have permission to modify their root
 # filesystem (or at least the code itself) removed. In development collectstatic is run during
