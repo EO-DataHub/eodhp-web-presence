@@ -44,6 +44,10 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY run_migrations.sh webpack.config.js .eslintrc.json .stylelintrc .
 COPY eodhp_web_presence eodhp_web_presence/
 
+RUN git clone https://github.com/EO-DataHub/github-actions.git
+RUN git init ..
+RUN (cd ./github-actions && pre-commit install-hooks)
+
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
 ARG DEBUG
