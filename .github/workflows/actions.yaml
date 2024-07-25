@@ -39,12 +39,11 @@ on:
 #                regex: (?i)(?P<key>(secret))(=|:).{0,5}'\"['\"]
 #                secret-group-name: secret
 
-#  pre_commit:
+#  pre-commit:
 #    name: Pre-commit
 #    uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml
 
-  security_scan:
-    name: Security scan
+  security-scan:
     uses: EO-DataHub/github-actions/.github/workflows/security.yaml
 
 
