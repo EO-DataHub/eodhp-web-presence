@@ -37,8 +37,10 @@ jobs:
                 secret-group-name: secret
 
   pre-commit:
+    name: Pre-commit
     uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml
   security-scan:
+    name: Security scan
     uses: EO-DataHub/github-actions/.github/workflows/security.yaml
 
 
