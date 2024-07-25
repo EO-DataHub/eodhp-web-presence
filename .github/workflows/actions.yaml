@@ -31,11 +31,17 @@ jobs:
       - name: Install pre-commit
         run: pip install pre-commit
 
-      - name: Install pre-commit hooks
-        run: pre-commit install --install-hooks
-
       - name: Run pre-commit hooks
-        run: pre-commit run --all-files
+        run: |
+          cd repository
+          pre-commit install --install-hooks
+          pre-commit run --all-files
+
+#      - name: Install pre-commit hooks
+#        run: pre-commit install --install-hooks
+#
+#      - name: Run pre-commit hooks
+#        run: pre-commit run --all-files
 
   security-scan:
     name: Call Security Scan
