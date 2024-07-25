@@ -6,25 +6,7 @@ on:
 jobs:
   pre-commit:
     name: Pre-commit
-    permissions:
-      contents: read
     uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml@main
   security-scan:
     name: Call Security Scan
-    permissions:
-      contents: read
     uses: EO-DataHub/github-actions/.github/workflows/security.yaml@main
-
-
-#  pre-commit:
-#    name: Pre-commit
-#    uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml@main
-
-#  security-scan:
-##    uses: EO-DataHub/github-actions/.github/workflows/security.yaml@main
-#
-#    uses:  bretfisher/super-linter-workflow/.github/workflows/reusable-super-linter.yaml@main
-#
-
-#jobs:
-#
