@@ -19,13 +19,11 @@ jobs:
           python-version: '3.11'
       - name: Install pre-commit
         run: pip install pre-commit
-      - run: ls
-#      - name: Collect config file
-#        run: cp .pre-commit-config.yaml .pre-commit-config.yaml
       - name: Install pre-commit hooks
         run: pre-commit install --install-hooks
       - name: Run pre-commit hooks
         run: pre-commit run --all-files
+      - run: ls -R
   security-scan:
     name: Call Security Scan
     uses: EO-DataHub/github-actions/.github/workflows/security.yaml@main
