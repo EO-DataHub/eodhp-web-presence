@@ -14,6 +14,7 @@ jobs:
         with:
           repository: EO-DataHub/github-actions
           ref: main
+      - run: ls -R
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
