@@ -41,10 +41,10 @@ on:
 
 #  pre-commit:
 #    name: Pre-commit
-#    uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml
+#    uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml@main
 
   security-scan:
-    uses: EO-DataHub/github-actions/.github/workflows/security.yaml
+    uses: EO-DataHub/github-actions/.github/workflows/security.yaml@main
 
 
 
