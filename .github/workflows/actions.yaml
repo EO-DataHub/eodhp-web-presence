@@ -59,14 +59,10 @@ jobs:
         run: |
           IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/}" =~ ^v ]]; then echo ${GITHUB_REF##refs/tags/v}; elif [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then echo "latest"; else echo "${GITHUB_REF##refs/heads/}-latest" | sed "s/[^a-zA-Z0-9]/-/g" ; fi) >> "$GITHUB_ENV"
           echo $IMAGE_TAG
-          echo ${GITHUB_HEAD_REF}
-          echo ${GITHUB_REF}
-          echo ${GITHUB_REF##refs/tags/}
-          echo ${GITHUB_REF##refs/heads/}
-          echo "AAAAAAAAAAAAAA"
 
   aws-ecr-build:
     name: Build ECR image
+    needs: get-tag-name
     uses: EO-DataHub/github-actions/.github/workflows/docker-image-to-aws-ecr.yaml@main
     with:
       image_name: eodhp-web-presence
