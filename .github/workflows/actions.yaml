@@ -39,6 +39,3 @@ jobs:
     name: Call Security Scan
     uses: EO-DataHub/github-actions/.github/workflows/security.yaml@main
 
-  aws-ecr-build:
-    name: Build ECR image
-    uses: EO-DataHub/github-actions/.github/workflows/docker-image-to-aws-ecr.yaml@main
