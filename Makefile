@@ -69,9 +69,7 @@ venv:
 
 .git/hooks/pre-commit:
 	./venv/bin/pre-commit install
-	git clone https://github.com/EO-DataHub/github-actions.git
-	cp github-actions/.pre-commit-config.yaml .pre-commit-config.yaml
-	rm -rf github-actions
+	curl -o .pre-commit-config.yaml https://raw.githubusercontent.com/EO-DataHub/github-actions/main/.pre-commit-config-python.yaml
 
 setup: venv requirements .make-venv-installed .make-node_modules-installed .git/hooks/pre-commit
 
