@@ -27,10 +27,11 @@ jobs:
         run: pip install pre-commit
 
       - name: Copy config
-        run: curl -o .pre-commit-config.yaml https://raw.githubusercontent.com/EO-DataHub/github-actions/main/.pre-commit-config-python.yaml
+        run: curl -o repository/.pre-commit-config.yaml https://raw.githubusercontent.com/EO-DataHub/github-actions/main/.pre-commit-config-python.yaml
 
       - name: Run pre-commit hooks
         run: |
+          cd repository
           pre-commit install --install-hooks
           pre-commit run --all-files
 
