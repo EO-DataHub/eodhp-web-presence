@@ -2,6 +2,16 @@ name: All checks
 on:
   pull_request:
   workflow_call:
+  push:
+    tags:
+      - 'v[0-9]+'
+      - 'v[0-9]+-*'
+      - 'v[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+-*'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+    branches:
+      - '**'
 
 jobs:
   pre-commit:
@@ -38,3 +48,10 @@ jobs:
   security-scan:
     name: Call Security Scan
     uses: EO-DataHub/github-actions/.github/workflows/security.yaml@main
+
+  aws-ecr-build:
+    name: Build ECR image
+    uses: EO-DataHub/github-actions/.github/workflows/docker-image-to-aws-ecr.yaml@main
+    with:
+      image_name: eodhp-web-presence
+      tag: $(if [[ "${GITHUB_REF##refs/tags/}" =~ ^v ]]; then echo ${GITHUB_REF##refs/tags/v}; elif [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then echo "latest"; else echo "${GITHUB_REF##refs/heads/}-latest" | sed "s/[^a-zA-Z0-9]/-/g" ; fi)
