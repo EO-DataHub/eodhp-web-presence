@@ -9,35 +9,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: repository
-
-      - uses: actions/checkout@v3
-        with:
-          repository: EO-DataHub/github-actions
-          ref: main
-          path: pre-commit
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git
       - name: Install pre-commit
         run: pip install pre-commit
 
       - name: Copy config
-        run: cp pre-commit/.pre-commit-config.yaml repository/.pre-commit-config.yaml
+        run: curl -o .pre-commit-config.yaml https://raw.githubusercontent.com/EO-DataHub/github-actions/main/.pre-commit-config-python.yaml
 
       - name: Run pre-commit hooks
         run: |
-          cd repository
           pre-commit install --install-hooks
           pre-commit run --all-files
+
   security-scan:
     name: Call Security Scan
     uses: EO-DataHub/github-actions/.github/workflows/security.yaml@main
