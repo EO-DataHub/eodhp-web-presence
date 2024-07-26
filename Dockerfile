@@ -45,11 +45,6 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY run_migrations.sh webpack.config.js .eslintrc.json .stylelintrc .
 COPY eodhp_web_presence eodhp_web_presence/
 
-RUN git clone https://github.com/EO-DataHub/github-actions.git
-RUN git init ..
-RUN curl -o .pre-commit-config.yaml https://raw.githubusercontent.com/EO-DataHub/github-actions/main/.pre-commit-config-python.yaml
-RUN pre-commit install-hooks
-
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
 ARG DEBUG
