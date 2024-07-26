@@ -18,12 +18,20 @@ jobs:
     name: Pre-commit
     runs-on: ubuntu-latest
     steps:
-      - name: Copy config
-        run: curl -o .pre-commit-config.yaml https://raw.githubusercontent.com/EO-DataHub/github-actions/main/.pre-commit-config-python.yaml
+      - uses: actions/checkout@v3
 
-  pre-commit:
-    name: Pre-commit
-    uses: EO-DataHub/github-actions/.github/workflows/pre-commit.yaml@main
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+
+      - name: Copy config
+        run: |
+          if [ ! -f .pre-commit-config.yaml ]; then
+            curl -o .pre-commit-config.yaml https://raw.githubusercontent.com/EO-DataHub/github-actions/main/.pre-commit-config-python.yaml
+          fi          
+
+      - uses: pre-commit/action@v3.0.1
 
   security-scan:
     name: Call Security Scan
