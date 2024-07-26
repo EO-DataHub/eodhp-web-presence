@@ -15,7 +15,7 @@ on:
 
 jobs:
   pre-commit-preparation:
-    name: Pre-commit preparation
+    name: Pre-commit
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -32,9 +32,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.11'
-
-      - name: Install pre-commit
-        run: pip install pre-commit
 
       - name: Copy config
         run: |
