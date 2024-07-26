@@ -14,8 +14,8 @@ on:
       - '**'
 
 jobs:
-  pre-commit:
-    name: Pre-commit
+  pre-commit-preparation:
+    name: Pre-commit preparation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -42,11 +42,11 @@ jobs:
             curl -o repository/.pre-commit-config.yaml https://raw.githubusercontent.com/EO-DataHub/github-actions/main/.pre-commit-config-python.yaml
           fi
 
-      - name: Run pre-commit hooks
-        run: |
-          cd repository
-          pre-commit install --install-hooks
-          pre-commit run --all-files
+
+  pre-commit:
+    name: Pre-commit
+    needs: pre-commit-preparation
+    uses: pre-commit/action@v3.0.1
 
   security-scan:
     name: Call Security Scan
