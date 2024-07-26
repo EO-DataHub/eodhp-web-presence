@@ -57,7 +57,7 @@ jobs:
       - name: Get image tag
         id: get-image-tag
         run: |
-          echo IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/}" =~ ^v ]]; then echo ${GITHUB_REF##refs/tags/v}; elif [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then echo "latest"; else echo "${GITHUB_REF##refs/heads/}-latest" | sed "s/[^a-zA-Z0-9]/-/g" ; fi) >> "$GITHUB_ENV"
+          IMAGE_TAG=$(if [[ "${GITHUB_REF##refs/tags/}" =~ ^v ]]; then echo ${GITHUB_REF##refs/tags/v}; elif [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then echo "latest"; else echo "${GITHUB_REF##refs/heads/}-latest" | sed "s/[^a-zA-Z0-9]/-/g" ; fi) >> "$GITHUB_ENV"
           echo $IMAGE_TAG
           echo ${GITHUB_REF##refs/tags/}
           echo ${GITHUB_REF##refs/heads/}
