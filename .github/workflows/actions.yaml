@@ -9,6 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: repository
+
+      - uses: actions/checkout@v3
+        with:
+          repository: EO-DataHub/github-actions
+          ref: main
+          path: pre-commit
 
       - name: Set up Python
         uses: actions/setup-python@v2
