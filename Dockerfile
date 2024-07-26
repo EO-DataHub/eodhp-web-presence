@@ -47,7 +47,8 @@ COPY eodhp_web_presence eodhp_web_presence/
 
 RUN git clone https://github.com/EO-DataHub/github-actions.git
 RUN git init ..
-RUN (cd ./github-actions && pre-commit install-hooks)
+RUN curl -o .pre-commit-config.yaml https://raw.githubusercontent.com/EO-DataHub/github-actions/main/.pre-commit-config-python.yaml
+RUN pre-commit install-hooks
 
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
