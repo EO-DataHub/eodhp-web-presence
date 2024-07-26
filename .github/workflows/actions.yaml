@@ -52,7 +52,7 @@ jobs:
   get-tag-name:
     runs-on: ubuntu-latest
     outputs:
-      image_tag: ${{ steps.get-image-tag.outputs.image_tag }}
+      image_tag: ${{ steps.get-image-tag.outputs.IMAGE_TAG }}
     steps:
       - name: Get image tag
         id: get-image-tag
