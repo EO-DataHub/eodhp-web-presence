@@ -1,8 +1,9 @@
 from typing import Optional
 
 from django.contrib.auth.backends import BaseBackend
-from django.contrib.auth.models import User
 from django.http import HttpRequest
+
+from .models import User
 
 
 class AuthBackend(BaseBackend):
