@@ -10,15 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import logging
 import os
 
 import environ
 from storages.backends.s3boto3 import S3Boto3Storage
 
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = os.path.dirname(PROJECT_DIR)
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 env = environ.Env()
@@ -58,10 +57,30 @@ INSTALLED_APPS = [
     "django_sass",
     "wagtailcache",
     # web presence
+    "accounts",
     "home",
     "eodhp_web_presence",
 ]
 
+# Configure the DEFAULT_AUTO_FIELD setting
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "accounts.User"
+
+EODHP_AUTH = {
+    "ENABLED": env("EODHP_AUTH_ENABLED", cast=bool, default=False),
+    "OPAL_SERVER_URL": env(
+        "EODHP_AUTH_OPAL_URL", default="http://localhost:8181/v1/data/web/allow"
+    ),
+}
+
+AUTHENTICATION_BACKENDS = [
+    # auth.backend.AuthBackend inserted here if enabled
+    "django.contrib.auth.backends.ModelBackend",  # Keep the default backend for admin access
+]
+
+if EODHP_AUTH["ENABLED"]:
+    AUTHENTICATION_BACKENDS.insert(0, "auth.backend.AuthBackend")
 
 MIDDLEWARE = [
     # UpdateCacheMiddleware to be at top
@@ -69,7 +88,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     # WhiteNoise Middleware above all but below Security
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    "auth.AuthMiddleware",
+    # auth.middleware.AuthMiddleware inserted here if enabled
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -80,6 +99,9 @@ MIDDLEWARE = [
     "eodhp_web_presence.middleware.middleware.HeaderMiddleware",
     "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
 ]
+
+if EODHP_AUTH["ENABLED"]:
+    MIDDLEWARE.insert(3, "auth.middleware.AuthMiddleware")
 
 WHITENOISE_MAX_AGE = env("STATIC_FILE_CACHE_LENGTH", cast=int, default=3600)
 CACHES = {
@@ -97,7 +119,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(PROJECT_DIR, "templates"),
+            os.path.join(BASE_DIR, "templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
