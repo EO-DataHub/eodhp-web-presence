@@ -8,6 +8,12 @@ class UserClaims:
     username: str | None = None
     roles: list[str] = field(default_factory=list)
 
+    def to_dict(self) -> dict[str, any]:
+        return {
+            "preferred_username": self.username,
+            "realm_access": {"roles": self.roles},
+        }
+
 
 def extract_claims(auth_header: str | None) -> UserClaims:
     if auth_header is None:

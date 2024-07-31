@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import importlib
 import logging
 import os
 
@@ -25,6 +26,9 @@ env = environ.Env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env("DEBUG", cast=bool, default=False)
 
 
 # Application definition
@@ -67,41 +71,39 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
 
-EODHP_AUTH = {
-    "ENABLED": env("EODHP_AUTH_ENABLED", cast=bool, default=False),
-    "OPAL_SERVER_URL": env(
-        "EODHP_AUTH_OPAL_URL", default="http://localhost:8181/v1/data/web/allow"
-    ),
-}
-
 AUTHENTICATION_BACKENDS = [
-    # auth.backend.AuthBackend inserted here if enabled
+    "accounts.backend.AuthBackend",
     "django.contrib.auth.backends.ModelBackend",  # Keep the default backend for admin access
 ]
 
-if EODHP_AUTH["ENABLED"]:
-    AUTHENTICATION_BACKENDS.insert(0, "auth.backend.AuthBackend")
+
+def auth_middleware_factory(get_response):
+    module_name = "accounts.middleware"
+    class_name = "AuthMiddleware"
+
+    module = importlib.import_module(module_name)
+    cls = getattr(module, class_name)
+
+    return cls(get_response, opa_server_url=env("OPA_SERVER_URL", default=None))
+
 
 MIDDLEWARE = [
     # UpdateCacheMiddleware to be at top
     "wagtailcache.cache.UpdateCacheMiddleware",
     "django.middleware.security.SecurityMiddleware",
     # WhiteNoise Middleware above all but below Security
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-    # auth.middleware.AuthMiddleware inserted here if enabled
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "eodhp_web_presence.settings.auth_middleware_factory",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.auth.middleware.RemoteUserMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "eodhp_web_presence.middleware.middleware.HeaderMiddleware",
     "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
 ]
-
-if EODHP_AUTH["ENABLED"]:
-    MIDDLEWARE.insert(3, "auth.middleware.AuthMiddleware")
 
 WHITENOISE_MAX_AGE = env("STATIC_FILE_CACHE_LENGTH", cast=int, default=3600)
 CACHES = {
@@ -259,8 +261,6 @@ WAGTAILSEARCH_BACKENDS = {
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = env("BASE_URL", default="www.example.com")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG", cast=bool, default=False)
 
 # SECRET KEY (Used for cryptographic signing)
 SECRET_KEY = env("SECRET_KEY", default="None")
@@ -274,18 +274,33 @@ CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+LOG_LEVEL = logging.DEBUG if DEBUG else logging.WARNING
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {
+            "format": "{asctime} {levelname} {message}",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+            "style": "{",
+        },
+    },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
+            "formatter": "simple",
         },
     },
     "loggers": {
         "django": {
             "handlers": ["console"],
-            "level": logging.DEBUG if DEBUG else logging.WARNING,
+            "level": logging.WARNING,
+            "propagate": False,
+        },  # all other dependencies
+        "eodhp_web_presence": {
+            "handlers": ["console"],
+            "level": LOG_LEVEL,
+            "propagate": False,
         },
     },
 }
