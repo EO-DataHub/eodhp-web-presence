@@ -6,6 +6,8 @@ from typing import Optional
 
 import requests
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import AnonymousUser
+from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpRequest, HttpResponse
 
 from . import tokens
@@ -28,34 +30,63 @@ class AuthRequest:
         }
 
 
-class AuthMiddleware:
+class ClaimsMiddleware:
     def __init__(
         self,
         get_response: Callable[[HttpRequest], HttpResponse],
-        opa_server_url: Optional[str] = None,
+    ):
+        self.get_response = get_response
+
+    def __call__(self, request: HttpRequest) -> HttpResponse:
+        # AuthenticationMiddleware is required so that request.user exists.
+        if not hasattr(request, "user"):
+            raise ImproperlyConfigured(
+                "The claims middleware requires the authentication middleware"
+                "to be installed. Edit your MIDDLEWARE setting to insert"
+                "'django.contrib.auth.middleware.AuthenticationMiddleware' "
+                "before the ClaimsMiddleware class."
+            )
+
+        claims = tokens.extract_claims(
+            request.headers.get("Authorization", None),
+        )
+        logger.debug("User claims: %s", json.dumps(claims.to_dict(), indent=2))
+        request.claims = claims
+
+        if isinstance(request.user, AnonymousUser) and claims.username is not None:
+            user: User | None = authenticate(request)
+
+            if user is not None:
+                logger.debug("User authenticated as %s", user.username)
+                login(request, user)
+            else:
+                logger.debug("User not authenticated")
+
+        return self.get_response(request)
+
+
+class OPAAuthorizationMiddleware:
+    def __init__(
+        self,
+        get_response: Callable[[HttpRequest], HttpResponse],
+        opa_server_url: Optional[str],
     ):
         self.get_response = get_response
         self.opa_server_url = opa_server_url
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
-        claims: tokens.UserClaims = tokens.extract_claims(
-            request.headers.get("Authorization", None),
-        )
+        if not hasattr(request, "claims"):
+            raise ImproperlyConfigured(
+                "The OPA authorization middleware requires the claims middleware"
+                "to be installed. Edit your MIDDLEWARE setting to insert"
+                "'accounts.middleware.ClaimsMiddleware' before the ClaimsMiddleware "
+                "class."
+            )
 
-        logger.debug("User claims: %s", json.dumps(claims.to_dict(), indent=2))
-
-        user: User | None = authenticate(request, username=claims.username)
-
-        if user is not None:
-            logger.debug("User authenticated as %s", user.username)
-            login(request, user)
-        else:
-            logger.debug("User not authenticated")
-
-        if self.is_allowed(AuthRequest(claims.roles, request.path)):
+        if self.is_allowed(AuthRequest(request.claims.roles, request.path)):
             logger.debug("User is authorized to access path")
             response = self.get_response(request)
-        elif user is None:
+        elif isinstance(request.user, AnonymousUser):
             logger.debug("User is not authorized to access path and should authenticate")
             return HttpResponse("Unauthorized", status=401)
         else:
@@ -65,9 +96,6 @@ class AuthMiddleware:
         return response
 
     def is_allowed(self, request: AuthRequest) -> bool:
-        if self.opa_server_url is None:
-            return True  # always allow if no OPA server is configured
-
         response = requests.post(
             self.opa_server_url,
             headers={"Content-Type": "application/json"},

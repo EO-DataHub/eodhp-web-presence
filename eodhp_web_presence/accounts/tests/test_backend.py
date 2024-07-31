@@ -1,20 +1,29 @@
-from django.test import TestCase
+from django.contrib import auth
+from django.test import RequestFactory, TestCase
 
-from .. import backend, models
+from .. import models
+from ..tokens import UserClaims
+
+factory = RequestFactory()
 
 
-class TestBackend(TestCase):
-    def setUp(self):
-        self.backend = backend.AuthBackend()
-
+class ClaimsBackendTestCase(TestCase):
     def test_authenticate__existing_user__return_existing_user(self):
         existing_user = models.User.objects.create(username="test-user")
-        user = self.backend.authenticate(request=object(), username="test-user")
+        request = factory.get("/")
+        request.claims = UserClaims(username="test-user")
+
+        user = auth.authenticate(request=request)
+
         self.assertIsInstance(user, models.User)
         self.assertEqual(existing_user, user)
 
     def test_authenticate__new_user__return_new_user(self):
-        user = self.backend.authenticate(request=object(), username="test-user")
+        request = factory.get("/")
+        request.claims = UserClaims(username="test-user")
+
+        user = auth.authenticate(request=request)
+
         self.assertIsInstance(user, models.User)
         self.assertIsNotNone(user)
 
@@ -22,15 +31,9 @@ class TestBackend(TestCase):
         self.assertEqual(new_user, user)
 
     def test_authenticate__username_is_none__return_none(self):
-        user = self.backend.authenticate(request=object(), username=None)
-        self.assertIsNone(user)
+        request = factory.get("/")
+        request.claims = UserClaims()
 
-    def test_get_user__existing_user__return_existing_user(self):
-        existing_user = models.User.objects.create(username="test-user")
-        user = self.backend.get_user(existing_user.pk)
-        self.assertIsInstance(user, models.User)
-        self.assertEqual(existing_user, user)
+        user = auth.authenticate(request=request)
 
-    def test_get_user__nonexistent_user__return_none(self):
-        user = self.backend.get_user(1)
         self.assertIsNone(user)
