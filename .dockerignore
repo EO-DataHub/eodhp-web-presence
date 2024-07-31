@@ -1,2 +1,9 @@
+*.env
+*.sqlite3
+
+__pycache__/
+.pytest_cache/
+assets/
+cache/
 node_modules/
-venv
+staticfiles/
