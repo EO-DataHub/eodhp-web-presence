@@ -72,19 +72,25 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
 
 AUTHENTICATION_BACKENDS = [
-    "accounts.backend.AuthBackend",
+    "accounts.backends.ClaimsBackend",
     "django.contrib.auth.backends.ModelBackend",  # Keep the default backend for admin access
 ]
 
 
-def auth_middleware_factory(get_response):
+OPA_AUTH = {
+    "ENABLED": env("OPA_AUTH_ENABLED", cast=bool, default=False),
+    "SERVER_URL": env("OPA_AUTH_ENABLED", default="http://localhost:8181"),
+}
+
+
+def opa_authorization_factory(get_response):
     module_name = "accounts.middleware"
     class_name = "AuthMiddleware"
 
     module = importlib.import_module(module_name)
     cls = getattr(module, class_name)
 
-    return cls(get_response, opa_server_url=env("OPA_SERVER_URL", default=None))
+    return cls(get_response, opa_server_url=OPA_AUTH["SERVER_URL"])
 
 
 MIDDLEWARE = [
@@ -95,15 +101,21 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "eodhp_web_presence.settings.auth_middleware_factory",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.auth.middleware.RemoteUserMiddleware",
+    "accounts.middleware.ClaimsMiddleware",
+    # "accounts.middleware.OPAAuthorizationMiddleware" should be inserted here if enabled
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "eodhp_web_presence.middleware.middleware.HeaderMiddleware",
     "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
 ]
+
+if OPA_AUTH["ENABLED"]:
+    MIDDLEWARE.insert(
+        MIDDLEWARE.index("accounts.middleware.ClaimsMiddleware") + 1,
+        "eodhp_web_presence.settings.opa_authorization_factory",
+    )
 
 WHITENOISE_MAX_AGE = env("STATIC_FILE_CACHE_LENGTH", cast=int, default=3600)
 CACHES = {

@@ -6,10 +6,10 @@ from django.http import HttpRequest
 from .models import User
 
 
-class AuthBackend(BaseBackend):
-    def authenticate(self, request: HttpRequest, username: Optional[str] = None) -> Optional[User]:
-        if username is not None:
-            user, created = User.objects.get_or_create(username=username)
+class ClaimsBackend(BaseBackend):
+    def authenticate(self, request: HttpRequest, **kwargs) -> Optional[User]:
+        if hasattr(request, "claims") and request.claims.username is not None:
+            user, created = User.objects.get_or_create(username=request.claims.username)
             if created:
                 user.set_unusable_password()
                 user.save()
