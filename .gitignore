@@ -8,9 +8,8 @@ __pycache__/
 venv/
 node_modules/
 
-assets/
 webpack-stats.json
-staticfiles/
+static/
 cache/
 *.egg-info/
 .make-venv-installed

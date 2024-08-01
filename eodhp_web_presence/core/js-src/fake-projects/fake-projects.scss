@@ -1,0 +1,236 @@
+@use '../scss/custom.scss';
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
+#projects-page-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 100%;
+    background-color: white;
+}
+
+#projects-list-container {
+    background-color: custom.$light-grey;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+#projects-list-title {
+    font-size: 2rem;
+    margin-top: 1rem;
+}
+
+.project-menu {
+    padding-top: 1rem;
+}
+
+.project-menu-project-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.project-menu-project-title>a {
+    color: black;
+    text-decoration: none;
+}
+
+.project-menu-item {
+    padding-left: 1rem;
+    display: block;
+    color: black;
+    text-decoration: none;
+}
+
+.project-menu-item:hover,
+.project-menu-item.selected {
+    background-color: custom.$grey;
+    font-weight: bold;
+}
+
+.project-menu-item:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+#projects-page-main {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    flex-grow: 1;
+}
+
+#projects-page-main-projectname {
+    font-size: 2rem;
+    margin-top: 1rem;
+}
+
+#projects-main-active-title {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
+#stores-count {
+    font-size: 0.8rem;
+    color: custom.$blue;
+}
+
+#stores-list {
+    background-color: custom.$light-grey;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+#stores-list>li {
+    border: 1px solid custom.$light-blue;
+    border-collapse: collapse;
+    display: block;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+#stores-list>li:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#stores-list>li:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.store-id {
+    font-size: 1.4rem;
+    font-weight: bold;
+    // margin-bottom: 0.2rem;
+    // color: custom.$blue;
+}
+
+.store-name {
+    color: custom.$blue;
+    margin-bottom: 0.2rem;
+    font-size: 0.8rem;
+}
+
+.store-descr {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.store-info-note {
+    color: #aaaaaa;
+}
+
+.store-info code {
+    background-color: custom.$grey;
+    border-radius: 5px;
+    border-color: custom.$light-blue;
+    border-width: 1px;
+    border-style: solid;
+    display: inline-block;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+}
+
+.store-info-header {
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-top: 0.5rem;
+}
+
+
+#linked-accounts-list {
+    background-color: custom.$light-grey;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+#linked-accounts-list>li {
+    border: 1px solid custom.$light-blue;
+    border-collapse: collapse;
+    display: block;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+#linked-accounts-list>li:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#linked-accounts-list>li:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.linked-name {
+    font-size: 1.4rem;
+    font-weight: bold;
+    // margin-bottom: 0.2rem;
+    // color: custom.$blue;
+}
+
+.linked-descr {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+button.linked-remove {
+    background-color: custom.$blue;
+    color: white;
+}
+
+
+#home-list {
+    background-color: custom.$light-grey;
+    padding: 0;
+    margin-top: 1rem;
+    display: inline-block;
+}
+
+#home-list>li {
+    border: 1px solid custom.$light-blue;
+    border-collapse: collapse;
+    display: block;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+#home-list>li:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#home-list>li:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+a.project-home-link {
+    display: block;
+    width: 20rem;
+    // background-color: custom.$light-grey;
+    border: 1px solid custom.$light-blue;
+    background-color: custom.$blue;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}

@@ -62,12 +62,9 @@ INSTALLED_APPS = [
     "wagtailcache",
     # web presence
     "accounts",
+    "core",
     "home",
-    "eodhp_web_presence",
 ]
-
-# Configure the DEFAULT_AUTO_FIELD setting
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
 
@@ -107,7 +104,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
-    "eodhp_web_presence.middleware.middleware.HeaderMiddleware",
+    "core.middleware.HeaderMiddleware",
     "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
 ]
 
@@ -127,7 +124,7 @@ CACHES = {
     }
 }
 
-ROOT_URLCONF = "eodhp_web_presence.urls"
+ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
     {
@@ -142,7 +139,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "eodhp_web_presence.context_processors.menu_links",
+                "core.context_processors.menu_links",
             ],
         },
     },
@@ -234,8 +231,8 @@ STORAGES = {
     },
 }
 
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_URL = "static/"
 
 if env("USE_S3", default=False, cast=bool):
     # Set the required AWS credentials
@@ -305,8 +302,9 @@ LOGGING = {
     },
     "loggers": {
         "accounts": {"handlers": ["console"], "level": LOG_LEVEL},
-        "home": {"handlers": ["console"], "level": LOG_LEVEL},
+        "core": {"handlers": ["console"], "level": LOG_LEVEL},
         "eodhp_web_presence": {"handlers": ["console"], "level": LOG_LEVEL},
+        "home": {"handlers": ["console"], "level": LOG_LEVEL},
     },
 }
 
