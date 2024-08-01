@@ -64,6 +64,8 @@ python manage.py runserver  # will reload on any changes to Python code
 
 ## Configuration
 
+See _eodhp_web_presence/eodhp_web_presence/settings.py_ for all available environment variables.
+
 Copy `example.env` to `.env` and check its contents are suitable for your environment. If you wish to use PostgreSQL (to match the production environment) then install it now, create a user and use something like this in place of the existing settings:
 
 ```bash
