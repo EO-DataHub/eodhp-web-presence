@@ -1,9 +1,12 @@
+import logging
 from typing import Optional
 
 from django.contrib.auth.backends import BaseBackend
 from django.http import HttpRequest
 
 from .models import User
+
+logger = logging.getLogger(__name__)
 
 
 class ClaimsBackend(BaseBackend):
@@ -13,6 +16,7 @@ class ClaimsBackend(BaseBackend):
             if created:
                 user.set_unusable_password()
                 user.save()
+            logger.debug("User %s authenticated (created=%s)", user, created)
             return user
         else:
             return None

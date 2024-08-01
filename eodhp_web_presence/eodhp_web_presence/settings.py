@@ -304,16 +304,9 @@ LOGGING = {
         },
     },
     "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": logging.WARNING,
-            "propagate": False,
-        },  # all other dependencies
-        "eodhp_web_presence": {
-            "handlers": ["console"],
-            "level": LOG_LEVEL,
-            "propagate": False,
-        },
+        "accounts": {"handlers": ["console"], "level": LOG_LEVEL},
+        "home": {"handlers": ["console"], "level": LOG_LEVEL},
+        "eodhp_web_presence": {"handlers": ["console"], "level": LOG_LEVEL},
     },
 }
 
