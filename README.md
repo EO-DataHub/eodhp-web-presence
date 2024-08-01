@@ -1,144 +1,116 @@
-# eodhp-website
+# EODHP Web Presence
 
-## First time installation
-1. Follow the instructions [here](https://github.com/UKEODHP/template-python/blob/main/README.md) for installing a
-Python 3.11 environment. You will also need to install nodejs.
+## Install Dependencies
 
-2. Install dependencies:
+Python and npm are required to build this project.
 
-```commandline
+### Minimal Install
+
+```bash
+python -m venv .venv
+. .venv/bin/activate
+python -m pip install .[dev]
+npm install
+```
+
+### Recommended Development Install
+
+```bash
 make setup
 ```
 
-This will create a virtual environment called `venv`, build `requirements.txt` and
-`requirements-dev.txt` from `pyproject.toml` if they're out of date, install the Python
-and Node dependencies and install `pre-commit`.
+This will create a virtual environment called `venv`, build `requirements.txt` and `requirements-dev.txt` from `pyproject.toml` if they're out of date, install the Python and Node dependencies and install `pre-commit`.
 
-It's safe and fast to run `make setup` repeatedly as it will only update these things if
-they have changed.
+It's safe and fast to run `make setup` repeatedly as it will only update these things if they have changed.
 
-After `make setup` you can run `pre-commit` to run pre-commit checks on staged changes and
-`pre-commit run --all-files` to run them on all files. This replicates the linter checks that
-run from GitHub actions.
+After `make setup` you can run `pre-commit` to run pre-commit checks on staged changes and `pre-commit run --all-files` to run them on all files. This replicates the linter checks that run from GitHub actions.
 
-3. Set up environment
+## Running the App
 
-Copy `example.env` to `.env` and check its contents are suitable for your environment. If you wish
-to use PostgreSQL (to match the production environment) then install it now, create a user and use
-something like this in place of the existing settings:
+### Initial Configuration
 
-```commandline
+```bash
+npm run dev  # build webpack bundles
+cd eodhp_web_presence
+python manage.py migrate  # create initial sqlite database
+python manage.py createsuperuser  # create an admin user for wagtail admin backend
+```
+
+### Development
+
+When just working with the Python code, you can run the app using Django runserver standalone. The app will be available on http://127.0.0.1:8000 by default.
+
+```bash
+npm run dev  # create webpack bundles to be served statically by Django
+export DEBUG=true
+cd eodhp_web_presence
+python manage.py runserver  # will reload on any changes to Python code
+```
+
+If you are also working with the webpack source files and would like to see hot reloading then you can serve the app using the webpack dev server, which by default is served on http://127.0.0.1:3000. This will hot reload the app when the webpack source files in assets/ are updated. This requires two terminals, one to serve the webpack bundles and the other to run the Django app.
+
+```bash
+# terminal 1
+npm run serve  # will reload on any changes to webpack source files
+```
+
+```bash
+# terminal 2
+export DEBUG=true
+export WEBPACK_SERVE=true
+cd eodhp_web_presence
+python manage.py runserver  # will reload on any changes to Python code
+```
+
+## Configuration
+
+Copy `example.env` to `.env` and check its contents are suitable for your environment. If you wish to use PostgreSQL (to match the production environment) then install it now, create a user and use something like this in place of the existing settings:
+
+```bash
+# production database
 SQL_ENGINE="django.db.backends.postgresql"
 SQL_DATABASE="web"
 SQL_USER="<username>"
 SQL_PASSWORD="..."
 ```
 
-You will then need
+To load env vars from .env file for export to `python manage.py runserver`:
 
-```commandline
-set -a
-. .env
+```bash
+set -a  # enable export of all env vars from shell
+. .env  # source the env vars into current shell
 ```
 
-to be able to run `manage.py` from your shell (not necessary for `make run` or other make targets).
+This is not necessary for `make run` or other make targets.
 
-## Running for Development
+## Testing
 
-The system can be run in development in two ways: directly, and in Docker with Docker Compose.
-Running in Docker provides hot-reload of changes to JS/CSS, meaning that no refresh of the browser
-is necessary. However, this sometimes fails. It will also require a Docker image rebuild when
-dependencies change and does not work with a PostgreSQL database.
-
-### Running Directly
-
-1. Run migrations - this will create the initial database contents if necessary. This step will
-   need to be repeated whenever the migrations are changed (by any developer).
-
-```commandline
-./venv/bin/python ./eodhp_web_presence/manage.py migrate
-```
-
-2. Set up a superuser
-
-```commandline
-./venv/bin/python ./eodhp_web_presence/manage.py createsuperuser
-```
-Follow the on-screen instructions.
-
-3. Either build and run the webserver in production mode
-
-```commandline
-. venv/bin/activate
-npm run build
+```bash
 cd eodhp_web_presence
-gunicorn eodhp_web_presence.wsgi:application --bind 0.0.0.0:8000
+pytest .
 ```
 
-or (more useful for development)
+## Usage
 
-```commandline
-make run
-```
+Access website at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
 
-This will run three things:
+The admin panel can be accessed at [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin).
 
-* Django/Wagtail in DEBUG=True mode, including serving the static files and Webpack build outputs.
-* Webpack in watch mode so that Webpack build outputs are rebuilt automatically every time you
-  change a source file.
-* `ptw` (pytest watcher) which will run the pytest tests on source file change.
-  
-Access website at [http://127.0.0.1:8000/](http://127.0.0.1:8000/). The admin panel can be accessed at [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+## Build Image
 
-Changes to static files and Javascript/CSS should be picked up automatically.
+A Dockerfile has been provided for packaging the app for deployment in production.
 
-
-### Running in Docker Compose
-
-Note that this currently runs as root inside the container and may create some files owned by root,
-causing errors if you later try to run the unit tests or server outside Docker. Delete or change
-the ownership of these files if you need to.
-
-#### Production-like
-
-1. Run `docker compose up --build` to build and run the docker container. This will run the webserver on port 8000
-
-2. Create a superuser (optional)
-
-```commandline
-docker compose exec web python manage.py createsuperuser
-```
-
-#### Development Environment (Live reloading)
-
-1. Run `docker compose -f docker-compose.dev.yaml up --build`
-2. Create a superuser
-
-```commandline
-docker compose exec web python manage.py createsuperuser
-```
-
-3. Navigate to port 8000 to view the site
-
-
-## Building a dockerfile
-
-```commandline
+```bash
 docker build -t eodhp-web-presence .
 docker run --rm -p 8000:8000 --env-file .env eodhp-web-presence
 ```
 
-Access website at [http://127.0.0.1:8000/](http://127.0.0.1:8000/). The admin panel can be accessed at [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
-
-
+You will need to serve static files via a proxy or otherwise.
 
 ## Database importing and exporting
 
-To export the contents of the current database, run `database_dump.py`. The user-added contents of the database are
-exported to the `web-database-exports` S3 bucket.
+To export the contents of the current database, run `database_dump.py`. The user-added contents of the database are exported to the `web-database-exports` S3 bucket.
 
-To overwrite the user-added tables, run `database_load.py <my_file_name.sql>` where `my_file_name.sql` can be found in
-the S3 bucket.
+To overwrite the user-added tables, run `database_load.py <my_file_name.sql>` where `my_file_name.sql` can be found in the S3 bucket.
 
-Both database scripts can be found in the same folder as `manage.py`
-
+Both database scripts can be found in the same folder as `manage.py`.
