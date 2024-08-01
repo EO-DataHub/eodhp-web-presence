@@ -23,11 +23,10 @@ module.exports = {
   },
   output: {
     filename: "[name]-[contenthash].js",
-    path: path.resolve(__dirname, "eodhp_web_presence/staticfiles/"),
-    publicPath:
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:3000/static/"
-        : "/static/webpack_bundles/",
+    path: path.resolve(
+      __dirname,
+      "eodhp_web_presence/staticfiles/webpack_bundles"
+    ),
   },
   devServer: {
     compress: true,
@@ -84,25 +83,25 @@ module.exports = {
   },
 };
 
-// This adds a __VERSION__ variable (more like a search-and-replace than a variable)
-// so that we can put the Git revision in the HTML in version.js.
-if (process.env.GIT_REF_NAME) {
-  module.exports.plugins.push(
-    new webpack.DefinePlugin({
-      __VERSION__: JSON.stringify(
-        process.env.GIT_REF_NAME + "-" + process.env.GIT_SHA
-      ),
-    })
-  );
-} else {
-  const {GitRevisionPlugin} = require("git-revision-webpack-plugin");
-  const gitRevisionPlugin = new GitRevisionPlugin();
+// // This adds a __VERSION__ variable (more like a search-and-replace than a variable)
+// // so that we can put the Git revision in the HTML in version.js.
+// if (process.env.GIT_REF_NAME) {
+//   module.exports.plugins.push(
+//     new webpack.DefinePlugin({
+//       __VERSION__: JSON.stringify(
+//         process.env.GIT_REF_NAME + "-" + process.env.GIT_SHA
+//       ),
+//     })
+//   );
+// } else {
+//   const {GitRevisionPlugin} = require("git-revision-webpack-plugin");
+//   const gitRevisionPlugin = new GitRevisionPlugin();
 
-  module.exports.plugins.push(
-    gitRevisionPlugin,
+//   module.exports.plugins.push(
+//     gitRevisionPlugin,
 
-    new webpack.DefinePlugin({
-      __VERSION__: JSON.stringify(gitRevisionPlugin.version()),
-    })
-  );
-}
+//     new webpack.DefinePlugin({
+//       __VERSION__: JSON.stringify(gitRevisionPlugin.version()),
+//     })
+//   );
+// }

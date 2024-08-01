@@ -22,17 +22,17 @@ readme = "README.md"
 # Our target version is Python 3.11, but it may work with earlier versions.
 requires-python = ">=3.11"
 
-license = {file = "LICENSE"}
+license = { file = "LICENSE" }
 
 # This should be your name or the name of the organization who originally
 # authored the project, and a valid email address corresponding to the name
 # listed.
 authors = [
-  {name = "Telespazio UK Ltd", email = "hannah.collingwood@telespazio.com" }
+  { name = "Telespazio UK Ltd", email = "hannah.collingwood@telespazio.com" },
 ]
 
 maintainers = [
-  {name = "Telespazio UK Ltd", email = "hannah.collingwood@telespazio.com" }
+  { name = "Telespazio UK Ltd", email = "hannah.collingwood@telespazio.com" },
 ]
 
 # Classifiers help users find your project by categorizing it.
@@ -65,20 +65,18 @@ classifiers = [
 # For an analysis of this field vs pip's requirements files see:
 # https://packaging.python.org/discussions/install-requires-vs-requirements/
 dependencies = [
-    "Django>=4.2,<5.1",
-    "wagtail>=5.2,<5.3",
-    "psycopg2-binary",
-    "django-environ",
-    "whitenoise",
-    "django-sass",
-    "wagtail-cache",
-    "django-webpack-loader",
-    "gevent",
-    "gunicorn>=22.0.0",
-    "boto3",
-    "django-storages",
-    "pyjwt",
-    "jinja2>=3.1.4"
+  "Django>=4.2,<5.1",
+  "wagtail>=5.2,<5.3",
+  "psycopg2-binary",
+  "django-environ",
+  "whitenoise",
+  "django-sass",
+  "wagtail-cache",
+  "django-webpack-loader",
+  "boto3",
+  "django-storages",
+  "pyjwt",
+  "jinja2>=3.1.4",
 ]
 
 # List additional groups of dependencies here (e.g. development
@@ -91,17 +89,17 @@ dependencies = [
 # projects.
 [project.optional-dependencies] # Optional
 dev = [
-    "pip-tools",
-    "pytest",
-    "pytest-xdist",
-    "pytest-mock",
-    "pytest-watcher",
-    "black",
-    "ruff",
-    "pytest-django",
-    "isort",
-    "validate-pyproject[all]",
-    "pre-commit",
+  "pip-tools",
+  "pytest",
+  "pytest-xdist",
+  "pytest-mock",
+  "pytest-watcher",
+  "black",
+  "ruff",
+  "pytest-django",
+  "isort",
+  "validate-pyproject[all]",
+  "pre-commit",
 ]
 
 # List URLs that are relevant to your project
@@ -114,7 +112,7 @@ dev = [
 # issues, where the source is hosted, where to say thanks to the package
 # maintainers, and where to support the project financially. The key is
 # what's used to render the link text on PyPI.
-[project.urls]  # Optional
+[project.urls] # Optional
 homepage = "https://github.com/UKEODHP/eodhp-web-presence"
 repository = "https://github.com/UKEODHP/eodhp-web-presence"
 changelog = "https://github.com/UKEODHP/eodhp-web-presence/main/CHANGELOG.md"
@@ -126,8 +124,7 @@ requires = ["setuptools>=69.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = [
-]
+packages = []
 
 [tool.black]
 line-length = 100
@@ -138,27 +135,27 @@ line-length = 110
 target-version = "py311"
 
 exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".git-rewrite",
-    ".hg",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "venv",
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".git-rewrite",
+  ".hg",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "venv",
 ]
 
 [tool.ruff.lint]

@@ -213,7 +213,7 @@ WEBPACK_LOADER = {
     "DEFAULT": {
         "CACHE": not env("DEBUG", cast=bool, default=False),
         "BUNDLE_DIR_NAME": "webpack_bundles/",
-        "STATS_FILE": os.path.join(BASE_DIR, "webpack-stats.json"),
+        "STATS_FILE": os.path.join(BASE_DIR, "../webpack-stats.json"),
         "POLL_INTERVAL": 0.1,
         "IGNORE": [r".+\.hot-update.js", r".+\.map"],
     }
