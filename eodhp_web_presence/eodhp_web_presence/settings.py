@@ -211,12 +211,7 @@ USE_TZ = True
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "staticfiles"),)
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-WEBPACK_SERVE = env("WEBPACK_SERVE", cast=bool, default=False)
 STATIC_URL = "/static/"
-if WEBPACK_SERVE:
-    WEBPACK_BUNDLE_URL = "http://localhost:3000/static/"
-else:
-    WEBPACK_BUNDLE_URL = "/static/bundles/"
 
 WEBPACK_LOADER = {
     "DEFAULT": {

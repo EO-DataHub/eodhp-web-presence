@@ -41,8 +41,8 @@ python manage.py createsuperuser  # create an admin user for wagtail admin backe
 When just working with the Python code, you can run the app using Django runserver standalone. The app will be available on http://127.0.0.1:8000 by default.
 
 ```bash
-npm run dev  # create webpack bundles to be served statically by Django
 export DEBUG=true
+npm run dev  # create webpack bundles to be served statically by Django
 cd eodhp_web_presence
 python manage.py runserver  # will reload on any changes to Python code
 ```
@@ -57,7 +57,6 @@ npm run serve  # will reload on any changes to webpack source files
 ```bash
 # terminal 2
 export DEBUG=true
-export WEBPACK_SERVE=true
 cd eodhp_web_presence
 python manage.py runserver  # will reload on any changes to Python code
 ```
