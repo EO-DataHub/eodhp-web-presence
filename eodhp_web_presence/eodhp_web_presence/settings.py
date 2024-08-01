@@ -124,7 +124,7 @@ CACHES = {
     }
 }
 
-ROOT_URLCONF = "core.urls"
+ROOT_URLCONF = "eodhp_web_presence.urls"
 
 TEMPLATES = [
     {
@@ -220,8 +220,6 @@ WEBPACK_LOADER = {
 }
 
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "assets"),)
-
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -231,6 +229,7 @@ STORAGES = {
     },
 }
 
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "staticfiles"),)
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "static/"
 
