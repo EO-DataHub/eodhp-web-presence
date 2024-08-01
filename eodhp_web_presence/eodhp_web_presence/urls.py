@@ -23,6 +23,7 @@ urlpatterns = [
     path("support/", include("home.urls")),
     path("robots.txt", robots_txt),
     path("authenticated", authenticated),
+    path("", include("accounts.urls")),
     path("", include(wagtail_urls)),  # This entry should always be at the end of urlpatterns
 ]
 
