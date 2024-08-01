@@ -209,10 +209,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "staticfiles"),)
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+WEBPACK_SERVE = env("WEBPACK_SERVE", cast=bool, default=False)
+STATIC_URL = "/static/"
+if WEBPACK_SERVE:
+    WEBPACK_BUNDLE_URL = "http://localhost:3000/static/"
+else:
+    WEBPACK_BUNDLE_URL = "/static/bundles/"
+
 WEBPACK_LOADER = {
     "DEFAULT": {
         "CACHE": not env("DEBUG", cast=bool, default=False),
-        "BUNDLE_DIR_NAME": "webpack_bundles/",
+        "BUNDLE_DIR_NAME": "bundles/",
         "STATS_FILE": os.path.join(BASE_DIR, "../webpack-stats.json"),
         "POLL_INTERVAL": 0.1,
         "IGNORE": [r".+\.hot-update.js", r".+\.map"],
@@ -229,9 +238,6 @@ STORAGES = {
     },
 }
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "staticfiles"),)
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATIC_URL = "static/"
 
 if env("USE_S3", default=False, cast=bool):
     # Set the required AWS credentials

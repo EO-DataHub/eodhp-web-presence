@@ -23,10 +23,8 @@ module.exports = {
   },
   output: {
     filename: "[name]-[contenthash].js",
-    path: path.resolve(
-      __dirname,
-      "eodhp_web_presence/staticfiles/webpack_bundles"
-    ),
+    path: path.resolve(__dirname, "eodhp_web_presence/staticfiles/bundles"),
+    publicPath: "/static/bundles/",
   },
   devServer: {
     compress: true,
@@ -34,15 +32,15 @@ module.exports = {
     hot: true,
     host: "0.0.0.0",
     headers: {"Access-Control-Allow-Origin": "*"},
-    static: {
-      directory: path.join(
-        __dirname,
-        "eodhp_web_presence/staticfiles/webpack_bundles/"
-      ),
-      publicPath: "/static/",
-      watch: true,
-    },
-    watchFiles: ["node_modules/**/*", "eodhp_web_presence/**/*"],
+    proxy: [
+      {
+        context: ["/"],
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
+    ],
+    static: ["eodhp_web_presence/staticfiles/bundles"],
+    watchFiles: ["assets/**/*"],
   },
   plugins: [
     new BundleTracker({path: __dirname, filename: "webpack-stats.json"}),
