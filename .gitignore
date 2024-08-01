@@ -10,6 +10,7 @@ node_modules/
 
 webpack-stats.json
 static/
+staticfiles/
 cache/
 *.egg-info/
 .make-venv-installed
