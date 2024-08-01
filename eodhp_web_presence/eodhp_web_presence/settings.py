@@ -79,13 +79,13 @@ AUTHENTICATION_BACKENDS = [
 
 OPA_AUTH = {
     "ENABLED": env("OPA_AUTH_ENABLED", cast=bool, default=False),
-    "SERVER_URL": env("OPA_AUTH_ENABLED", default="http://localhost:8181"),
+    "SERVER_URL": env("OPA_AUTH_SERVER_URL", default="http://localhost:8181"),
 }
 
 
 def opa_authorization_factory(get_response):
     module_name = "accounts.middleware"
-    class_name = "AuthMiddleware"
+    class_name = "OPAAuthorizationMiddleware"
 
     module = importlib.import_module(module_name)
     cls = getattr(module, class_name)
