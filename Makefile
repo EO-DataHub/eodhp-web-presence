@@ -23,7 +23,7 @@ black:
 	./venv/bin/black .
 
 isort:
-	./venv/bin/isort . --check --diff
+	./venv/bin/isort . --profile black
 
 validate-pyproject:
 	validate-pyproject pyproject.toml
@@ -69,6 +69,7 @@ venv:
 
 .git/hooks/pre-commit:
 	./venv/bin/pre-commit install
+	curl -o .pre-commit-config.yaml https://raw.githubusercontent.com/EO-DataHub/github-actions/main/.pre-commit-config-python.yaml
 
 setup: venv requirements .make-venv-installed .make-node_modules-installed .git/hooks/pre-commit
 
