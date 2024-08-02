@@ -101,7 +101,8 @@ the ownership of these files if you need to.
 
 #### Production-like
 
-1. Run `docker compose up --build` to build and run the docker container. This will run the webserver on port 8000
+1. Run `docker compose up --build` to build and run the docker container. This will run the webserver on port 8000. 
+2. Use `docker compose -f docker-compose.dev.yaml up --build` for development.
 
 2. Create a superuser (optional)
 
