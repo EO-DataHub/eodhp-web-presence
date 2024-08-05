@@ -69,10 +69,10 @@ Copy `example.env` to `.env` and check its contents are suitable for your enviro
 
 ```bash
 # production database
-SQL_ENGINE="django.db.backends.postgresql"
-SQL_DATABASE="web"
-SQL_USER="<username>"
-SQL_PASSWORD="..."
+SQL_ENGINE=django.db.backends.postgresql
+SQL_DATABASE=web
+SQL_USER=<username>
+SQL_PASSWORD=...
 ```
 
 To load env vars from .env file for export to `python manage.py runserver`:
