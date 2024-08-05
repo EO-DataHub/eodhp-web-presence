@@ -1,5 +1,11 @@
 FROM node:22-slim AS js_builder
 
+# Only set in GitHub Actions.
+ARG GIT_REF_NAME="no-ref-name"
+ENV GIT_REF_NAME $GIT_REF_NAME
+ARG GIT_SHA="no-sha"
+ENV GIT_SHA $GIT_SHA
+
 WORKDIR /app
 
 COPY package*.json .

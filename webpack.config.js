@@ -78,25 +78,14 @@ module.exports = {
   },
 };
 
-// // This adds a __VERSION__ variable (more like a search-and-replace than a variable)
-// // so that we can put the Git revision in the HTML in version.js.
-// if (process.env.GIT_REF_NAME) {
-//   module.exports.plugins.push(
-//     new webpack.DefinePlugin({
-//       __VERSION__: JSON.stringify(
-//         process.env.GIT_REF_NAME + "-" + process.env.GIT_SHA
-//       ),
-//     })
-//   );
-// } else {
-//   const {GitRevisionPlugin} = require("git-revision-webpack-plugin");
-//   const gitRevisionPlugin = new GitRevisionPlugin();
-
-//   module.exports.plugins.push(
-//     gitRevisionPlugin,
-
-//     new webpack.DefinePlugin({
-//       __VERSION__: JSON.stringify(gitRevisionPlugin.version()),
-//     })
-//   );
-// }
+// This adds a __VERSION__ variable (more like a search-and-replace than a variable)
+// so that we can put the Git revision in the HTML in version.js.
+if (process.env.GIT_REF_NAME) {
+  module.exports.plugins.push(
+    new webpack.DefinePlugin({
+      __VERSION__: JSON.stringify(
+        process.env.GIT_REF_NAME + "-" + process.env.GIT_SHA
+      ),
+    })
+  );
+}
