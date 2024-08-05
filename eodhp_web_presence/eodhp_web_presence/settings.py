@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 env = environ.Env()
 
-env_name = env("ENV_NAME", "default")
+env_name = env("ENV_NAME", default="default")
 
 
 # Quick-start development settings - unsuitable for production
