@@ -1,16 +1,13 @@
-<html lang="en">
-<head>
-    <script>window.STAC_BROWSER_CONFIG = {
-  catalogUrl: '{{ catalogue_data_url }}',
-}</script>
-    <script defer="defer" src="{{ url }}/chunk-vendors.bundle.js"></script>
-    <script defer="defer" src="{{ url }}/app.bundle.js"></script>
-</head>
-<body>
-<h1>EODHP</h1>
-<div id="stac-browser"></div>
-<noscript><strong>We're sorry but STAC Browser doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript>
-<p>
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
-</body>
-</html>
+
+{% block content %}
+
+<script type="module" crossorigin src="{{ url }}/assets/index.js"></script>
+<link rel="stylesheet" crossorigin href="{{ url }}/assets/index.css">
+
+<div id="root"></div>
+
+{% endblock content %}
