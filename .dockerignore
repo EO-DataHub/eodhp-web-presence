@@ -4,5 +4,5 @@
 **/__pycache__/
 **/.pytest_cache/
 **/cache/
-**/static/
-**/staticfiles/
+eodhp_web_presence/static/
+eodhp_web_presence/staticfiles/
