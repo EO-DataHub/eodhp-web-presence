@@ -28,6 +28,11 @@
 
         {# Global javascript #}
 
+        <script src="{% static 'bundles/main.js' %}"></script>
+        {% block extra_js %}
+        {# Override this in templates to add extra javascript #}
+        {% endblock %}
+
         {# Global stylesheets #}
 
         <link rel="icon" type="image/x-icon" href="{% static 'img/menu/favicon.svg' %}">
@@ -35,10 +40,6 @@
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
-
-        {% load render_bundle from webpack_loader %}
-        {% render_bundle 'main' %}
-
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
@@ -51,10 +52,5 @@
 
 
             {% include "footer.html" %}
-
-
-        {% block extra_js %}
-        {# Override this in templates to add extra javascript #}
-        {% endblock %}
     </body>
 </html>

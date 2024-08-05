@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     "wagtail.search",
     "wagtail.admin",
     "wagtail",
-    "webpack_loader",
     # 3rd party
     "modelcluster",
     "taggit",
@@ -215,7 +214,7 @@ STATIC_URL = "/static/"
 
 WEBPACK_LOADER = {
     "DEFAULT": {
-        "CACHE": not env("DEBUG", cast=bool, default=False),
+        "CACHE": not DEBUG,
         "BUNDLE_DIR_NAME": "bundles/",
         "STATS_FILE": os.path.join(BASE_DIR, "../webpack-stats.json"),
         "POLL_INTERVAL": 0.1,

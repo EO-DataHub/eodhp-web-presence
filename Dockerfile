@@ -1,3 +1,15 @@
+FROM node:22-slim AS js_builder
+
+WORKDIR /app
+
+COPY package*.json .
+RUN npm install
+
+COPY assets ./assets
+COPY webpack.config.js .eslintrc.json .stylelintrc ./
+
+RUN npm run build
+
 FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -16,6 +28,9 @@ COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install -r requirements.txt
 COPY eodhp_web_presence .
+RUN python manage.py collectstatic --noinput
+COPY --from=js_builder /app/eodhp_web_presence/staticfiles ./static
+
 
 # Create a convenience script to run manage.py commands from docker CLI, e.g.
 # `docker run --entrypoint manage <container_name> migrate`
