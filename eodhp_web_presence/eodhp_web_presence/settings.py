@@ -75,10 +75,11 @@ AUTHENTICATION_BACKENDS = [
 KEYCLOAK = {
     "CLIENT_ID": env("KEYCLOAK_CLIENT_ID", default="oauth2-proxy"),
     "LOGOUT_URL": env(
-        "KEYCLOAK_LOGOUT_URL", default="/keycloak/realms/master/protocol/openid-connect/logout"
+        "KEYCLOAK_LOGOUT_URL",
+        default="http://127.0.0.1/keycloak/realms/master/protocol/openid-connect/logout",
     ),
-    "OAUTH2_PROXY_SIGNIN": env("OAUTH2_PROXY_SIGNIN", default="/oauth2/start"),
-    "OAUTH2_PROXY_SIGNOUT": env("OAUTH2_PROXY_SIGNOUT", default="/oauth2/sign_out"),
+    "OAUTH2_PROXY_SIGNIN": env("OAUTH2_PROXY_SIGNIN", default="http://127.0.0.1/oauth2/start"),
+    "OAUTH2_PROXY_SIGNOUT": env("OAUTH2_PROXY_SIGNOUT", default="http://127.0.0.1/oauth2/sign_out"),
 }
 OPA_AUTH = {
     "ENABLED": env("OPA_AUTH_ENABLED", cast=bool, default=False),
