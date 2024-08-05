@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.1.16 (05-08-2024)
+- Update web presence
+
 ## v0.1.15 (23-07-2024)
 - Add authZ integration
 
