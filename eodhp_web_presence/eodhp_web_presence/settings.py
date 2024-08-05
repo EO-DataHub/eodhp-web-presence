@@ -23,6 +23,8 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 env = environ.Env()
 
+env_name = env("ENV_NAME", "default")
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -207,7 +209,9 @@ if env("USE_S3", default=False, cast=bool):
     AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME", default="eu-west-2")
 
     # Set the media files locations relative to the S3 bucket
-    MEDIAFILES_LOCATION = env("MEDIAFILES_LOCATION", default="static-apps/web-presence-media/media")
+    MEDIAFILES_LOCATION = env(
+        "MEDIAFILES_LOCATION", default=f"static-apps/web-presence-media/media/{env_name}"
+    )
 
     # Configure media files storage
     class MediaStorage(S3Boto3Storage):
