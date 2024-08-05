@@ -17,12 +17,12 @@ def sign_out(request):
         settings["KEYCLOAK"]["LOGOUT_URL"], data={"client_id": settings["KEYCLOAK"]["CLIENT_ID"]}
     )
     if not r1.ok:
-        logger.error(f"Failed to logout from Keycloak: {r1.text}")
+        logger.error("Failed to logout from Keycloak: %s", r1.text)
         return
 
     r2 = requests.get("/oauth2/sign_out")
     if not r2.ok:
-        logger.error(f"Failed to logout from Oauth2 Proxy: {r2.text}")
+        logger.error("Failed to logout from Oauth2 Proxy: %s", r2.text)
         return
 
     logout(request)
