@@ -72,7 +72,14 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",  # Keep the default backend for admin access
 ]
 
-
+KEYCLOAK = {
+    "CLIENT_ID": env("KEYCLOAK_CLIENT_ID", default="oauth2-proxy"),
+    "LOGOUT_URL": env(
+        "KEYCLOAK_LOGOUT_URL", default="/keycloak/realms/master/protocol/openid-connect/logout"
+    ),
+    "OAUTH2_PROXY_SIGNIN": env("OAUTH2_PROXY_SIGNIN", default="/oauth2/start"),
+    "OAUTH2_PROXY_SIGNOUT": env("OAUTH2_PROXY_SIGNOUT", default="/oauth2/sign_out"),
+}
 OPA_AUTH = {
     "ENABLED": env("OPA_AUTH_ENABLED", cast=bool, default=False),
     "SERVER_URL": env("OPA_AUTH_SERVER_URL", default="http://localhost:8181"),
