@@ -71,13 +71,13 @@ AUTHENTICATION_BACKENDS = [
     "accounts.backends.ClaimsBackend",
     "django.contrib.auth.backends.ModelBackend",  # Keep the default backend for admin access
 ]
-
 KEYCLOAK = {
     "CLIENT_ID": env("KEYCLOAK_CLIENT_ID", default="oauth2-proxy"),
     "LOGOUT_URL": env(
         "KEYCLOAK_LOGOUT_URL",
         default="http://127.0.0.1/keycloak/realms/master/protocol/openid-connect/logout",
     ),
+    "LOGOUT_REDIRECT_URL": env("KEYCLOAK_LOGOUT_REDIRECT_URL", default="http://127.0.0.1"),
     "OAUTH2_PROXY_SIGNIN": env("OAUTH2_PROXY_SIGNIN", default="http://127.0.0.1/oauth2/start"),
     "OAUTH2_PROXY_SIGNOUT": env("OAUTH2_PROXY_SIGNOUT", default="http://127.0.0.1/oauth2/sign_out"),
 }

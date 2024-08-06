@@ -1,10 +1,8 @@
 import logging
+from urllib.parse import quote
 
-import requests
 from django.conf import settings
-from django.contrib.auth import logout
 from django.shortcuts import redirect
-from requests.exceptions import ConnectionError
 
 logger = logging.getLogger(__name__)
 
@@ -14,23 +12,14 @@ def sign_in(request):
 
 
 def sign_out(request):
-    try:
-        r1 = requests.post(
-            settings.KEYCLOAK["LOGOUT_URL"], data={"client_id": settings.KEYCLOAK["CLIENT_ID"]}
-        )
-    except ConnectionError as e:
-        logger.error("Failed to connect to Keycloak: %s", e)
-    else:
-        if not r1.ok:
-            logger.error("Failed to logout from Keycloak: %s", r1.text)
+    keycloak_logout_url = (
+        f"{settings.KEYCLOAK['LOGOUT_URL']}"
+        f"?client_id={settings.KEYCLOAK['CLIENT_ID']}"
+        f"&post_logout_redirect_uri={quote(settings.KEYCLOAK['LOGOUT_REDIRECT_URL'])}"
+    )
 
-    try:
-        r2 = requests.get(settings.KEYCLOAK["OAUTH2_PROXY_SIGNOUT"])
-    except ConnectionError as e:
-        logger.error("Failed to connect to Oauth2 Proxy: %s", e)
-    else:
-        if not r2.ok:
-            logger.error("Failed to logout from Oauth2 Proxy: %s", r2.text)
+    oauth2_proxy_logout_url = (
+        f"{settings.KEYCLOAK['OAUTH2_PROXY_SIGNOUT']}?rd={quote(keycloak_logout_url)}"
+    )
 
-    logout(request)
-    return redirect("/")
+    return redirect(oauth2_proxy_logout_url)
