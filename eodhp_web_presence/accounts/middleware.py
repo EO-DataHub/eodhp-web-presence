@@ -59,7 +59,7 @@ class ClaimsMiddleware:
                 request.user.username,
                 claims.username,
             )
-            auth.logout(request, request.user)
+            auth.logout(request)
             logger.debug("User '%s' logged out", request.user)
 
         if not request.user.is_authenticated and claims.username is not None:
