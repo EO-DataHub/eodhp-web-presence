@@ -83,7 +83,7 @@ KEYCLOAK = {
 }
 OPA_AUTH = {
     "ENABLED": env("OPA_AUTH_ENABLED", cast=bool, default=False),
-    "SERVER_URL": env("OPA_AUTH_SERVER_URL", default="http://localhost:8181"),
+    "CLIENT_URL": env("OPA_AUTH_CLIENT_URL", default="http://localhost:8181"),
 }
 
 
@@ -94,7 +94,7 @@ def opa_authorization_factory(get_response):
     module = importlib.import_module(module_name)
     cls = getattr(module, class_name)
 
-    return cls(get_response, opa_server_url=OPA_AUTH["SERVER_URL"])
+    return cls(get_response, opa_client_url=OPA_AUTH["CLIENT_URL"])
 
 
 MIDDLEWARE = [

@@ -79,7 +79,7 @@ class OPAAuthorizationMiddlewareTestCase(TestCase):
             get_response=AuthenticationMiddleware(
                 get_response=ClaimsMiddleware(
                     get_response=OPAAuthorizationMiddleware(
-                        self.view, opa_server_url="http://localhost:8181"
+                        self.view, opa_client_url="http://localhost:8181"
                     ),
                 )
             )

@@ -69,10 +69,10 @@ class OPAAuthorizationMiddleware:
     def __init__(
         self,
         get_response: Callable[[HttpRequest], HttpResponse],
-        opa_server_url: Optional[str],
+        opa_client_url: Optional[str],
     ):
         self.get_response = get_response
-        self.opa_server_url = opa_server_url
+        self.opa_client_url = opa_client_url
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
         if not hasattr(request, "claims"):
@@ -97,15 +97,15 @@ class OPAAuthorizationMiddleware:
 
     def is_allowed(self, request: AuthRequest) -> bool:
         response = requests.post(
-            self.opa_server_url,
+            self.opa_client_url,
             headers={"Content-Type": "application/json"},
             json=request.to_dict(),
         )
 
         if not response.ok:
             logger.error(
-                "OPA server '%s' returned an error: %s",
-                self.opa_server_url,
+                "OPA client '%s' returned an error: %s",
+                self.opa_client_url,
                 response.content.decode(),
             )
             return False
