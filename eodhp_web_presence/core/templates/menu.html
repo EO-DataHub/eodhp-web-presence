@@ -66,13 +66,13 @@
             </li>
             {% if user.is_authenticated %}
             <li class="nav-item blockSolid">
-              <a aria-current="page" class="nav-link" href="sign_out"
+              <a aria-current="page" class="nav-link" href="{% url 'sign_out' %}"
                 >Sign out</a
               >
             </li>
             {% else %}
             <li class="nav-item blockSolid">
-              <a aria-current="page" class="nav-link" href="sign_in">Sign in</a>
+              <a aria-current="page" class="nav-link" href="{% url 'sign_in' %}">Sign in</a>
             </li>
             {% endif %}
           </ul>
