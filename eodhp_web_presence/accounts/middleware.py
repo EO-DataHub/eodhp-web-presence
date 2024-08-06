@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 import requests
-from django.contrib.auth import authenticate, login
+from django.contrib import auth
 from django.contrib.auth.models import AnonymousUser
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpRequest, HttpResponse
@@ -53,12 +53,21 @@ class ClaimsMiddleware:
         logger.debug("User claims: %s", json.dumps(claims.to_dict(), indent=2))
         request.claims = claims
 
-        if isinstance(request.user, AnonymousUser) and claims.username is not None:
-            user: User | None = authenticate(request)
+        if request.user.is_authenticated and claims.username != request.user.username:
+            logger.debug(
+                "User (%s) is authenticated but the claims username (%s) does not match",
+                request.user.username,
+                claims.username,
+            )
+            auth.logout(request, request.user)
+            logger.debug("User '%s' logged out", request.user)
+
+        if not request.user.is_authenticated and claims.username is not None:
+            user: User | None = auth.authenticate(request)
 
             if user is not None:
                 logger.debug("User authenticated as %s", user.username)
-                login(request, user)
+                auth.login(request, user)
             else:
                 logger.debug("User not authenticated")
 
