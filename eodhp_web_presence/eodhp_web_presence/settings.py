@@ -203,7 +203,9 @@ STATIC_URL = "/static/"
 
 if env("USE_S3", default=False, cast=bool):
     # Set the required AWS credentials
-    AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME", default="eodhp-static-web-artefacts")
+    AWS_STORAGE_BUCKET_NAME = env(
+        "AWS_STORAGE_BUCKET_NAME", default="eodhp-dev-static-web-artefacts"
+    )
     AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME", default="eu-west-2")
 
     # Set the media files locations relative to the S3 bucket
