@@ -68,11 +68,9 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "accounts.User"
 
 AUTHENTICATION_BACKENDS = [
-    # claims backend goes here if enabled
+    "accounts.backends.ClaimsBackend",
     "django.contrib.auth.backends.ModelBackend",  # Keep the default backend for admin access
 ]
-if not DEBUG:
-    AUTHENTICATION_BACKENDS.insert(0, "accounts.backends.ClaimsBackend")
 
 KEYCLOAK = {
     "CLIENT_ID": env("KEYCLOAK_CLIENT_ID", default="oauth2-proxy"),
