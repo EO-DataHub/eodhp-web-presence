@@ -32,10 +32,10 @@ class AuthRequest:
 
 class ClaimsMiddleware:
     def __init__(
-        self,
-        get_response: Callable[[HttpRequest], HttpResponse],
+        self, get_response: Callable[[HttpRequest], HttpResponse], *, force_logout: bool = True
     ):
         self.get_response = get_response
+        self.force_logout = force_logout
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
         # AuthenticationMiddleware is required so that request.user exists.
@@ -53,7 +53,11 @@ class ClaimsMiddleware:
         logger.debug("User claims: %s", json.dumps(claims.to_dict(), indent=2))
         request.claims = claims
 
-        if request.user.is_authenticated and claims.username != request.user.username:
+        if (
+            self.force_logout
+            and request.user.is_authenticated
+            and claims.username != request.user.username
+        ):
             logger.debug(
                 "User (%s) is authenticated but the claims username (%s) does not match",
                 request.user.username,

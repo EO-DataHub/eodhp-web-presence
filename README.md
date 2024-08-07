@@ -97,6 +97,16 @@ Access website at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
 
 The admin panel can be accessed at [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin).
 
+### Management Commands
+
+#### init
+
+`python manage.py init` will prepopulate a basic web presence with some content. It is intended to be used in development to quickly deploy a representative web presence.
+
+#### elevate_user
+
+`python manage.py elevate_user USERNAME` can elevate an existing user to have admin priveleges and hence be able to access the Wagtail admin panel. An optional `--revoke` flag is available to remove a user's admin priveleges.
+
 ## Build Image
 
 A Dockerfile has been provided for packaging the app for deployment in production.

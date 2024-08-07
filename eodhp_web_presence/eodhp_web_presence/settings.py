@@ -68,9 +68,12 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "accounts.User"
 
 AUTHENTICATION_BACKENDS = [
-    "accounts.backends.ClaimsBackend",
+    # claims backend goes here if enabled
     "django.contrib.auth.backends.ModelBackend",  # Keep the default backend for admin access
 ]
+if not DEBUG:
+    AUTHENTICATION_BACKENDS.insert(0, "accounts.backends.ClaimsBackend")
+
 KEYCLOAK = {
     "CLIENT_ID": env("KEYCLOAK_CLIENT_ID", default="oauth2-proxy"),
     "LOGOUT_URL": env(
@@ -85,6 +88,16 @@ OPA_AUTH = {
     "ENABLED": env("OPA_AUTH_ENABLED", cast=bool, default=False),
     "CLIENT_URL": env("OPA_AUTH_CLIENT_URL", default="http://localhost:8181"),
 }
+
+
+def claims_middleware_factory(get_response):
+    module_name = "accounts.middleware"
+    class_name = "ClaimsMiddleware"
+
+    module = importlib.import_module(module_name)
+    cls = getattr(module, class_name)
+
+    return cls(get_response, force_logout=not DEBUG)
 
 
 def opa_authorization_factory(get_response):
@@ -107,7 +120,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "accounts.middleware.ClaimsMiddleware",
+    "eodhp_web_presence.settings.claims_middleware_factory",
     # "accounts.middleware.OPAAuthorizationMiddleware" should be inserted here if enabled
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
