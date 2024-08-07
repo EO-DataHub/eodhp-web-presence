@@ -10,15 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import importlib
 import logging
 import os
 
 import environ
 from storages.backends.s3boto3 import S3Boto3Storage
 
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = os.path.dirname(PROJECT_DIR)
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 env = environ.Env()
@@ -26,6 +26,9 @@ env = environ.Env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env("DEBUG", cast=bool, default=False)
 
 
 # Application definition
@@ -51,16 +54,58 @@ INSTALLED_APPS = [
     "wagtail.search",
     "wagtail.admin",
     "wagtail",
-    "webpack_loader",
     # 3rd party
     "modelcluster",
     "taggit",
     "django_sass",
     "wagtailcache",
     # web presence
+    "accounts",
+    "core",
     "home",
-    "eodhp_web_presence",
 ]
+
+AUTH_USER_MODEL = "accounts.User"
+
+AUTHENTICATION_BACKENDS = [
+    "accounts.backends.ClaimsBackend",
+    "django.contrib.auth.backends.ModelBackend",  # Keep the default backend for admin access
+]
+
+KEYCLOAK = {
+    "CLIENT_ID": env("KEYCLOAK_CLIENT_ID", default="oauth2-proxy"),
+    "LOGOUT_URL": env(
+        "KEYCLOAK_LOGOUT_URL",
+        default="http://127.0.0.1/keycloak/realms/master/protocol/openid-connect/logout",
+    ),
+    "LOGOUT_REDIRECT_URL": env("KEYCLOAK_LOGOUT_REDIRECT_URL", default="http://127.0.0.1"),
+    "OAUTH2_PROXY_SIGNIN": env("OAUTH2_PROXY_SIGNIN", default="http://127.0.0.1/oauth2/start"),
+    "OAUTH2_PROXY_SIGNOUT": env("OAUTH2_PROXY_SIGNOUT", default="http://127.0.0.1/oauth2/sign_out"),
+}
+OPA_AUTH = {
+    "ENABLED": env("OPA_AUTH_ENABLED", cast=bool, default=False),
+    "CLIENT_URL": env("OPA_AUTH_CLIENT_URL", default="http://localhost:8181"),
+}
+
+
+def claims_middleware_factory(get_response):
+    module_name = "accounts.middleware"
+    class_name = "ClaimsMiddleware"
+
+    module = importlib.import_module(module_name)
+    cls = getattr(module, class_name)
+
+    return cls(get_response, force_logout=not DEBUG)
+
+
+def opa_authorization_factory(get_response):
+    module_name = "accounts.middleware"
+    class_name = "OPAAuthorizationMiddleware"
+
+    module = importlib.import_module(module_name)
+    cls = getattr(module, class_name)
+
+    return cls(get_response, opa_client_url=OPA_AUTH["CLIENT_URL"])
 
 
 MIDDLEWARE = [
@@ -69,17 +114,24 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     # WhiteNoise Middleware above all but below Security
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    "auth.AuthMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "eodhp_web_presence.settings.claims_middleware_factory",
+    # "accounts.middleware.OPAAuthorizationMiddleware" should be inserted here if enabled
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
-    "eodhp_web_presence.middleware.middleware.HeaderMiddleware",
+    "core.middleware.HeaderMiddleware",
     "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
 ]
+
+if OPA_AUTH["ENABLED"]:
+    MIDDLEWARE.insert(
+        MIDDLEWARE.index("accounts.middleware.ClaimsMiddleware") + 1,
+        "eodhp_web_presence.settings.opa_authorization_factory",
+    )
 
 WHITENOISE_MAX_AGE = env("STATIC_FILE_CACHE_LENGTH", cast=int, default=3600)
 CACHES = {
@@ -97,7 +149,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(PROJECT_DIR, "templates"),
+            os.path.join(BASE_DIR, "templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -106,7 +158,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "eodhp_web_presence.context_processors.menu_links",
+                "core.context_processors.menu_links",
             ],
         },
     },
@@ -176,18 +228,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-WEBPACK_LOADER = {
-    "DEFAULT": {
-        "CACHE": not env("DEBUG", cast=bool, default=False),
-        "BUNDLE_DIR_NAME": "webpack_bundles/",
-        "STATS_FILE": os.path.join(BASE_DIR, "webpack-stats.json"),
-        "POLL_INTERVAL": 0.1,
-        "IGNORE": [r".+\.hot-update.js", r".+\.map"],
-    }
-}
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "staticfiles"),)
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_URL = "/static/"
 
-
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "assets"),)
 
 STORAGES = {
     "default": {
@@ -198,8 +242,6 @@ STORAGES = {
     },
 }
 
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATIC_URL = "/static/"
 
 if env("USE_S3", default=False, cast=bool):
     # Set the required AWS credentials
@@ -237,8 +279,6 @@ WAGTAILSEARCH_BACKENDS = {
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = env("BASE_URL", default="www.example.com")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG", cast=bool, default=False)
 
 # SECRET KEY (Used for cryptographic signing)
 SECRET_KEY = env("SECRET_KEY", default="None")
@@ -252,19 +292,28 @@ CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+LOG_LEVEL = logging.DEBUG if DEBUG else logging.WARNING
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {
+            "format": "{asctime} {levelname} {message}",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+            "style": "{",
+        },
+    },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
+            "formatter": "simple",
         },
     },
     "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": logging.DEBUG if DEBUG else logging.WARNING,
-        },
+        "accounts": {"handlers": ["console"], "level": LOG_LEVEL},
+        "core": {"handlers": ["console"], "level": LOG_LEVEL},
+        "eodhp_web_presence": {"handlers": ["console"], "level": LOG_LEVEL},
+        "home": {"handlers": ["console"], "level": LOG_LEVEL},
     },
 }
 

@@ -1,21 +1,35 @@
 # Changelog
 
+## v0.1.17 (07-08-2024)
+
+- Added claims middleware
+- Added claims backend
+- Added OPA claims middleware
+- Removed django-webpack-loader
+- Optimised Dockerfile
+- Added `manage.py init` script to create a placeholder web presence
+
 ## v0.1.16 (05-08-2024)
+
 - Update web presence
 
 ## v0.1.15 (23-07-2024)
+
 - Add authZ integration
 
 ## v0.1.14 (23-07-2024))
+
 - Bugfixes:
   - Update menu hover colours
   - Fix search with spaces
 
 ## v0.1.12 (05-07-2024)
+
 - Update website design
 - Add help pages
 
 ## v0.1.11 (26-06-2024)
+
 - Serve the wagtail media files using S3
 - Add scripts for database importing/exporting
 
@@ -33,9 +47,11 @@
 - Implement design
 
 ## v0.1.8 (26-04-2024)
+
 - Update package versions
 
 ## v0.1.7 (04-04-2024)
+
 - Reference following from external sources:
   - SECRET_KEY
   - WAGTAIL_BASE_URL
@@ -64,7 +80,6 @@
 ## v0.1.1 (28-02-2024)
 
 - Updated to use environment variables for home page and resource catalogue
-
 
 ## v0.1.0 (07-02-2024)
 

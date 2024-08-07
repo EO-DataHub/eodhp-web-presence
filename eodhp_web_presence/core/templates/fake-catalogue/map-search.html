@@ -1,11 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags %}
-{% load render_bundle from webpack_loader %}
 
 {% block content %}
-
-{% render_bundle 'fake-catalogue' %}
 
 <div style="background-image: url('{% static 'img/fake-catalogue/PlanetScotlandMap.png' %}');" id="map-image">
 

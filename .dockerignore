@@ -1,2 +1,8 @@
-node_modules/
-venv
+*.env
+**/*.sqlite3
+
+**/__pycache__/
+**/.pytest_cache/
+**/cache/
+eodhp_web_presence/static/
+eodhp_web_presence/staticfiles/
