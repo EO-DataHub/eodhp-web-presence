@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.16 (08-08-2024)
+
+- Update media folder location
+
 ## v0.1.17 (07-08-2024)
 
 - Added claims middleware
@@ -11,7 +15,7 @@
 
 ## v0.1.16 (05-08-2024)
 
-- Update web presence
+- Update resource catalogue
 
 ## v0.1.15 (23-07-2024)
 
