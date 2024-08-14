@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.1.16 (08-08-2024)
+## v0.1.18 (08-08-2024)
 
 - Update media folder location
 
