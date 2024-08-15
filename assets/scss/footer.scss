@@ -23,12 +23,14 @@
     width: 50%;
     text-align: left;
 }
-
 .right {
     width: 50%;
     text-align: right;
 }
-
+.footer-padding {
+    height: 100px;
+    width: 100vw;
+}
 
 @media (max-width: 600px) {
 	.footer {
