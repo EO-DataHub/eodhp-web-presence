@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.18 (15-08-2024)
+
+- Add padding to footer
+
 ## v0.1.17 (07-08-2024)
 
 - Added claims middleware
@@ -11,7 +15,7 @@
 
 ## v0.1.16 (05-08-2024)
 
-- Update web presence
+- Update resource catalogue
 
 ## v0.1.15 (23-07-2024)
 
