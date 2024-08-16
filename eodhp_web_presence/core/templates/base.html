@@ -43,7 +43,9 @@
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
-        {% wagtailuserbar %}
+        <div class="wrapper d-flex flex-column min-vh-100">
+
+            {% wagtailuserbar %}
 
             {% include "menu.html" %}
 
@@ -52,5 +54,6 @@
 
 
             {% include "footer.html" %}
+        </div>
     </body>
 </html>
