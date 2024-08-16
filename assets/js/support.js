@@ -1,15 +1,20 @@
 import $ from 'jquery'
 
-const runSearch = (input) => {
+const runSearch = (input, areaSlug) => {
     $.get({
         url: '/support/search_items',
-        data: { query: input }
+        data: { query: input, area: areaSlug }
     }).done((result) => {
         $('#supportTopicSearchResults').html(result);
     }).fail((error) => {
         console.log("Unable to search");
         alert("Error: " + error.statusText);
     });
+}
+
+function getAreaSlug() {
+    const pathArray = window.location.pathname.split('/').filter(Boolean);
+    return pathArray.length > 1 ? pathArray[1] : null;
 }
 
 function filterItemsIndex() {
@@ -24,7 +29,9 @@ function filterItemsIndex() {
 
 function filterItemsArea() {
     const input = document.getElementById('searchBoxArea').value;
-    runSearch(input);
+    const areaSlug = getAreaSlug();
+    console.log(areaSlug);
+    runSearch(input, areaSlug);
 }
 
 $(() => {
