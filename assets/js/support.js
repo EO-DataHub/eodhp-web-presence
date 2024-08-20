@@ -18,7 +18,7 @@ function getAreaSlug() {
 }
 
 function filterItemsIndex() {
-    const input = document.getElementById('searchBoxIndex').value;
+    const input = $('searchBoxIndex').val();
     if (input === '') {
         document.getElementById('supportTopicSearchResults').innerHTML = '';
     }
@@ -28,7 +28,7 @@ function filterItemsIndex() {
 }
 
 function filterItemsArea() {
-    const input = document.getElementById('searchBoxArea').value;
+    const input = $('searchBoxArea').val();
     const areaSlug = getAreaSlug();
     console.log(areaSlug);
     runSearch(input, areaSlug);
