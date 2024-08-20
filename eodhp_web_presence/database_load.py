@@ -5,12 +5,47 @@ import sys
 import tempfile
 
 import boto3
+import psycopg2
 
-table_prefixes = ["home", "help", "wagtailimages", "wagtailcore"]
-
-pg_load_path = "pg_restore"
+table_prefixes = ["home", "wagtailimages", "wagtailcore"]
 
 bucket_name = "web-database-exports"
+
+
+def truncate_tables() -> str:
+    conn = psycopg2.connect(
+        dbname=os.environ["SQL_DATABASE"],
+        user=os.environ["SQL_USER"],
+        password=os.environ["SQL_PASSWORD"],
+        host=os.environ["SQL_HOST"],
+        port=os.environ["SQL_PORT"],
+    )
+
+    cur = conn.cursor()
+
+    table_names = []
+
+    for prefix in table_prefixes:
+        cur.execute(
+            "SELECT tablename FROM pg_tables WHERE schemaname = %s AND tablename LIKE %s;",
+            (os.environ["ENV_NAME"], prefix + "%",),
+        )
+        table_names.extend([row[0] for row in cur.fetchall()])
+
+    for table in table_names:
+        if not table == "wagtailcore_locale":
+            logging.info(f"Truncating {table}")
+            try:
+                cur.execute(f"TRUNCATE TABLE {table} CASCADE;")
+                conn.commit()
+            except psycopg2.errors.UndefinedTable:
+                logging.info(
+                    f"Error truncating {table} - check that it exists and consider deleting unused table from original database"  # noqa: E501
+                )
+                conn.rollback()
+
+    cur.close()
+    conn.close()
 
 
 if __name__ == "__main__":
@@ -38,11 +73,11 @@ if __name__ == "__main__":
         logging.info(f"Collecting {file} from {bucket_name}")
         s3.download_file(bucket_name, file, f"{tmpdir}/{file}")
 
-        command = f'{pg_load_path} -c -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} < {tmpdir}/{file}'  # noqa: E501
+        truncate_tables()
+
+        command = f"python manage.py loaddata {tmpdir}/{file}"
 
         logging.info(f"Running: {command}")
-        os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
-        subprocess.run(command, shell=True, check=True)  # nosec B602
-        del os.environ["PGPASSWORD"]
+        subprocess.run(command, shell=True, check=True)
 
         logging.info("Complete")

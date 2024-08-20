@@ -5,39 +5,8 @@ import subprocess
 import tempfile
 
 import boto3
-import psycopg2
-
-table_prefixes = ["home", "help", "wagtailimages", "wagtailcore"]
-
-pg_dump_path = "pg_dump"
 
 bucket_name = "web-database-exports"
-
-
-def get_tables() -> str:
-    conn = psycopg2.connect(
-        dbname=os.environ["SQL_DATABASE"],
-        user=os.environ["SQL_USER"],
-        password=os.environ["SQL_PASSWORD"],
-        host=os.environ["SQL_HOST"],
-        port=os.environ["SQL_PORT"],
-    )
-
-    cur = conn.cursor()
-
-    table_names = []
-
-    for prefix in table_prefixes:
-        cur.execute(
-            "SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename LIKE %s;",
-            (prefix + "%",),
-        )
-        table_names.extend([row[0] for row in cur.fetchall()])
-
-    cur.close()
-    conn.close()
-
-    return " ".join(f"-t {table}" for table in table_names)
 
 
 def update_file(path: str, s3_bucket_name: str, s3: boto3.resource) -> None:
@@ -61,19 +30,15 @@ if __name__ == "__main__":
     else:
         s3 = boto3.resource("s3")
 
-    tables_str = get_tables()
-
-    output_file = f'{os.environ.get("ENV_NAME", "default")}-wagtail_dump-{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.sql'  # noqa: E501
+    output_file = f'{os.environ.get("ENV_NAME", "default")}-wagtail_dump-{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.json'  # noqa: E501
 
     with tempfile.NamedTemporaryFile() as tf:
         tf.name = output_file
 
-        command = f'{pg_dump_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} {tables_str} -F c -f {output_file}'  # noqa: E501
+        command = f"python manage.py dumpdata home wagtailimages wagtailcore --natural-primary --natural-foreign --exclude auth --exclude contenttypes --exclude sessions > {output_file}"  # noqa: E501
 
         logging.info(f"Running: {command}")
-        os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
-        subprocess.run(command, shell=True, check=True)  # nosec B602
-        del os.environ["PGPASSWORD"]
+        subprocess.run(command, shell=True, check=True)
 
         logging.info(f"Updating {output_file} into {bucket_name}")
         update_file(output_file, bucket_name, s3)
