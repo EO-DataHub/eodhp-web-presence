@@ -21,17 +21,18 @@ def search_topics(request):
     query = request.GET.get("query", "")
     area_slug = request.GET.get("area", "")
 
-    if query:
-        search_results = SupportTopicPage.objects.live().autocomplete(query)
-    else:
-        search_results = SupportTopicPage.objects.live().all()
-
     if area_slug:
         try:
             area_page = SupportAreaPage.objects.get(slug=area_slug)
-            search_results = SupportTopicPage.objects.child_of(area_page).live().search(query)
+            search_results = SupportTopicPage.objects.child_of(area_page).live().autocomplete(query)
         except Page.DoesNotExist:
             search_results = Page.objects.none()
+
+    else:
+        if query:
+            search_results = SupportTopicPage.objects.live().autocomplete(query)
+        else:
+            search_results = SupportTopicPage.objects.live().all()
 
     html = render_to_string("home/search_results.html", {"support_topics": search_results})
 
