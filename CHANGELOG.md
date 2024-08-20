@@ -3,6 +3,8 @@
 ## v0.1.18 (15-08-2024)
 
 - Add padding to footer
+- Fix title on Catalogue page
+- Remove DOCUMENTATION_URL references
 
 ## v0.1.17 (07-08-2024)
 
