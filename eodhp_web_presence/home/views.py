@@ -5,7 +5,7 @@ from wagtail.models import Page
 
 from eodhp_web_presence import settings
 
-from .models import SupportTopicPage
+from .models import SupportAreaPage, SupportTopicPage
 
 
 def catalogue_page_view(request):
@@ -28,10 +28,8 @@ def search_topics(request):
 
     if area_slug:
         try:
-            parent_page = Page.objects.get(slug=area_slug)
-            search_results = (
-                parent_page.get_descendants().live().public().filter(title__icontains=query)
-            )
+            area_page = SupportAreaPage.objects.get(slug=area_slug)
+            search_results = SupportTopicPage.objects.child_of(area_page).live().search(query)
         except Page.DoesNotExist:
             search_results = Page.objects.none()
 
