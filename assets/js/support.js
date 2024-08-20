@@ -1,9 +1,9 @@
 import $ from 'jquery'
 
-const runSearch = (input) => {
+const runSearch = (input, areaSlug) => {
     $.get({
         url: '/support/search_items',
-        data: { query: input }
+        data: { query: input, area: areaSlug }
     }).done((result) => {
         $('#supportTopicSearchResults').html(result);
     }).fail((error) => {
@@ -12,8 +12,13 @@ const runSearch = (input) => {
     });
 }
 
+function getAreaSlug() {
+    const pathArray = window.location.pathname.split('/').filter(Boolean);
+    return pathArray.length > 1 ? pathArray[1] : null;
+}
+
 function filterItemsIndex() {
-    const input = document.getElementById('searchBoxIndex').value;
+    const input = $('searchBoxIndex').val();
     if (input === '') {
         document.getElementById('supportTopicSearchResults').innerHTML = '';
     }
@@ -23,8 +28,10 @@ function filterItemsIndex() {
 }
 
 function filterItemsArea() {
-    const input = document.getElementById('searchBoxArea').value;
-    runSearch(input);
+    const input = $('searchBoxArea').val();
+    const areaSlug = getAreaSlug();
+    console.log(areaSlug);
+    runSearch(input, areaSlug);
 }
 
 $(() => {
