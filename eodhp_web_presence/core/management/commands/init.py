@@ -1,8 +1,10 @@
 import copy
 import datetime
 import os
+from dataclasses import dataclass, field
 from io import BytesIO
 from random import randint, randrange
+from typing import Type
 
 import pytz
 from django.core.files.images import ImageFile
@@ -17,11 +19,11 @@ from wagtail.rich_text import RichText
 gib = Gibberish()
 
 
+@dataclass(frozen=True)
 class PageData:
-    def __init__(self, **kwargs):
-        self.children = None
-        self.type = None
-        self.__dict__.update(kwargs)
+    title: str
+    type: Type[Page]
+    children: list[str, "PageData"] = field(default_factory=list)
 
 
 def generate_date() -> datetime:
@@ -41,7 +43,7 @@ def generate_body() -> RichText:
             body += (
                 gib.generate_word().title()
                 + " "
-                + (" ".join(gib.generate_words(randrange(1, 20)))).rstrip()
+                + " ".join(gib.generate_words(randrange(1, 20)))
                 + ". "
             )
         body += "</p>\n\n"
@@ -50,12 +52,7 @@ def generate_body() -> RichText:
 
 
 def generate_summary() -> str:
-    return (
-        gib.generate_word().title()
-        + " "
-        + (" ".join(gib.generate_words(randrange(1, 20)))).rstrip()
-        + "."
-    )
+    return gib.generate_word().title() + " " + " ".join(gib.generate_words(randrange(1, 20))) + "."
 
 
 def generate_image() -> str:
@@ -68,11 +65,10 @@ def generate_image() -> str:
     draw = ImageDraw.Draw(image)
 
     # Generate and test random pixels
-    for _ in range(10000):
-        x = randint(0, width - 1)
-        y = randint(0, height - 1)
-        color = (randint(0, 255), randint(0, 255), randint(0, 255))
-        draw.point((x, y), fill=color)
+    for x in range(8):
+        for y in range(8):
+            color = (randint(0, 255), randint(0, 255), randint(0, 255))
+            draw.point((x, y), fill=color)
 
     image = image.resize((400, 400))
 
