@@ -28,7 +28,10 @@ def truncate_tables() -> str:
     for prefix in table_prefixes:
         cur.execute(
             "SELECT tablename FROM pg_tables WHERE schemaname = %s AND tablename LIKE %s;",
-            (os.environ["ENV_NAME"], prefix + "%",),
+            (
+                os.environ["ENV_NAME"],
+                prefix + "%",
+            ),
         )
         table_names.extend([row[0] for row in cur.fetchall()])
 
