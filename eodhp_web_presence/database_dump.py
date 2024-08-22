@@ -40,6 +40,5 @@ if __name__ == "__main__":
         logging.info(f"Running: {command}")
         subprocess.run(command, shell=True, check=True)
 
-        logging.info(f"Updating {output_file} into {bucket_name}")
         update_file(output_file, bucket_name, s3)
         logging.info("Complete")
