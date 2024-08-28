@@ -5,7 +5,6 @@ import subprocess
 import tempfile
 
 import boto3
-import psycopg2
 
 pg_dump_path = "pg_dump"
 
@@ -63,6 +62,5 @@ if __name__ == "__main__":
 
         del os.environ["PGPASSWORD"]
 
-        logging.info(f"Updating {output_file} into {bucket_name}")
         update_file(output_file, bucket_name, s3)
         logging.info("Complete")
