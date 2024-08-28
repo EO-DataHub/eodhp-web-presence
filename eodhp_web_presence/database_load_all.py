@@ -14,7 +14,14 @@ temp_schema_name = "base_content"
 
 
 def run_sql_command(sql: str) -> str:
-    return f'psql -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} -c \'{sql}\''
+    return (
+        f"psql "
+        f'-U {os.environ["SQL_USER"]} '
+        f'-h {os.environ["SQL_HOST"]} '
+        f'-p {os.environ["SQL_PORT"]} '
+        f'-d {os.environ["SQL_DATABASE"]} '
+        f"-c '{sql}'"
+    )
 
 
 if __name__ == "__main__":
