@@ -1,40 +1,46 @@
-@use '../scss/custom.scss';
+@use '../scss/custom';
 
 #navbar-footer {
-    height: auto;
-    color: custom.$white;
-    font-size: 24px;
-}
-.footer {
-	background-color: custom.$blue;
-	text-align: center;
-	color: custom.$white;
-	display: flex;
-	padding: 70px 10px 10px 10px;
-}
-.footer a {
-	color: custom.$white;
-	text-decoration: none;
-}
-.left {
-    width: 50%;
-    text-align: left;
-}
-.right {
-    width: 50%;
-    text-align: right;
+  height: auto;
+  color: custom.$white;
+  font-size: 24px;
 }
 
-@media (max-width: 600px) {
-	.footer {
-		flex-direction: column;
-	}
-	.left {
-		width: 100%;
-		text-align: center;
-	}
-	.right {
-		width: 100%;
-		text-align: center;
-	}
+.footer {
+  background-color: custom.$blue;
+  text-align: center;
+  color: custom.$white;
+  display: flex;
+  padding: 70px 10px 10px;
+}
+
+.footer a {
+  color: custom.$white;
+  text-decoration: none;
+}
+
+.left {
+  width: 50%;
+  text-align: left;
+}
+
+.right {
+  width: 50%;
+  text-align: right;
+}
+
+@media (width <= 600px) {
+  .footer {
+    flex-direction: column;
+  }
+
+  .left {
+    width: 100%;
+    text-align: center;
+  }
+
+  .right {
+    width: 100%;
+    text-align: center;
+  }
 }

@@ -1,101 +1,124 @@
-@use '../scss/custom.scss';
+@use '../scss/custom';
 
 .logo {
-    width: 300px;
-    margin-left: 1em;
-}
-#menuNavBar {
-    padding: 0px;
-    .container-fluid {
-        padding-right: 0px;
-        padding-left: 0px;
-    }
-}
-.header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-#navbar-toggler-button {
-    display: flex;
-    justify-content: flex-end;
-    margin-right: 0;
-    margin-left: auto;
-}
-.navBarContainerBlank {
-    height: 130px;
-}
-.blockTransparent {
-    font-size: 24px;
-    line-height: 2.7;
-    z-index: 9999;
-    border-left: 20px solid custom.$light-grey;
-    border-right: 20px solid custom.$light-grey;
-}
-.blockSolid {
-    font-size: 24px;
-    line-height: 2.7;
-    z-index: 9999;
-    background-color: custom.$dark-blue;
-    color: custom.$white;
-    border-left: 20px solid custom.$dark-blue;
-    border-right: 20px solid custom.$dark-blue;
-}
-.blockSolid a.nav-link {
-    color: custom.$white;
-}
-.blockSolid a.nav-link:hover, .blockTransparent a.nav-link:hover {
-    background-color: custom.$blue;
-    color: custom.$white;
+  width: 300px;
+  margin-left: 1em;
 }
 
-@media (max-width: 1399px) {
-    .blockTransparent, .blockSolid {
-        width: 90vw;
-        z-index: 9999;
-        text-align: center;
-        border-left: none;
-        border-right: none;
-        background: custom.$blue;
+#menu-nav-bar {
+  padding: 0;
+
+  .container-fluid {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#navbar-toggler-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.nav-bar-container-blank {
+  height: 130px;
+}
+
+.block-transparent {
+  font-size: 24px;
+  line-height: 2.7;
+  z-index: 9999;
+  border-left: 20px solid custom.$light-grey;
+  border-right: 20px solid custom.$light-grey;
+}
+
+.block-solid {
+  font-size: 24px;
+  line-height: 2.7;
+  z-index: 9999;
+  background-color: custom.$dark-blue;
+  color: custom.$white;
+  border-left: 20px solid custom.$dark-blue;
+  border-right: 20px solid custom.$dark-blue;
+}
+
+.block-solid a.nav-link {
+  color: custom.$white;
+}
+
+.block-solid a.nav-link:hover,
+.block-transparent a.nav-link:hover {
+  background-color: custom.$blue;
+  color: custom.$white;
+}
+
+@media (width <= 1399px) {
+  .block-transparent,
+  .block-solid {
+    width: 90vw;
+    z-index: 9999;
+    text-align: center;
+    border-left: none;
+    border-right: none;
+    background: custom.$blue;
+  }
+
+  .block-transparent a.nav-link,
+  .block-solid a.nav-link {
+    color: custom.$white !important;
+  }
+
+  .block-transparent a.nav-link:hover,
+  .block-solid a.nav-link:hover {
+    background: custom.$light-blue !important;
+    color: custom.$black !important;
+  }
+
+  .navbar .navbar-nav {
+    display: inline-block;
+    float: none;
+    vertical-align: top;
+    text-align: center;
+  }
+
+  .navbar .navbar-collapse {
+    text-align: center;
+    background-color: custom.$blue;
+    padding-bottom: 20px;
+  }
+
+  .nav-bar-container-blank {
+    width: 100vw;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-item {
+    text-align: center;
+  }
+
+  .navbar-nav .nav-item {
+    display: inline-block;
+  }
+
+  .navbar-expand-xl {
+    .navbar-toggler {
+      display: block !important;
+
+      //   align: right;
     }
-    .blockTransparent a.nav-link:hover, .blockSolid a.nav-link:hover {
-        background: custom.$light-blue !important;
-        color: custom.$black !important;
-    }
-    .blockTransparent a.nav-link, .blockSolid a.nav-link {
-        color: custom.$white !important;
-    }
-    .navbar .navbar-nav {
-        display: inline-block;
-        float: none;
-        vertical-align: top;
-        text-align: center;
-    }
-    .navbar .navbar-collapse {
-        text-align: center;
-        background-color: custom.$blue;
-        padding-bottom: 20px
-    }
-    .navBarContainerBlank {
-        width: 100vw;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .navbar-nav .nav-item {
-        display: inline-block;
-    }
-    .nav-item {
-        text-align: center;
-    }
-    .navbar-expand-xl {
-        .navbar-toggler {
-            display: block !important;
-            align: right;
-        }
-    }
-    .navbar-expand-xl .navbar-collapse.show {
-        display: block !important;
-    }
+  }
+
+  .navbar-expand-xl .navbar-collapse.show {
+    display: block !important;
+  }
 }

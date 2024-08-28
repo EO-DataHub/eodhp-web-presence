@@ -1,6 +1,6 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-xxl bg-light" id="menuNavBar">
+<nav class="navbar navbar-expand-xxl bg-light" id="menu-nav-bar">
   <div class="container-fluid d-flex">
     <div class="header col-xxl-3">
       <a class="navbar-brand" href="/"
@@ -25,30 +25,30 @@
       <ul class="navbar-nav me-auto mb-2 mb-xxl-0"></ul>
 
       <div class="d-flex">
-        <div class="navBarContainerBlank">
+        <div class="nav-bar-container-blank">
           <ul class="navbar-nav align-items-start">
-            <li class="nav-item blockTransparent">
+            <li class="nav-item block-transparent">
               <a aria-current="page" class="nav-link" href="/about">About</a>
             </li>
-            <li class="nav-item blockTransparent">
+            <li class="nav-item block-transparent">
               <a aria-current="page" class="nav-link" href="/news">News</a>
             </li>
-            <li class="nav-item blockTransparent">
+            <li class="nav-item block-transparent">
               <a aria-current="page" class="nav-link" href="/contact"
                 >Contact</a
               >
             </li>
-            <li class="nav-item blockTransparent">
+            <li class="nav-item block-transparent">
               <a aria-current="page" class="nav-link" href="/support"
                 >Support</a
               >
             </li>
-            <li class="nav-item blockSolid">
+            <li class="nav-item block-solid">
               <a aria-current="page" class="nav-link" href="/catalogue"
                 >Catalogue</a
               >
             </li>
-            <li class="nav-item blockSolid">
+            <li class="nav-item block-solid">
               <a
                 aria-current="page"
                 class="nav-link"
@@ -56,7 +56,7 @@
                 >Maps</a
               >
             </li>
-            <li class="nav-item blockSolid">
+            <li class="nav-item block-solid">
               <a
                 aria-current="page"
                 class="nav-link"
@@ -65,13 +65,13 @@
               >
             </li>
             {% if user.is_authenticated %}
-            <li class="nav-item blockSolid">
+            <li class="nav-item block-solid">
               <a aria-current="page" class="nav-link" href="{% url 'sign_out' %}"
                 >Sign out</a
               >
             </li>
             {% else %}
-            <li class="nav-item blockSolid">
+            <li class="nav-item block-solid">
               <a aria-current="page" class="nav-link" href="{% url 'sign_in' %}">Sign in</a>
             </li>
             {% endif %}

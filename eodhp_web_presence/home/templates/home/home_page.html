@@ -4,32 +4,32 @@
 
 {% block content %}
 
-<div class="homePageBannerContainer" id="big">
+<div class="home-page-banner-container" id="big">
 
     {% if page.banner_image %}
-    {% image page.banner_image scale-100 as img %}<img alt="Banner image" class="homePageBannerImage"
+    {% image page.banner_image scale-100 as img %}<img alt="Banner image" class="home-page-banner-image"
                                                        src="{{ img.url }}">
     {% endif %}
 
-    <div class="homePageBannerText" id="centre">
+    <div class="home-page-banner-text" id="centre">
         {{ page.title|richtext }}
     </div>
 </div>
 
-<div class="homePageBorder">
-    <div class="homePageContent">
+<div class="home-page-border">
+    <div class="home-page-content">
 
         {% if page.image %}
-        {% image page.image scale-100 as img %}<img class="homePageImage50" src="{{ img.url }}">
-        <div class="homePageText50">{{ page.body|richtext }}</div>
+        {% image page.image scale-100 as img %}<img class="home-page-image-50" src="{{ img.url }}">
+        <div class="home-page-text-50">{{ page.body|richtext }}</div>
         {% else %}
-        <div class="homePageText100">{{ page.body|richtext }}</div>
+        <div class="home-page-text-100">{{ page.body|richtext }}</div>
         {% endif %}
 
         {% if page.video_url %}
         <p>
-        <div class="homePageText100">
-            <video width="100%" class="homePageContent" controls src={{ page.video_url }}></video>
+        <div class="home-page-text-100">
+            <video width="100%" class="home-page-content" controls src={{ page.video_url }}></video>
         </div>
         {% endif %}
 
@@ -38,35 +38,35 @@
 </div>
 
 <div class="boxes">
-    <div class="homePageBorder" id="footer">
-        <div class="boxLink">
+    <div class="home-page-border" id="footer">
+        <div class="box-link">
             <a href="/about">
 
                 {% if page.about_image %}
-                {% image page.about_image scale-100 as img %}<img alt="About image" class="boxLinkImage"
+                {% image page.about_image scale-100 as img %}<img alt="About image" class="box-link-image"
                                                                   src="{{ img.url }}">
                 {% endif %}
-                <div class="boxLinkText">About</div>
+                <div class="box-link-text">About</div>
             </a>
         </div>
-        <div class="boxLink">
+        <div class="box-link">
             <a href="/news">
 
                 {% if page.news_image %}
-                {% image page.news_image scale-100 as img %}<img alt="News image" class="boxLinkImage"
+                {% image page.news_image scale-100 as img %}<img alt="News image" class="box-link-image"
                                                                  src="{{ img.url }}">
                 {% endif %}
-                <div class="boxLinkText">News</div>
+                <div class="box-link-text">News</div>
             </a>
         </div>
-        <div class="boxLink">
+        <div class="box-link">
             <a href="/contact">
 
                 {% if page.contact_image %}
-                {% image page.contact_image scale-100 as img %}<img alt="Contact image" class="boxLinkImage"
+                {% image page.contact_image scale-100 as img %}<img alt="Contact image" class="box-link-image"
                                                                     src="{{ img.url }}">
                 {% endif %}
-                <div class="boxLinkText">Contact</div>
+                <div class="box-link-text">Contact</div>
             </a>
         </div>
         <span class="stretch"></span>

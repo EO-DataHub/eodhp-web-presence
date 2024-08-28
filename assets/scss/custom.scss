@@ -1,25 +1,24 @@
-$light-blue:    #BCCEEB;
-$blue:          #4C72BA;
-$dark-blue:     #2A3559;
-$white:         #FFFFFF;
-$light-grey:    #F6F6F6;
-$grey:          #EFEFEF;
-$black:         #000000;
+@import 'bootstrap/scss/bootstrap';
 
+$light-blue: #bcceeb;
+$blue: #4c72ba;
+$dark-blue: #2a3559;
+$white: #fff;
+$light-grey: #f6f6f6;
+$grey: #efefef;
+$black: #000;
 $theme-colors: (
-  "light": $light-grey,
-  "primary": $blue,
-  "dark": $dark-blue,
+  'light': $light-grey,
+  'primary': $blue,
+  'dark': $dark-blue,
 );
 
 html * {
-    font-family: "Fira Sans";
+  font-family: 'Fira Sans', Arial, Helvetica, sans-serif;
 }
 
 .wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
-
-@import "bootstrap/scss/bootstrap";
