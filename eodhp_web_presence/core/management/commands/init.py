@@ -1,9 +1,22 @@
+import copy
+import datetime
+import os
 from dataclasses import dataclass, field
+from io import BytesIO
+from random import randint, randrange
 from typing import Type
 
+import pytz
+from django.core.files.images import ImageFile
 from django.core.management.base import BaseCommand
+from gibberish import Gibberish
 from home import models
+from PIL import Image, ImageDraw
+from wagtail.images.models import Image as WagtailImage
 from wagtail.models import Page, Site
+from wagtail.rich_text import RichText
+
+gib = Gibberish()
 
 
 @dataclass(frozen=True)
@@ -11,6 +24,61 @@ class PageData:
     title: str
     type: Type[Page]
     children: list[str, "PageData"] = field(default_factory=list)
+
+
+def generate_date() -> datetime:
+    period = datetime.datetime(2030, 12, 31) - datetime.datetime(1990, 1, 1)
+    total_seconds = (period.days * 24 * 60 * 60) + period.seconds
+    random_second = randrange(total_seconds)
+    return datetime.datetime(1990, 1, 1, tzinfo=pytz.UTC) + datetime.timedelta(
+        seconds=random_second
+    )
+
+
+def generate_body() -> RichText:
+    body = ""
+    for _ in range(randrange(1, 5)):  # no. paragraphs
+        body += "<p>"
+        for _ in range(randrange(1, 40)):  # no. sentences
+            body += (
+                gib.generate_word().title()
+                + " "
+                + " ".join(gib.generate_words(randrange(1, 20)))
+                + ". "
+            )
+        body += "</p>\n\n"
+
+    return RichText(body)
+
+
+def generate_summary() -> str:
+    return gib.generate_word().title() + " " + " ".join(gib.generate_words(randrange(1, 20))) + "."
+
+
+def generate_image() -> str:
+    # Adapted from here: https://techbeamers.com/generate-random-images-in-python/
+
+    file_name = f"{gib.generate_word()}.png"
+
+    width, height = 8, 8
+    image = Image.new("RGB", (width, height), "white")
+    draw = ImageDraw.Draw(image)
+
+    # Generate and test random pixels
+    for x in range(8):
+        for y in range(8):
+            color = (randint(0, 255), randint(0, 255), randint(0, 255))
+            draw.point((x, y), fill=color)
+
+    image = image.resize((400, 400))
+
+    try:
+        image.save(f"media/original_images/{file_name}")
+    except FileNotFoundError:
+        os.makedirs("media/original_images")
+        image.save(f"media/original_images/{file_name}")
+
+    return file_name
 
 
 class Command(BaseCommand):
@@ -31,14 +99,66 @@ class Command(BaseCommand):
                 children=[
                     PageData(title="About", type=models.AboutPage),
                     PageData(title="Contact", type=models.ContactPage),
-                    PageData(title="Support", type=models.SupportIndexPage),
+                    PageData(
+                        title="Support",
+                        type=models.SupportIndexPage,
+                        children=[
+                            PageData(title="Accounts", type=models.SupportAreaPage),
+                            PageData(title="JupyterHub", type=models.SupportAreaPage),
+                            PageData(title="Projects", type=models.SupportAreaPage),
+                            PageData(title="Workflows", type=models.SupportAreaPage),
+                            PageData(title="Catalogue", type=models.SupportAreaPage),
+                            PageData(title="Data Services", type=models.SupportAreaPage),
+                            PageData(
+                                title="Area A",
+                                type=models.SupportAreaPage,
+                                children=[
+                                    PageData(title="Aardvark", type=models.SupportTopicPage),
+                                    PageData(title="Aeroplane", type=models.SupportTopicPage),
+                                    PageData(title="Alligator", type=models.SupportTopicPage),
+                                    PageData(title="Anchor", type=models.SupportTopicPage),
+                                    PageData(title="Apple", type=models.SupportTopicPage),
+                                    PageData(title="Astronaut", type=models.SupportTopicPage),
+                                    PageData(title="Aardvark?", type=models.SupportFAQPage),
+                                    PageData(title="Aeroplane?", type=models.SupportFAQPage),
+                                    PageData(title="Alligator?", type=models.SupportFAQPage),
+                                    PageData(title="Anchor?", type=models.SupportFAQPage),
+                                    PageData(title="Apple?", type=models.SupportFAQPage),
+                                    PageData(title="Astronaut?", type=models.SupportFAQPage),
+                                ],
+                            ),
+                            PageData(
+                                title="Area B",
+                                type=models.SupportAreaPage,
+                                children=[
+                                    PageData(title="Ball", type=models.SupportTopicPage),
+                                    PageData(title="Banana", type=models.SupportTopicPage),
+                                    PageData(title="Bear", type=models.SupportTopicPage),
+                                    PageData(title="Book", type=models.SupportTopicPage),
+                                    PageData(title="Bus", type=models.SupportTopicPage),
+                                ],
+                            ),
+                            PageData(
+                                title="Area C",
+                                type=models.SupportAreaPage,
+                                children=[
+                                    PageData(title="Cat", type=models.SupportTopicPage),
+                                    PageData(title="Cake", type=models.SupportTopicPage),
+                                    PageData(title="Car", type=models.SupportTopicPage),
+                                    PageData(title="Cave", type=models.SupportTopicPage),
+                                    PageData(title="Carrot", type=models.SupportTopicPage),
+                                    PageData(title="Chicken", type=models.SupportTopicPage),
+                                    PageData(title="Cow", type=models.SupportTopicPage),
+                                ],
+                            ),
+                        ],
+                    ),
                     PageData(
                         title="News",
                         type=models.NewsPage,
                         children=[
-                            PageData(title="Article 1", type=models.NewsArticlePage),
-                            PageData(title="Article 2", type=models.NewsArticlePage),
-                            PageData(title="Article 3", type=models.NewsArticlePage),
+                            PageData(title=gib.generate_word().title(), type=models.NewsArticlePage)
+                            for i in range(10)
                         ],
                     ),
                 ],
@@ -54,10 +174,45 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(f"{page.title} set as root page"))
 
     def create_page(self, parent: Page | None, page_data: PageData) -> Page:
+        page_data_dict = copy.deepcopy(page_data.__dict__)
+
         try:
             page = page_data.type.objects.get(title=page_data.title).specific
         except page_data.type.DoesNotExist:
-            page = page_data.type(title=page_data.title)
+            page_data_dict.pop("type", None)
+            page_data_dict.pop("children", None)
+            page_data_dict.pop("published", None)
+
+            for content in page_data.type.__dict__["content_panels"]:
+                name = content.field_name
+
+                if name == "title":
+                    page_data_dict[name] = page_data.title
+                elif name == "body":
+                    page_data_dict[name] = generate_body()
+                elif name == "summary":
+                    page_data_dict[name] = generate_summary()
+                elif "image" in name:
+                    file_name = generate_image()
+
+                    img_bytes = open(f"media/original_images/{file_name}", "rb").read()
+                    img_file = ImageFile(BytesIO(img_bytes), name=file_name)
+
+                    image = WagtailImage(title=file_name, file=img_file)
+                    image.save()
+
+                    page_data_dict[name] = image
+
+            if page_data.type == models.NewsArticlePage:
+                published_date = generate_date()
+                page_data_dict = page_data_dict | {
+                    "first_published_at": published_date,
+                    "latest_revision_created_at": published_date,
+                    "last_published_at": published_date,
+                }
+
+            page = page_data.type(**page_data_dict)
+
             parent.add_child(instance=page)
             page.save()
             self.stdout.write(self.style.SUCCESS(f"{page.title} page created"))
