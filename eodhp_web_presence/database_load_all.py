@@ -52,7 +52,7 @@ if __name__ == "__main__":
                 f.write(line)
 
         load_command = f'{pg_load_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} -f {output_file} --single-transaction'  # noqa: E501
-        set_admin_command = f'UPDATE {temp_schema_name}.auth_user SET password=password, is_active=false;'
+        set_admin_command = f'UPDATE {temp_schema_name}.accounts_user SET password=password, is_active=false;'
         change_schema_name_back_command = f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
 
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
