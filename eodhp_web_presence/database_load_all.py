@@ -51,9 +51,21 @@ if __name__ == "__main__":
                 line = line.replace(f"{source}.", f"{target}.")
                 f.write(line)
 
-        load_command = f'{pg_load_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} -f {output_file} --single-transaction'  # noqa: E501
-        set_admin_command = f'UPDATE {temp_schema_name}.accounts_user SET password=password, is_active=false;'
-        change_schema_name_back_command = f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
+        load_command = (
+            f"{pg_load_path} "
+            f'-U {os.environ["SQL_USER"]} '
+            f'-h {os.environ["SQL_HOST"]} '
+            f'-p {os.environ["SQL_PORT"]} '
+            f'-d {os.environ["SQL_DATABASE"]} '
+            f"-f {output_file} "
+            f"--single-transaction"
+        )
+        set_admin_command = (
+            f"UPDATE {temp_schema_name}.accounts_user SET password=password, is_active=false;"
+        )
+        change_schema_name_back_command = (
+            f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
+        )
 
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
 

@@ -21,7 +21,14 @@ def update_file(path: str, s3_bucket_name: str, s3: boto3.resource) -> None:
 
 
 def run_sql_command(sql: str) -> str:
-    return f'psql -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} -c \'{sql}\''
+    return (
+        f"psql "
+        f'-U {os.environ["SQL_USER"]} '
+        f'-h {os.environ["SQL_HOST"]} '
+        f'-p {os.environ["SQL_PORT"]} '
+        f'-d {os.environ["SQL_DATABASE"]} '
+        f"-c '{sql}'"
+    )
 
 
 if __name__ == "__main__":
@@ -43,9 +50,21 @@ if __name__ == "__main__":
     with tempfile.NamedTemporaryFile() as tf:
         tf.name = output_file
 
-        change_schema_name_command = f'ALTER SCHEMA {os.environ["ENV_NAME"]} RENAME TO {temp_schema_name}'
-        dump_command = f'{pg_dump_path} -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} -n {temp_schema_name} -f {output_file}'  # noqa: E501
-        change_schema_name_back_command = f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
+        change_schema_name_command = (
+            f'ALTER SCHEMA {os.environ["ENV_NAME"]} RENAME TO {temp_schema_name}'
+        )
+        dump_command = (
+            f"{pg_dump_path} "
+            f'-U {os.environ["SQL_USER"]} '
+            f'-h {os.environ["SQL_HOST"]} '
+            f'-p {os.environ["SQL_PORT"]} '
+            f'-d {os.environ["SQL_DATABASE"]} '
+            f"-n {temp_schema_name} "
+            f"-f {output_file}"
+        )
+        change_schema_name_back_command = (
+            f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
+        )
 
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
 
