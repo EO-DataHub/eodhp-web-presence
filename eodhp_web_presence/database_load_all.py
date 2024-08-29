@@ -43,8 +43,6 @@ if __name__ == "__main__":
     else:
         s3 = boto3.client("s3")
 
-    s3_object = s3.get_object(Bucket=bucket_name, Key=file)
-
     with tempfile.TemporaryDirectory() as tmpdir:
         logging.info(f"Collecting {file} from {bucket_name}")
         s3.download_file(bucket_name, file, f"{tmpdir}/{file}")
@@ -67,9 +65,6 @@ if __name__ == "__main__":
             f"-f {output_file} "
             f"--single-transaction"
         )
-        set_admin_command = (
-            f"UPDATE {temp_schema_name}.accounts_user SET password='password', is_active=false;"
-        )
         change_schema_name_back_command = (
             f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
         )
@@ -78,8 +73,13 @@ if __name__ == "__main__":
 
         logging.info(f"Running: {load_command}")
         subprocess.run(load_command, shell=True, check=True)
+
+        set_admin_command = (
+            f"UPDATE {temp_schema_name}.accounts_user SET password='password', is_active=false;"
+        )
         logging.info(f"Running: {set_admin_command}")
         subprocess.run(run_sql_command(set_admin_command), shell=True, check=True)
+
         logging.info(f"Running: {change_schema_name_back_command}")
         subprocess.run(run_sql_command(change_schema_name_back_command), shell=True, check=True)
 
