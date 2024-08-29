@@ -68,7 +68,7 @@ if __name__ == "__main__":
             f"--single-transaction"
         )
         set_admin_command = (
-            f"UPDATE {temp_schema_name}.accounts_user SET password=password, is_active=false;"
+            f"UPDATE {temp_schema_name}.accounts_user SET password='password', is_active=false;"
         )
         change_schema_name_back_command = (
             f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
