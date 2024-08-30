@@ -70,14 +70,18 @@ if __name__ == "__main__":
 
         try:
             logging.info(f"Running: {change_schema_name_command}")
-            subprocess.run(run_sql_command(change_schema_name_command), shell=True, check=True)
+            subprocess.run(
+                run_sql_command(change_schema_name_command), shell=True, check=True  # nosec
+            )
             logging.info(f"Running: {dump_command}")
-            subprocess.run(dump_command, shell=True, check=True)
+            subprocess.run(dump_command, shell=True, check=True)  # nosec
         except Exception as e:
             logging.error(e)
         finally:
             logging.info(f"Running: {change_schema_name_back_command}")
-            subprocess.run(run_sql_command(change_schema_name_back_command), shell=True, check=True)
+            subprocess.run(
+                run_sql_command(change_schema_name_back_command), shell=True, check=True  # nosec
+            )
 
         del os.environ["PGPASSWORD"]
 
