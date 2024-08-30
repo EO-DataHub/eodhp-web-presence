@@ -5,16 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "webpack serve --config webpack.config.mjs --mode development",
-    "build": "webpack --config webpack.config.mjs --mode production",
+    "serve": "webpack serve --config webpack.config.js --mode development",
+    "build": "webpack --config webpack.config.js --mode production",
     "lint": "eslint  --ext js,jsx,ts,tsx assets",
     "lint:fix": "eslint assets --ext js,jsx,ts,tsx --fix",
     "lint:rules": "eslint --print-config rules > eslint-rules.json",
     "lint:css": "stylelint 'assets/**/*.{css,scss}'",
     "lint:css:fix": "stylelint 'assets/**/*.{css,scss}' --fix",
     "lint:css:rules": "stylelint --print-config rules > stylelint-rules.json",
-    "dev": "webpack --config webpack.config.mjs --mode development",
-    "dev-watch": "webpack --config webpack.config.mjs --mode development --watch"
+    "dev": "webpack --config webpack.config.js --mode development",
+    "dev-watch": "webpack --config webpack.config.js --mode development --watch"
   },
   "keywords": [],
   "author": "",

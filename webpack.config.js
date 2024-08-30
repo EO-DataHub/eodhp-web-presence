@@ -1,19 +1,15 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
+/* eslint-disable @typescript-eslint/no-require-imports */
+const path = require('path');
 
-import StyleLintPlugin from 'stylelint-webpack-plugin';
-import webpack from 'webpack';
+const StyleLintPlugin = require('stylelint-webpack-plugin');
+const webpack = require('webpack');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const config = {
-  // module.exports = {
+module.exports = {
   context: __dirname,
   mode: process.env.NODE_ENV,
   entry: {
     // This is included on every page.
-    main: './assets/entrypoint.mjs',
+    main: './assets/entrypoint.js',
 
     'fake-catalogue': {
       import: ['./assets/fake-catalogue/index.js'],
@@ -87,5 +83,3 @@ if (process.env.GIT_REF_NAME) {
     }),
   );
 }
-
-export default config;
