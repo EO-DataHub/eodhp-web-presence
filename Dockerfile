@@ -12,7 +12,7 @@ COPY package*.json .
 RUN npm install
 
 COPY assets ./assets
-COPY webpack.config.js .eslintrc.json .stylelintrc ./
+COPY webpack.config.js .eslintrc.js .stylelintrc ./
 
 RUN npm run build
 
