@@ -54,38 +54,37 @@ if __name__ == "__main__":
             for line in open(f"{tmpdir}/{file}").readlines():
                 f.write(line)
 
-                load_command = (
-                    f"{pg_load_path} "
-                    f'-U {os.environ["SQL_USER"]} '
-                    f'-h {os.environ["SQL_HOST"]} '
-                    f'-p {os.environ["SQL_PORT"]} '
-                    f'-d {os.environ["SQL_DATABASE"]} '
-                    f"-f {output_file} "
-                    f"--single-transaction"
-                )
-                change_schema_name_back_command = (
-                    f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
-                )
+        load_command = (
+            f"{pg_load_path} "
+            f'-U {os.environ["SQL_USER"]} '
+            f'-h {os.environ["SQL_HOST"]} '
+            f'-p {os.environ["SQL_PORT"]} '
+            f'-d {os.environ["SQL_DATABASE"]} '
+            f"-f {output_file} "
+            f"--single-transaction"
+        )
+        change_schema_name_back_command = (
+            f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
+        )
 
-                os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
+        os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
 
-                logging.info(f"Running: {load_command}")
-                subprocess.run(load_command, shell=True, check=True)  # nosec
+        logging.info(f"Running: {load_command}")
+        subprocess.run(load_command, shell=True, check=True)  # nosec
 
-                set_admin_command = (
-                    f"UPDATE {temp_schema_name}.accounts_user SET "
-                    f"password='password', is_active=false;"
-                )
-                logging.info(f"Running: {set_admin_command}")
-                subprocess.run(run_sql_command(set_admin_command), shell=True, check=True)  # nosec
+        set_admin_command = (
+            f"UPDATE {temp_schema_name}.accounts_user SET " f"password='password', is_active=false;"
+        )
+        logging.info(f"Running: {set_admin_command}")
+        subprocess.run(run_sql_command(set_admin_command), shell=True, check=True)  # nosec
 
-                logging.info(f"Running: {change_schema_name_back_command}")
-                subprocess.run(
-                    run_sql_command(change_schema_name_back_command),
-                    shell=True,  # nosec
-                    check=True,
-                )
+        logging.info(f"Running: {change_schema_name_back_command}")
+        subprocess.run(
+            run_sql_command(change_schema_name_back_command),
+            shell=True,  # nosec
+            check=True,
+        )
 
-                del os.environ["PGPASSWORD"]
+        del os.environ["PGPASSWORD"]
 
-                logging.info("Complete")
+        logging.info("Complete")
