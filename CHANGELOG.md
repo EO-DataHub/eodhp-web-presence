@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.19 (30-08-2024)
+
+- Update linting/formatting of all JavaScript/SCSS
+
 ## v0.1.18 (15-08-2024)
 
 - Add padding to footer
