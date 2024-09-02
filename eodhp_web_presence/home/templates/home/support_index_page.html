@@ -4,41 +4,41 @@
 
 {% block content %}
 
-<div class="homePageBannerContainer">
+<div class="home-page-banner-container">
 
     {% if page.banner_image %}
         {% image page.banner_image scale-100 as img %}<img alt="Banner image"
-                                                           class="homePageBannerImage"
+                                                           class="home-page-banner-image"
                                                            src="{{ img.url }}">
     {% endif %}
 
-    <div class="homePageBannerText">
+    <div class="home-page-banner-text">
         {{ page.title|richtext }}
     </div>
 </div>
 
-<div class="homePageBorder">
-    <div class="homePageContent">
+<div class="home-page-border">
+    <div class="home-page-content">
 
         {% include "breadcrumbs.html" %}
 
-        <input aria-describedby="basic-addon2" aria-label="Search" class="form-control searchBox50" id="searchBoxIndex"
+        <input aria-describedby="basic-addon2" aria-label="Search" class="form-control search-box-50" id="searchBoxIndex"
                placeholder="I want to..." type="text">
         <p>
-        <div class="homePageText100">
+        <div class="home-page-text-100">
             <div class="list-group" id="supportTopicSearchResults"></div>
         </div>
     </div>
-    <div class="homePageContent">
+    <div class="home-page-content">
         {% for area in support_areas %}
-        <div class="homePageItem">
+        <div class="home-page-item">
             <a href="{{ area.slug }}">
                 {% if area.image %}
-                <div class="homePageImage100">{% image area.image max-320x150 as img %}<img alt="{{ img.alt }}"
-                                                                                            class="homePageImage"
+                <div class="home-page-image-100">{% image area.image max-320x150 as img %}<img alt="{{ img.alt }}"
+                                                                                            class="home-page-image"
                                                                                             src="{{ img.url }}"></div>
                 {% endif %}
-                <div class="homePageItemTitleBig">{{ area.title }}</div>
+                <div class="home-page-item-title-big">{{ area.title }}</div>
             </a>
         </div>
         {% endfor %}

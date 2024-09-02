@@ -4,25 +4,25 @@
 
 {% block content %}
 
-<div class="homePageBannerContainer">
+<div class="home-page-banner-container">
 
     {% if page.banner_image %}
         {% image page.get_parent.specific.get_banner_image scale-100 as img %}<img alt="Banner image"
-                                                                                   class="homePageBannerImage"
+                                                                                   class="home-page-banner-image"
                                                                                    src="{{ img.url }}">
     {% endif %}
 
-    <div class="homePageBannerText">
+    <div class="home-page-banner-text">
         {{ page.title|richtext }}
     </div>
 </div>
 
-<div class="homePageBorder">
-    <div class="homePageContent">
+<div class="home-page-border">
+    <div class="home-page-content">
 
         {% include "breadcrumbs.html" %}
 
-        <div class="homePageText100">{{ page.body|richtext }}</div>
+        <div class="home-page-text-100">{{ page.body|richtext }}</div>
     </div>
 </div>
 

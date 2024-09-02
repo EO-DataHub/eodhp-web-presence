@@ -4,6 +4,7 @@
 
 - Added database initialisation script
 - Database backup/restore fix
+- Update linting/formatting of all JavaScript/SCSS
 
 ## v0.1.18 (15-08-2024)
 

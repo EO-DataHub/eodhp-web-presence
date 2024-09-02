@@ -4,25 +4,25 @@
 
 {% block content %}
 
-<div class="homePageBannerContainer">
+<div class="home-page-banner-container">
 
     {% if page.banner_image %}
-    {% image page.banner_image scale-100 as img %}<img alt="Banner image" class="homePageBannerImage"
+    {% image page.banner_image scale-100 as img %}<img alt="Banner image" class="home-page-banner-image"
                                                        src="{{ img.url }}">
     {% endif %}
 
-    <div class="homePageBannerText">
+    <div class="home-page-banner-text">
         {{ page.title|richtext }}
     </div>
 </div>
 
-<div class="homePageBorder">
-    <div class="homePageContent">
+<div class="home-page-border">
+    <div class="home-page-content">
         {% if page.image %}
-        {% image page.image scale-100 as img %}<img class="homePageImage50" src="{{ img.url }}">
-        <div class="homePageText50">{{ page.body|richtext }}</div>
+        {% image page.image scale-100 as img %}<img class="home-page-image-50" src="{{ img.url }}">
+        <div class="home-page-text-50">{{ page.body|richtext }}</div>
         {% else %}
-        <div class="homePageText100">{{ page.body|richtext }}</div>
+        <div class="home-page-text-100">{{ page.body|richtext }}</div>
         {% endif %}
         <p>
     </div>

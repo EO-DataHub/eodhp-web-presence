@@ -1,1 +1,1 @@
-import './fake-projects.scss'
+import './fake-projects.scss';
