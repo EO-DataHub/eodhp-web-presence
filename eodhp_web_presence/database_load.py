@@ -6,11 +6,22 @@ import tempfile
 
 import boto3
 
-table_prefixes = ["home", "help", "wagtailimages", "wagtailcore"]
-
-pg_load_path = "pg_restore"
+pg_load_path = "psql"
 
 bucket_name = "web-database-exports"
+
+temp_schema_name = "base_content"
+
+
+def run_sql_command(sql: str) -> str:
+    return (
+        f"psql "
+        f'-U {os.environ["SQL_USER"]} '
+        f'-h {os.environ["SQL_HOST"]} '
+        f'-p {os.environ["SQL_PORT"]} '
+        f'-d {os.environ["SQL_DATABASE"]} '
+        f"-c '{sql}'"
+    )
 
 
 if __name__ == "__main__":
@@ -32,17 +43,43 @@ if __name__ == "__main__":
     else:
         s3 = boto3.client("s3")
 
-    s3_object = s3.get_object(Bucket=bucket_name, Key=file)
-
     with tempfile.TemporaryDirectory() as tmpdir:
         logging.info(f"Collecting {file} from {bucket_name}")
         s3.download_file(bucket_name, file, f"{tmpdir}/{file}")
 
-        command = f'{pg_load_path} -c -U {os.environ["SQL_USER"]} -h {os.environ["SQL_HOST"]} -p {os.environ["SQL_PORT"]} -d {os.environ["SQL_DATABASE"]} < {tmpdir}/{file}'  # noqa: E501
+        target = os.environ["ENV_NAME"]
 
-        logging.info(f"Running: {command}")
+        load_command = (
+            f"{pg_load_path} "
+            f'-U {os.environ["SQL_USER"]} '
+            f'-h {os.environ["SQL_HOST"]} '
+            f'-p {os.environ["SQL_PORT"]} '
+            f'-d {os.environ["SQL_DATABASE"]} '
+            f"-f {tmpdir}/{file} "
+            f"--single-transaction"
+        )
+        change_schema_name_back_command = (
+            f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
+        )
+
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
-        subprocess.run(command, shell=True, check=True)  # nosec B602
+
+        logging.info(f"Running: {load_command}")
+        subprocess.run(load_command, shell=True, check=True)  # nosec
+
+        set_admin_command = (
+            f"UPDATE {temp_schema_name}.accounts_user SET " f"password='password', is_active=false;"
+        )
+        logging.info(f"Running: {set_admin_command}")
+        subprocess.run(run_sql_command(set_admin_command), shell=True, check=True)  # nosec
+
+        logging.info(f"Running: {change_schema_name_back_command}")
+        subprocess.run(
+            run_sql_command(change_schema_name_back_command),
+            shell=True,  # nosec
+            check=True,
+        )
+
         del os.environ["PGPASSWORD"]
 
         logging.info("Complete")

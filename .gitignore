@@ -16,6 +16,7 @@ cache/
 .make-venv-installed
 .make-node_modules-installed
 .stignore
+.pre-commit-config.yaml
 
 *.bak
 *.swp

@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.19 (28-08-2024)
+
+- Added database initialisation script
+- Database backup/restore fix
+
 ## v0.1.18 (15-08-2024)
 
 - Add padding to footer
