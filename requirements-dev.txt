@@ -12,15 +12,15 @@ beautifulsoup4==4.11.2
     # via wagtail
 black==24.8.0
     # via eodhp-website (pyproject.toml)
-boto3==1.35.2
+boto3==1.35.9
     # via eodhp-website (pyproject.toml)
-botocore==1.35.2
+botocore==1.35.9
     # via
     #   boto3
     #   s3transfer
 build==1.2.1
     # via pip-tools
-certifi==2024.7.4
+certifi==2024.8.30
     # via requests
 cfgv==3.4.0
     # via pre-commit
@@ -84,7 +84,7 @@ html5lib==1.1
     # via wagtail
 identify==2.6.0
     # via pre-commit
-idna==3.7
+idna==3.8
     # via requests
 iniconfig==2.0.0
     # via pytest
@@ -150,7 +150,7 @@ pytest-django==4.8.0
     # via eodhp-website (pyproject.toml)
 pytest-mock==3.14.0
     # via eodhp-website (pyproject.toml)
-pytest-watcher==0.4.2
+pytest-watcher==0.4.3
     # via eodhp-website (pyproject.toml)
 pytest-xdist==3.6.1
     # via eodhp-website (pyproject.toml)
@@ -166,7 +166,7 @@ pyyaml==6.0.2
     #   pre-commit
 requests==2.32.3
     # via wagtail
-ruff==0.6.1
+ruff==0.6.3
     # via eodhp-website (pyproject.toml)
 s3transfer==0.10.2
     # via boto3
@@ -195,9 +195,9 @@ wagtail==5.2.6
     # via
     #   eodhp-website (pyproject.toml)
     #   wagtail-cache
-wagtail-cache==2.5.0
+wagtail-cache==2.5.1
     # via eodhp-website (pyproject.toml)
-watchdog==4.0.2
+watchdog==5.0.0
     # via pytest-watcher
 webencodings==0.5.1
     # via html5lib

@@ -24,6 +24,12 @@ ENV TZ=Etc/UTC
 ENV DEBIAN_FRONTEND=noninteractive
 ENV SETUPTOOLS_USE_DISTUTILS=stdlib
 
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update --yes --quiet \
+    && apt-get install --yes --quiet --no-install-recommends \
+    postgresql-client
+
 RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install --upgrade pip
 RUN --mount=type=cache,target=/root/.cache/pip \

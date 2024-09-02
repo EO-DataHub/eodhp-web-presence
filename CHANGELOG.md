@@ -1,7 +1,9 @@
 # Changelog
 
-## v0.1.19 (30-08-2024)
+## v0.1.19 (28-08-2024)
 
+- Added database initialisation script
+- Database backup/restore fix
 - Update linting/formatting of all JavaScript/SCSS
 
 ## v0.1.18 (15-08-2024)
