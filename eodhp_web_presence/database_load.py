@@ -49,18 +49,13 @@ if __name__ == "__main__":
 
         target = os.environ["ENV_NAME"]
 
-        output_file = "new_schema.sql"
-        with open(output_file, "w") as f:
-            for line in open(f"{tmpdir}/{file}").readlines():
-                f.write(line)
-
         load_command = (
             f"{pg_load_path} "
             f'-U {os.environ["SQL_USER"]} '
             f'-h {os.environ["SQL_HOST"]} '
             f'-p {os.environ["SQL_PORT"]} '
             f'-d {os.environ["SQL_DATABASE"]} '
-            f"-f {output_file} "
+            f"-f {tmpdir}/{file} "
             f"--single-transaction"
         )
         change_schema_name_back_command = (
