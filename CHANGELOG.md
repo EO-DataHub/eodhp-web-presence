@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.20 (04-09-2024)
+
+- Centre home page text 
+
 ## v0.1.19 (28-08-2024)
 
 - Added database initialisation script
