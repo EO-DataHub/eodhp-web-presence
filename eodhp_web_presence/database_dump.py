@@ -63,7 +63,10 @@ if __name__ == "__main__":
     else:
         s3 = boto3.resource("s3")
 
-    output_folder_name = f'{os.environ.get("ENV_NAME", "default")}-{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}'  # # noqa: E501
+    output_folder_name = (
+        f'{os.environ.get("ENV_NAME", "default")}-'
+        f'{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}'
+    )
 
     output_file = "wagtail_dump.sql"
 
