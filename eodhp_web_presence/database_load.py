@@ -10,7 +10,28 @@ pg_load_path = "psql"
 
 bucket_name = "web-database-exports"
 
+export_bucket_name = os.environ["AWS_STORAGE_EXPORT_BUCKET_NAME"]
+media_bucket_name = os.environ["AWS_STORAGE_BUCKET_NAME"]
+
 temp_schema_name = "base_content"
+
+
+def copy_files(source_bucket_name: str, target_bucket_name, folder_name: str):
+    logging.info(f"Copying files from {source_bucket_name} into {target_bucket_name}")
+
+    s3_client = boto3.client("s3")
+    """Updates file in S3 from local directory"""
+    for key in s3_client.list_objects(Bucket=source_bucket_name, Prefix=folder_name)["Contents"]:
+        path = key["Key"]
+        new_path = "/".join(path.split("/")[2:])
+
+        if new_path:  # ignores anything in the top level e.g. SQL exports
+            s3_client.copy_object(
+                CopySource=f"/{source_bucket_name}/{path}",
+                Bucket=target_bucket_name,
+                Key=f'{os.environ["MEDIAFILES_LOCATION"]}/{new_path}',
+            )
+    logging.info(f"Copying files from {source_bucket_name} into {target_bucket_name} complete")
 
 
 def run_sql_command(sql: str) -> str:
@@ -26,12 +47,15 @@ def run_sql_command(sql: str) -> str:
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(message)s")
-    logging.getLogger("database_dump").setLevel(logging.DEBUG)
+    logging.getLogger("database_load").setLevel(logging.DEBUG)
 
     try:
-        file = sys.argv[1]
+        folder = sys.argv[1]
     except IndexError:
         logging.error("File name not specified")
+        raise
+
+    database_dump_file = "wagtail_dump.sql"
 
     if os.getenv("AWS_ACCESS_KEY") and os.getenv("AWS_SECRET_ACCESS_KEY"):
         session = boto3.session.Session(
@@ -44,8 +68,10 @@ if __name__ == "__main__":
         s3 = boto3.client("s3")
 
     with tempfile.TemporaryDirectory() as tmpdir:
-        logging.info(f"Collecting {file} from {bucket_name}")
-        s3.download_file(bucket_name, file, f"{tmpdir}/{file}")
+        logging.info(f"Collecting {folder}/{database_dump_file} from {export_bucket_name}")
+        s3.download_file(
+            export_bucket_name, f"{folder}/{database_dump_file}", f"{tmpdir}/{database_dump_file}"
+        )
 
         target = os.environ["ENV_NAME"]
 
@@ -55,7 +81,7 @@ if __name__ == "__main__":
             f'-h {os.environ["SQL_HOST"]} '
             f'-p {os.environ["SQL_PORT"]} '
             f'-d {os.environ["SQL_DATABASE"]} '
-            f"-f {tmpdir}/{file} "
+            f"-f {tmpdir}/{database_dump_file} "
             f"--single-transaction"
         )
         change_schema_name_back_command = (
@@ -81,5 +107,7 @@ if __name__ == "__main__":
         )
 
         del os.environ["PGPASSWORD"]
+
+        copy_files(export_bucket_name, media_bucket_name, folder)
 
         logging.info("Complete")

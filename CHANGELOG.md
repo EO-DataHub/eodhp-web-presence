@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.20 (06-09-2024)
+
+- Include media files in database backup/restore
+
 ## v0.1.19 (28-08-2024)
 
 - Added database initialisation script
