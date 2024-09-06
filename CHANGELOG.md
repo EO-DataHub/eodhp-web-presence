@@ -3,6 +3,7 @@
 ## v0.1.20 (06-09-2024)
 
 - Include media files in database backup/restore
+- Centre home page text 
 
 ## v0.1.19 (28-08-2024)
 
