@@ -52,8 +52,11 @@ if __name__ == "__main__":
     try:
         folder = sys.argv[1]
     except IndexError:
-        logging.error("File name not specified")
-        raise
+        logging.error(
+            f"Backup name within {os.environ['AWS_STORAGE_EXPORT_BUCKET_NAME']} not specified. \n"
+            f"Run with python database_load.py my_backup_folder"
+        )
+        sys.exit(1)
 
     database_dump_file = "wagtail_dump.sql"
 
