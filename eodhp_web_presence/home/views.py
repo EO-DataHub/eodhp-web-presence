@@ -16,6 +16,15 @@ def catalogue_page_view(request):
     return render(request, "home/catalogue_page.html", context=context)
 
 
+def workspaces_page_view(request):
+    workspaces_version = settings.WORKSPACE_UI["version"]
+    workspaces_base_url = settings.WORKSPACE_UI["url"]
+    workspaces_url = f"{workspaces_base_url}/{workspaces_version}"
+    context = {"url": workspaces_url}
+
+    return render(request, "home/workspaces_page.html", context=context)
+
+
 def search_topics(request):
     query = request.GET.get("query", "")
     area_slug = request.GET.get("area", "")

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, re_path
-from home.views import catalogue_page_view
+from home.views import catalogue_page_view, workspaces_page_view
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
@@ -17,6 +17,7 @@ urlpatterns = [
         name="wagtailimages_serve",
     ),
     path("catalogue/", catalogue_page_view),
+    path("workspaces/", workspaces_page_view),
     path("support/", include("home.urls")),
     path("", include("core.urls")),
     path("", include("accounts.urls")),
