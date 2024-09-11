@@ -135,7 +135,7 @@ class Command(BaseCommand):
         parser.add_argument("-b", "--bucket_name", type=str)
 
         parser.add_argument("-m", "--load_media_folder", type=str, default="1")
-        parser.add_argument("-s3", "--use_s3", type=str)
+        parser.add_argument("-s3", "--use_s3", type=str, default=1)
 
     def handle(self, *args, **kwargs):
 
