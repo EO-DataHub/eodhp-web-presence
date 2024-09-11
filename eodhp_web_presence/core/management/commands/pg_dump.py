@@ -162,13 +162,19 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument("-b", "--bucket_name", type=str)
         parser.add_argument("-f", "--folder_name", type=str)
-        parser.add_argument("-m", "--backup_media_folder", type=bool, default=True)
-        parser.add_argument("-s3", "--use_s3", type=str)
+        parser.add_argument("-m", "--backup_media_folder", type=str, default="1")
+        parser.add_argument("-s3", "--use_s3", default="1", type=str)
 
     def handle(self, *args, **kwargs):
         bucket_name = kwargs["bucket_name"]
         folder_name = kwargs["folder_name"]
-        backup_media_folder = kwargs["backup_media_folder"]
+        backup_media_folder = kwargs["backup_media_folder"].lower() in [
+            "true",
+            "1",
+            "t",
+            "y",
+            "yes",
+        ]
         use_s3 = kwargs["use_s3"].lower() in ["true", "1", "t", "y", "yes"]
 
         if not folder_name:
