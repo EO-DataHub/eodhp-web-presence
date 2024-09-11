@@ -107,6 +107,29 @@ The admin panel can be accessed at [http://127.0.0.1:8000/admin](http://127.0.0.
 
 `python manage.py elevate_user USERNAME` can elevate an existing user to have admin priveleges and hence be able to access the Wagtail admin panel. An optional `--revoke` flag is available to remove a user's admin priveleges.
 
+#### pg_dump
+
+`python manage.py pg_dump` dumps the contents of the CMS, including database and media folders, to a timestamped folder in the AWS_STORAGE_EXPORT_BUCKET_NAME bucket
+
+`python manage.py pg_dump -b my_bucket` dumps the contents of the CMS, including database and media folders, to a timestamped folder in the my_bucket bucket
+
+`python manage.py pg_dump -f my_folder` dumps the contents of the CMS, including database and media folders, to a timestamped folder in the AWS_STORAGE_EXPORT_BUCKET_NAME bucket
+
+`python manage.py pg_dump --backup_media_folder=0` dumps the contents of the CMS database (excluding media folders), to a timestamped folder in the AWS_STORAGE_EXPORT_BUCKET_NAME bucket
+
+`python manage.py pg_dump --use_s3=0` dumps the contents of the CMS, including database and media folders, to a timestamped folder in the AWS_STORAGE_EXPORT_BUCKET_NAME local folder
+
+#### pg_load
+
+`python manage.py pg_load my_folder` loads the contents of the CMS, including database and media folders from the my_folder folder in the AWS_STORAGE_EXPORT_BUCKET_NAME bucket
+
+`python manage.py pg_load my_folder -b my_bucket` loads the contents of the CMS, including database and media folders from the my_folder folder in the my_bucket bucket
+
+`python manage.py pg_load my_folder --load_media_folder=0` loads the contents of the CMS database (excluding media folders) from the my_folder folder in the AWS_STORAGE_EXPORT_BUCKET_NAME bucket
+
+`python manage.py pg_load my_folder --use_s3=0` loads the contents of the CMS, including database and media folders from the my_folder folder in the AWS_STORAGE_EXPORT_BUCKET_NAME local folder
+
+
 ## Build Image
 
 A Dockerfile has been provided for packaging the app for deployment in production.
