@@ -45,7 +45,7 @@ def run_sql_command(sql: str) -> str:
     )
 
 
-if __name__ == "__main__":
+def main():
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     logging.getLogger("database_load").setLevel(logging.DEBUG)
 
@@ -75,8 +75,6 @@ if __name__ == "__main__":
         s3.download_file(
             export_bucket_name, f"{folder}/{database_dump_file}", f"{tmpdir}/{database_dump_file}"
         )
-
-        target = os.environ["ENV_NAME"]
 
         load_command = (
             f"{pg_load_path} "
@@ -114,3 +112,7 @@ if __name__ == "__main__":
         copy_files(export_bucket_name, media_bucket_name, folder)
 
         logging.info("Complete")
+
+
+if __name__ == "__main__":
+    main()

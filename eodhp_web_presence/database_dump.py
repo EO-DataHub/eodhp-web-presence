@@ -49,7 +49,7 @@ def run_sql_command(sql: str) -> str:
     )
 
 
-if __name__ == "__main__":
+def main():
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     logging.getLogger("database_dump").setLevel(logging.DEBUG)
 
@@ -112,3 +112,7 @@ if __name__ == "__main__":
 
         upload_sql_file(output_file, output_folder_name, export_bucket_name, s3)
         logging.info("Complete")
+
+
+if __name__ == "__main__":
+    main()
