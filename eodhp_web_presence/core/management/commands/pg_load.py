@@ -1,6 +1,7 @@
 import glob
 import logging
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -79,11 +80,17 @@ def pg_load(export_bucket_name: str, folder_name: str, load_media_folder: bool, 
 
     with tempfile.TemporaryDirectory() as tmpdir:
         logging.info(f"Collecting {folder_name}/{database_dump_file} from {export_bucket_name}")
-        s3.download_file(
-            export_bucket_name,
-            f"{folder_name}/{database_dump_file}",
-            f"{tmpdir}/{database_dump_file}",
-        )
+        if use_s3:
+            s3.download_file(
+                export_bucket_name,
+                f"{folder_name}/{database_dump_file}",
+                f"{tmpdir}/{database_dump_file}",
+            )
+        else:
+            shutil.copy(
+                f"{export_bucket_name}/{folder_name}/{database_dump_file}",
+                f"{tmpdir}/{database_dump_file}",
+            )
 
         load_command = (
             f"{pg_load_path} "
