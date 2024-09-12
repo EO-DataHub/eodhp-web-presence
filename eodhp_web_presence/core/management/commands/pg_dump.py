@@ -166,7 +166,6 @@ class Command(BaseCommand):
         parser.add_argument("-s3", "--use-s3", default="1", type=str)
 
     def handle(self, *args, **kwargs):
-        print(kwargs)
         bucket_name = kwargs["bucket_name"]
         folder_name = kwargs["folder_name"]
         backup_media_folder = kwargs["backup_media_folder"].lower() in [

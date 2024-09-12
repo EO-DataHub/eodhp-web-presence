@@ -138,14 +138,13 @@ class Command(BaseCommand):
     help = "Load CMS from S3"
 
     def add_arguments(self, parser):
-        parser.add_argument("folder-name", type=str)
+        parser.add_argument("folder_name", type=str, default=None)
         parser.add_argument("-b", "--bucket-name", type=str, default=None)
 
         parser.add_argument("-m", "--load-media-folder", type=str, default="1")
-        parser.add_argument("-s3", "--use-s3", type=str, default=1)
+        parser.add_argument("-s3", "--use-s3", type=str, default="1")
 
     def handle(self, *args, **kwargs):
-
         bucket_name = kwargs["bucket_name"]
         folder_name = kwargs["folder_name"]
         load_media_folder = kwargs["load_media_folder"].lower() in ["true", "1", "t", "y", "yes"]
