@@ -139,17 +139,17 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("folder-name", type=str)
-        parser.add_argument("-b", "--bucket-name", type=str)
+        parser.add_argument("-b", "--bucket-name", type=str, default=None)
 
         parser.add_argument("-m", "--load-media-folder", type=str, default="1")
         parser.add_argument("-s3", "--use-s3", type=str, default=1)
 
     def handle(self, *args, **kwargs):
 
-        bucket_name = kwargs["bucket-name"]
-        folder_name = kwargs["folder-name"]
-        load_media_folder = kwargs["load-media-folder"].lower() in ["true", "1", "t", "y", "yes"]
-        use_s3 = kwargs["use-s3"].lower() in ["true", "1", "t", "y", "yes"]
+        bucket_name = kwargs["bucket_name"]
+        folder_name = kwargs["folder_name"]
+        load_media_folder = kwargs["load_media_folder"].lower() in ["true", "1", "t", "y", "yes"]
+        use_s3 = kwargs["use_s3"].lower() in ["true", "1", "t", "y", "yes"]
 
         if not folder_name:
             logging.error(
