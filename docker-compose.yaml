@@ -1,0 +1,38 @@
+services:
+  db:
+    image: kartoza/postgis:latest
+    volumes:
+      - ./db-data:/var/lib/postgresql
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=${SQL_HOST}
+      - POSTGRES_DB=${SQL_DATABASE}
+      - POSTGRES_USER=${SQL_USER}
+      - POSTGRES_PASS=${SQL_PASSWORD}
+      - FORCE_SSL=TRUE
+    ports:
+      - ${SQL_PORT}:${SQL_PORT}
+    restart: on-failure
+    healthcheck:
+      test: "PGPASSWORD=${SQL_PASSWORD} pg_isready -h 127.0.0.1 -U ${SQL_USER} -d ${SQL_DATABASE}"
+    networks:
+      - eodhp-net
+
+  web-presence:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env
+    volumes:
+      - ./eodhp_web_presence/:/app/
+    ports:
+      - 8000:8000
+    networks:
+      - eodhp-net
+
+networks:
+  eodhp-net:
+
+
