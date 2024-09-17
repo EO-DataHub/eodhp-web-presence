@@ -51,5 +51,19 @@
   ],
   "typescript.autoClosingTags": true,
   "typescript.suggest.autoImports": true,
-  "prettier.enable": true
+  "prettier.enable": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always"
+    }
+  },
+  "black-formatter.args": [
+    "--line-length",
+    "88"
+  ],
+  "flake8.args": [
+    "--max-line-length", "88",
+    "--extend-ignore", "E203"
+  ]
 }
