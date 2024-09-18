@@ -189,6 +189,11 @@ RESOURCE_CATALOGUE = {
     "url": env("RESOURCE_CATALOGUE_URL", default=None),
 }
 
+WORKSPACE_UI = {
+    "version": env("WORKSPACE_UI_VERSION", default="v1.0.0"),
+    "url": env("WORKSPACE_UI_URL", default=None),
+}
+
 CATALOGUE_DATA = {"url": env("CATALOGUE_DATA_URL", default=None)}
 
 # Password validation
