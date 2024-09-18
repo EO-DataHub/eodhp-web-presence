@@ -4,6 +4,7 @@
 
 - Include media files in database backup/restore
 - Centre home page text 
+- Add workspace UI application
 
 ## v0.1.19 (28-08-2024)
 
