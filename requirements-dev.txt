@@ -78,6 +78,7 @@ filelock==3.15.4
     # via virtualenv
 filetype==1.2.0
     # via willow
+flake8==7.1.1
 gibberish==0.4.0
     # via eodhp-website (pyproject.toml)
 html5lib==1.1
