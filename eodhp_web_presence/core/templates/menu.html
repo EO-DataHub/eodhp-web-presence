@@ -35,9 +35,11 @@
             <li class="nav-item block-solid">
               <a aria-current="page" class="nav-link" href="{{ menu_links.eox_viewserver_url }}">Maps</a>
             </li>
+            {% if user.is_authenticated %}
             <li class="nav-item block-solid">
               <a aria-current="page" class="nav-link" href="/workspaces">Workspaces</a>
             </li>
+            {% endif %}
             {% if user.is_authenticated %}
             <li class="nav-item block-solid">
               <a aria-current="page" class="nav-link" href="{% url 'sign_out' %}">Sign out</a>
