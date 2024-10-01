@@ -8,7 +8,11 @@ logger = logging.getLogger(__name__)
 
 
 def sign_in(request):
-    return redirect(settings.KEYCLOAK["OAUTH2_PROXY_SIGNIN"])
+    referer = request.headers.get("Referer")
+
+    redirect_tag = f"?rd={quote(referer)}" if referer else ""
+
+    return redirect(f"{settings.KEYCLOAK['OAUTH2_PROXY_SIGNIN']}{redirect_tag}")
 
 
 def sign_out(request):
