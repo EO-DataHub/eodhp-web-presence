@@ -7,6 +7,7 @@
 
 #menu-nav-bar {
   padding: 0;
+  height: 130px;
 
   .container-fluid {
     padding-right: 0;
@@ -79,10 +80,6 @@
   .block-solid a.nav-link:hover {
     background: custom.$light-blue !important;
     color: custom.$black !important;
-  }
-
-  .navbar {
-    height: 130px;
   }
 
   .navbar .navbar-nav {
