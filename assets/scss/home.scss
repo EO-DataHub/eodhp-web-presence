@@ -1,7 +1,12 @@
-@use '../scss/custom';
+@use "../scss/custom";
 
 body {
   background-color: custom.$white;
+}
+
+#resource-catalogue-ui {
+  // 100vh - footer height - navbar height
+  height: calc(100vh - 100px - 130px);
 }
 
 .breadcrumb-content {
@@ -91,7 +96,7 @@ body {
   border-radius: 1px;
 }
 
-.home-page-banner-title{
+.home-page-banner-title {
   text-align: center;
 }
 
