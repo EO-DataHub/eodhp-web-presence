@@ -1,9 +1,18 @@
 # Changelog
 
+## v0.1.22 (17-10-2024)
+
+- Changed id for main resource-catalogue from root to resource-catalogue-ui
+- Hard code height for resource-catalogue to account for header and footer
+
+## v0.1.21 (02-10-2024)
+
+- Updated keycloak authentication
+
 ## v0.1.20 (06-09-2024)
 
 - Include media files in database backup/restore
-- Centre home page text 
+- Centre home page text
 - Add workspace UI application
 
 ## v0.1.19 (28-08-2024)
