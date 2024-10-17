@@ -14,7 +14,7 @@
 
 [project]
 name = "eodhp-website"
-version = "0.1.20"
+version = "0.1.22"
 
 description = "Wagtail-based website for EODHP"
 readme = "README.md"
