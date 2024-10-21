@@ -1,3 +1,4 @@
+/* stylelint-disable no-invalid-position-at-import-rule */
 $light-blue: #bcceeb;
 $blue: #4c72ba;
 $dark-blue: #2a3559;
@@ -11,8 +12,19 @@ $theme-colors: (
   'dark': $dark-blue,
 );
 
+// Import required global Bootstrap aspects
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/maps';
+@import '~bootstrap/scss/root';
+
 html * {
   font-family: 'Fira Sans', Arial, Helvetica, sans-serif;
+}
+
+body {
+  margin: unset;
 }
 
 .wrapper {
@@ -21,5 +33,7 @@ html * {
   min-height: 100vh;
 }
 
-/* stylelint-disable-next-line no-invalid-position-at-import-rule */
-@import 'bootstrap/scss/bootstrap';
+// Encapsulate Bootstrap styles within a specific selector class
+.bootstrap-scope {
+  @import '~bootstrap/scss/bootstrap';
+}
