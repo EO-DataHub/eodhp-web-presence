@@ -2,58 +2,58 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
 
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        {% block title %}
+        {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+        {% endblock %}
+        {% block title_suffix %}
+        {% wagtail_site as current_site %}
+        {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+        {% endblock %}
+    </title>
+    {% if page.search_description %}
+    <meta name="description" content="{{ page.search_description }}" />
+    {% endif %}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>
-            {% block title %}
-            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
-            {% endblock %}
-            {% block title_suffix %}
-            {% wagtail_site as current_site %}
-            {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
-            {% endblock %}
-        </title>
-        {% if page.search_description %}
-        <meta name="description" content="{{ page.search_description }}" />
-        {% endif %}
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {# Force all links in the live preview panel to be opened in a new tab #}
+    {% if request and request.is_preview %}
+    <base target="_blank">
+    {% endif %}
 
-        {# Force all links in the live preview panel to be opened in a new tab #}
-        {% if request and request.is_preview %}
-        <base target="_blank">
-        {% endif %}
+    {# Global javascript #}
 
-        {# Global javascript #}
+    <script src="{% static 'bundles/main.js' %}"></script>
+    {% block extra_js %}
+    {# Override this in templates to add extra javascript #}
+    {% endblock %}
 
-        <script src="{% static 'bundles/main.js' %}"></script>
-        {% block extra_js %}
-        {# Override this in templates to add extra javascript #}
+    {# Global stylesheets #}
+
+    <link rel="icon" type="image/x-icon" href="{% static 'img/menu/favicon.svg' %}">
+
+    {% block extra_css %}
+    {# Override this in templates to add extra stylesheets #}
+    {% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+    <div class="wrapper">
+
+        {% wagtailuserbar %}
+
+        {% include "menu.html" %}
+
+        {% block content %}
         {% endblock %}
 
-        {# Global stylesheets #}
 
-        <link rel="icon" type="image/x-icon" href="{% static 'img/menu/favicon.svg' %}">
+        {% include "footer.html" %}
+    </div>
+</body>
 
-        {% block extra_css %}
-        {# Override this in templates to add extra stylesheets #}
-        {% endblock %}
-    </head>
-
-    <body class="{% block body_class %}{% endblock %}">
-        <div class="wrapper d-flex flex-column min-vh-100">
-
-            {% wagtailuserbar %}
-
-            {% include "menu.html" %}
-
-            {% block content %}
-            {% endblock %}
-
-
-            {% include "footer.html" %}
-        </div>
-    </body>
 </html>

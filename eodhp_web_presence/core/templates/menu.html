@@ -1,57 +1,59 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-xxl bg-light" id="menu-nav-bar">
-  <div class="container-fluid d-flex">
-    <div class="header col-xxl-3">
-      <a class="navbar-brand" href="/"><img class="logo"
-          src="{% static 'img/menu/EO-Data-Hub-logo_colour.svg' %}" /></a>
-      <button aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"
-        class="navbar-toggler d-xxl-none" data-bs-target="#navbarToggler" data-bs-toggle="collapse"
-        id="navbar-toggler-button" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-    <div class="collapse navbar-collapse col-xxl-9" id="navbarToggler">
-      <ul class="navbar-nav me-auto mb-2 mb-xxl-0"></ul>
+<div class="bootstrap-scope">
+  <nav class="navbar navbar-expand-xxl bg-light" id="menu-nav-bar">
+    <div class="container-fluid d-flex">
+      <div class="header col-xxl-3">
+        <a class="navbar-brand" href="/"><img class="logo"
+            src="{% static 'img/menu/EO-Data-Hub-logo_colour.svg' %}" /></a>
+        <button aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"
+          class="navbar-toggler d-xxl-none" data-bs-target="#navbarToggler" data-bs-toggle="collapse"
+          id="navbar-toggler-button" type="button">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse col-xxl-9" id="navbarToggler">
+        <ul class="navbar-nav me-auto mb-2 mb-xxl-0"></ul>
 
-      <div class="d-flex">
-        <div class="nav-bar-container-blank">
-          <ul class="navbar-nav align-items-start">
-            <li class="nav-item block-transparent">
-              <a aria-current="page" class="nav-link" href="/about">About</a>
-            </li>
-            <li class="nav-item block-transparent">
-              <a aria-current="page" class="nav-link" href="/news">News</a>
-            </li>
-            <li class="nav-item block-transparent">
-              <a aria-current="page" class="nav-link" href="/contact">Contact</a>
-            </li>
-            <li class="nav-item block-transparent">
-              <a aria-current="page" class="nav-link" href="/support">Support</a>
-            </li>
-            <li class="nav-item block-solid">
-              <a aria-current="page" class="nav-link" href="/catalogue">Catalogue</a>
-            </li>
-            <li class="nav-item block-solid">
-              <a aria-current="page" class="nav-link" href="{{ menu_links.eox_viewserver_url }}">Maps</a>
-            </li>
-            {% if user.is_authenticated %}
-            <li class="nav-item block-solid">
-              <a aria-current="page" class="nav-link" href="/workspaces">Workspaces</a>
-            </li>
-            {% endif %}
-            {% if user.is_authenticated %}
-            <li class="nav-item block-solid">
-              <a aria-current="page" class="nav-link" href="{% url 'sign_out' %}">Sign out</a>
-            </li>
-            {% else %}
-            <li class="nav-item block-solid">
-              <a aria-current="page" class="nav-link" href="{% url 'sign_in' %}">Sign in</a>
-            </li>
-            {% endif %}
-          </ul>
+        <div class="d-flex">
+          <div class="nav-bar-container-blank">
+            <ul class="navbar-nav align-items-start">
+              <li class="nav-item block-transparent">
+                <a aria-current="page" class="nav-link" href="/about">About</a>
+              </li>
+              <li class="nav-item block-transparent">
+                <a aria-current="page" class="nav-link" href="/news">News</a>
+              </li>
+              <li class="nav-item block-transparent">
+                <a aria-current="page" class="nav-link" href="/contact">Contact</a>
+              </li>
+              <li class="nav-item block-transparent">
+                <a aria-current="page" class="nav-link" href="/support">Support</a>
+              </li>
+              <li class="nav-item block-solid">
+                <a aria-current="page" class="nav-link" href="/catalogue">Catalogue</a>
+              </li>
+              <li class="nav-item block-solid">
+                <a aria-current="page" class="nav-link" href="{{ menu_links.eox_viewserver_url }}">Maps</a>
+              </li>
+              {% if user.is_authenticated %}
+              <li class="nav-item block-solid">
+                <a aria-current="page" class="nav-link" href="/workspaces">Workspaces</a>
+              </li>
+              {% endif %}
+              {% if user.is_authenticated %}
+              <li class="nav-item block-solid">
+                <a aria-current="page" class="nav-link" href="{% url 'sign_out' %}">Sign out</a>
+              </li>
+              {% else %}
+              <li class="nav-item block-solid">
+                <a aria-current="page" class="nav-link" href="{% url 'sign_in' %}">Sign in</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</div>

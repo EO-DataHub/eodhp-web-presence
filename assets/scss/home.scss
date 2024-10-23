@@ -91,7 +91,7 @@ body {
   border-radius: 1px;
 }
 
-.home-page-banner-title{
+.home-page-banner-title {
   text-align: center;
 }
 
@@ -117,7 +117,6 @@ body {
 
 .home-page-text-100 {
   padding: 10px;
-  width: 100%;
 }
 
 .home-page-image-50 {
@@ -174,11 +173,11 @@ body {
 }
 
 .search-box-50 {
-  width: 50%;
+  width: 50% !important;
 }
 
 .search-box-100 {
-  width: 100%;
+  width: 100% !important;
 }
 
 .list-group-item,
@@ -239,6 +238,6 @@ body {
   }
 
   .search-box-50 {
-    width: 100%;
+    width: 100% !important;
   }
 }
