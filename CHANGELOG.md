@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.23 (30-10-2024)
+
+- Fixed bootstrap bleed-through
+- Fixed scrollbars in Resource Catalogue
+
 ## v0.1.22 (17-10-2024)
 
 - Changed id for main resource-catalogue from root to resource-catalogue-ui
