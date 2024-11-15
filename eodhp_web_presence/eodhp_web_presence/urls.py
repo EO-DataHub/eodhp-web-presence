@@ -16,7 +16,7 @@ urlpatterns = [
         ServeView.as_view(),
         name="wagtailimages_serve",
     ),
-    path("catalogue/", catalogue_page_view),
+    re_path(r"^catalogue/.*$", catalogue_page_view),
     path("workspaces/", workspaces_page_view),
     path("support/", include("home.urls")),
     path("", include("core.urls")),
