@@ -4,76 +4,25 @@
 
 {% block content %}
 
-<div class="home-page-banner-container" id="big">
+<div class="home" id="big">
 
     {% if page.banner_image %}
-    {% image page.banner_image scale-100 as img %}<img alt="Banner image" class="home-page-banner-image"
-                                                       src="{{ img.url }}">
+    {% image page.banner_image scale-100 as img %}
+    <div class="hero" style="background-image: url('{{ img.url }}');">
+        <div class="hero-position">
+            <div class="hero-content">
+                <div>We provide a single point of access to<br /><span class="thin-underline">EO data</span> and <span class="thin-underline">processing infrastructure</span>.</div>
+                <div>
+                    <input type="button" class="button primary-button" value="Read More"
+                        onclick="window.location.href='/get-started/'" />
+                    <input type="button" class="button secondary-button" value="Explore our Catalogue"
+                        onclick="window.location.href='/contact/'" />
+                </div>
+            </div>
+        </div>
+    </div>
     {% endif %}
 
-    <div class="home-page-banner-text" id="centre">
-        <div class="home-page-banner-title">
-            {{ page.title|richtext }}
-        </div>
-    </div>
-</div>
-
-<div class="home-page-border">
-    <div class="home-page-content">
-
-        {% if page.image %}
-        {% image page.image scale-100 as img %}<img class="home-page-image-50" src="{{ img.url }}">
-        <div class="home-page-text-50">{{ page.body|richtext }}</div>
-        {% else %}
-        <div class="home-page-text-100">{{ page.body|richtext }}</div>
-        {% endif %}
-
-        {% if page.video_url %}
-        <p>
-        <div class="home-page-text-100">
-            <video width="100%" class="home-page-content" controls src={{ page.video_url }}></video>
-        </div>
-        {% endif %}
-
-        <p>
-    </div>
-</div>
-
-<div class="boxes">
-    <div class="home-page-border" id="footer">
-        <div class="box-link">
-            <a href="/about">
-
-                {% if page.about_image %}
-                {% image page.about_image scale-100 as img %}<img alt="About image" class="box-link-image"
-                                                                  src="{{ img.url }}">
-                {% endif %}
-                <div class="box-link-text">About</div>
-            </a>
-        </div>
-        <div class="box-link">
-            <a href="/news">
-
-                {% if page.news_image %}
-                {% image page.news_image scale-100 as img %}<img alt="News image" class="box-link-image"
-                                                                 src="{{ img.url }}">
-                {% endif %}
-                <div class="box-link-text">News</div>
-            </a>
-        </div>
-        <div class="box-link">
-            <a href="/contact">
-
-                {% if page.contact_image %}
-                {% image page.contact_image scale-100 as img %}<img alt="Contact image" class="box-link-image"
-                                                                    src="{{ img.url }}">
-                {% endif %}
-                <div class="box-link-text">Contact</div>
-            </a>
-        </div>
-        <span class="stretch"></span>
-
-    </div>
 </div>
 
 {% endblock content %}
