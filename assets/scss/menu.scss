@@ -5,6 +5,9 @@
   padding: 1rem 2rem;
   position: fixed;
   width: 100%;
+  transition:
+    background-color 1s ease,
+    color 1s ease;
 
   &__left {
     display: flex;
@@ -47,10 +50,6 @@
         }
       }
     }
-
-    transition: background-color 1s;
-    transition: box-shadow 1s;
-    transition: color 1s;
   }
 
   &.scrolled {

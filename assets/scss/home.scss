@@ -157,9 +157,14 @@
   .ready-to-get-started {
     margin-top: 3rem;
     background-color: rgb(236 236 236);
-    color: var(--text-primary);
+    color: black;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 
     &__content {
+      width: 80%;
+      max-width: 800px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -167,14 +172,14 @@
       padding: 4rem 2rem;
 
       .primary-button {
-        background-color: var(--inverse-background);
-        color: var(--inverse-text);
+        background-color: var(--button-bg);
+        color: var(--button-text);
         padding: 0.7rem 2rem;
       }
 
       .secondary-button {
-        color: var(--inverse-background);
-        border: 1px solid var(--inverse-background);
+        color: var(--button-bg);
+        border: 1px solid var(--button-bg);
       }
     }
   }
