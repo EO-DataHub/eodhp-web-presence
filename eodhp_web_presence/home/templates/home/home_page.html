@@ -11,7 +11,8 @@
     <div class="hero" style="background-image: url('{{ img.url }}');">
         <div class="hero-position">
             <div class="hero-content">
-                <div>We provide a single point of access to<br /><span class="thin-underline">EO data</span> and <span class="thin-underline">processing infrastructure</span>.</div>
+                <div>We provide a single point of access to<br /><span class="thin-underline">EO data</span> and <span
+                        class="thin-underline">processing infrastructure</span>.</div>
                 <div>
                     <input type="button" class="button primary-button" value="Read More"
                         onclick="window.location.href='/get-started/'" />
@@ -23,6 +24,109 @@
     </div>
     {% endif %}
 
-</div>
+    <div class="who-is-it-for">
+        <div class="who-is-it-for__content">
+            <div class="who-is-it-for__content__left">
+                <h2>Who is the Earth Observation Data Hub for?</h2>
+                <div class="arrows">
+                    <div class="arrow-left">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.5 4L6.5 12L15.5 20" stroke="#FEF7FF" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow-right">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.5 4L17.5 12L8.5 20" stroke="#FEF7FF" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="who-is-it-for__content__right">
+                <div class="scroll-card">
+                    <h3>Government and Public Sector</h3>
+                    <p>
+                        Providing collective purchasing power and access to a wide range of EO data and processing
+                        services.
+                        The EO Data Hub is a one-stop-shop for all your EO data needs.
+                    </p>
+                </div>
+            </div>
+        </div>
 
-{% endblock content %}
+    </div>
+
+    <div class="aims">
+        <div class="aims__content">
+            <h4>Aims of the EODH</h4>
+            <span class="subtitle">The Earth Observation Data Hub aims to:</span>
+            <div class="aims__content__cards">
+                <div class="card">
+                    <h3>Access</h3>
+                    <p>Provide a single point of access to EO data and processing infrastructure.</p>
+                </div>
+                <div class="card">
+                    <h3>Collaboration</h3>
+                    <p>Facilitate collaboration between public sector organisations and the EO industry.</p>
+                </div>
+                <div class="card">
+                    <h3>Efficiency</h3>
+                    <p>Improve efficiency and reduce costs through collective purchasing power.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="who-is-it-for">
+        <div class="who-is-it-for__content">
+            <div class="who-is-it-for__content__left">
+                <h2>Who is the Earth Observation Data Hub for?</h2>
+                <div class="arrows">
+                    <div class="arrow-left">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.5 4L6.5 12L15.5 20" stroke="#FEF7FF" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow-right">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.5 4L17.5 12L8.5 20" stroke="#FEF7FF" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="who-is-it-for__content__right">
+                <div class="scroll-card">
+                    <h3>Government and Public Sector</h3>
+                    <p>
+                        Providing collective purchasing power and access to a wide range of EO data and processing
+                        services.
+                        The EO Data Hub is a one-stop-shop for all your EO data needs.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="ready-to-get-started">
+            <div class="ready-to-get-started__content">
+                <div class="ready-to-get-started__content__left">
+                    <h4>Ready to get started?</h4>
+                    <p>Sign up or contact us</p>
+                </div>
+                <!-- Sign up and Contact Us -->
+                 <div class="ready-to-get-started__content__right">
+                    <input type="button" class="button primary-button" value="Sign Up"
+                        onclick="window.location.href='/get-started/'" />
+                    <input type="button" class="button secondary-button" value="Contact Us"
+                        onclick="window.location.href='/contact/'" />
+                 </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    {% endblock content %}

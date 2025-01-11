@@ -47,5 +47,43 @@
         }
       }
     }
+
+    transition: background-color 1s;
+    transition: box-shadow 1s;
+    transition: color 1s;
+  }
+
+  &.scrolled {
+    background-color: var(--background);
+    box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+
+    .logo {
+      color: var(--text-primary);
+      border-right: 1px solid var(--text-primary);
+    }
+
+    .dropdown {
+      color: var(--text-secondary);
+    }
+
+    ul li a {
+      color: var(--text-secondary);
+    }
+
+    ul li svg {
+      fill: red;
+    }
+
+    .button {
+      &.primary-button {
+        background-color: var(--button-bg);
+        color: var(--button-text);
+      }
+
+      &.secondary-button {
+        color: var(--button-bg);
+        border: 1px solid var(--button-bg);
+      }
+    }
   }
 }
