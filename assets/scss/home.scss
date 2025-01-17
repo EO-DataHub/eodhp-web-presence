@@ -123,7 +123,6 @@
           text-align: left;
           width: 100%;
           max-width: 250px;
-          transition: var(--transition);
 
           &__image {
             width: 100%;
@@ -157,6 +156,9 @@
 
   .who-is-it-for {
     margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &__content {
       display: flex;
@@ -196,7 +198,7 @@
       }
 
       &__right {
-        flex: 2;
+        flex: 1;
         display: flex;
         justify-content: center;
         align-items: center;
