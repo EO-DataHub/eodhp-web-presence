@@ -2,9 +2,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 2rem;
   position: fixed;
   width: 100%;
+  background-color: var(--background);
   transition:
     background-color 1s ease,
     color 1s ease;
@@ -13,65 +15,69 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    flex: 1;
+    width: 65%;
+    min-width: 500px;
 
     .logo {
       font-weight: 600;
-      color: white;
-      border-right: 1px solid white;
-      padding-right: 1.5rem;
-    }
+      padding-right: 1.15rem;
 
-    .dropdown {
-      color: rgb(194 194 194);
-      font-size: 0.875rem;
+      .light-theme & {
+        filter: invert(0.5);
+      }
+
+      img {
+        width: 100%;
+        max-width: 180px;
+        height: auto;
+      }
     }
   }
 
   &__right {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    gap: 3rem;
+    width: 35%;
+    min-width: 400px;
 
-    ul {
-      display: flex;
-      align-items: center;
-      list-style: none;
-      margin: 0;
-      padding: 0;
+    #dark-theme-toggle {
+      cursor: pointer;
 
-      li {
-        margin-left: 1rem;
-        font-size: 0.875rem;
-        font-weight: 0;
-
-        a {
-          text-decoration: none;
-          color: rgb(194 194 194);
-          font-weight: 500;
-        }
+      .light-theme & {
+        filter: invert(1);
       }
+    }
+
+    .avatar {
+      .light-theme & {
+        filter: invert(1);
+      }
+    }
+  }
+
+  &__item {
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    font-size: 1rem;
+
+    .logo {
+      filter: invert(0.5);
+    }
+
+    a {
+      color: var(--text-primary);
+      text-decoration: none;
     }
   }
 
   &.scrolled {
     background-color: var(--background);
     box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
-
-    .logo {
-      color: var(--text-primary);
-      border-right: 1px solid var(--text-primary);
-    }
-
-    .dropdown {
-      color: var(--text-secondary);
-    }
-
-    ul li a {
-      color: var(--text-secondary);
-    }
-
-    ul li svg {
-      fill: red;
-    }
 
     .button {
       &.primary-button {

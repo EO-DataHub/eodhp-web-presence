@@ -11,15 +11,8 @@ module.exports = {
     // This is included on every page.
     main: './assets/entrypoint.js',
 
-    'fake-catalogue': {
-      import: ['./assets/fake-catalogue/index.js'],
-      dependOn: ['main'],
-    },
 
-    'fake-projects': {
-      import: ['./assets/fake-projects/index.js'],
-      dependOn: ['main'],
-    },
+
   },
   output: {
     path: path.resolve(__dirname, 'eodhp_web_presence/staticfiles/bundles'),

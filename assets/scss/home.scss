@@ -11,7 +11,9 @@
     text-align: center;
     font-size: 2rem;
     border-radius: 0 0 5% 5%;
-    background-size: contain;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
     &-position {
       width: 80%;
