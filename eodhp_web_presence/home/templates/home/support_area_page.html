@@ -4,12 +4,11 @@
 
 {% block content %}
 
-<div class="home-page-banner-container">
+<div class="home-page-banner-container content-page">
 
     {% if page.banner_image %}
-    {% image page.banner_image scale-100 as img %}<img alt="Banner image"
-                                                       class="home-page-banner-image"
-                                                       src="{{ img.url }}">
+    {% image page.banner_image scale-100 as img %}<img alt="Banner image" class="home-page-banner-image"
+        src="{{ img.url }}">
     {% endif %}
 
     <div class="home-page-banner-text">
@@ -26,8 +25,7 @@
             <h1>Help and Support Topics</h1>
             <p>
                 <input aria-describedby="basic-addon2" aria-label="Search" class="form-control search-box-100"
-                       id="searchBoxArea"
-                       placeholder="I want to..." type="text">
+                    id="searchBoxArea" placeholder="I want to..." type="text">
 
             <div class="list-group" id="supportTopicSearchResults">
                 {% for topic in support_topics %}
@@ -44,13 +42,11 @@
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingTwo">
                         <button aria-expanded="false" class="accordion-button collapsed"
-                                data-bs-target="#{{ faq.slug }}"
-                                data-bs-toggle="collapse" type="button">
+                            data-bs-target="#{{ faq.slug }}" data-bs-toggle="collapse" type="button">
                             {{ faq.title }}
                         </button>
                     </h2>
-                    <div class="accordion-collapse collapse" data-bs-parent="#accordionExample"
-                         id="{{ faq.slug }}">
+                    <div class="accordion-collapse collapse" data-bs-parent="#accordionExample" id="{{ faq.slug }}">
                         <div class="accordion-body">
                             {{ faq.summary }}
                         </div>

@@ -26,10 +26,6 @@ body.light-theme {
   --transition: color 1s ease, background-color 1s ease, border-color 1s ease;
 }
 
-body {
-  transition: var(--transition);
-}
-
 html * {
   font-family: Inter, sans-serif;
   margin: 0;
@@ -40,6 +36,11 @@ html * {
 }
 
 body {
+  transition: var(--transition);
   background-color: var(--background);
   color: var(--text-primary);
+}
+
+.content-page {
+  padding-top: 74px;
 }

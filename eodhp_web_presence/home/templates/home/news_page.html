@@ -4,11 +4,11 @@
 
 {% block content %}
 
-<div class="home-page-banner-container">
+<div class="home-page-banner-container content-page">
 
     {% if page.banner_image %}
     {% image page.banner_image scale-100 as img %}<img alt="Banner image" class="home-page-banner-image"
-                                                       src="{{ img.url }}">
+        src="{{ img.url }}">
     {% endif %}
 
     <div class="home-page-banner-text">
@@ -22,8 +22,8 @@
         <div class="home-page-item">
             <a href="{{ article.slug }}">
                 {% if article.image %}
-                <div class="home-page-image-100">{% image article.image max-320x150 as img %}<img class="home-page-image"
-                                                                                               src="{{ img.url }}">
+                <div class="home-page-image-100">{% image article.image max-320x150 as img %}<img
+                        class="home-page-image" src="{{ img.url }}">
                 </div>
                 {% endif %}
                 <div class="home-page-item-title">{{ article.title }}</div>

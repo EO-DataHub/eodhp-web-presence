@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="home-page-banner-container">
+<div class="home-page-banner-container content-page">
 
     {% if page.banner_image %}
     {% image page.banner_image scale-100 as img %}<img alt="Banner image" class="home-page-banner-image"
@@ -22,9 +22,8 @@
 
             {% include "breadcrumbs.html" %}
 
-            <input aria-describedby="basic-addon2" aria-label="Search"
-                class="form-control search-box-50" id="searchBoxIndex" placeholder="I want to..."
-                type="text">
+            <input aria-describedby="basic-addon2" aria-label="Search" class="form-control search-box-50"
+                id="searchBoxIndex" placeholder="I want to..." type="text">
             <p>
             <div class="home-page-text-100">
                 <div class="list-group" id="supportTopicSearchResults"></div>

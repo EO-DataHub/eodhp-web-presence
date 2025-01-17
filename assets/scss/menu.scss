@@ -9,6 +9,7 @@
   background-color: var(--background);
   z-index: 1000;
   transition: var(--transition);
+  height: 74px;
 
   &__left {
     display: flex;
