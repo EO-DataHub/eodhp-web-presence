@@ -2,7 +2,7 @@
   .hero {
     height: 100%;
     max-height: 60vh;
-    min-height: 500px;
+    min-height: 600px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -10,7 +10,6 @@
     color: #fff;
     text-align: center;
     font-size: 2rem;
-    border-radius: 0 0 5% 5%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -22,7 +21,7 @@
     &-content {
       padding: 0 1rem;
       text-align: left;
-      font-size: 1.5rem;
+      font-size: 2rem;
       display: flex;
       flex-direction: column;
       gap: 2rem;
@@ -35,6 +34,53 @@
     .secondary-button {
       color: rgb(212 212 212);
       border: 1px solid rgb(212 212 212);
+    }
+  }
+
+  .overview {
+    &__content {
+      display: flex;
+      height: 300px;
+
+      &__left {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &__title {
+          height: 100px;
+          border-top: 2px solid var(--button-bg);
+          padding-top: 0.5rem;
+        }
+      }
+
+      &__right {
+        flex: 2;
+        text-align: justify;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+
+        p {
+          width: 60%;
+          font-size: 0.9rem;
+        }
+
+        &::before {
+          content: '';
+          position: absolute;
+          z-index: -1;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-size: cover;
+          mask-image: linear-gradient(to right, rgb(0 0 0 / 0%) 0%, rgb(0 0 0 / 30%) 100%);
+        }
+      }
     }
   }
 
@@ -98,7 +144,6 @@
   }
 
   .aims {
-    margin-top: 3rem;
     background-color: var(--inverse-background);
     color: var(--inverse-text);
 

@@ -7,9 +7,6 @@
   position: fixed;
   width: 100%;
   background-color: var(--background);
-  transition:
-    background-color 1s ease,
-    color 1s ease;
 
   &__left {
     display: flex;

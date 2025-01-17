@@ -24,34 +24,25 @@
     </div>
     {% endif %}
 
-    <div class="who-is-it-for">
-        <div class="who-is-it-for__content">
-            <div class="who-is-it-for__content__left">
-                <h2>Who is the Earth Observation Data Hub for?</h2>
-                <div class="arrows">
-                    <div class="arrow-left">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15.5 4L6.5 12L15.5 20" stroke="#FEF7FF" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                    <div class="arrow-right">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.5 4L17.5 12L8.5 20" stroke="#FEF7FF" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </div>
+    <div class="overview">
+        <div class="overview__content">
+            <div class="overview__content__left">
+                <div class="overview__content__left__title">
+                    <h2>Overview</h2>
                 </div>
             </div>
-            <div class="who-is-it-for__content__right">
-                <div class="scroll-card">
-                    <h3>Government and Public Sector</h3>
-                    <p>
-                        Providing collective purchasing power and access to a wide range of EO data and processing
-                        services.
-                        The EO Data Hub is a one-stop-shop for all your EO data needs.
-                    </p>
-                </div>
+            <div class="overview__content__right">
+                <p>
+                    A UK Pathfinder project delivering access to Earth Observation (EO) data for effective
+                    decisionmaking across government,
+                    business and academia. The Earth Observation DataHub (EODH) brings together an expert project
+                    delivery team and
+                    industrial partners in an ambitious project supported by key stakeholders. Users of the Hub will
+                    be able to explore
+                    areas of interest in the UK and across the globe, harnessing space derived data to develop an
+                    improved understanding of
+                    our environment and create insights to support commercial and government decision-making.
+                </p>
             </div>
         </div>
 
@@ -116,17 +107,24 @@
                     <p>Sign up or contact us</p>
                 </div>
                 <!-- Sign up and Contact Us -->
-                 <div class="ready-to-get-started__content__right">
+                <div class="ready-to-get-started__content__right">
                     <input type="button" class="button primary-button" value="Sign Up"
                         onclick="window.location.href='/get-started/'" />
                     <input type="button" class="button secondary-button" value="Contact Us"
                         onclick="window.location.href='/contact/'" />
-                 </div>
+                </div>
             </div>
         </div>
 
     </div>
 
+    <!-- Inline style so that you can still use Django’s static -->
+    <style>
+        .overview__content__right::before {
+            background: url("{% static 'img/general/overview-bg.png' %}") no-repeat center center;
+
+        }
+    </style>
 
 
     {% endblock content %}
