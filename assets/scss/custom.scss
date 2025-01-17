@@ -9,6 +9,7 @@ body.dark-theme {
   --content-border: 1px solid #f5f5f527;
   --inverse-background: white;
   --inverse-text: black;
+  --transition: color 1s ease, background-color 1s ease, border-color 1s ease;
 }
 
 body.light-theme {
@@ -22,6 +23,11 @@ body.light-theme {
   --content-border: 1px solid rgb(128 128 128 / 15.8%);
   --inverse-background: #000;
   --inverse-text: #fff;
+  --transition: color 1s ease, background-color 1s ease, border-color 1s ease;
+}
+
+body {
+  transition: var(--transition);
 }
 
 html * {
@@ -29,7 +35,6 @@ html * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  transition: all 0.5s ease !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
