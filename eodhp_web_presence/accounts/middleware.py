@@ -1,8 +1,6 @@
 import json
 import logging
 from collections.abc import Callable
-from dataclasses import dataclass
-from typing import Optional
 
 from django.contrib import auth
 from django.core.exceptions import ImproperlyConfigured
@@ -12,18 +10,6 @@ from . import tokens
 from .models import User
 
 logger = logging.getLogger(__name__)
-
-
-@dataclass(frozen=True)
-class Claims:
-    username: Optional[str]
-    admin: bool
-
-    def to_dict(self) -> dict[str, any]:
-        return {
-            "username": self.username,
-            "admin": self.admin,
-        }
 
 
 class ClaimsMiddleware:

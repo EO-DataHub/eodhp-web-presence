@@ -307,7 +307,6 @@ LOGGING = {
         "core": {"handlers": ["console"], "level": LOG_LEVEL},
         "eodhp_web_presence": {"handlers": ["console"], "level": LOG_LEVEL},
         "home": {"handlers": ["console"], "level": LOG_LEVEL},
-        "wagtail": {"handlers": ["console"], "level": LOG_LEVEL},
     },
 }
 
