@@ -18,7 +18,6 @@ urlpatterns = [
     ),
     re_path(r"^catalogue/.*$", catalogue_page_view),
     path("workspaces/", workspaces_page_view),
-    path("support/", include("home.urls")),
     path("", include("core.urls")),
     path("", include("accounts.urls")),
     path("", include(wagtail_urls)),  # This entry should always be at the end of urlpatterns

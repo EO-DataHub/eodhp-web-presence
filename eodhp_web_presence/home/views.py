@@ -4,8 +4,6 @@ from django.template.loader import render_to_string
 
 from eodhp_web_presence import settings
 
-from .models import SupportAreaPage, SupportTopicPage
-
 
 def catalogue_page_view(request):
     resource_catalogue_version = settings.RESOURCE_CATALOGUE["version"]
@@ -23,20 +21,3 @@ def workspaces_page_view(request):
     context = {"url": workspaces_url}
 
     return render(request, "home/workspaces_page.html", context=context)
-
-
-def search_topics(request):
-    query = request.GET.get("query", "")
-    area_slug = request.GET.get("area", "")
-
-    if not query:
-        search_results = SupportTopicPage.objects.live().all()
-    elif area_slug:
-        area_page = SupportAreaPage.objects.get(slug=area_slug)
-        search_results = SupportTopicPage.objects.child_of(area_page).live().autocomplete(query)
-    else:
-        search_results = SupportTopicPage.objects.live().autocomplete(query)
-
-    html = render_to_string("home/search_results.html", {"support_topics": search_results})
-
-    return HttpResponse(html)
