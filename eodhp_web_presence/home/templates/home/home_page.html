@@ -6,9 +6,6 @@
 
 <div class="home content-page">
 
-    {% if page.banner_image %}
-    {% image page.banner_image scale-100 as img %}
-    <!-- <div class="hero" style="background-image: url('{{ img.url }}');"> -->
     <div class="hero" style="background-image: url({% static 'img/general/hero.jpg' %})">
         <div class="hero-position">
             <div class="hero-content">
@@ -23,7 +20,6 @@
             </div>
         </div>
     </div>
-    {% endif %}
 
     <div class="overview">
         <div class="overview__content">
@@ -33,17 +29,7 @@
                 </div>
             </div>
             <div class="overview__content__right">
-                <p>
-                    A UK Pathfinder project delivering access to Earth Observation (EO) data for effective
-                    decisionmaking across government,
-                    business and academia. The Earth Observation DataHub (EODH) brings together an expert project
-                    delivery team and
-                    industrial partners in an ambitious project supported by key stakeholders. Users of the Hub will
-                    be able to explore
-                    areas of interest in the UK and across the globe, harnessing space derived data to develop an
-                    improved understanding of
-                    our environment and create insights to support commercial and government decision-making.
-                </p>
+                {{ page.overview_text|safe }}
             </div>
         </div>
 
@@ -55,27 +41,24 @@
             <span class="subtitle">EO Data Hub Pathfinder activities are designed to showcase:</span>
             <div class="aims__content__cards">
                 <div class="card">
-                    <img src="{% static 'img/general/placeholder.png' %}" alt="Aims 1" class="card__image" />
-
-                    <h5>Access</h5>
-                    <p>Provide a single point of access to EO data and processing infrastructure.</p>
+                    <img src="{{ page.aim_1_image.url }}" alt="Aims 1" class="card__image" />
+                    <h5>{{ page.aim_1_title|safe }}</h5>
+                    {{ page.aim_1_description|richtext }}
                 </div>
                 <div class="card">
-                    <img src="{% static 'img/general/placeholder.png' %}" alt="Aims 1" class="card__image" />
-                    <h5>Collaboration</h5>
-                    <p>Facilitate collaboration between public sector organisations and the EO industry.</p>
+                    <img src="{{ page.aim_2_image.url }}" alt="Aims 2" class="card__image" />
+                    <h5>{{ page.aim_2_title|safe }}</h5>
+                    {{ page.aim_2_description|richtext }}
                 </div>
                 <div class="card">
-                    <img src="{% static 'img/general/placeholder.png' %}" alt="Aims 1" class="card__image" />
-
-                    <h5>Efficiency</h5>
-                    <p>Improve efficiency and reduce costs through collective purchasing power.</p>
+                    <img src="{{ page.aim_3_image.url }}" alt="Aims 3" class="card__image" />
+                    <h5>{{ page.aim_3_title|safe }}</h5>
+                    {{ page.aim_3_description|richtext }}
                 </div>
                 <div class="card">
-                    <img src="{% static 'img/general/placeholder.png' %}" alt="Aims 1" class="card__image" />
-
-                    <h5>Efficiency</h5>
-                    <p>Improve efficiency and reduce costs through collective purchasing power.</p>
+                    <img src="{{ page.aim_4_image.url }}" alt="Aims 4" class="card__image" />
+                    <h5>{{ page.aim_4_title|safe }}</h5>
+                    {{ page.aim_4_description|richtext }}
                 </div>
             </div>
         </div>

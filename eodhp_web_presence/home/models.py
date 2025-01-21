@@ -9,62 +9,39 @@ from wagtailcache.cache import WagtailCacheMixin
 #  Home Page (Site Root)
 # ---------------------------------------------------------------------
 class HomePage(WagtailCacheMixin, Page):
-    body = RichTextField(blank=True)
+    overview_text = RichTextField(blank=True, default="Welcome to our website!")
 
-    banner_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-    )
-    image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-    )
-    video_url = models.TextField(blank=True)
-    about_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-    )
-    contact_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-    )
-    news_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-    )
+    aim_1_title = models.CharField(max_length=255, blank=True, default="Our First Aim")
+    aim_1_description = RichTextField(blank=True, default="Description of our first aim.")
+    aim_1_image = models.ImageField(upload_to="aims/", blank=True, null=True)
+
+    aim_2_title = models.CharField(max_length=255, blank=True, default="Our Second Aim")
+    aim_2_description = RichTextField(blank=True, default="Description of our second aim.")
+    aim_2_image = models.ImageField(upload_to="aims/", blank=True, null=True)
+
+    aim_3_title = models.CharField(max_length=255, blank=True, default="Our Third Aim")
+    aim_3_description = RichTextField(blank=True, default="Description of our third aim.")
+    aim_3_image = models.ImageField(upload_to="aims/", blank=True, null=True)
+
+    aim_4_title = models.CharField(max_length=255, blank=True, default="Our Fourth Aim")
+    aim_4_description = RichTextField(blank=True, default="Description of our fourth aim.")
+    aim_4_image = models.ImageField(upload_to="aims/", blank=True, null=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel("body"),
-        FieldPanel("banner_image"),
-        FieldPanel("image"),
-        FieldPanel("about_image"),
-        FieldPanel("contact_image"),
-        FieldPanel("news_image"),
-        FieldPanel("video_url"),
+        FieldPanel("overview_text"),
+        FieldPanel("aim_1_title"),
+        FieldPanel("aim_1_description"),
+        FieldPanel("aim_1_image"),
+        FieldPanel("aim_2_title"),
+        FieldPanel("aim_2_description"),
+        FieldPanel("aim_2_image"),
+        FieldPanel("aim_3_title"),
+        FieldPanel("aim_3_description"),
+        FieldPanel("aim_3_image"),
+        FieldPanel("aim_4_title"),
+        FieldPanel("aim_4_description"),
+        FieldPanel("aim_4_image"),
     ]
-
-    # subpage_types = ["AboutIndexPage", "DataIndexPage", "DocsIndexPage"]
-    # parent_page_types = []
 
 
 # ---------------------------------------------------------------------
