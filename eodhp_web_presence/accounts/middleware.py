@@ -4,9 +4,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Optional
 
-import requests
 from django.contrib import auth
-from django.contrib.auth.models import AnonymousUser
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpRequest, HttpResponse
 
@@ -56,13 +54,14 @@ class ClaimsMiddleware:
             and request.user.is_authenticated
             and claims.username != request.user.username
         ):
+            username = request.user.username
             logger.debug(
                 "User (%s) is authenticated but the claims username (%s) does not match",
-                request.user.username,
+                username,
                 claims.username,
             )
             auth.logout(request)
-            logger.debug("User '%s' logged out", request.user)
+            logger.debug("User '%s' logged out", username)
 
         if not request.user.is_authenticated and claims.username is not None:
             user: User | None = auth.authenticate(request)

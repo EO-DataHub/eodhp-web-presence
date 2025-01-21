@@ -7,9 +7,12 @@ from .. import tokens
 
 @override_settings(
     OIDC_CLAIMS={
+        "ENABLED": True,
         "USERNAME_PATH": "username",
         "ROLES_PATH": "roles",
-        "ADMIN_ROLE": "admin",
+        "SUPERUSER_ROLE": "admin",
+        "MODERATOR_ROLE": "moderator",
+        "EDITOR_ROLE": "editor",
     }
 )
 class TestTokens(TestCase):
@@ -60,6 +63,26 @@ class TestTokens(TestCase):
 
     def test_extract_claims__invalid_token__empty_claims(self):
         bearer_token = "Bearer invalid_token"
+        self.assertEqual(
+            tokens.extract_claims(bearer_token),
+            tokens.UserClaims(),
+        )
+
+    @override_settings(
+        OIDC_CLAIMS={
+            "USERNAME_PATH": None,
+            "ROLES_PATH": None,
+            "ADMIN_ROLE": None,
+        }
+    )
+    def test_extract_claims__settings_omitted__empty_claims(self):
+        bearer_token = "Bearer " + jwt.encode(
+            {
+                "username": "test-user",
+            },
+            "secret",
+            algorithm="HS256",
+        )
         self.assertEqual(
             tokens.extract_claims(bearer_token),
             tokens.UserClaims(),

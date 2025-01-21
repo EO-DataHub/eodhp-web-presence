@@ -1,4 +1,5 @@
 from django.contrib import auth
+from django.contrib.auth.models import Group
 from django.test import RequestFactory, TestCase
 
 from .. import models
@@ -45,3 +46,38 @@ class ClaimsBackendTestCase(TestCase):
         user = auth.authenticate(request=request)
 
         self.assertIsNone(user)
+
+    def test_authenticate__promote_user_to_editor__return_none(self):
+        existing_user = models.User.objects.create(username="test-user")
+        request = factory.get("/")
+        request.claims = UserClaims(username="test-user", editor=True)
+
+        self.assertFalse(existing_user.groups.filter(name="Moderators").exists())
+        self.assertFalse(existing_user.groups.filter(name="Editors").exists())
+
+        user = auth.authenticate(request=request)
+
+        self.assertIsInstance(user, models.User)
+        self.assertFalse(user.is_superuser)
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.groups.filter(name="Moderators").exists())
+        self.assertTrue(user.groups.filter(name="Editors").exists())
+
+    def test_authenticate__demote_user_from_moderator__return_none(self):
+        existing_user = models.User.objects.create(username="test-user")
+        existing_user.groups.add(Group.objects.get(name="Moderators"))
+        existing_user.groups.add(Group.objects.get(name="Editors"))
+
+        request = factory.get("/")
+        request.claims = UserClaims(username="test-user", editor=True)
+
+        self.assertTrue(existing_user.groups.filter(name="Moderators").exists())
+        self.assertTrue(existing_user.groups.filter(name="Editors").exists())
+
+        user = auth.authenticate(request=request)
+
+        self.assertIsInstance(user, models.User)
+        self.assertFalse(user.is_superuser)
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.groups.filter(name="Moderators").exists())
+        self.assertTrue(user.groups.filter(name="Editors").exists())

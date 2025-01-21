@@ -15,6 +15,16 @@ CLAIMS_KEY_PATTERN = re.compile(r"(?<!\\)\.")  # delimit on '.' but not '\.'
 class UserClaims:
     username: str | None = None
     admin: bool = False
+    moderator: bool = False
+    editor: bool = False
+
+    def to_dict(self) -> dict[str, str | bool]:
+        return {
+            "username": self.username,
+            "admin": self.admin,
+            "moderator": self.moderator,
+            "editor": self.editor,
+        }
 
 
 ClaimsDict = dict[str, "ClaimsField"]
@@ -35,34 +45,29 @@ def extract_claims(auth_header: str | None) -> UserClaims:
 
     # Extract claims from the token, validate types
     username = _extract_field(settings.OIDC_CLAIMS["USERNAME_PATH"], data)
-    if not isinstance(username, str):
+    if not username or not isinstance(username, str):
         logger.warning(
             "Username '%s' is not str type ('%s'). Username ignored.", username, type(username)
         )
-        username = None
+        return UserClaims()
 
     roles: list[str] = (
         _extract_field(settings.OIDC_CLAIMS["ROLES_PATH"], data) or []
     )  # if None then convert to empty list
     if not isinstance(roles, list):
-        logger.warning("Roles '%s' is not list type ('%s'). Roles ignored.", roles, type(roles))
         roles: list[str] = []
-    try:
-        is_admin = (
-            settings.OIDC_CLAIMS["ADMIN_ROLE"] and settings.OIDC_CLAIMS["ADMIN_ROLE"] in roles
-        )
-    except (TypeError, KeyError):
-        logger.warning(
-            "Admin role %s not found. Error parsing roles %s.",
-            settings.OIDC_CLAIMS["ADMIN_ROLE"],
-            roles,
-        )
-        is_admin = False
 
-    return UserClaims(
-        username=username or None,  # empty str should result in username=None for consistency
-        admin=is_admin,
-    )
+    permissions = {
+        claim: True
+        for claim, role in (
+            ("admin", settings.OIDC_CLAIMS["SUPERUSER_ROLE"]),
+            ("moderator", settings.OIDC_CLAIMS["MODERATOR_ROLE"]),
+            ("editor", settings.OIDC_CLAIMS["EDITOR_ROLE"]),
+        )
+        if role in roles
+    }
+
+    return UserClaims(username=username, **permissions)
 
 
 def _extract_field(key_path: str, claims: ClaimsDict) -> ClaimsField:
@@ -70,6 +75,9 @@ def _extract_field(key_path: str, claims: ClaimsDict) -> ClaimsField:
     Extract a field from a nested dictionary using a key pattern. Separate nested keys
     with '.'. Use '\.' to escape a literal '.' in a key.
     """
+    if not key_path or not isinstance(key_path, str):
+        return None
+
     value: ClaimsField = claims
     for key in CLAIMS_KEY_PATTERN.split(key_path):
         try:
