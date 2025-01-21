@@ -1,4 +1,4 @@
-body.dark-theme {
+.dark-theme {
   --background: #060606;
   --text-primary: #fff;
   --text-secondary: #757575;
@@ -12,7 +12,7 @@ body.dark-theme {
   --transition: color 1s ease, background-color 1s ease, border-color 1s ease;
 }
 
-body.light-theme {
+.light-theme {
   --background: #fff;
   --text-primary: #000;
   --text-secondary: #969696;
