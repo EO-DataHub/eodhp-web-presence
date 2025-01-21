@@ -1,29 +1,62 @@
 {% load static %}
 
-<div class="menu">
-  <div class="menu__left">
+<div class="menu top" id="mainMenu">
+  <div class="menu__toggle" id="menuToggle">
+    <img src="{% static 'img/general/hamburger.svg' %}" alt="Toggle menu" />
+  </div>
+
+  <div class="menu__left" id="menuLeft">
     <div class="logo">
       <a href="/">
-        <img class="logo" src="{% static 'img/menu/EO-Data-Hub-logo_white_grey_425px.png' %}" />
+        <img class="logo" src="{% static 'img/menu/EO-Data-Hub-logo_white_grey_425px.png' %}" alt="EO Data Hub Logo" />
       </a>
     </div>
 
+    <!-- About dropdown -->
     <div class="menu__item dropdown">
-      <a href="/about">About</a> <img class="logo" src="{% static 'img/general/arrow-down.svg' %}" />
+      <div class="dropdown__toggle">
+        About
+        <img class="arrow" src="{% static 'img/general/arrow-down.svg' %}" alt="Expand" />
+      </div>
+      <div class="dropdown__menu">
+        <!-- Hub, Overview of Applications, Access Paths -->
+        <a href="/about/hub">Hub</a>
+        <a href="/about/applications">Overview of Applications</a>
+        <a href="/about/access">Access Paths</a>
+      </div>
     </div>
 
+    <!-- Data dropdown -->
     <div class="menu__item dropdown">
-      Data <img class="logo" src="{% static 'img/general/arrow-down.svg' %}" />
+      <div class="dropdown__toggle">
+        Data
+        <img class="arrow" src="{% static 'img/general/arrow-down.svg' %}" alt="Expand" />
+      </div>
+      <div class="dropdown__menu">
+        <!-- Open Access, Commercial -->
+        <a href="/data/open-access">Open Access</a>
+        <a href="/data/commercial">Commercial</a>
+      </div>
     </div>
 
+    <!-- Getting Started dropdown -->
     <div class="menu__item dropdown">
-      Getting Started <img class="logo" src="{% static 'img/general/arrow-down.svg' %}" />
+      <div class="dropdown__toggle">
+        Getting Started
+        <img class="arrow" src="{% static 'img/general/arrow-down.svg' %}" alt="Expand" />
+      </div>
+      <div class="dropdown__menu">
+        <!-- Account Setup, FAQs, Documentation -->
+        <a href="/docs/account-setup">Account Setup</a>
+        <a href="/docs/faqs">FAQs</a>
+        <a href="/docs/documentation">Documentation</a>
+      </div>
     </div>
   </div>
 
   <div class="menu__right">
     <div class="menu__item"></div>
-    <img id="dark-theme-toggle" src="{% static 'img/general/theme-toggle.svg' %}" />
+    <img id="dark-theme-toggle" src="{% static 'img/general/theme-toggle.svg' %}" alt="Toggle theme" />
     <div class="menu__item">
       <a href="/catalogue">Catalogue</a>
     </div>
@@ -47,18 +80,17 @@
     </div>
     {% endif %}
   </div>
-
-</div>
 </div>
 
 <script>
+  // Theme toggle
   const darkModeToggle = document.getElementById('dark-theme-toggle');
   darkModeToggle.addEventListener('click', () => {
     document.body.classList.toggle('light-theme');
     document.body.classList.toggle('dark-theme');
   });
 
-  // when user is not at the top of the page, add a class to the menu
+  // Sticky menu on scroll
   window.addEventListener('scroll', () => {
     const menu = document.querySelector('.menu');
     if (window.scrollY > 0) {
@@ -67,6 +99,40 @@
     } else {
       menu.classList.remove('scrolled');
       menu.classList.add('top');
+    }
+  });
+
+  // Mobile hamburger toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const menuLeft = document.getElementById('menuLeft');
+  const mainMenu = document.getElementById('mainMenu');
+
+  menuToggle.addEventListener('click', () => {
+    mainMenu.classList.toggle('open');
+  });
+
+
+  // Dropdown toggles on small screens (click-based)
+  document.querySelectorAll('.dropdown__toggle').forEach((toggle) => {
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const parent = toggle.closest('.dropdown');
+      const isOpen = parent.classList.contains('open');
+      document.querySelectorAll('.dropdown').forEach((dropdown) => {
+        dropdown.classList.remove('open');
+      });
+      if (!isOpen) {
+        parent.classList.add('open');
+      }
+    });
+  });
+
+  // If the user clicks outside of the dropdown, close it
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dropdown')) {
+      document.querySelectorAll('.dropdown').forEach((dropdown) => {
+        dropdown.classList.remove('open');
+      });
     }
   });
 </script>

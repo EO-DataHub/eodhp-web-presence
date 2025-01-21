@@ -40,7 +40,7 @@
   .overview {
     &__content {
       display: flex;
-      height: 300px;
+      min-height: 300px;
 
       &__left {
         flex: 1;
@@ -62,6 +62,7 @@
         justify-content: center;
         align-items: center;
         position: relative;
+        padding: 3rem 0;
 
         p {
           width: 60%;
@@ -229,6 +230,10 @@
             width: 50%;
             min-width: 500px;
             max-width: 700px;
+
+            @media (max-width: 950px) {
+              display: none;
+            }
           }
         }
       }
@@ -251,6 +256,15 @@
       justify-content: space-between;
       align-items: center;
       padding: 4rem 2rem;
+
+      &__right {
+        gap: 1rem;
+        display: flex;
+
+        @media (max-width: 950px) {
+          flex-direction: column;
+        }
+      }
 
       .primary-button {
         background-color: var(--button-bg);
