@@ -37,3 +37,11 @@ class ClaimsBackendTestCase(TestCase):
         user = auth.authenticate(request=request)
 
         self.assertIsNone(user)
+
+    def test_authenticate__username_is_empty_str__return_none(self):
+        request = factory.get("/")
+        request.claims = UserClaims(username="")
+
+        user = auth.authenticate(request=request)
+
+        self.assertIsNone(user)

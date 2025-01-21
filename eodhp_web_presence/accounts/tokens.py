@@ -33,9 +33,20 @@ def extract_claims(auth_header: str | None) -> UserClaims:
     except (jwt.DecodeError, jwt.ExpiredSignatureError, jwt.InvalidSignatureError):
         return UserClaims()
 
-    # Extract claims from the token
+    # Extract claims from the token, validate types
     username = _extract_field(settings.OIDC_CLAIMS["USERNAME_PATH"], data)
-    roles: list[str] = _extract_field(settings.OIDC_CLAIMS["ROLES_PATH"], data)
+    if not isinstance(username, str):
+        logger.warning(
+            "Username '%s' is not str type ('%s'). Username ignored.", username, type(username)
+        )
+        username = None
+
+    roles: list[str] = (
+        _extract_field(settings.OIDC_CLAIMS["ROLES_PATH"], data) or []
+    )  # if None then convert to empty list
+    if not isinstance(roles, list):
+        logger.warning("Roles '%s' is not list type ('%s'). Roles ignored.", roles, type(roles))
+        roles: list[str] = []
     try:
         is_admin = (
             settings.OIDC_CLAIMS["ADMIN_ROLE"] and settings.OIDC_CLAIMS["ADMIN_ROLE"] in roles
@@ -48,7 +59,10 @@ def extract_claims(auth_header: str | None) -> UserClaims:
         )
         is_admin = False
 
-    return UserClaims(username=username, admin=is_admin)
+    return UserClaims(
+        username=username or None,  # empty str should result in username=None for consistency
+        admin=is_admin,
+    )
 
 
 def _extract_field(key_path: str, claims: ClaimsDict) -> ClaimsField:

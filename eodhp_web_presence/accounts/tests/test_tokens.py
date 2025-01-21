@@ -47,6 +47,17 @@ class TestTokens(TestCase):
             tokens.UserClaims(),
         )
 
+    def test_extract_claims__username_is_empty_str__username_is_none(self):
+        bearer_token = "Bearer " + jwt.encode(
+            {
+                "username": "",
+            },
+            "secret",
+            algorithm="HS256",
+        )
+        claims = tokens.extract_claims(bearer_token)
+        self.assertIsNone(claims.username)
+
     def test_extract_claims__invalid_token__empty_claims(self):
         bearer_token = "Bearer invalid_token"
         self.assertEqual(

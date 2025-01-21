@@ -17,16 +17,14 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
-class AuthRequest:
-    user_roles: list[str]
-    path: str
+class Claims:
+    username: Optional[str]
+    admin: bool
 
     def to_dict(self) -> dict[str, any]:
         return {
-            "input": {
-                "path": self.path,
-                "roles": self.user_roles,
-            },
+            "username": self.username,
+            "admin": self.admin,
         }
 
 
@@ -76,51 +74,3 @@ class ClaimsMiddleware:
                 logger.debug("User not authenticated")
 
         return self.get_response(request)
-
-
-class OPAAuthorizationMiddleware:
-    def __init__(
-        self,
-        get_response: Callable[[HttpRequest], HttpResponse],
-        opa_client_url: Optional[str],
-    ):
-        self.get_response = get_response
-        self.opa_client_url = opa_client_url
-
-    def __call__(self, request: HttpRequest) -> HttpResponse:
-        if not hasattr(request, "claims"):
-            raise ImproperlyConfigured(
-                "The OPA authorization middleware requires the claims middleware"
-                "to be installed. Edit your MIDDLEWARE setting to insert"
-                "'accounts.middleware.ClaimsMiddleware' before the ClaimsMiddleware "
-                "class."
-            )
-
-        if self.is_allowed(AuthRequest(request.claims.roles, request.path)):
-            logger.debug("User is authorized to access path")
-            response = self.get_response(request)
-        elif isinstance(request.user, AnonymousUser):
-            logger.debug("User is not authorized to access path and should authenticate")
-            return HttpResponse("Unauthorized", status=401)
-        else:
-            logger.debug("User is authenticated but is not authorized to view path")
-            return HttpResponse("Forbidden", status=403)
-
-        return response
-
-    def is_allowed(self, request: AuthRequest) -> bool:
-        response = requests.post(
-            self.opa_client_url,
-            headers={"Content-Type": "application/json"},
-            json=request.to_dict(),
-        )
-
-        if not response.ok:
-            logger.error(
-                "OPA client '%s' returned an error: %s",
-                self.opa_client_url,
-                response.content.decode(),
-            )
-            return False
-
-        return json.loads(response.content.decode())["result"]
