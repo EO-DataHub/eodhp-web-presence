@@ -22,7 +22,7 @@ class ClaimsBackend(BaseBackend):
             return None  # User is not authenticated
 
         # Claims present and user is authenticated
-        user, created = User.objects.get_or_create(username=claims.username, is_active=True)
+        user, created = User.objects.get_or_create(username=claims.username)
         if created:
             user.set_unusable_password()
             user.save()
