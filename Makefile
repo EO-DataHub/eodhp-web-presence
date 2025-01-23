@@ -4,6 +4,8 @@ IMAGENAME = eodhp-web-presence
 DOCKERREPO ?= public.ecr.aws/n1b3o1k2
 
 dockerbuild:
+	pip-compile --output-file=requirements.txt -U
+	pip-compile --extra=dev --output-file=requirements-dev.txt -U
 	DOCKER_BUILDKIT=1 docker build -t ${IMAGENAME}:${VERSION} .
 
 dockerpush:
