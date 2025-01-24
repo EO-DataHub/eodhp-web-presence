@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags wagtailuserbar %}
+{% load static %}
+
+{% block content %}
+<div class="generic-page content-page">
+
+    <!-- Hero Section with Overlay -->
+    {% if page.hero_image %}
+    {% image page.hero_image fill-1600x600 as hero_img %}
+    <header class="generic-page__hero" style="background-image: url('{{ hero_img.url }}');">
+        <div class="generic-page__hero-overlay">
+            <div class="generic-page__hero-content">
+                <h1>{{ page.title }}</h1>
+                {% if page.subtitle %}
+                <h2>{{ page.subtitle }}</h2>
+                {% endif %}
+                {% if page.intro %}
+                <div class="generic-page__intro">
+                    {{ page.intro|richtext }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    {% else %}
+    <!-- Fallback hero if no image is provided -->
+    <header class="generic-page__hero generic-page__hero--no-image">
+        <div class="generic-page__hero-overlay">
+            <div class="generic-page__hero-content">
+                <h1>{{ page.title }}</h1>
+                {% if page.subtitle %}
+                <h2>{{ page.subtitle }}</h2>
+                {% endif %}
+                {% if page.intro %}
+                <div class="generic-page__intro">
+                    {{ page.intro|richtext }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    {% endif %}
+
+    <main class="generic-page__body">
+        {{ page.body }}
+    </main>
+
+    {% if page.cta_text and page.cta_url %}
+    <div class="generic-page__cta">
+        <a href="{{ page.cta_url }}" class="btn btn-primary">{{ page.cta_text }}</a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock content %}
+
+{% block wagtailuserbar %}
+{% wagtailuserbar %}
+{% endblock %}

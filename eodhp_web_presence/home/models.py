@@ -1,8 +1,96 @@
 from django.db import models
-from wagtail.admin.panels import FieldPanel
-from wagtail.fields import RichTextField
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Page
 from wagtailcache.cache import WagtailCacheMixin
+
+from wagtail import blocks
+from wagtail.images.blocks import ImageChooserBlock
+
+
+class ContentBlock(blocks.StructBlock):
+    heading = blocks.CharBlock(required=False, help_text="Optional heading")
+    paragraph = blocks.RichTextBlock(required=False)
+    image = ImageChooserBlock(required=False)
+
+    class Meta:
+        icon = "doc-full"
+        label = "Content Block"
+        template = "blocks/content_block.html"
+        help_text = "Use this block to create flexible content sections."
+
+
+class GenericPage(WagtailCacheMixin, Page):
+    """ "
+    We can use this as a generic page type for any page.
+    """
+
+    # Hero / banner
+    hero_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Main hero or banner image for the top of the page.",
+    )
+    hero_caption = models.CharField(
+        max_length=255, blank=True, help_text="Caption or alt-text for the hero image"
+    )
+
+    subtitle = models.CharField(max_length=255, blank=True, help_text="Short descriptive subtitle.")
+    intro = RichTextField(
+        blank=True, help_text="A short intro paragraph that sits below the title/subtitle."
+    )
+
+    body = StreamField(
+        [
+            ("content_block", ContentBlock()),
+            ("blockquote", blocks.BlockQuoteBlock()),
+            ("raw_html", blocks.RawHTMLBlock()),
+        ],
+        blank=True,
+        use_json_field=True,
+    )
+
+    cta_text = models.CharField(max_length=255, blank=True, help_text="Button or link text")
+    cta_url = models.URLField(blank=True, help_text="Target URL for the call-to-action")
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("hero_image"),
+                FieldPanel("hero_caption"),
+            ],
+            heading="Hero Image",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("subtitle"),
+                FieldPanel("intro"),
+            ],
+            heading="Intro",
+        ),
+        FieldPanel("body"),
+        MultiFieldPanel(
+            [
+                FieldPanel("cta_text"),
+                FieldPanel("cta_url"),
+            ],
+            heading="Call to Action",
+        ),
+    ]
+
+    parent_page_types = [
+        "AboutIndexPage",
+        "DataIndexPage",
+        "DocsIndexPage",
+    ]
+    subpage_types = []
+
+    class Meta:
+        verbose_name = "Generic Page"
+        verbose_name_plural = "Generic Pages"
 
 
 # ---------------------------------------------------------------------
@@ -59,53 +147,8 @@ class AboutIndexPage(WagtailCacheMixin, Page):
         FieldPanel("intro"),
     ]
 
-    subpage_types = ["HubPage", "ApplicationsPage", "AccessPage"]
+    subpage_types = ["GenericPage"]
     parent_page_types = ["HomePage"]
-
-
-class HubPage(WagtailCacheMixin, Page):
-    """
-    /about/hub
-    """
-
-    body = RichTextField(blank=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body"),
-    ]
-
-    parent_page_types = ["AboutIndexPage"]
-    subpage_types = []
-
-
-class ApplicationsPage(WagtailCacheMixin, Page):
-    """
-    /about/applications
-    """
-
-    body = RichTextField(blank=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body"),
-    ]
-
-    parent_page_types = ["AboutIndexPage"]
-    subpage_types = []
-
-
-class AccessPage(WagtailCacheMixin, Page):
-    """
-    /about/access
-    """
-
-    body = RichTextField(blank=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body"),
-    ]
-
-    parent_page_types = ["AboutIndexPage"]
-    subpage_types = []
 
 
 # ---------------------------------------------------------------------
@@ -123,38 +166,8 @@ class DataIndexPage(WagtailCacheMixin, Page):
         FieldPanel("intro"),
     ]
 
-    subpage_types = ["OpenAccessPage", "CommercialPage"]
+    subpage_types = ["GenericPage"]
     parent_page_types = ["HomePage"]
-
-
-class OpenAccessPage(WagtailCacheMixin, Page):
-    """
-    /data/open-access
-    """
-
-    body = RichTextField(blank=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body"),
-    ]
-
-    parent_page_types = ["DataIndexPage"]
-    subpage_types = []
-
-
-class CommercialPage(WagtailCacheMixin, Page):
-    """
-    /data/commercial
-    """
-
-    body = RichTextField(blank=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body"),
-    ]
-
-    parent_page_types = ["DataIndexPage"]
-    subpage_types = []
 
 
 # ---------------------------------------------------------------------
@@ -172,50 +185,5 @@ class DocsIndexPage(WagtailCacheMixin, Page):
         FieldPanel("intro"),
     ]
 
-    subpage_types = ["AccountSetupPage", "FAQPage", "DocumentationPage"]
+    subpage_types = ["GenericPage"]
     parent_page_types = ["HomePage"]
-
-
-class AccountSetupPage(WagtailCacheMixin, Page):
-    """
-    /docs/account-setup
-    """
-
-    body = RichTextField(blank=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body"),
-    ]
-
-    parent_page_types = ["DocsIndexPage"]
-    subpage_types = []
-
-
-class FAQPage(WagtailCacheMixin, Page):
-    """
-    /docs/faqs
-    """
-
-    body = RichTextField(blank=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body"),
-    ]
-
-    parent_page_types = ["DocsIndexPage"]
-    subpage_types = []
-
-
-class DocumentationPage(WagtailCacheMixin, Page):
-    """
-    /docs/documentation
-    """
-
-    body = RichTextField(blank=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body"),
-    ]
-
-    parent_page_types = ["DocsIndexPage"]
-    subpage_types = []

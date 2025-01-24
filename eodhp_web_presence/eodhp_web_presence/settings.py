@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.routable_page",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
+    "wagtail.contrib.table_block",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
@@ -110,7 +111,7 @@ def opa_authorization_factory(get_response):
 
 MIDDLEWARE = [
     # UpdateCacheMiddleware to be at top
-    "wagtailcache.cache.UpdateCacheMiddleware",
+    # "wagtailcache.cache.UpdateCacheMiddleware",
     "django.middleware.security.SecurityMiddleware",
     # WhiteNoise Middleware above all but below Security
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -124,7 +125,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "core.middleware.HeaderMiddleware",
-    "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
+    # "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
 ]
 
 if OPA_AUTH["ENABLED"]:

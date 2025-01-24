@@ -1,0 +1,23 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{% load table_block_tags %}
+<div class="content-block">
+
+    {% if self.heading %}
+    <h3>{{ self.heading }}</h3>
+    {% endif %}
+
+    {% if self.paragraph %}
+    <div class="content-block__paragraph">
+        {{ self.paragraph|richtext }}
+    </div>
+    {% endif %}
+
+
+    {% if self.image %}
+    <div class="content-block__image">
+        {% image self.image original as img %}
+        <img src="{{ img.url }}" alt="">
+    </div>
+    {% endif %}
+
+</div>
