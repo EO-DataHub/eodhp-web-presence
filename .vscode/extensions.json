@@ -1,9 +1,0 @@
-{
-  "recommendations": [
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "stylelint.vscode-stylelint",
-    "ms-python.black-formatter",
-    "ms-python.flake8"
-  ]
-}

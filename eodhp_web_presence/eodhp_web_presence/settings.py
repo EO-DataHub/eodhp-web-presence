@@ -82,9 +82,13 @@ KEYCLOAK = {
     "OAUTH2_PROXY_SIGNIN": env("OAUTH2_PROXY_SIGNIN", default="http://127.0.0.1/oauth2/start"),
     "OAUTH2_PROXY_SIGNOUT": env("OAUTH2_PROXY_SIGNOUT", default="http://127.0.0.1/oauth2/sign_out"),
 }
-OPA_AUTH = {
-    "ENABLED": env("OPA_AUTH_ENABLED", cast=bool, default=False),
-    "CLIENT_URL": env("OPA_AUTH_CLIENT_URL", default="http://localhost:8181"),
+OIDC_CLAIMS = {
+    "ENABLED": env("OIDC_CLAIMS_ENABLED", cast=bool, default=False),
+    "USERNAME_PATH": env("OIDC_CLAIMS_USERNAME_PATH", cast=str, default=None),
+    "ROLES_PATH": env("OIDC_CLAIMS_ROLES_PATH", cast=str, default=None),
+    "SUPERUSER_ROLE": env("OIDC_CLAIMS_SUPERUSER_ROLE", cast=str, default=None),
+    "MODERATOR_ROLE": env("OIDC_CLAIMS_MODERATOR_ROLE", cast=str, default=None),
+    "EDITOR_ROLE": env("OIDC_CLAIMS_EDITOR_ROLE", cast=str, default=None),
 }
 
 
@@ -95,17 +99,7 @@ def claims_middleware_factory(get_response):
     module = importlib.import_module(module_name)
     cls = getattr(module, class_name)
 
-    return cls(get_response, force_logout=not DEBUG)
-
-
-def opa_authorization_factory(get_response):
-    module_name = "accounts.middleware"
-    class_name = "OPAAuthorizationMiddleware"
-
-    module = importlib.import_module(module_name)
-    cls = getattr(module, class_name)
-
-    return cls(get_response, opa_client_url=OPA_AUTH["CLIENT_URL"])
+    return cls(get_response, force_logout=True)
 
 
 MIDDLEWARE = [
@@ -118,8 +112,6 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "eodhp_web_presence.settings.claims_middleware_factory",
-    # "accounts.middleware.OPAAuthorizationMiddleware" should be inserted here if enabled
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
@@ -127,11 +119,8 @@ MIDDLEWARE = [
     "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
 ]
 
-if OPA_AUTH["ENABLED"]:
-    MIDDLEWARE.insert(
-        MIDDLEWARE.index("accounts.middleware.ClaimsMiddleware") + 1,
-        "eodhp_web_presence.settings.opa_authorization_factory",
-    )
+if OIDC_CLAIMS["ENABLED"]:
+    MIDDLEWARE.insert(7, "eodhp_web_presence.settings.claims_middleware_factory")
 
 WHITENOISE_MAX_AGE = env("STATIC_FILE_CACHE_LENGTH", cast=int, default=3600)
 CACHES = {
