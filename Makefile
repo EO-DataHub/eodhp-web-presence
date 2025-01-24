@@ -1,12 +1,14 @@
 .PHONY: dockerbuild dockerpush test testonce ruff black lint isort pre-commit-check requirements-update requirements setup
-VERSION ?= latest
+VERSION ?= 0.1.25
 IMAGENAME = eodhp-web-presence
 DOCKERREPO ?= public.ecr.aws/n1b3o1k2
 
 dockerbuild:
+	pip-compile --output-file=requirements.txt -U
+	pip-compile --extra=dev --output-file=requirements-dev.txt -U
 	DOCKER_BUILDKIT=1 docker build -t ${IMAGENAME}:${VERSION} .
 
-dockerpush: dockerbuild testdocker
+dockerpush:
 	docker tag ${IMAGENAME}:${VERSION} ${DOCKERREPO}/${IMAGENAME}:${VERSION}
 	docker push ${DOCKERREPO}/${IMAGENAME}:${VERSION}
 
