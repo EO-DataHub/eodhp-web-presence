@@ -169,6 +169,8 @@
       min-height: 200px;
       max-height: 250px;
       align-items: center;
+      max-width: 1200px;
+      width: 80%;
 
       &__left {
         flex: 1;
@@ -205,13 +207,20 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
+        overflow: visible;
 
         .scroll-card {
+          position: absolute;
+          opacity: 0;
+          transition:
+            opacity 0.5s ease,
+            transform 0.5s ease;
+
           display: flex;
           flex-direction: column;
           justify-content: center;
           gap: 1rem;
-          height: 100%;
           min-height: 300px;
           padding: 2rem;
           border-radius: 30px;
@@ -224,8 +233,8 @@
           }
 
           img {
-            height: 70px;
-            width: 70px;
+            height: 50px;
+            width: 50px;
           }
 
           p {
@@ -237,6 +246,32 @@
               display: none;
             }
           }
+
+          &.active {
+            opacity: 1;
+            transform: translateX(0);
+          }
+
+          &.slide-in-right {
+            transform: translateX(0);
+          }
+          &.slide-in-left {
+            transform: translateX(0);
+          }
+        }
+
+        .arrows {
+          display: flex;
+          gap: 1rem;
+          position: absolute;
+          bottom: 1rem;
+          right: 1rem;
+        }
+        .arrow-left,
+        .arrow-right {
+          cursor: pointer;
+          width: 24px;
+          height: 24px;
         }
       }
     }
