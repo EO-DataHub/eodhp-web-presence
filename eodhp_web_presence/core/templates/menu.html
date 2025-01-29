@@ -117,17 +117,28 @@
     document.body.classList.add('light-theme');
   }
 
-  // Sticky menu on scroll
-  window.addEventListener('scroll', () => {
-    const menu = document.querySelector('.menu');
-    if (window.scrollY > 0) {
-      menu.classList.add('scrolled');
-      menu.classList.remove('top');
-    } else {
-      menu.classList.remove('scrolled');
-      menu.classList.add('top');
-    }
-  });
+
+  // if on the home page, add transparent class to the menu
+  if (window.location.pathname === '/') {
+    let menu = document.querySelector('.menu')
+    menu.classList.add('transparent')
+    menu.classList.add('top')
+    menu.classList.add('dark-theme')
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 0) {
+        menu.classList.add('scrolled');
+        menu.classList.remove('top');
+        menu.classList.remove('dark-theme')
+        menu.classList.remove('transparent')
+      } else {
+        menu.classList.remove('scrolled');
+        menu.classList.add('top');
+        menu.classList.add('dark-theme');
+        menu.classList.add('transparent')
+      }
+    });
+  }
 
   // Mobile hamburger toggle
   const menuToggle = document.getElementById('menuToggle');

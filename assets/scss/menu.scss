@@ -18,6 +18,11 @@
   &.top {
     box-shadow: none;
   }
+  &.transparent {
+    background: none;
+    box-shadow: none;
+    border-bottom: none;
+  }
 
   &.scrolled {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -70,6 +75,9 @@
 
         .light-theme & {
           filter: invert(0.5);
+        }
+        .transparent & {
+          filter: invert(0);
         }
       }
 
@@ -128,6 +136,9 @@
 
       .light-theme & {
         filter: invert(1);
+      }
+      .dark-theme & {
+        filter: invert(0);
       }
     }
 
