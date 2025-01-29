@@ -1,3 +1,5 @@
+@import 'custom';
+
 .menu {
   display: flex;
   justify-content: space-between;
@@ -11,7 +13,8 @@
   transition: var(--transition);
   height: 74px;
   border-bottom: var(--content-border);
-
+  background: linear-gradient(90deg, var(--menu-left-bg) 0%, var(--menu-right-bg) 100%);
+  transition: box-shadow 0.3s ease;
   &.top {
     box-shadow: none;
   }
@@ -73,14 +76,15 @@
       &__menu {
         display: none;
         position: absolute;
-        top: 2.5rem;
-        left: 0;
+        top: 46px;
+        left: -40px;
         background-color: var(--background);
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+
         min-width: 200px;
         border-left: 1px solid var(--inverse-background);
         border-right: 1px solid var(--inverse-background);
         border-bottom: 1px solid var(--inverse-background);
+        border-top: 0;
 
         a {
           display: block;
@@ -139,9 +143,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.875rem;
     font-size: 1rem;
-    min-width: 50px;
+    min-width: 60px;
+    letter-spacing: 0.02em;
 
     .logo {
       filter: invert(0.5);
@@ -154,7 +158,7 @@
   }
 }
 
-@media (max-width: 950px) {
+@media (max-width: $mobile-breakpoint) {
   .menu {
     height: auto;
 

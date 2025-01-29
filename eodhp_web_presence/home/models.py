@@ -81,11 +81,7 @@ class GenericPage(WagtailCacheMixin, Page):
         ),
     ]
 
-    parent_page_types = [
-        "AboutIndexPage",
-        "DataIndexPage",
-        "DocsIndexPage",
-    ]
+    parent_page_types = ["AboutIndexPage", "DataIndexPage", "DocsIndexPage", "CaseStudiesPage"]
     subpage_types = []
 
     class Meta:
@@ -177,6 +173,25 @@ class DocsIndexPage(WagtailCacheMixin, Page):
     """
     /docs/ index.
     Contains: AccountSetupPage, FAQPage, DocumentationPage
+    """
+
+    intro = RichTextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("intro"),
+    ]
+
+    subpage_types = ["GenericPage"]
+    parent_page_types = ["HomePage"]
+
+
+# ---------------------------------------------------------------------
+#  Case Studies Section
+# ---------------------------------------------------------------------
+class CaseStudiesPage(WagtailCacheMixin, Page):
+    """
+    /case-studies/ index.
+    Contains: CaseStudyPage
     """
 
     intro = RichTextField(blank=True)

@@ -1,3 +1,5 @@
+$mobile-breakpoint: 1200px;
+
 .dark-theme {
   --background: #060606;
   --text-primary: #fff;
@@ -10,6 +12,10 @@
   --inverse-background: white;
   --inverse-text: black;
   --transition: color 1s ease, background-color 1s ease, border-color 1s ease;
+
+  // menu
+  --menu-left-bg: #1a1a1a;
+  --menu-right-bg: #444444;
 }
 
 .light-theme {
@@ -24,6 +30,10 @@
   --inverse-background: #000;
   --inverse-text: #fff;
   --transition: color 1s ease, background-color 1s ease, border-color 1s ease;
+
+  // menu
+  --menu-left-bg: white;
+  --menu-right-bg: #e2e2e2;
 }
 
 html * {
@@ -44,7 +54,7 @@ body {
 .content-page {
   padding-top: 74px;
 
-  @media (max-width: 950px) {
+  @media (max-width: $mobile-breakpoint) {
     padding-top: 45px;
   }
 }
