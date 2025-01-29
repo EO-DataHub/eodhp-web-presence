@@ -9,9 +9,8 @@
     align-items: center;
     color: #fff;
     text-align: center;
-    font-size: 2rem;
     background-size: cover;
-    background-position: center;
+    background-position: bottom;
     background-repeat: no-repeat;
 
     &-position {
@@ -21,7 +20,7 @@
     &-content {
       padding: 0 1rem;
       text-align: left;
-      font-size: 2rem;
+      font-size: 2.5rem;
       display: flex;
       flex-direction: column;
       gap: 2rem;
