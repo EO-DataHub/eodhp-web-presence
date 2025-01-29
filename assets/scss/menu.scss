@@ -146,6 +146,9 @@
       .light-theme & {
         filter: invert(1);
       }
+      .transparent & {
+        filter: invert(0);
+      }
     }
   }
 
