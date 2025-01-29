@@ -4,16 +4,18 @@
 
   &__hero {
     position: relative;
-    margin: 0 -2rem 2rem;
-    height: 400px;
+    margin: 2rem;
+    height: 300px;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
     border-radius: 4px;
     overflow: hidden;
+    border: var(--content-border);
 
     &--no-image {
       background-color: #f2f2f2;
+      height: 120px;
     }
 
     &-overlay {
@@ -60,8 +62,29 @@
     }
   }
 
+  &__intro {
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    border-bottom: var(--content-border);
+
+    p {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+  }
+
   &__body {
     margin-bottom: 2rem;
+
+    blockquote {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: var(--inverse-background);
+      color: var(--inverse-text);
+      border-left: 4px solid var(--button-bg);
+      font-style: italic;
+    }
 
     .content-block {
       margin-bottom: 2rem;
@@ -84,6 +107,7 @@
 
         img {
           max-width: 100%;
+          max-height: 350px;
           height: auto;
           border-radius: 4px;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

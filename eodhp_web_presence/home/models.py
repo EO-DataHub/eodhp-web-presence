@@ -21,7 +21,7 @@ class ContentBlock(blocks.StructBlock):
 
 
 class GenericPage(WagtailCacheMixin, Page):
-    """ "
+    """
     We can use this as a generic page type for any page.
     """
 
@@ -38,7 +38,6 @@ class GenericPage(WagtailCacheMixin, Page):
         max_length=255, blank=True, help_text="Caption or alt-text for the hero image"
     )
 
-    subtitle = models.CharField(max_length=255, blank=True, help_text="Short descriptive subtitle.")
     intro = RichTextField(
         blank=True, help_text="A short intro paragraph that sits below the title/subtitle."
     )
@@ -66,7 +65,6 @@ class GenericPage(WagtailCacheMixin, Page):
         ),
         MultiFieldPanel(
             [
-                FieldPanel("subtitle"),
                 FieldPanel("intro"),
             ],
             heading="Intro",
@@ -81,7 +79,13 @@ class GenericPage(WagtailCacheMixin, Page):
         ),
     ]
 
-    parent_page_types = ["AboutIndexPage", "DataIndexPage", "DocsIndexPage", "CaseStudiesPage"]
+    parent_page_types = [
+        "AboutIndexPage",
+        "DataIndexPage",
+        "DocsIndexPage",
+        "CaseStudiesPage",
+        "DocumentationPage",
+    ]
     subpage_types = []
 
     class Meta:
@@ -181,8 +185,53 @@ class DocsIndexPage(WagtailCacheMixin, Page):
         FieldPanel("intro"),
     ]
 
-    subpage_types = ["GenericPage"]
+    subpage_types = ["DocumentationPage"]
     parent_page_types = ["HomePage"]
+
+
+class DocumentationPanel(blocks.StructBlock):
+    title = blocks.CharBlock(required=True, help_text="Title of the documentation panel")
+    slug = blocks.CharBlock(
+        required=True,
+        help_text="Unique identifier in the url e.g. workflow",
+        max_length=50,
+    )
+    description = blocks.RichTextBlock(
+        required=True, help_text="Description of the documentation panel"
+    )
+    image = ImageChooserBlock(
+        required=False, help_text="Optional image for the documentation panel"
+    )
+
+    class Meta:
+        icon = "doc-full"
+        label = "Documentation Panel"
+        template = "blocks/documentation_panel.html"
+        help_text = "Use this block to create documentation panels with title, description, and optional image."
+
+
+class DocumentationPage(WagtailCacheMixin, Page):
+    """
+    /docs/documentation/ page.
+    Contains: GenericPage
+    """
+
+    intro = RichTextField(blank=True)
+
+    topics = StreamField(
+        [("documentation_panel", DocumentationPanel())],
+        blank=True,
+        use_json_field=True,
+        help_text="Add documentation panels to this page.",
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("intro"),
+        FieldPanel("topics"),
+    ]
+
+    subpage_types = ["GenericPage"]
+    parent_page_types = ["DocsIndexPage"]
 
 
 # ---------------------------------------------------------------------
