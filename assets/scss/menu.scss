@@ -48,39 +48,6 @@
     width: 65%;
     min-width: 500px;
 
-    .logo {
-      padding-right: 1.15rem;
-      max-width: 180px;
-
-      .logo-white,
-      .logo-colour {
-        display: none;
-        width: 100%;
-        max-width: 180px;
-        height: auto;
-      }
-
-      .light-theme & {
-        .logo-white {
-          display: none;
-        }
-        .logo-colour {
-          max-width: 185px;
-          display: block;
-        }
-      }
-
-      .dark-theme & {
-        .logo-white {
-          display: block;
-          padding-left: 0.3rem;
-        }
-        .logo-colour {
-          display: none;
-        }
-      }
-    }
-
     .dropdown {
       position: relative;
 
@@ -171,6 +138,7 @@
     color: var(--text-primary);
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.875rem;
     font-size: 1rem;
     min-width: 50px;
@@ -228,10 +196,6 @@
         padding: 1rem 0;
         display: flex;
         flex-direction: column;
-
-        &.open {
-          // transition: all 0.5s ease;
-        }
 
         &__menu {
           position: static;
