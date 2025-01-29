@@ -43,4 +43,8 @@ body {
 
 .content-page {
   padding-top: 74px;
+
+  @media (max-width: 950px) {
+    padding-top: 45px;
+  }
 }

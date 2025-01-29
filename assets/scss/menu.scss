@@ -10,6 +10,7 @@
   z-index: 1000;
   transition: var(--transition);
   height: 74px;
+  border-bottom: var(--content-border);
 
   &.top {
     box-shadow: none;
@@ -28,7 +29,6 @@
   &__toggle {
     display: none;
     cursor: pointer;
-    margin-right: 1rem;
 
     .light-theme & {
       filter: invert(1);
@@ -50,6 +50,7 @@
 
     .logo {
       padding-right: 1.15rem;
+      max-width: 180px;
 
       .logo-white,
       .logo-colour {
@@ -116,7 +117,6 @@
 
         a {
           display: block;
-          padding: 1rem 0;
           color: var(--text-primary);
           text-decoration: none;
           user-select: none;
@@ -191,7 +191,17 @@
     height: auto;
 
     .logo {
-      display: none;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      max-width: none;
+      margin-bottom: 1rem;
+      max-height: 50px;
+
+      .logo-white,
+      .logo-colour {
+        max-width: 160px !important;
+      }
     }
 
     &__toggle {
@@ -205,12 +215,12 @@
     &__left {
       display: none;
       position: absolute;
-      top: 50px;
+      top: 40px;
       left: 0;
       width: 100%;
+      min-width: 0;
       flex-direction: column;
       background-color: var(--background);
-      // padding: 0rem 2rem;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
       .dropdown {
@@ -219,6 +229,10 @@
         display: flex;
         flex-direction: column;
 
+        &.open {
+          // transition: all 0.5s ease;
+        }
+
         &__menu {
           position: static;
           box-shadow: none;
@@ -226,8 +240,14 @@
           text-align: center;
           width: 100%;
           background-color: lightgray;
+          // cool transition
+          transition: all 0.5s ease;
           a {
             color: black;
+
+            &:hover {
+              background-color: #d3d3d32b;
+            }
           }
         }
       }
