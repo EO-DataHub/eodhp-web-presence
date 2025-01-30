@@ -28,12 +28,12 @@
   }
 
   .documentation-panel {
-    border: 1px solid #eee;
+    border: 2px solid #eee;
     border-radius: 8px;
     padding: 20px;
     transition: box-shadow 0.3s ease;
 
-    background: var(--inverse-background);
+    background: linear-gradient(135deg, var(--button-bg) 0%, black 300%);
     cursor: pointer;
     text-align: left;
 
@@ -51,7 +51,7 @@
     &__title {
       font-size: 1.2rem;
       font-weight: 600;
-      color: var(--inverse-text);
+      color: white;
       margin: 0;
       flex: 1;
     }
@@ -62,13 +62,14 @@
       object-fit: cover;
       border-radius: 4px;
       display: block;
+      border: 2px solid #eee;
     }
 
     &__description {
       font-size: 0.95rem;
       line-height: 1.4;
       margin-top: 10px;
-      color: var(--text-secondary);
+      color: white;
     }
   }
 }
