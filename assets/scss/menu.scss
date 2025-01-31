@@ -58,6 +58,10 @@
     flex: 1;
     width: 65%;
     min-width: 500px;
+
+    .mobile-only {
+      display: none;
+    }
   }
 
   &__right {
@@ -190,7 +194,7 @@
       max-width: none;
       margin-bottom: 1rem;
       padding: 0.5rem 0;
-      padding-top: 2rem;
+      padding-top: 3rem;
 
       .logo-white,
       .logo-colour {
@@ -204,6 +208,7 @@
 
     &__toggle {
       display: block;
+      z-index: 9999;
     }
 
     &__right {
@@ -213,13 +218,17 @@
     &__left {
       display: none;
       position: absolute;
-      top: 40px;
+      top: 0;
       left: 0;
       width: 100%;
       min-width: 0;
       flex-direction: column;
       background-color: var(--background);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      .mobile-only {
+        display: flex;
+      }
 
       .dropdown {
         width: 100%;
@@ -244,6 +253,14 @@
             }
           }
         }
+      }
+    }
+
+    &__item {
+      svg {
+        width: 15px;
+        height: 15px;
+        margin-right: 0.5rem;
       }
     }
   }
