@@ -9,13 +9,46 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0004_documentationpage'),
+        ("home", "0004_documentationpage"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='documentationpage',
-            name='topics',
-            field=wagtail.fields.StreamField([('documentation_panel', wagtail.blocks.StructBlock([('title', wagtail.blocks.CharBlock(help_text='Title of the documentation panel', required=True)), ('description', wagtail.blocks.RichTextBlock(help_text='Description of the documentation panel', required=True)), ('image', wagtail.images.blocks.ImageChooserBlock(help_text='Optional image for the documentation panel', required=False))]))], blank=True, help_text='Add documentation panels to this page.', use_json_field=True),
+            model_name="documentationpage",
+            name="topics",
+            field=wagtail.fields.StreamField(
+                [
+                    (
+                        "documentation_panel",
+                        wagtail.blocks.StructBlock(
+                            [
+                                (
+                                    "title",
+                                    wagtail.blocks.CharBlock(
+                                        help_text="Title of the documentation panel", required=True
+                                    ),
+                                ),
+                                (
+                                    "description",
+                                    wagtail.blocks.RichTextBlock(
+                                        help_text="Description of the documentation panel",
+                                        required=True,
+                                    ),
+                                ),
+                                (
+                                    "image",
+                                    wagtail.images.blocks.ImageChooserBlock(
+                                        help_text="Optional image for the documentation panel",
+                                        required=False,
+                                    ),
+                                ),
+                            ]
+                        ),
+                    )
+                ],
+                blank=True,
+                help_text="Add documentation panels to this page.",
+                use_json_field=True,
+            ),
         ),
     ]

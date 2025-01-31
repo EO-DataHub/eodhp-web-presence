@@ -13,83 +13,230 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('wagtailcore', '0089_log_entry_data_json_null_to_object'),
-        ('wagtailimages', '0025_alter_image_file_alter_rendition_file'),
+        ("wagtailcore", "0089_log_entry_data_json_null_to_object"),
+        ("wagtailimages", "0025_alter_image_file_alter_rendition_file"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AboutIndexPage',
+            name="AboutIndexPage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('intro', wagtail.fields.RichTextField(blank=True)),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                ("intro", wagtail.fields.RichTextField(blank=True)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=(wagtailcache.cache.WagtailCacheMixin, 'wagtailcore.page'),
+            bases=(wagtailcache.cache.WagtailCacheMixin, "wagtailcore.page"),
         ),
         migrations.CreateModel(
-            name='DataIndexPage',
+            name="DataIndexPage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('intro', wagtail.fields.RichTextField(blank=True)),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                ("intro", wagtail.fields.RichTextField(blank=True)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=(wagtailcache.cache.WagtailCacheMixin, 'wagtailcore.page'),
+            bases=(wagtailcache.cache.WagtailCacheMixin, "wagtailcore.page"),
         ),
         migrations.CreateModel(
-            name='DocsIndexPage',
+            name="DocsIndexPage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('intro', wagtail.fields.RichTextField(blank=True)),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                ("intro", wagtail.fields.RichTextField(blank=True)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=(wagtailcache.cache.WagtailCacheMixin, 'wagtailcore.page'),
+            bases=(wagtailcache.cache.WagtailCacheMixin, "wagtailcore.page"),
         ),
         migrations.CreateModel(
-            name='HomePage',
+            name="HomePage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('overview_text', wagtail.fields.RichTextField(blank=True, default='Welcome to our website!')),
-                ('aim_1_title', models.CharField(blank=True, default='Our First Aim', max_length=255)),
-                ('aim_1_description', wagtail.fields.RichTextField(blank=True, default='Description of our first aim.')),
-                ('aim_1_image', models.ImageField(blank=True, null=True, upload_to='aims/')),
-                ('aim_2_title', models.CharField(blank=True, default='Our Second Aim', max_length=255)),
-                ('aim_2_description', wagtail.fields.RichTextField(blank=True, default='Description of our second aim.')),
-                ('aim_2_image', models.ImageField(blank=True, null=True, upload_to='aims/')),
-                ('aim_3_title', models.CharField(blank=True, default='Our Third Aim', max_length=255)),
-                ('aim_3_description', wagtail.fields.RichTextField(blank=True, default='Description of our third aim.')),
-                ('aim_3_image', models.ImageField(blank=True, null=True, upload_to='aims/')),
-                ('aim_4_title', models.CharField(blank=True, default='Our Fourth Aim', max_length=255)),
-                ('aim_4_description', wagtail.fields.RichTextField(blank=True, default='Description of our fourth aim.')),
-                ('aim_4_image', models.ImageField(blank=True, null=True, upload_to='aims/')),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                (
+                    "overview_text",
+                    wagtail.fields.RichTextField(blank=True, default="Welcome to our website!"),
+                ),
+                (
+                    "aim_1_title",
+                    models.CharField(blank=True, default="Our First Aim", max_length=255),
+                ),
+                (
+                    "aim_1_description",
+                    wagtail.fields.RichTextField(
+                        blank=True, default="Description of our first aim."
+                    ),
+                ),
+                ("aim_1_image", models.ImageField(blank=True, null=True, upload_to="aims/")),
+                (
+                    "aim_2_title",
+                    models.CharField(blank=True, default="Our Second Aim", max_length=255),
+                ),
+                (
+                    "aim_2_description",
+                    wagtail.fields.RichTextField(
+                        blank=True, default="Description of our second aim."
+                    ),
+                ),
+                ("aim_2_image", models.ImageField(blank=True, null=True, upload_to="aims/")),
+                (
+                    "aim_3_title",
+                    models.CharField(blank=True, default="Our Third Aim", max_length=255),
+                ),
+                (
+                    "aim_3_description",
+                    wagtail.fields.RichTextField(
+                        blank=True, default="Description of our third aim."
+                    ),
+                ),
+                ("aim_3_image", models.ImageField(blank=True, null=True, upload_to="aims/")),
+                (
+                    "aim_4_title",
+                    models.CharField(blank=True, default="Our Fourth Aim", max_length=255),
+                ),
+                (
+                    "aim_4_description",
+                    wagtail.fields.RichTextField(
+                        blank=True, default="Description of our fourth aim."
+                    ),
+                ),
+                ("aim_4_image", models.ImageField(blank=True, null=True, upload_to="aims/")),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=(wagtailcache.cache.WagtailCacheMixin, 'wagtailcore.page'),
+            bases=(wagtailcache.cache.WagtailCacheMixin, "wagtailcore.page"),
         ),
         migrations.CreateModel(
-            name='GenericPage',
+            name="GenericPage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('hero_caption', models.CharField(blank=True, help_text='Caption or alt-text for the hero image', max_length=255)),
-                ('subtitle', models.CharField(blank=True, help_text='Short descriptive subtitle.', max_length=255)),
-                ('intro', wagtail.fields.RichTextField(blank=True, help_text='A short intro paragraph that sits below the title/subtitle.')),
-                ('body', wagtail.fields.StreamField([('content_block', wagtail.blocks.StructBlock([('heading', wagtail.blocks.CharBlock(help_text='Optional heading', required=False)), ('paragraph', wagtail.blocks.RichTextBlock(required=False)), ('image', wagtail.images.blocks.ImageChooserBlock(required=False))])), ('blockquote', wagtail.blocks.BlockQuoteBlock()), ('raw_html', wagtail.blocks.RawHTMLBlock())], blank=True, use_json_field=True)),
-                ('cta_text', models.CharField(blank=True, help_text='Button or link text', max_length=255)),
-                ('cta_url', models.URLField(blank=True, help_text='Target URL for the call-to-action')),
-                ('hero_image', models.ForeignKey(blank=True, help_text='Main hero or banner image for the top of the page.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='wagtailimages.image')),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                (
+                    "hero_caption",
+                    models.CharField(
+                        blank=True,
+                        help_text="Caption or alt-text for the hero image",
+                        max_length=255,
+                    ),
+                ),
+                (
+                    "subtitle",
+                    models.CharField(
+                        blank=True, help_text="Short descriptive subtitle.", max_length=255
+                    ),
+                ),
+                (
+                    "intro",
+                    wagtail.fields.RichTextField(
+                        blank=True,
+                        help_text="A short intro paragraph that sits below the title/subtitle.",
+                    ),
+                ),
+                (
+                    "body",
+                    wagtail.fields.StreamField(
+                        [
+                            (
+                                "content_block",
+                                wagtail.blocks.StructBlock(
+                                    [
+                                        (
+                                            "heading",
+                                            wagtail.blocks.CharBlock(
+                                                help_text="Optional heading", required=False
+                                            ),
+                                        ),
+                                        ("paragraph", wagtail.blocks.RichTextBlock(required=False)),
+                                        (
+                                            "image",
+                                            wagtail.images.blocks.ImageChooserBlock(required=False),
+                                        ),
+                                    ]
+                                ),
+                            ),
+                            ("blockquote", wagtail.blocks.BlockQuoteBlock()),
+                            ("raw_html", wagtail.blocks.RawHTMLBlock()),
+                        ],
+                        blank=True,
+                        use_json_field=True,
+                    ),
+                ),
+                (
+                    "cta_text",
+                    models.CharField(blank=True, help_text="Button or link text", max_length=255),
+                ),
+                (
+                    "cta_url",
+                    models.URLField(blank=True, help_text="Target URL for the call-to-action"),
+                ),
+                (
+                    "hero_image",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Main hero or banner image for the top of the page.",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to="wagtailimages.image",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Generic Page',
-                'verbose_name_plural': 'Generic Pages',
+                "verbose_name": "Generic Page",
+                "verbose_name_plural": "Generic Pages",
             },
-            bases=(wagtailcache.cache.WagtailCacheMixin, 'wagtailcore.page'),
+            bases=(wagtailcache.cache.WagtailCacheMixin, "wagtailcore.page"),
         ),
     ]

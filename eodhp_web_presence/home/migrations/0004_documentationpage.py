@@ -11,21 +11,57 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0003_remove_genericpage_subtitle'),
-        ('wagtailcore', '0089_log_entry_data_json_null_to_object'),
+        ("home", "0003_remove_genericpage_subtitle"),
+        ("wagtailcore", "0089_log_entry_data_json_null_to_object"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='DocumentationPage',
+            name="DocumentationPage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('intro', wagtail.fields.RichTextField(blank=True)),
-                ('topics', wagtail.fields.StreamField([('content_block', wagtail.blocks.StructBlock([('heading', wagtail.blocks.CharBlock(help_text='Optional heading', required=False)), ('paragraph', wagtail.blocks.RichTextBlock(required=False)), ('image', wagtail.images.blocks.ImageChooserBlock(required=False))]))], blank=True, use_json_field=True)),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                ("intro", wagtail.fields.RichTextField(blank=True)),
+                (
+                    "topics",
+                    wagtail.fields.StreamField(
+                        [
+                            (
+                                "content_block",
+                                wagtail.blocks.StructBlock(
+                                    [
+                                        (
+                                            "heading",
+                                            wagtail.blocks.CharBlock(
+                                                help_text="Optional heading", required=False
+                                            ),
+                                        ),
+                                        ("paragraph", wagtail.blocks.RichTextBlock(required=False)),
+                                        (
+                                            "image",
+                                            wagtail.images.blocks.ImageChooserBlock(required=False),
+                                        ),
+                                    ]
+                                ),
+                            )
+                        ],
+                        blank=True,
+                        use_json_field=True,
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=(wagtailcache.cache.WagtailCacheMixin, 'wagtailcore.page'),
+            bases=(wagtailcache.cache.WagtailCacheMixin, "wagtailcore.page"),
         ),
     ]

@@ -6,18 +6,18 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0008_documentationpage_topics'),
+        ("home", "0008_documentationpage_topics"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='documentationpage',
-            name='page_ptr',
+            model_name="documentationpage",
+            name="page_ptr",
         ),
         migrations.DeleteModel(
-            name='DocsIndexPage',
+            name="DocsIndexPage",
         ),
         migrations.DeleteModel(
-            name='DocumentationPage',
+            name="DocumentationPage",
         ),
     ]
