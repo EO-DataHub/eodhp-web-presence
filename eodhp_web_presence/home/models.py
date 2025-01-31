@@ -206,7 +206,10 @@ class DocumentationPanel(blocks.StructBlock):
         icon = "doc-full"
         label = "Documentation Panel"
         template = "blocks/documentation_panel.html"
-        help_text = "Use this block to create documentation panels with title, description, and optional image."
+        help_text = (
+            "Use this block to create documentation panels with title, description, "
+            "and optional image."
+        )
 
 
 class DocumentationPage(WagtailCacheMixin, Page):
