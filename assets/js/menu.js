@@ -20,6 +20,10 @@ $(document).ready(function () {
     $('body').removeClass('dark-theme').addClass('light-theme');
   }
 
+  setTimeout(function () {
+    $('body').removeClass('no-transition');
+  }, 1000);
+
   // if on the home page, add transparent class to the menu
   if (window.location.pathname === '/') {
     let $menu = $('.menu');

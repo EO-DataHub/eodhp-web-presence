@@ -45,6 +45,11 @@ html * {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.no-transition,
+.no-transition * {
+  transition: none !important;
+}
+
 body {
   transition: var(--transition);
   background-color: var(--background);
