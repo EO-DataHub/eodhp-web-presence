@@ -1,11 +1,10 @@
 from django.db import models
+from wagtail import blocks
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import RichTextField, StreamField
+from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page
 from wagtailcache.cache import WagtailCacheMixin
-
-from wagtail import blocks
-from wagtail.images.blocks import ImageChooserBlock
 
 
 class ContentBlock(blocks.StructBlock):
