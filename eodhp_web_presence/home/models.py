@@ -84,6 +84,7 @@ class GenericPage(WagtailCacheMixin, Page):
         "DocsIndexPage",
         "CaseStudiesPage",
         "DocumentationPage",
+        "HomePage",
     ]
     subpage_types = []
 
