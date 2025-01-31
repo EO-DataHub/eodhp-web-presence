@@ -32,7 +32,7 @@ After `make setup` you can run `pre-commit` to run pre-commit checks on staged c
 ```bash
 npm install
 npm run dev  # build webpack bundles
-pip install -r requirements.txt # with your virtual environment activated
+pip install -r requirements-dev.txt # with your virtual environment activated
 cd eodhp_web_presence
 python manage.py migrate  # create initial sqlite database
 python manage.py createsuperuser  # create an admin user for wagtail admin backend
