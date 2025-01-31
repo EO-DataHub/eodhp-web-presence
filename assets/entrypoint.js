@@ -1,5 +1,4 @@
 /* eslint-disable import/no-unassigned-import */
 import './scss/main.scss';
-
-import './js/support.js';
-import './js/version.js';
+import './js/menu.js';
+import './js/pages/home.js';

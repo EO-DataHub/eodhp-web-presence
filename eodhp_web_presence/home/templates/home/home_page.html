@@ -140,7 +140,7 @@
 
     </div>
 
-    <!-- Inline style so that you can still use Django’s static -->
+    <!-- Must be inline style so that we can still use Django's static -->
     <style>
         .overview__content__right::before {
             background: url("{% static 'img/general/overview-bg.png' %}") no-repeat center center;
@@ -148,34 +148,5 @@
         }
     </style>
 
-    <script>
-        const slides = document.querySelectorAll('.who-is-it-for__content__right .scroll-card');
-        const arrowLeft = document.getElementById('arrowLeft');
-        const arrowRight = document.getElementById('arrowRight');
-        let currentSlide = 0;
 
-        // Show the initial slide
-        showSlide(currentSlide);
-
-        arrowLeft.addEventListener('click', () => {
-            currentSlide = (currentSlide <= 0) ? slides.length - 1 : currentSlide - 1;
-            showSlide(currentSlide, 'left');
-        });
-
-        arrowRight.addEventListener('click', () => {
-            currentSlide = (currentSlide >= slides.length - 1) ? 0 : currentSlide + 1;
-            showSlide(currentSlide, 'right');
-        });
-
-        function showSlide(index, direction) {
-            console.log('Showing slide', index, direction);
-            slides.forEach(slide => {
-                slide.classList.remove('active', 'slide-in-left', 'slide-in-right',);
-            });
-
-            // Animate in the new slide
-            const newSlide = slides[index];
-            newSlide.classList.add('active', `slide-in-${direction === 'right' ? 'right' : 'left'}`);
-        }
-    </script>
     {% endblock content %}
