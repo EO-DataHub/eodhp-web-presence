@@ -41,6 +41,9 @@
     .light-theme & {
       filter: invert(1);
     }
+    .transparent & {
+      filter: invert(0);
+    }
 
     img {
       width: 24px;
@@ -55,72 +58,6 @@
     flex: 1;
     width: 65%;
     min-width: 500px;
-
-    .dropdown {
-      position: relative;
-
-      &__toggle {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        gap: 0.25rem;
-        user-select: none;
-      }
-
-      .arrow {
-        width: 11px;
-        height: 11px;
-        transition: transform 0.2s;
-        margin-left: 0.5rem;
-
-        .light-theme & {
-          filter: invert(0.5);
-        }
-        .transparent & {
-          filter: invert(0);
-        }
-      }
-
-      &__menu {
-        display: none;
-        position: absolute;
-        top: 46px;
-        left: -40px;
-        background-color: var(--background);
-
-        min-width: 200px;
-        border-left: 1px solid var(--inverse-background);
-        border-right: 1px solid var(--inverse-background);
-        border-bottom: 1px solid var(--inverse-background);
-        border-top: 0;
-
-        a {
-          display: block;
-          color: var(--text-primary);
-          text-decoration: none;
-          user-select: none;
-          padding: 1rem 2rem;
-          transition:
-            background-color 0.2s,
-            color 0.2s;
-
-          &:hover {
-            background-color: var(--inverse-background);
-            color: var(--inverse-text);
-          }
-        }
-      }
-
-      &.open {
-        .dropdown__menu {
-          display: block;
-        }
-
-        .arrow {
-          transform: rotate(180deg);
-        }
-      }
-    }
   }
 
   &__right {
@@ -148,6 +85,76 @@
       }
       .transparent & {
         filter: invert(0);
+      }
+    }
+
+    .dropdown__menu {
+      left: -110px !important;
+    }
+  }
+
+  .dropdown {
+    position: relative;
+
+    &__toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      gap: 0.25rem;
+      user-select: none;
+    }
+
+    .arrow {
+      width: 11px;
+      height: 11px;
+      transition: transform 0.2s;
+      margin-left: 0.5rem;
+
+      .light-theme & {
+        filter: invert(0.5);
+      }
+      .transparent & {
+        filter: invert(0);
+      }
+    }
+
+    &__menu {
+      display: none;
+      position: absolute;
+      top: 46px;
+      left: -40px;
+      background-color: var(--background);
+
+      min-width: 200px;
+      border-left: 1px solid var(--inverse-background);
+      border-right: 1px solid var(--inverse-background);
+      border-bottom: 1px solid var(--inverse-background);
+      border-top: 0;
+
+      a {
+        display: block;
+        color: var(--text-primary);
+        text-decoration: none;
+        user-select: none;
+        padding: 1rem 2rem;
+        transition:
+          background-color 0.2s,
+          color 0.2s;
+
+        &:hover {
+          background-color: var(--inverse-background);
+          color: var(--inverse-text);
+        }
+      }
+    }
+
+    &.open {
+      .dropdown__menu {
+        display: block;
+      }
+
+      .arrow {
+        transform: rotate(180deg);
       }
     }
   }

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="account-page content-page">
+
+    <section class="account-page__hero">
+        <h1>Account Management</h1>
+        <p>This page is still in development - it does not use real data.</p>
+    </section>
+
+    <section class="account-page__cards">
+
+        <div class="account-card">
+            <div class="account-card__header">
+                <h2>Example Org 1</h2>
+                <button class="btn-edit">Edit</button>
+            </div>
+
+            <div class="account-card__info">
+                <h3>Contact Details</h3>
+                <p><strong>Name:</strong> John Doe</p>
+                <p><strong>Email:</strong> <a href="mailto:john@example.com">john@example.com</a></p>
+            </div>
+
+            <div class="account-card__workspaces">
+                <h3>Workspaces</h3>
+                <ul>
+                    <li>Workspace Alpha</li>
+                    <li>Workspace Beta</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="account-card">
+            <div class="account-card__header">
+                <h2>Example Org 2</h2>
+                <button class="btn-edit">Edit</button>
+            </div>
+
+            <div class="account-card__info">
+                <h3>Contact Details</h3>
+                <p><strong>Name:</strong> Jane Smith</p>
+                <p><strong>Email:</strong> <a href="mailto:jane@example.com">jane@example.com</a></p>
+            </div>
+
+            <div class="account-card__workspaces">
+                <h3>Workspaces</h3>
+                <ul>
+                    <li>Workspace X</li>
+                    <li>Workspace Y</li>
+                    <li>... See more</li>
+                </ul>
+            </div>
+
+        </div>
+
+    </section>
+</div>
+{% endblock content %}

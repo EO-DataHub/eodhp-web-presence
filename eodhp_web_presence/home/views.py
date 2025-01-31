@@ -21,3 +21,7 @@ def workspaces_page_view(request):
     context = {"url": workspaces_url}
 
     return render(request, "home/workspaces_page.html", context=context)
+
+
+def accounts_page_view(request):
+    return render(request, "home/accounts_page.html")
