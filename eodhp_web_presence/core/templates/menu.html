@@ -61,9 +61,7 @@
     </div>
   </div>
 
-
-
-  <d<div class="menu__right">
+  <div class="menu__right">
     <div class="menu__item">
       <img id="dark-theme-toggle" src="{% static 'img/general/theme-toggle.svg' %}" alt="Toggle theme" />
     </div>
@@ -74,7 +72,7 @@
       <a href="/workspaces">Workspaces</a>
     </div>
 
-    {% if not user.is_authenticated %}
+    {% if user.is_authenticated %}
     <div class="menu__item dropdown">
       <div class="dropdown__toggle">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="avatar">
@@ -84,22 +82,16 @@
         </svg>
       </div>
       <div class="dropdown__menu">
-        <!-- Manage Account link -->
         <a href="/accounts">Manage Account</a>
-
-        <!-- Sign Out link or form -->
-        <!-- If your sign-out is just a direct URL: -->
         <a href="#">Sign out</a>
-
       </div>
     </div>
     {% else %}
-    <!-- Non-authenticated user sees a 'Sign in' link -->
     <div class="menu__item">
       <a aria-current="page" class="nav-link" href="{% url 'sign_in' %}">Sign in</a>
     </div>
     {% endif %}
-</div>
+  </div>
 </div>
 
 <script>
