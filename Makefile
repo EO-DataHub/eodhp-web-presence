@@ -1,7 +1,7 @@
 .PHONY: dockerbuild dockerpush test testonce ruff black lint isort pre-commit-check requirements-update requirements setup
-VERSION ?= 0.1.25
+VERSION ?= 0.1.26
 IMAGENAME = eodhp-web-presence
-DOCKERREPO ?= public.ecr.aws/n1b3o1k2
+DOCKERREPO ?= public.ecr.aws/eodh
 
 dockerbuild:
 	pip-compile --output-file=requirements.txt -U

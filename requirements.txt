@@ -10,13 +10,13 @@ asgiref==3.8.1
     # via django
 beautifulsoup4==4.11.2
     # via wagtail
-boto3==1.36.4
+boto3==1.36.12
     # via eodhp-website (pyproject.toml)
-botocore==1.36.4
+botocore==1.36.12
     # via
     #   boto3
     #   s3transfer
-certifi==2024.12.14
+certifi==2025.1.31
     # via requests
 charset-normalizer==3.4.1
     # via requests
@@ -90,11 +90,11 @@ pyjwt==2.10.1
     # via eodhp-website (pyproject.toml)
 python-dateutil==2.9.0.post0
     # via botocore
-pytz==2024.2
+pytz==2025.1
     # via l18n
 requests==2.32.3
     # via wagtail
-s3transfer==0.11.1
+s3transfer==0.11.2
     # via boto3
 six==1.17.0
     # via
@@ -111,7 +111,7 @@ urllib3==2.3.0
     # via
     #   botocore
     #   requests
-wagtail==5.2.7
+wagtail==5.2.8
     # via
     #   eodhp-website (pyproject.toml)
     #   wagtail-cache

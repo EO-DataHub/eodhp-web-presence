@@ -173,6 +173,12 @@ DATABASES = {
     }
 }
 
+# Support schema definition for Postgres
+if DATABASES["default"]["ENGINE"] == "django.db.backends.postgresql":
+    DATABASES["default"]["OPTIONS"] = {
+        "options": f"-c search_path={env('SQL_SCHEMA', default='public')}",
+    }
+
 RESOURCE_CATALOGUE = {
     "version": env("RESOURCE_CATALOGUE_VERSION", default="v1.0.0"),
     "url": env("RESOURCE_CATALOGUE_URL", default=None),
@@ -277,9 +283,7 @@ WAGTAILADMIN_BASE_URL = env("BASE_URL", default="www.example.com")
 SECRET_KEY = env("SECRET_KEY", default="None")
 
 # SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = [
-    host.strip() for host in env("ALLOWED_HOSTS", default="localhost, 127.0.0.1").split(",")
-]
+ALLOWED_HOSTS = [host.strip() for host in env("ALLOWED_HOSTS", default="localhost, 127.0.0.1").split(",")]
 
 CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
 
