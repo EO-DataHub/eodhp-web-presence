@@ -173,6 +173,12 @@ DATABASES = {
     }
 }
 
+# Support schema definition for Postgres
+if DATABASES["default"]["ENGINE"] == "django.db.backends.postgresql":
+    DATABASES["default"]["OPTIONS"] = {
+        "options": f"-c search_path={env('SQL_SCHEMA', default='public')}",
+    }
+
 RESOURCE_CATALOGUE = {
     "version": env("RESOURCE_CATALOGUE_VERSION", default="v1.0.0"),
     "url": env("RESOURCE_CATALOGUE_URL", default=None),
