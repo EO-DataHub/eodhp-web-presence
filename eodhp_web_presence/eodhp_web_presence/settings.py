@@ -291,7 +291,7 @@ CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-LOG_LEVEL = logging.DEBUG if DEBUG else logging.WARNING
+LOG_LEVEL = getattr(logging, env("LOG_LEVEL", default="WARNING").upper(), logging.WARNING)
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
