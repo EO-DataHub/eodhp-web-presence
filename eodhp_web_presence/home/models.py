@@ -1,379 +1,256 @@
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import models
-from django.db.models import TextField
-from wagtail.admin.panels import FieldPanel
-from wagtail.fields import RichTextField
+from wagtail import blocks
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.fields import RichTextField, StreamField
+from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page
 from wagtailcache.cache import WagtailCacheMixin
 
 
+class ContentBlock(blocks.StructBlock):
+    heading = blocks.CharBlock(required=False, help_text="Optional heading")
+    paragraph = blocks.RichTextBlock(required=False)
+    image = ImageChooserBlock(required=False)
+
+    class Meta:
+        icon = "doc-full"
+        label = "Content Block"
+        template = "blocks/content_block.html"
+        help_text = "Use this block to create flexible content sections."
+
+
+class GenericPage(WagtailCacheMixin, Page):
+    """
+    We can use this as a generic page type for any page.
+    """
+
+    # Hero / banner
+    hero_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Main hero or banner image for the top of the page.",
+    )
+    hero_caption = models.CharField(
+        max_length=255, blank=True, help_text="Caption or alt-text for the hero image"
+    )
+
+    intro = RichTextField(
+        blank=True, help_text="A short intro paragraph that sits below the title/subtitle."
+    )
+
+    body = StreamField(
+        [
+            ("content_block", ContentBlock()),
+            ("blockquote", blocks.BlockQuoteBlock()),
+            ("raw_html", blocks.RawHTMLBlock()),
+        ],
+        blank=True,
+        use_json_field=True,
+    )
+
+    cta_text = models.CharField(max_length=255, blank=True, help_text="Button or link text")
+    cta_url = models.URLField(blank=True, help_text="Target URL for the call-to-action")
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("hero_image"),
+                FieldPanel("hero_caption"),
+            ],
+            heading="Hero Image",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("intro"),
+            ],
+            heading="Intro",
+        ),
+        FieldPanel("body"),
+        MultiFieldPanel(
+            [
+                FieldPanel("cta_text"),
+                FieldPanel("cta_url"),
+            ],
+            heading="Call to Action",
+        ),
+    ]
+
+    parent_page_types = [
+        "AboutIndexPage",
+        "DataIndexPage",
+        "DocsIndexPage",
+        "CaseStudiesPage",
+        "DocumentationPage",
+        "HomePage",
+    ]
+    subpage_types = []
+
+    class Meta:
+        verbose_name = "Generic Page"
+        verbose_name_plural = "Generic Pages"
+
+
+# ---------------------------------------------------------------------
+#  Home Page (Site Root)
+# ---------------------------------------------------------------------
 class HomePage(WagtailCacheMixin, Page):
-    body = RichTextField(blank=True)
+    overview_text = RichTextField(blank=True, default="Welcome to our website!")
 
-    banner_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-    )
+    aim_1_title = models.CharField(max_length=255, blank=True, default="Our First Aim")
+    aim_1_description = RichTextField(blank=True, default="Description of our first aim.")
+    aim_1_image = models.ImageField(upload_to="aims/", blank=True, null=True)
 
-    image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-    )
+    aim_2_title = models.CharField(max_length=255, blank=True, default="Our Second Aim")
+    aim_2_description = RichTextField(blank=True, default="Description of our second aim.")
+    aim_2_image = models.ImageField(upload_to="aims/", blank=True, null=True)
 
-    video_url = TextField(blank=True)
+    aim_3_title = models.CharField(max_length=255, blank=True, default="Our Third Aim")
+    aim_3_description = RichTextField(blank=True, default="Description of our third aim.")
+    aim_3_image = models.ImageField(upload_to="aims/", blank=True, null=True)
 
-    about_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-    )
-    contact_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-    )
-    news_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-    )
+    aim_4_title = models.CharField(max_length=255, blank=True, default="Our Fourth Aim")
+    aim_4_description = RichTextField(blank=True, default="Description of our fourth aim.")
+    aim_4_image = models.ImageField(upload_to="aims/", blank=True, null=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel("body"),
-        FieldPanel("banner_image"),
-        FieldPanel("image"),
-        FieldPanel("about_image"),
-        FieldPanel("contact_image"),
-        FieldPanel("news_image"),
-        FieldPanel("video_url"),
+        FieldPanel("overview_text"),
+        FieldPanel("aim_1_title"),
+        FieldPanel("aim_1_description"),
+        FieldPanel("aim_1_image"),
+        FieldPanel("aim_2_title"),
+        FieldPanel("aim_2_description"),
+        FieldPanel("aim_2_image"),
+        FieldPanel("aim_3_title"),
+        FieldPanel("aim_3_description"),
+        FieldPanel("aim_3_image"),
+        FieldPanel("aim_4_title"),
+        FieldPanel("aim_4_description"),
+        FieldPanel("aim_4_image"),
     ]
 
 
-class AboutPage(WagtailCacheMixin, Page):
-    body = RichTextField(blank=True)
+# ---------------------------------------------------------------------
+#  About Section
+# ---------------------------------------------------------------------
+class AboutIndexPage(WagtailCacheMixin, Page):
+    """
+    Acts like /about/ index.
+    Contains subpages: HubPage, ApplicationsPage, AccessPage
+    """
 
-    banner_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
+    intro = RichTextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("intro"),
+    ]
+
+    subpage_types = ["GenericPage"]
+    parent_page_types = ["HomePage"]
+
+
+# ---------------------------------------------------------------------
+#  Data Section
+# ---------------------------------------------------------------------
+class DataIndexPage(WagtailCacheMixin, Page):
+    """
+    /data/ index.
+    Contains: OpenAccessPage, CommercialPage
+    """
+
+    intro = RichTextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("intro"),
+    ]
+
+    subpage_types = ["GenericPage"]
+    parent_page_types = ["HomePage"]
+
+
+# ---------------------------------------------------------------------
+#  Docs Section (Getting Started)
+# ---------------------------------------------------------------------
+class DocsIndexPage(WagtailCacheMixin, Page):
+    """
+    /docs/ index.
+    Contains: AccountSetupPage, FAQPage, DocumentationPage
+    """
+
+    intro = RichTextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("intro"),
+    ]
+
+    subpage_types = ["DocumentationPage"]
+    parent_page_types = ["HomePage"]
+
+
+class DocumentationPanel(blocks.StructBlock):
+    title = blocks.CharBlock(required=True, help_text="Title of the documentation panel")
+    slug = blocks.CharBlock(
+        required=True,
+        help_text="Unique identifier in the url e.g. workflow",
+        max_length=50,
     )
-    image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
+    description = blocks.RichTextBlock(
+        required=True, help_text="Description of the documentation panel"
+    )
+    image = ImageChooserBlock(
+        required=False, help_text="Optional image for the documentation panel"
+    )
+
+    class Meta:
+        icon = "doc-full"
+        label = "Documentation Panel"
+        template = "blocks/documentation_panel.html"
+        help_text = (
+            "Use this block to create documentation panels with title, description, "
+            "and optional image."
+        )
+
+
+class DocumentationPage(WagtailCacheMixin, Page):
+    """
+    /docs/documentation/ page.
+    Contains: GenericPage
+    """
+
+    intro = RichTextField(blank=True)
+
+    topics = StreamField(
+        [("documentation_panel", DocumentationPanel())],
         blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
+        use_json_field=True,
+        help_text="Add documentation panels to this page.",
     )
 
     content_panels = Page.content_panels + [
-        FieldPanel("body"),
-        FieldPanel("banner_image"),
-        FieldPanel("image"),
+        FieldPanel("intro"),
+        FieldPanel("topics"),
     ]
 
-    template = "home/about_page.html"
+    subpage_types = ["GenericPage"]
+    parent_page_types = ["DocsIndexPage"]
 
 
-class NewsPage(WagtailCacheMixin, Page):
-    # Can only have NewsArticlePage children
-    subpage_types = ["NewsArticlePage"]
+# ---------------------------------------------------------------------
+#  Case Studies Section
+# ---------------------------------------------------------------------
+class CaseStudiesPage(WagtailCacheMixin, Page):
+    """
+    /case-studies/ index.
+    Contains: CaseStudyPage
+    """
 
-    banner_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    template = "home/news_page.html"
-
-    # Returns a queryset of NewsArticlePage objects that are live, that are direct
-    # descendants of this index page with most recent first
-    def get_news_articles(self):
-        return NewsArticlePage.objects.descendant_of(self).order_by("-last_published_at").live()
-
-    def get_banner_image(self):
-        if self.banner_image:
-            return self.banner_image
-        return None
-
-    # Allows child objects (e.g. NewsArticlePage objects) to be accessible via the
-    # template. We use this on the HomePage to display child items of featured
-    # content
-    def children(self):
-        return self.get_children().specific().live()
-
-    # Pagination for the index page. We use the `django.core.paginator` as any
-    # standard Django app would, but the difference here being we have it as a
-    # method on the model rather than within a view function
-    def paginate(self, request, *args):
-        page = request.GET.get("page")
-        paginator = Paginator(self.get_news_articles(), 12)
-        try:
-            pages = paginator.page(page)
-        except PageNotAnInteger:
-            pages = paginator.page(1)
-        except EmptyPage:
-            pages = paginator.page(paginator.num_pages)
-        return pages
-
-    # Returns the above to the get_context method that is used to populate the
-    # template
-    def get_context(self, request):
-        context = super(NewsPage, self).get_context(request)
-
-        # NewsArticlePage objects (get_news_articles) are passed through pagination
-        # news_articles = self.paginate(request, self.get_news_articles())
-        news_articles = self.get_news_articles()
-
-        context["news_articles"] = news_articles
-
-        return context
+    intro = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel("banner_image"),
+        FieldPanel("intro"),
     ]
 
-
-class NewsArticlePage(WagtailCacheMixin, Page):
-    body = RichTextField(blank=True, default="")
-    summary = models.TextField(help_text="Text to describe the page", blank=True)
-
-    image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    content_panels = Page.content_panels + [
-        FieldPanel("summary"),
-        FieldPanel("image"),
-        FieldPanel("body"),
-    ]
-
-    template = "home/news_article_page.html"
-
-
-class ContactPage(WagtailCacheMixin, Page):
-    body = RichTextField(blank=True)
-
-    banner_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body"),
-        FieldPanel("banner_image"),
-    ]
-
-    template = "home/contact_page.html"
-
-
-class CataloguePage(Page):
-    content_panels = Page.content_panels
-
-
-class FakeCataloguePage(WagtailCacheMixin, Page):
-    content_panels = Page.content_panels
-
-    template = "fake-catalogue/map-search.html"
-
-
-class FakeProjectsPage(WagtailCacheMixin, Page):
-    content_panels = Page.content_panels
-
-    template = "fake-projects/project-page.html"
-
-
-class SupportIndexPage(WagtailCacheMixin, Page):
-    # Can only have SupportAreaPage children
-    subpage_types = ["SupportAreaPage"]
-
-    banner_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    template = "home/support_index_page.html"
-
-    # Returns a queryset of SupportAreaPage objects that are live, that are direct
-    # descendants of this index page with most recent first
-    def get_support_areas(self):
-        return SupportAreaPage.objects.descendant_of(self).order_by("-first_published_at").live()
-
-    def get_banner_image(self):
-        if self.banner_image:
-            return self.banner_image
-        return None
-
-    # Allows child objects (e.g. SupportAreaPage objects) to be accessible via the
-    # template. We use this on the HomePage to display child items of featured
-    # content
-    def children(self):
-        return self.get_children().specific().live()
-
-    # Pagination for the index page. We use the `django.core.paginator` as any
-    # standard Django app would, but the difference here being we have it as a
-    # method on the model rather than within a view function
-    def paginate(self, request, *args):
-        page = request.GET.get("page")
-        paginator = Paginator(self.get_support_areas(), 12)
-        try:
-            pages = paginator.page(page)
-        except PageNotAnInteger:
-            pages = paginator.page(1)
-        except EmptyPage:
-            pages = paginator.page(paginator.num_pages)
-        return pages
-
-    # Returns the above to the get_context method that is used to populate the
-    # template
-    def get_context(self, request):
-        context = super(SupportIndexPage, self).get_context(request)
-
-        # SupportAreaPage objects (get_support_areas) are passed through pagination
-        support_areas = self.get_support_areas()
-        context["support_areas"] = support_areas
-
-        support_topics = self.children().type(SupportTopicPage)
-        context["support_topics"] = support_topics
-
-        return context
-
-    content_panels = Page.content_panels + [
-        FieldPanel("banner_image"),
-    ]
-
-
-class SupportAreaPage(WagtailCacheMixin, Page):
-    # Can only have SupportTopicPage children
-    subpage_types = ["SupportTopicPage", "SupportFAQPage"]
-
-    banner_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    template = "home/support_area_page.html"
-
-    def get_banner_image(self):
-        if self.banner_image:
-            return self.banner_image
-        return None
-
-    # Allows child objects (e.g. SupportTopicPage objects) to be accessible via the
-    # template. We use this on the HomePage to display child items of featured
-    # content
-    def children(self):
-        return self.get_children().specific().live()
-
-    # Pagination for the index page. We use the `django.core.paginator` as any
-    # standard Django app would, but the difference here being we have it as a
-    # method on the model rather than within a view function
-    def paginate(self, request, *args):
-        page = request.GET.get("page")
-        paginator = Paginator(self.get_support_areas(), 12)
-        try:
-            pages = paginator.page(page)
-        except PageNotAnInteger:
-            pages = paginator.page(1)
-        except EmptyPage:
-            pages = paginator.page(paginator.num_pages)
-        return pages
-
-    # Returns the above to the get_context method that is used to populate the
-    # template
-    def get_context(self, request):
-        context = super(SupportAreaPage, self).get_context(request)
-
-        support_topics = self.children().type(SupportTopicPage)
-        support_faqs = self.children().type(SupportFAQPage)
-
-        context["support_topics"] = support_topics
-        context["support_faqs"] = support_faqs
-
-        return context
-
-    content_panels = Page.content_panels + [
-        FieldPanel("banner_image"),
-        FieldPanel("image"),
-    ]
-
-
-class SupportTopicPage(WagtailCacheMixin, Page):
-    body = RichTextField(blank=True, default="")
-
-    image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    content_panels = Page.content_panels + [
-        FieldPanel("image"),
-        FieldPanel("body"),
-    ]
-
-    template = "home/support_topic_page.html"
-
-
-class SupportFAQPage(WagtailCacheMixin, Page):
-    summary = models.TextField(help_text="Text to describe the page", blank=True)
-
-    image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    content_panels = Page.content_panels + [
-        FieldPanel("summary"),
-    ]
-
-    # template = "home/news_article_page.html"
+    subpage_types = ["GenericPage"]
+    parent_page_types = ["HomePage"]

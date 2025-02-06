@@ -1,39 +1,98 @@
-/* stylelint-disable no-invalid-position-at-import-rule */
-$light-blue: #bcceeb;
-$blue: #4c72ba;
-$dark-blue: #2a3559;
-$white: #fff;
-$light-grey: #f6f6f6;
-$grey: #efefef;
-$black: #000;
-$theme-colors: (
-  'light': $light-grey,
-  'primary': $blue,
-  'dark': $dark-blue,
-);
+$mobile-breakpoint: 1200px;
 
-// Import required global Bootstrap aspects
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
-@import '~bootstrap/scss/mixins';
-@import '~bootstrap/scss/maps';
-@import '~bootstrap/scss/root';
+.dark-theme {
+  --background: #060606;
+  --text-primary: #fff;
+  --text-secondary: #757575;
+  --button-bg: #4c72ba;
+  --button-text: #fff;
+  --icon-primary: #fff;
+  --icon-secondary: #2c2c2c;
+  --content-border: 1px solid #f5f5f527;
+  --inverse-background: white;
+  --inverse-text: black;
+  --transition: color 1s ease, background-color 1s ease, border-color 1s ease;
+
+  // menu
+  --menu-left-bg: #1a1a1a;
+  --menu-right-bg: #444444;
+}
+
+.light-theme {
+  --background: #fff;
+  --text-primary: #000;
+  --text-secondary: #969696;
+  --button-bg: #4c72ba;
+  --button-text: #fff;
+  --icon-primary: #333;
+  --icon-secondary: #666;
+  --content-border: 1px solid rgb(128 128 128 / 15.8%);
+  --inverse-background: #000;
+  --inverse-text: #fff;
+  --transition: color 1s ease, background-color 1s ease, border-color 1s ease;
+
+  // menu
+  --menu-left-bg: white;
+  --menu-right-bg: #e2e2e2;
+}
 
 html * {
-  font-family: 'Fira Sans', Arial, Helvetica, sans-serif;
+  font-family: Inter, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.no-transition,
+.no-transition * {
+  transition: none !important;
 }
 
 body {
-  margin: unset;
+  transition: var(--transition);
+  background-color: var(--background);
+  color: var(--text-primary);
 }
 
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+.content-page {
+  padding-top: 74px;
+
+  @media (max-width: $mobile-breakpoint) {
+    padding-top: 45px;
+  }
 }
 
-// Encapsulate Bootstrap styles within a specific selector class
-.bootstrap-scope {
-  @import '~bootstrap/scss/bootstrap';
+.logo {
+  padding-right: 1.15rem;
+  max-width: 180px;
+
+  .logo-white,
+  .logo-colour {
+    display: none;
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+  }
+
+  .light-theme & {
+    .logo-white {
+      display: none;
+    }
+    .logo-colour {
+      max-width: 185px;
+      display: block;
+    }
+  }
+
+  .dark-theme & {
+    .logo-white {
+      display: block;
+      padding-left: 0.3rem;
+    }
+    .logo-colour {
+      display: none;
+    }
+  }
 }

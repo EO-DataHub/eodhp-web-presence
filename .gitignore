@@ -20,3 +20,4 @@ cache/
 
 *.bak
 *.swp
+eodhp_web_presence/media/*

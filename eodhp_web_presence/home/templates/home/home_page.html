@@ -4,76 +4,149 @@
 
 {% block content %}
 
-<div class="home-page-banner-container" id="big">
-
-    {% if page.banner_image %}
-    {% image page.banner_image scale-100 as img %}<img alt="Banner image" class="home-page-banner-image"
-                                                       src="{{ img.url }}">
-    {% endif %}
-
-    <div class="home-page-banner-text" id="centre">
-        <div class="home-page-banner-title">
-            {{ page.title|richtext }}
+<div class="home">
+    <div class="hero" style="background-image: url({% static 'img/general/hero.jpg' %})">
+        <div class="hero-position">
+            <div class="hero-content">
+                <div>We provide a single point of access to<br /><span class="thin-underline">EO data</span> and
+                    <span class="thin-underline">processing infrastructure</span>.
+                </div>
+                <div>
+                    <input type="button" class="button primary-button" value="Read More"
+                        onclick="window.location.href='/about/hub'" />
+                    <input type="button" class="button secondary-button" value="Explore our Catalogue"
+                        onclick="window.location.href='/data/open-access'" />
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="home-page-border">
-    <div class="home-page-content">
-
-        {% if page.image %}
-        {% image page.image scale-100 as img %}<img class="home-page-image-50" src="{{ img.url }}">
-        <div class="home-page-text-50">{{ page.body|richtext }}</div>
-        {% else %}
-        <div class="home-page-text-100">{{ page.body|richtext }}</div>
-        {% endif %}
-
-        {% if page.video_url %}
-        <p>
-        <div class="home-page-text-100">
-            <video width="100%" class="home-page-content" controls src={{ page.video_url }}></video>
+    <div class="overview" id="overview">
+        <div class="overview__content">
+            <div class="overview__content__left">
+                <div class="overview__content__left__title">
+                    <h2>Overview</h2>
+                </div>
+            </div>
+            <div class="overview__content__right">
+                {{ page.overview_text|safe }}
+            </div>
         </div>
-        {% endif %}
-
-        <p>
-    </div>
-</div>
-
-<div class="boxes">
-    <div class="home-page-border" id="footer">
-        <div class="box-link">
-            <a href="/about">
-
-                {% if page.about_image %}
-                {% image page.about_image scale-100 as img %}<img alt="About image" class="box-link-image"
-                                                                  src="{{ img.url }}">
-                {% endif %}
-                <div class="box-link-text">About</div>
-            </a>
-        </div>
-        <div class="box-link">
-            <a href="/news">
-
-                {% if page.news_image %}
-                {% image page.news_image scale-100 as img %}<img alt="News image" class="box-link-image"
-                                                                 src="{{ img.url }}">
-                {% endif %}
-                <div class="box-link-text">News</div>
-            </a>
-        </div>
-        <div class="box-link">
-            <a href="/contact">
-
-                {% if page.contact_image %}
-                {% image page.contact_image scale-100 as img %}<img alt="Contact image" class="box-link-image"
-                                                                    src="{{ img.url }}">
-                {% endif %}
-                <div class="box-link-text">Contact</div>
-            </a>
-        </div>
-        <span class="stretch"></span>
 
     </div>
-</div>
 
-{% endblock content %}
+    <div class="aims">
+        <div class="aims__content">
+            <h2>What are the aims of the EO Data Hub</h2>
+            <span class="subtitle">EO Data Hub Pathfinder activities are designed to showcase:</span>
+            <div class="aims__content__cards">
+                <div class="card">
+                    <img src="{{ page.aim_1_image.url }}" alt="Aims 1" class="card__image" />
+                    <h5>{{ page.aim_1_title|safe }}</h5>
+                    {{ page.aim_1_description|richtext }}
+                </div>
+                <div class="card">
+                    <img src="{{ page.aim_2_image.url }}" alt="Aims 2" class="card__image" />
+                    <h5>{{ page.aim_2_title|safe }}</h5>
+                    {{ page.aim_2_description|richtext }}
+                </div>
+                <div class="card">
+                    <img src="{{ page.aim_3_image.url }}" alt="Aims 3" class="card__image" />
+                    <h5>{{ page.aim_3_title|safe }}</h5>
+                    {{ page.aim_3_description|richtext }}
+                </div>
+                <div class="card">
+                    <img src="{{ page.aim_4_image.url }}" alt="Aims 4" class="card__image" />
+                    <h5>{{ page.aim_4_title|safe }}</h5>
+                    {{ page.aim_4_description|richtext }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="who-is-it-for">
+        <div class="who-is-it-for__content">
+            <div class="who-is-it-for__content__left">
+                <h2>Who is the Earth Observation Data Hub for?</h2>
+                <div class="arrows">
+                    <div class="arrow-left" id="arrowLeft">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.5 4L6.5 12L15.5 20" stroke="#FEF7FF" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div class="arrow-right" id="arrowRight">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.5 4L17.5 12L8.5 20" stroke="#FEF7FF" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="who-is-it-for__content__right">
+                <!-- Slide 1 -->
+                <div class="scroll-card active">
+                    <img src="{% static 'img/general/city-hall.svg' %}" alt="Government" class="scroll-card__image" />
+                    <h3>Government and Public Sector</h3>
+                    <p>
+                        Providing collective purchasing power and access to a wide range of EO
+                        data and processing services. The EO Data Hub is a one-stop-shop for
+                        all your EO data needs.
+                    </p>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="scroll-card">
+                    <img src="{% static 'img/general/industry.svg' %}" alt="Industry" class="scroll-card__image" />
+                    <h3>Industry &amp; Commercial Operators</h3>
+                    <p>
+                        Gain quick and easy access to essential data and powerful processing tools to foster innovation,
+                        cut
+                        costs, and speed up your projects with dependable EO insights.
+                    </p>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="scroll-card">
+                    <img src="{% static 'img/general/research.svg' %}" alt="Academia" class="scroll-card__image" />
+                    <h3>Academia &amp; Researchers</h3>
+                    <p>
+                        Discover new perspectives with advanced geospatial analysis and a wealth of historical data.
+                        Work together with colleagues and push your research forward with comprehensive EO data
+                        services.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+
+        <div class="ready-to-get-started">
+            <div class="ready-to-get-started__content">
+                <div class="ready-to-get-started__content__left">
+                    <h4>Ready to get started?</h4>
+                    <p>Sign up or contact us</p>
+                </div>
+                <!-- Sign up and Contact Us -->
+                <div class="ready-to-get-started__content__right">
+                    <input type="button" class="button primary-button" value="Sign Up"
+                        onclick="window.location.href='/get-started/'" />
+                    <input type="button" class="button secondary-button" value="Contact Us"
+                        onclick="window.location.href='/contact/'" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Must be inline style so that we can still use Django's static -->
+    <style>
+        .overview__content__right::before {
+            background: url("{% static 'img/general/overview-bg.png' %}") no-repeat center center;
+
+        }
+    </style>
+
+
+    {% endblock content %}

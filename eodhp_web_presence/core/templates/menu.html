@@ -1,59 +1,138 @@
 {% load static %}
 
-<div class="bootstrap-scope">
-  <nav class="navbar navbar-expand-xxl bg-light" id="menu-nav-bar">
-    <div class="container-fluid d-flex">
-      <div class="header col-xxl-3">
-        <a class="navbar-brand" href="/"><img class="logo"
-            src="{% static 'img/menu/EO-Data-Hub-logo_colour.svg' %}" /></a>
-        <button aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"
-          class="navbar-toggler d-xxl-none" data-bs-target="#navbarToggler" data-bs-toggle="collapse"
-          id="navbar-toggler-button" type="button">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </div>
-      <div class="collapse navbar-collapse col-xxl-9" id="navbarToggler">
-        <ul class="navbar-nav me-auto mb-2 mb-xxl-0"></ul>
+<div class="menu top" id="mainMenu">
+  <div class="menu__toggle" id="menuToggle">
+    <img src="{% static 'img/general/hamburger.svg' %}" alt="Toggle menu" />
+  </div>
 
-        <div class="d-flex">
-          <div class="nav-bar-container-blank">
-            <ul class="navbar-nav align-items-start">
-              <li class="nav-item block-transparent">
-                <a aria-current="page" class="nav-link" href="/about">About</a>
-              </li>
-              <li class="nav-item block-transparent">
-                <a aria-current="page" class="nav-link" href="/news">News</a>
-              </li>
-              <li class="nav-item block-transparent">
-                <a aria-current="page" class="nav-link" href="/contact">Contact</a>
-              </li>
-              <li class="nav-item block-transparent">
-                <a aria-current="page" class="nav-link" href="/support">Support</a>
-              </li>
-              <li class="nav-item block-solid">
-                <a aria-current="page" class="nav-link" href="/catalogue">Catalogue</a>
-              </li>
-              <li class="nav-item block-solid">
-                <a aria-current="page" class="nav-link" href="{{ menu_links.eox_viewserver_url }}">Maps</a>
-              </li>
-              {% if user.is_authenticated %}
-              <li class="nav-item block-solid">
-                <a aria-current="page" class="nav-link" href="/workspaces">Workspaces</a>
-              </li>
-              {% endif %}
-              {% if user.is_authenticated %}
-              <li class="nav-item block-solid">
-                <a aria-current="page" class="nav-link" href="{% url 'sign_out' %}">Sign out</a>
-              </li>
-              {% else %}
-              <li class="nav-item block-solid">
-                <a aria-current="page" class="nav-link" href="{% url 'sign_in' %}">Sign in</a>
-              </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
+  <div class="menu__left" id="menuLeft">
+    <div class="logo">
+      <a href="/">
+        <img class="logo-white" src="{% static 'img/menu/EO-Data-Hub-logo_white_grey_425px.png' %}"
+          alt="EO Data Hub Logo" />
+        <img class="logo-colour" src="{% static 'img/menu/EO Data Hub logo_colour.svg' %}" alt="EO Data Hub Logo" />
+      </a>
+    </div>
+
+    <!-- About dropdown -->
+    <div class="menu__item dropdown">
+      <div class="dropdown__toggle">
+        About
+        <img class="arrow" src="{% static 'img/general/arrow-down.svg' %}" alt="Expand" />
+      </div>
+      <div class="dropdown__menu">
+        <!-- Hub, Overview of Applications, Access Paths -->
+        <a href="/about/hub">Hub</a>
+        <a href="/about/applications">Overview of Applications</a>
+        <a href="/about/access">Access Paths</a>
       </div>
     </div>
-  </nav>
+
+    <!-- Data dropdown -->
+    <div class="menu__item dropdown">
+      <div class="dropdown__toggle">
+        Data
+        <img class="arrow" src="{% static 'img/general/arrow-down.svg' %}" alt="Expand" />
+      </div>
+      <div class="dropdown__menu">
+        <!-- Open Access, Commercial -->
+        <a href="/data/open-access">Open Access</a>
+        <a href="/data/commercial">Commercial</a>
+      </div>
+    </div>
+
+    <!-- Getting Started dropdown -->
+    <div class="menu__item dropdown">
+      <div class="dropdown__toggle">
+        Getting Started
+        <img class="arrow" src="{% static 'img/general/arrow-down.svg' %}" alt="Expand" />
+      </div>
+      <div class="dropdown__menu">
+        <!-- Case Studies, Account Setup, FAQs, Documentation -->
+        <a href="/case-studies">Case Studies</a>
+        <a href="/docs/account-setup">Account Setup</a>
+        <a href="/docs/faqs">FAQs</a>
+        <a href="/docs/documentation">Documentation</a>
+      </div>
+    </div>
+
+    <div class="menu__item single-link mobile-only">
+      <a href="/catalogue">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 576 512" height="200px"
+          width="200px" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M565.6 36.2C572.1 40.7 576 48.1 576 56l0 336c0 10-6.2 18.9-15.5 22.4l-168 64c-5.2 2-10.9 2.1-16.1 .3L192.5 417.5l-160 61c-7.4 2.8-15.7 1.8-22.2-2.7S0 463.9 0 456L0 120c0-10 6.1-18.9 15.5-22.4l168-64c5.2-2 10.9-2.1 16.1-.3L383.5 94.5l160-61c7.4-2.8 15.7-1.8 22.2 2.7zM48 136.5l0 284.6 120-45.7 0-284.6L48 136.5zM360 422.7l0-285.4-144-48 0 285.4 144 48zm48-1.5l120-45.7 0-284.6L408 136.5l0 284.6z">
+          </path>
+        </svg>
+        Catalogue
+      </a>
+    </div>
+    <div class="menu__item single-link mobile-only">
+      <a href="/workspaces">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="200px" width="200px"
+          xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"></path>
+          <path
+            d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.4 5.4 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2z">
+          </path>
+        </svg>
+        Workspaces
+
+      </a>
+    </div>
+
+    <!-- Contact dropdown (mobile only) -->
+    {% if user.is_authenticated %}
+    <div class="menu__item dropdown mobile-only">
+      <div class="dropdown__toggle">
+        Account
+        <img class="arrow" src="{% static 'img/general/arrow-down.svg' %}" alt="Expand" />
+
+      </div>
+      <div class="dropdown__menu">
+        <a href="/accounts">Manage Account</a>
+        <a href="#">Sign out</a>
+      </div>
+    </div>
+    {% else %}
+    <div class="menu__item mobile-only single-link">
+      <a aria-current="page" class="nav-link" href="{% url 'sign_in' %}">Sign in</a>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="menu__right">
+    <div class="menu__item">
+      <img id="dark-theme-toggle" src="{% static 'img/general/theme-toggle.svg' %}" alt="Toggle theme" />
+    </div>
+    <div class="menu__item">
+      <a href="/apphub">Notebooks</a>
+    </div>
+    <div class="menu__item">
+      <a href="/catalogue">Catalogue</a>
+    </div>
+    <div class="menu__item">
+      <a href="/workspaces">Workspaces</a>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="menu__item dropdown">
+      <div class="dropdown__toggle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="avatar">
+          <path
+            d="M5.85 17.1C6.7 16.45 7.65 15.9375 8.7 15.5625C9.75 15.1875 10.85 15 12 15C13.15 15 14.25 15.1875 15.3 15.5625C16.35 15.9375 17.3 16.45 18.15 17.1C18.7333 16.4167 19.1875 15.6417 19.5125 14.775C19.8375 13.9083 20 12.9833 20 12C20 9.78333 19.2208 7.89583 17.6625 6.3375C16.1042 4.77917 14.2167 4 12 4C9.78333 4 7.89583 4.77917 6.3375 6.3375C4.77917 7.89583 4 9.78333 4 12C4 12.9833 4.1625 13.9083 4.4875 14.775C4.8125 15.6417 5.26667 16.4167 5.85 17.1ZM12 13C11.0167 13 10.1875 12.6625 9.5125 11.9875C8.8375 11.3125 8.5 10.4833 8.5 9.5C8.5 8.51667 8.8375 7.6875 9.5125 7.0125C10.1875 6.3375 11.0167 6 12 6C12.9833 6 13.8125 6.3375 14.4875 7.0125C15.1625 7.6875 15.5 8.51667 15.5 9.5C15.5 10.4833 15.1625 11.3125 14.4875 11.9875C13.8125 12.6625 12.9833 13 12 13ZM12 22C10.6167 22 9.31667 21.7375 8.1 21.2125C6.88333 20.6875 5.825 19.975 4.925 19.075C4.025 18.175 3.3125 17.1167 2.7875 15.9C2.2625 14.6833 2 13.3833 2 12C2 10.6167 2.2625 9.31667 2.7875 8.1C3.3125 6.88333 4.025 5.825 4.925 4.925C5.825 4.025 6.88333 3.3125 8.1 2.7875C9.31667 2.2625 10.6167 2 12 2C13.3833 2 14.6833 2.2625 15.9 2.7875C17.1167 3.3125 18.175 4.025 19.075 4.925C19.975 5.825 20.6875 6.88333 21.2125 8.1C21.7375 9.31667 22 10.6167 22 12C22 13.3833 21.7375 14.6833 21.2125 15.9C20.6875 17.1167 19.975 18.175 19.075 19.075C18.175 19.975 17.1167 20.6875 15.9 21.2125C14.6833 21.7375 13.3833 22 12 22Z"
+            fill="#FEF7FF" />
+        </svg>
+      </div>
+      <div class="dropdown__menu">
+        <a href="/accounts">Manage Account</a>
+        <a href="#">Sign out</a>
+      </div>
+    </div>
+    {% else %}
+    <div class="menu__item">
+      <a aria-current="page" class="nav-link" href="{% url 'sign_in' %}">Sign in</a>
+    </div>
+    {% endif %}
+  </div>
 </div>

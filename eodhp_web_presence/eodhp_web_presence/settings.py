@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.routable_page",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
+    "wagtail.contrib.table_block",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
@@ -118,6 +119,10 @@ MIDDLEWARE = [
     "core.middleware.HeaderMiddleware",
     "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
 ]
+
+if DEBUG:
+    MIDDLEWARE.remove("wagtailcache.cache.UpdateCacheMiddleware")
+    MIDDLEWARE.remove("wagtailcache.cache.FetchFromCacheMiddleware")
 
 if OIDC_CLAIMS["ENABLED"]:
     MIDDLEWARE.insert(7, "eodhp_web_presence.settings.claims_middleware_factory")

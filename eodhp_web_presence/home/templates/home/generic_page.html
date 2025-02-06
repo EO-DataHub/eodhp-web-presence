@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags wagtailuserbar %}
+{% load static %}
+
+{% block content %}
+<div class="generic-page content-page">
+
+    {% if page.hero_image %}
+    {% image page.hero_image fill-1600x600 as hero_img %}
+    <header class="generic-page__hero" style="background-image: url('{{ hero_img.url }}');">
+        <div class="generic-page__hero-overlay">
+            <div class="generic-page__hero-content">
+                <h1>{{ page.title }}</h1>
+                {% if page.hero_caption %}
+                <h2>{{ page.hero_caption }}</h2>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    {% endif %}
+
+    {% if page.intro %}
+    <section class="generic-page__intro">
+        <p>{{ page.intro|richtext }}</p>
+    </section>
+    {% endif %}
+
+    <main class="generic-page__body">
+        {{ page.body }}
+    </main>
+
+    {% if page.cta_text and page.cta_url %}
+    <div class="generic-page__cta">
+        <a href="{{ page.cta_url }}" class="btn btn-primary">{{ page.cta_text }}</a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock content %}
+
+{% block wagtailuserbar %}
+{% wagtailuserbar %}
+{% endblock %}
