@@ -108,8 +108,28 @@ ul {
 
 ul li {
   font-size: 1rem;
+  display: list-item;
+  list-style: disc inside;
 }
 
-h2 {
-  margin: 1rem 0;
+h2,
+h3,
+h4 {
+  margin: 1rem 0 !important;
+}
+
+a {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.dark-theme .content-page a {
+  color: rgb(178, 178, 228);
+}
+
+.light-theme .content-page a {
+  color: rgb(44, 79, 143);
 }
