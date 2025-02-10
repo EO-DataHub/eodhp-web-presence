@@ -19,26 +19,17 @@
     {% endif %}
 
     {% if page.topics %}
-    <section class="documentation-panels">
+    <section class="faq-cards">
         {% for panel in page.topics %}
-        <a href='{{ request.build_absolute_uri }}{{ panel.value.slug }}'>
-            <button class="documentation-panel">
-
-                <header class="documentation-panel__header">
-                    <h2 class="documentation-panel__title">{{ panel.value.title }}</h2>
-
-                    {% if panel.value.image %}
-                    {% image panel.value.image fill-100x100 as panel_image %}
-                    <div class="documentation-panel__image">
-                        <img src="{{ panel_image.url }}" alt="{{ panel.value.title }}">
-                    </div>
-                    {% endif %}
-                </header>
-
-                <div class="documentation-panel__description">
-                    {{ panel.value.description|richtext }}
-                </div>
-            </button>
+        <a href="{{ request.build_absolute_uri }}{{ panel.value.slug }}" class="faq-card">
+            <div class="faq-card__header">
+                <h2 class="faq-card__title">{{ panel.value.title }}</h2>
+                {% if panel.value.image %}
+                {% image panel.value.image fill-100x100 as panel_image %}
+                <img src="{{ panel_image.url }}" alt="{{ panel.value.title }}" class="faq-card__image" />
+                {% endif %}
+            </div>
+            <p class="faq-card__description">{{ panel.value.description|richtext }}</p>
         </a>
         {% endfor %}
     </section>
