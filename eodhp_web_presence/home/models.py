@@ -5,6 +5,7 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page
 from wagtailcache.cache import WagtailCacheMixin
+from wagtailcodeblock.blocks import CodeBlock
 
 
 class ContentBlock(blocks.StructBlock):
@@ -46,6 +47,7 @@ class GenericPage(WagtailCacheMixin, Page):
             ("content_block", ContentBlock()),
             ("blockquote", blocks.BlockQuoteBlock()),
             ("raw_html", blocks.RawHTMLBlock()),
+            ("code", CodeBlock(label="Code")),
         ],
         blank=True,
         use_json_field=True,
@@ -53,6 +55,12 @@ class GenericPage(WagtailCacheMixin, Page):
 
     cta_text = models.CharField(max_length=255, blank=True, help_text="Button or link text")
     cta_url = models.URLField(blank=True, help_text="Target URL for the call-to-action")
+
+    back_button_location = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="URL to redirect to when the back button is clicked",
+    )
 
     content_panels = Page.content_panels + [
         MultiFieldPanel(
@@ -76,6 +84,7 @@ class GenericPage(WagtailCacheMixin, Page):
             ],
             heading="Call to Action",
         ),
+        FieldPanel("back_button_location"),
     ]
 
     parent_page_types = [

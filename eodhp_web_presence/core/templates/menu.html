@@ -91,7 +91,7 @@
       </div>
       <div class="dropdown__menu">
         <a href="/accounts">Manage Account</a>
-        <a href="#">Sign out</a>
+        <a href="{% url 'sign_out' %}">Sign out</a>
       </div>
     </div>
     {% else %}
@@ -126,7 +126,7 @@
       </div>
       <div class="dropdown__menu">
         <a href="/accounts">Manage Account</a>
-        <a href="#">Sign out</a>
+        <a href="{% url 'sign_out' %}">Sign out</a>
       </div>
     </div>
     {% else %}
