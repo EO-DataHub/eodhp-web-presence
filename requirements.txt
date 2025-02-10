@@ -117,6 +117,7 @@ wagtail==5.2.8
     #   wagtail-cache
 wagtail-cache==2.5.1
     # via eodhp-website (pyproject.toml)
+wagtailcodeblock
 webencodings==0.5.1
     # via html5lib
 whitenoise==6.8.2
