@@ -5,6 +5,10 @@
 {% block content %}
 <div class="generic-page content-page">
 
+    <div class="back-button-container">
+        <span class="back-button" id="back">⬅ Back</span>
+    </div>
+
     {% if page.hero_image %}
     {% image page.hero_image fill-1600x600 as hero_img %}
     <header class="generic-page__hero" style="background-image: url('{{ hero_img.url }}');">
@@ -36,6 +40,12 @@
     {% endif %}
 
 </div>
+
+<script>
+    document.getElementById('back').addEventListener('click', function () {
+        window.history.back();
+    });
+</script>
 {% endblock content %}
 
 {% block wagtailuserbar %}
