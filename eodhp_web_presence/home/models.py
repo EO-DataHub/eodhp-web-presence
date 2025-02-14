@@ -20,88 +20,6 @@ class ContentBlock(blocks.StructBlock):
         help_text = "Use this block to create flexible content sections."
 
 
-class GenericPage(WagtailCacheMixin, Page):
-    """
-    We can use this as a generic page type for any page.
-    """
-
-    # Hero / banner
-    hero_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Main hero or banner image for the top of the page.",
-    )
-    hero_caption = models.CharField(
-        max_length=255, blank=True, help_text="Caption or alt-text for the hero image"
-    )
-
-    intro = RichTextField(
-        blank=True, help_text="A short intro paragraph that sits below the title/subtitle."
-    )
-
-    body = StreamField(
-        [
-            ("content_block", ContentBlock()),
-            ("blockquote", blocks.BlockQuoteBlock()),
-            ("raw_html", blocks.RawHTMLBlock()),
-            ("code", CodeBlock(label="Code")),
-        ],
-        blank=True,
-        use_json_field=True,
-    )
-
-    cta_text = models.CharField(max_length=255, blank=True, help_text="Button or link text")
-    cta_url = models.URLField(blank=True, help_text="Target URL for the call-to-action")
-
-    back_button_location = models.CharField(
-        max_length=255,
-        blank=True,
-        help_text="URL to redirect to when the back button is clicked",
-    )
-
-    content_panels = Page.content_panels + [
-        MultiFieldPanel(
-            [
-                FieldPanel("hero_image"),
-                FieldPanel("hero_caption"),
-            ],
-            heading="Hero Image",
-        ),
-        MultiFieldPanel(
-            [
-                FieldPanel("intro"),
-            ],
-            heading="Intro",
-        ),
-        FieldPanel("body"),
-        MultiFieldPanel(
-            [
-                FieldPanel("cta_text"),
-                FieldPanel("cta_url"),
-            ],
-            heading="Call to Action",
-        ),
-        FieldPanel("back_button_location"),
-    ]
-
-    parent_page_types = [
-        "AboutIndexPage",
-        "DataIndexPage",
-        "DocsIndexPage",
-        "CaseStudiesPage",
-        "DocumentationPage",
-        "HomePage",
-    ]
-    subpage_types = []
-
-    class Meta:
-        verbose_name = "Generic Page"
-        verbose_name_plural = "Generic Pages"
-
-
 # ---------------------------------------------------------------------
 #  Home Page (Site Root)
 # ---------------------------------------------------------------------
@@ -263,3 +181,95 @@ class CaseStudiesPage(WagtailCacheMixin, Page):
 
     subpage_types = ["GenericPage"]
     parent_page_types = ["HomePage"]
+
+
+class GenericPage(WagtailCacheMixin, Page):
+    """
+    We can use this as a generic page type for any page.
+    """
+
+    # Hero / banner
+    hero_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Main hero or banner image for the top of the page.",
+    )
+    hero_caption = models.CharField(
+        max_length=255, blank=True, help_text="Caption or alt-text for the hero image"
+    )
+
+    intro = RichTextField(
+        blank=True, help_text="A short intro paragraph that sits below the title/subtitle."
+    )
+
+    body = StreamField(
+        [
+            ("content_block", ContentBlock()),
+            ("blockquote", blocks.BlockQuoteBlock()),
+            ("raw_html", blocks.RawHTMLBlock()),
+            ("code", CodeBlock(label="Code")),
+        ],
+        blank=True,
+        use_json_field=True,
+    )
+
+    # New topics field to allow for nested pages as cards.
+    topics = StreamField(
+        [("topic_panel", DocumentationPanel())],
+        blank=True,
+        use_json_field=True,
+        help_text="Add topic cards to nest additional pages.",
+    )
+
+    cta_text = models.CharField(max_length=255, blank=True, help_text="Button or link text")
+    cta_url = models.URLField(blank=True, help_text="Target URL for the call-to-action")
+
+    back_button_location = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="URL to redirect to when the back button is clicked",
+    )
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("hero_image"),
+                FieldPanel("hero_caption"),
+            ],
+            heading="Hero Image",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("intro"),
+            ],
+            heading="Intro",
+        ),
+        FieldPanel("body"),
+        FieldPanel("topics"),
+        MultiFieldPanel(
+            [
+                FieldPanel("cta_text"),
+                FieldPanel("cta_url"),
+            ],
+            heading="Call to Action",
+        ),
+        FieldPanel("back_button_location"),
+    ]
+
+    parent_page_types = [
+        "AboutIndexPage",
+        "DataIndexPage",
+        "DocsIndexPage",
+        "CaseStudiesPage",
+        "DocumentationPage",
+        "HomePage",
+        "GenericPage",
+    ]
+    subpage_types = ["GenericPage"]
+
+    class Meta:
+        verbose_name = "Generic Page"
+        verbose_name_plural = "Generic Pages"
