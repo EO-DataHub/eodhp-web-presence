@@ -5,10 +5,13 @@ from eodhp_web_presence import settings
 
 def catalogue_page_view(request):
     return render(
-        request,
-        "home/catalogue_page.html",
-        {
-            "url": f"{settings.RESOURCE_CATALOGUE['url']}/{settings.RESOURCE_CATALOGUE['version']}",
+        request=request,
+        template_name="home/catalogue_page.html",
+        context={
+            "url": "{url}/{version}".format(
+                url=settings.RESOURCE_CATALOGUE["url"],
+                version=settings.RESOURCE_CATALOGUE["version"],
+            ),
             "catalogue_data_url": settings.CATALOGUE_DATA["url"],
         },
     )
@@ -16,11 +19,19 @@ def catalogue_page_view(request):
 
 def workspaces_page_view(request):
     return render(
-        request,
-        "home/workspaces_page.html",
-        {"url": f"{settings.WORKSPACE_UI['url']}/{settings.WORKSPACE_UI['version']}"},
+        request=request,
+        template_name="home/workspaces_page.html",
+        context={
+            "url": "{url}/{version}".format(
+                url=settings.WORKSPACE_UI["url"],
+                version=settings.WORKSPACE_UI["version"],
+            ),
+        },
     )
 
 
 def accounts_page_view(request):
-    return render(request, "home/accounts_page.html")
+    return render(
+        request=request,
+        template_name="home/accounts_page.html",
+    )
