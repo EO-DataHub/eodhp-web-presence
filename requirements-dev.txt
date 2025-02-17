@@ -12,9 +12,9 @@ beautifulsoup4==4.11.2
     # via wagtail
 black==25.1.0
     # via eodhp-website (pyproject.toml)
-boto3==1.36.12
+boto3==1.36.21
     # via eodhp-website (pyproject.toml)
-botocore==1.36.12
+botocore==1.36.21
     # via
     #   boto3
     #   s3transfer
@@ -34,7 +34,7 @@ defusedxml==0.7.1
     # via willow
 distlib==0.3.9
     # via virtualenv
-django==5.0.11
+django==5.0.12
     # via
     #   django-filter
     #   django-modelcluster
@@ -56,7 +56,7 @@ django-permissionedforms==0.1
     # via wagtail
 django-sass==1.1.0
     # via eodhp-website (pyproject.toml)
-django-storages==1.14.4
+django-storages==1.14.5
     # via eodhp-website (pyproject.toml)
 django-taggit==4.0.0
     # via wagtail
@@ -82,7 +82,7 @@ gibberish==0.4.0
     # via eodhp-website (pyproject.toml)
 html5lib==1.1
     # via wagtail
-identify==2.6.6
+identify==2.6.7
     # via pre-commit
 idna==3.10
     # via requests
@@ -146,7 +146,7 @@ pytest==8.3.4
     #   pytest-django
     #   pytest-mock
     #   pytest-xdist
-pytest-django==4.9.0
+pytest-django==4.10.0
     # via eodhp-website (pyproject.toml)
 pytest-mock==3.14.0
     # via eodhp-website (pyproject.toml)
@@ -164,7 +164,7 @@ pyyaml==6.0.2
     #   pre-commit
 requests==2.32.3
     # via wagtail
-ruff==0.9.4
+ruff==0.9.6
     # via eodhp-website (pyproject.toml)
 s3transfer==0.11.2
     # via boto3
@@ -187,13 +187,16 @@ urllib3==2.3.0
     #   requests
 validate-pyproject[all]==0.23
     # via eodhp-website (pyproject.toml)
-virtualenv==20.29.1
+virtualenv==20.29.2
     # via pre-commit
 wagtail==5.2.8
     # via
     #   eodhp-website (pyproject.toml)
     #   wagtail-cache
+    #   wagtailcodeblock
 wagtail-cache==2.5.1
+    # via eodhp-website (pyproject.toml)
+wagtailcodeblock==1.29.0.2
     # via eodhp-website (pyproject.toml)
 watchdog==6.0.0
     # via pytest-watcher
@@ -201,7 +204,7 @@ webencodings==0.5.1
     # via html5lib
 wheel==0.45.1
     # via pip-tools
-whitenoise==6.8.2
+whitenoise==6.9.0
     # via eodhp-website (pyproject.toml)
 willow[heif]==1.6.3
     # via

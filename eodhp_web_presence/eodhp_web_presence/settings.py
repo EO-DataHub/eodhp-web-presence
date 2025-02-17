@@ -161,8 +161,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "eodhp_web_presence.wsgi.application"
 
-EOX_VIEWSERVER = {"url": env("EOX_VIEWSERVER_URL", default=None)}
-NOTEBOOKS = {"url": env("NOTEBOOKS_URL", default=None)}
+NOTEBOOKS = {"url": env("NOTEBOOKS_URL", default="/notebooks")}
 
 
 # Database
