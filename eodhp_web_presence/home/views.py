@@ -4,21 +4,22 @@ from eodhp_web_presence import settings
 
 
 def catalogue_page_view(request):
-    resource_catalogue_version = settings.RESOURCE_CATALOGUE["version"]
-    resource_catalogue_base_url = settings.RESOURCE_CATALOGUE["url"]
-    resource_catalogue_url = f"{resource_catalogue_base_url}/{resource_catalogue_version}"
-    context = {"url": resource_catalogue_url, "catalogue_data_url": settings.CATALOGUE_DATA["url"]}
-
-    return render(request, "home/catalogue_page.html", context=context)
+    return render(
+        request,
+        "home/catalogue_page.html",
+        {
+            "url": f"{settings.RESOURCE_CATALOGUE['url']}/{settings.RESOURCE_CATALOGUE['version']}",
+            "catalogue_data_url": settings.CATALOGUE_DATA["url"],
+        },
+    )
 
 
 def workspaces_page_view(request):
-    workspaces_version = settings.WORKSPACE_UI["version"]
-    workspaces_base_url = settings.WORKSPACE_UI["url"]
-    workspaces_url = f"{workspaces_base_url}/{workspaces_version}"
-    context = {"url": workspaces_url}
-
-    return render(request, "home/workspaces_page.html", context=context)
+    return render(
+        request,
+        "home/workspaces_page.html",
+        {"url": f"{settings.WORKSPACE_UI['url']}/{settings.WORKSPACE_UI['version']}"},
+    )
 
 
 def accounts_page_view(request):
