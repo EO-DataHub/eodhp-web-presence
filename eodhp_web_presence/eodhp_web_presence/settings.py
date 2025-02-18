@@ -271,6 +271,7 @@ else:
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "eodhp_web_presence"
+WAGTAILIMAGES_MAX_UPLOAD_SIZE = 30 * 1024 * 1024  # 30MB
 
 # Search
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
