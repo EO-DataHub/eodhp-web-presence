@@ -1,3 +1,5 @@
+@import url("./fira.scss");
+
 $mobile-breakpoint: 1200px;
 
 .dark-theme {
@@ -5,6 +7,8 @@ $mobile-breakpoint: 1200px;
   --text-primary: #fff;
   --text-secondary: #757575;
   --button-bg: #4c72ba;
+  --button-hover: #3f64ab;
+  --button-disabled: #f0f0f3;
   --button-text: #fff;
   --icon-primary: #fff;
   --icon-secondary: #2c2c2c;
@@ -23,6 +27,8 @@ $mobile-breakpoint: 1200px;
   --text-primary: #000;
   --text-secondary: #969696;
   --button-bg: #4c72ba;
+  --button-hover: #3f64ab;
+  --button-disabled: #f0f0f3;
   --button-text: #fff;
   --icon-primary: #333;
   --icon-secondary: #666;
@@ -37,7 +43,7 @@ $mobile-breakpoint: 1200px;
 }
 
 html * {
-  font-family: Inter, sans-serif;
+  font-family: Fira Sans, sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -110,6 +116,55 @@ ul li {
   font-size: 1rem;
   display: list-item;
   list-style: disc inside;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 60px;
+  letter-spacing: -0.4px;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: -0.16px;
+}
+
+h3 {
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 36px;
+  letter-spacing: -0.12px;
+}
+
+h4 {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 30px;
+  letter-spacing: -0.1px;
+}
+
+h5 {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: -0.08px;
+}
+
+h6 {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: -0.04px;
+}
+
+
+p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 h2,
