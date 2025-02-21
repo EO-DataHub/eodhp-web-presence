@@ -9,11 +9,19 @@
   &.primary-button {
     background-color: var(--button-bg);
     color: var(--button-text);
+
+    &:hover {
+      background-color: var(--button-hover);
+    }
   }
 
   &.secondary-button {
     background-color: transparent;
     color: var(--button-bg);
     border: 1px solid var(--button-bg);
+  }
+
+  &.disabled {
+    background-color: var(--button-disabled);
   }
 }
