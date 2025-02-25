@@ -10,6 +10,7 @@ class HeaderMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
+        response["Very"] = "Cookie"
         if not IS_PROD:
             response["X-Robots-Tag"] = "noindex"
         return response
