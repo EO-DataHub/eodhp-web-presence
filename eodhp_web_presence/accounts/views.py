@@ -12,7 +12,10 @@ def sign_in(request):
 
     redirect_tag = f"?rd={quote(referer)}" if referer else ""
 
-    return redirect(f"{settings.KEYCLOAK['OAUTH2_PROXY_SIGNIN']}{redirect_tag}")
+    response = redirect(f"{settings.KEYCLOAK['OAUTH2_PROXY_SIGNIN']}{redirect_tag}")
+    response["Vary"] = "Cookie"
+
+    return response
 
 
 def sign_out(request):
