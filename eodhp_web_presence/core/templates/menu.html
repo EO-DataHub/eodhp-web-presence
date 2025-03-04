@@ -2,15 +2,17 @@
 
 <!--    if (sessionStorage.getItem('just-authenticated' === true) {-->
 <!--      sessionStorage.removeItem('just-authenticated');-->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    {% if set_session_storage %}
-      window.location.reload();
-      {% request.session.set_session_storage = False %}
-    {% endif %}
-    }
-  });
-</script>
+<!--<script>-->
+<!--  console.log('START');-->
+<!--  document.addEventListener('DOMContentLoaded', function() {-->
+<!--    {% if set_session_storage %}-->
+<!--      window.location.reload();-->
+<!--      {% request.session.set_session_storage = False %}-->
+<!--    {% endif %}-->
+<!--    }-->
+<!--  });-->
+<!--  console.log('END');-->
+<!--</script>-->
 
 <div class="menu top" id="mainMenu">
   <div class="menu__toggle" id="menuToggle">

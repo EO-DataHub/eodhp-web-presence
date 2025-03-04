@@ -14,7 +14,6 @@ def sign_in(request):
 
     response = redirect(f"{settings.KEYCLOAK['OAUTH2_PROXY_SIGNIN']}{redirect_tag}")
     response["Vary"] = "Cookie"
-    response["set_session_storage"] = True
 
     return response
 
