@@ -12,9 +12,9 @@ beautifulsoup4==4.11.2
     # via wagtail
 black==25.1.0
     # via eodhp-website (pyproject.toml)
-boto3==1.36.21
+boto3==1.37.10
     # via eodhp-website (pyproject.toml)
-botocore==1.36.21
+botocore==1.37.10
     # via
     #   boto3
     #   s3transfer
@@ -34,7 +34,7 @@ defusedxml==0.7.1
     # via willow
 distlib==0.3.9
     # via virtualenv
-django==5.0.12
+django==5.0.13
     # via
     #   django-filter
     #   django-modelcluster
@@ -82,15 +82,15 @@ gibberish==0.4.0
     # via eodhp-website (pyproject.toml)
 html5lib==1.1
     # via wagtail
-identify==2.6.7
+identify==2.6.9
     # via pre-commit
 idna==3.10
     # via requests
 iniconfig==2.0.0
     # via pytest
-isort==6.0.0
+isort==6.0.1
     # via eodhp-website (pyproject.toml)
-jinja2==3.1.5
+jinja2==3.1.6
     # via eodhp-website (pyproject.toml)
 jmespath==1.0.1
     # via
@@ -140,7 +140,7 @@ pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
-pytest==8.3.4
+pytest==8.3.5
     # via
     #   eodhp-website (pyproject.toml)
     #   pytest-django
@@ -164,9 +164,9 @@ pyyaml==6.0.2
     #   pre-commit
 requests==2.32.3
     # via wagtail
-ruff==0.9.6
+ruff==0.9.10
     # via eodhp-website (pyproject.toml)
-s3transfer==0.11.2
+s3transfer==0.11.4
     # via boto3
 six==1.17.0
     # via
@@ -179,7 +179,7 @@ sqlparse==0.5.3
     # via django
 telepath==0.3.1
     # via wagtail
-trove-classifiers==2025.1.15.22
+trove-classifiers==2025.3.3.18
     # via validate-pyproject
 urllib3==2.3.0
     # via
@@ -187,7 +187,7 @@ urllib3==2.3.0
     #   requests
 validate-pyproject[all]==0.23
     # via eodhp-website (pyproject.toml)
-virtualenv==20.29.2
+virtualenv==20.29.3
     # via pre-commit
 wagtail==5.2.8
     # via
