@@ -121,12 +121,12 @@ MIDDLEWARE = [
     "wagtailcache.cache.FetchFromCacheMiddleware",  # must be last
 ]
 
+if OIDC_CLAIMS["ENABLED"]:
+    MIDDLEWARE.insert(7, "eodhp_web_presence.settings.claims_middleware_factory")
+
 if DEBUG:
     MIDDLEWARE.remove("wagtailcache.cache.UpdateCacheMiddleware")
     MIDDLEWARE.remove("wagtailcache.cache.FetchFromCacheMiddleware")
-
-if OIDC_CLAIMS["ENABLED"]:
-    MIDDLEWARE.insert(7, "eodhp_web_presence.settings.claims_middleware_factory")
 
 WHITENOISE_MAX_AGE = env("STATIC_FILE_CACHE_LENGTH", cast=int, default=3600)
 CACHES = {
