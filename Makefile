@@ -1,5 +1,5 @@
-.PHONY: dockerbuild dockerpush test testonce ruff black lint isort pre-commit-check requirements-update requirements setup
-VERSION ?= 0.1.26
+.PHONY: dockerbuild dockerpush test testonce ruff black lint isort pre-commit-check requirements-update requirements setup deploy
+VERSION ?= 0.1.40-rc1
 IMAGENAME = eodhp-web-presence
 DOCKERREPO ?= public.ecr.aws/eodh
 
@@ -11,6 +11,8 @@ dockerbuild:
 dockerpush:
 	docker tag ${IMAGENAME}:${VERSION} ${DOCKERREPO}/${IMAGENAME}:${VERSION}
 	docker push ${DOCKERREPO}/${IMAGENAME}:${VERSION}
+
+deploy: dockerbuild dockerpush
 
 test:
 	(set -a; . ./.env; DEBUG=True PAGE_CACHE_LENGTH=0 STATIC_FILE_CACHE_LENGTH=0 ./venv/bin/ptw ./eodhp_web_presence)

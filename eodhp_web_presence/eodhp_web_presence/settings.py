@@ -122,7 +122,9 @@ MIDDLEWARE = [
 ]
 
 if OIDC_CLAIMS["ENABLED"]:
-    MIDDLEWARE.insert(7, "eodhp_web_presence.settings.claims_middleware_factory")
+    # must be after AuthenticationMiddleware
+    auth_idx = MIDDLEWARE.index("django.contrib.auth.middleware.AuthenticationMiddleware")
+    MIDDLEWARE.insert(auth_idx + 1, "eodhp_web_presence.settings.claims_middleware_factory")
 
 if DEBUG:
     MIDDLEWARE.remove("wagtailcache.cache.UpdateCacheMiddleware")
@@ -289,9 +291,7 @@ WAGTAILADMIN_BASE_URL = env("BASE_URL", default="www.example.com")
 SECRET_KEY = env("SECRET_KEY", default="None")
 
 # SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = [
-    host.strip() for host in env("ALLOWED_HOSTS", default="localhost, 127.0.0.1").split(",")
-]
+ALLOWED_HOSTS = [host.strip() for host in env("ALLOWED_HOSTS", default="localhost, 127.0.0.1").split(",")]
 
 CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
 

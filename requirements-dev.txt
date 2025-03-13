@@ -12,9 +12,9 @@ beautifulsoup4==4.11.2
     # via wagtail
 black==25.1.0
     # via eodhp-website (pyproject.toml)
-boto3==1.37.10
+boto3==1.37.11
     # via eodhp-website (pyproject.toml)
-botocore==1.37.10
+botocore==1.37.11
     # via
     #   boto3
     #   s3transfer
@@ -179,7 +179,7 @@ sqlparse==0.5.3
     # via django
 telepath==0.3.1
     # via wagtail
-trove-classifiers==2025.3.3.18
+trove-classifiers==2025.3.13.13
     # via validate-pyproject
 urllib3==2.3.0
     # via
