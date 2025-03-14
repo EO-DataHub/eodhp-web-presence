@@ -31,7 +31,11 @@ def workspaces_page_view(request):
 
 
 def accounts_page_view(request):
+    current_username = request.user.username
     return render(
         request=request,
         template_name="home/accounts_page.html",
+        context={
+            "username": current_username,
+        },
     )
