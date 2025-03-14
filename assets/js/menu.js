@@ -1,5 +1,7 @@
 import $ from 'jquery';
 
+import { PLACEHOLDER_WORKSPACE } from '../placeholders/workspaces';
+
 $(document).ready(function () {
   // Theme toggle
   $('#dark-theme-toggle').on('click', function () {
@@ -62,4 +64,28 @@ $(document).ready(function () {
       $('.dropdown').removeClass('open');
     }
   });
+
+
+  // Collect available user workspaces
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    const numWorkspaces = 3;
+    const PLACEHOLDER_WORKSPACES = Array.from(
+      { length: numWorkspaces },
+      () => PLACEHOLDER_WORKSPACE[0],
+    );
+    parseWorkspacesAndUpdateMenu(PLACEHOLDER_WORKSPACES);
+  } else {
+    $.ajax({
+      url: '/api/workspaces',
+      method: 'GET',
+      dataType: 'json',
+      success: function (response) {
+        const workspaces = response;
+        parseWorkspacesAndUpdateMenu(workspaces);
+      },
+      error: function (error) {
+        console.error(error);
+      },
+    });
+  }
 });
