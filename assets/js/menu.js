@@ -91,6 +91,7 @@ $(document).ready(function () {
       method: 'GET',
       dataType: 'json',
       success: function (response) {
+        console.log('Response:', response);
         const workspaces = response.data;
         console.log('Retrieved workspaces:', workspaces);
         parseWorkspacesAndUpdateMenu(workspaces);
