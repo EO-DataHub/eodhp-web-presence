@@ -67,7 +67,7 @@ $(document).ready(function () {
 
   const parseWorkspacesAndUpdateMenu = (workspaces) => {
     const notebookDropdown = $('#notebook-dropdown');
-    if (workspaces.length > 0) {
+    if (workspaces && workspaces.length > 0) {
       notebookDropdown.html('');
       workspaces.forEach((workspace) => {
         const subdomain = window.location.hostname.split('.')[0];
@@ -89,8 +89,10 @@ $(document).ready(function () {
     $.ajax({
       url: '/api/workspaces',
       method: 'GET',
+      dataType: 'json',
       success: function (response) {
         const workspaces = response.data;
+        console.log('Retrieved workspaces:', workspaces);
         parseWorkspacesAndUpdateMenu(workspaces);
       },
       error: function (error) {
