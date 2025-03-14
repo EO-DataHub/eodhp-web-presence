@@ -148,3 +148,23 @@
     {% endif %}
   </div>
 </div>
+
+<script>
+  // We need this as a script tag to be able to use Django template tags
+  let notebookLink = "{{ notebooks_url | safe }}";
+
+  const parseWorkspacesAndUpdateMenu = function(workspaces) {
+    const notebookDropdown = document.getElementById('notebook-dropdown');
+    if (!notebookDropdown) {
+      return;
+    }
+    if (workspaces && workspaces.length > 0) {
+      notebookDropdown.innerHTML = '';
+      workspaces.forEach(function(workspace) {
+        const workspaceNotebookLink = notebookLink.replace('{workspace}', workspace.name);
+        const workspaceLink = '<a href="' + workspaceNotebookLink + '" class="dropdown__item">' + workspace.name + '</a>';
+        notebookDropdown.insertAdjacentHTML('beforeend', workspaceLink);
+      });
+    }
+  };
+</script>

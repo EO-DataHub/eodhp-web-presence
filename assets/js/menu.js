@@ -65,17 +65,6 @@ $(document).ready(function () {
     }
   });
 
-  const parseWorkspacesAndUpdateMenu = (workspaces) => {
-    const notebookDropdown = $('#notebook-dropdown');
-    if (workspaces && workspaces.length > 0) {
-      notebookDropdown.html('');
-      workspaces.forEach((workspace) => {
-        const subdomain = window.location.hostname.split('.')[0];
-        const workspaceLink = `<a href="https://${workspace.name}.${subdomain}.eodatahub-workspaces.org.uk/notebooks" class="dropdown__item">${workspace.name}</a>`;
-        notebookDropdown.append(workspaceLink);
-      });
-    }
-  };
 
   // Collect available user workspaces
   if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
