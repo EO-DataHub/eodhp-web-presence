@@ -104,6 +104,7 @@
     <!-- <div class="menu__item">
       <img id="dark-theme-toggle" src="{% static 'img/general/theme-toggle.svg' %}" alt="Toggle theme" />
     </div> -->
+    {% if user.is_authenticated %}
     <div class="menu__item dropdown">
       <div class="dropdown__toggle">
         Notebooks
@@ -113,6 +114,12 @@
         <a href="#" class="dropdown__disabled">No Workspaces</a>
       </div>
     </div>
+    {% else %}
+    <div class="menu__item">
+      <a aria-current="page" href="{% url 'sign_in' %}">Notebooks</a>
+    </div>
+    {% endif %}
+
     <div class="menu__item">
       <a href="/static-apps/stac-browser/main/index.html#//api/catalogue/stac/?.language=en">Catalogue</a>
     </div>
