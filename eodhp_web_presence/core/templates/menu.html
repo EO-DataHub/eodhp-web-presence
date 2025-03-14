@@ -104,8 +104,14 @@
     <!-- <div class="menu__item">
       <img id="dark-theme-toggle" src="{% static 'img/general/theme-toggle.svg' %}" alt="Toggle theme" />
     </div> -->
-    <div class="menu__item">
-      <a href="{{ notebooks_url }}" target="_blank">Notebooks</a>
+    <div class="menu__item dropdown">
+      <div class="dropdown__toggle">
+        Notebooks
+        <img class="arrow" src="{% static 'img/general/arrow-down.svg' %}" alt="Expand" />
+      </div>
+      <div id="notebook-dropdown" class="dropdown__menu dropdown__notebooks">
+        <a href="#" class="dropdown__disabled">No Workspaces</a>
+      </div>
     </div>
     <div class="menu__item">
       <a href="/static-apps/stac-browser/main/index.html#//api/catalogue/stac/?.language=en">Catalogue</a>

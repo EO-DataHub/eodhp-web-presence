@@ -1,5 +1,7 @@
 import $ from 'jquery';
 
+import { PLACEHOLDER_WORKSPACE } from '../placeholders/workspaces';
+
 $(document).ready(function () {
   // Theme toggle
   $('#dark-theme-toggle').on('click', function () {
@@ -62,4 +64,38 @@ $(document).ready(function () {
       $('.dropdown').removeClass('open');
     }
   });
+
+  const parseWorkspacesAndUpdateMenu = (workspaces) => {
+    const notebookDropdown = $('#notebook-dropdown');
+    if (workspaces.length > 0) {
+      notebookDropdown.html('');
+      workspaces.forEach((workspace) => {
+        const subdomain = window.location.hostname.split('.')[0];
+        const workspaceLink = `<a href="https://${workspace.name}.${subdomain}.eodatahub-workspaces.org.uk/notebooks" class="dropdown__item">${workspace.name}</a>`;
+        notebookDropdown.append(workspaceLink);
+      });
+    }
+  };
+
+  // Collect available user workspaces
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    const numWorkspaces = 3;
+    const PLACEHOLDER_WORKSPACES = Array.from(
+      { length: numWorkspaces },
+      () => PLACEHOLDER_WORKSPACE[0],
+    );
+    parseWorkspacesAndUpdateMenu(PLACEHOLDER_WORKSPACES);
+  } else {
+    $.ajax({
+      url: '/api/workspaces',
+      method: 'GET',
+      success: function (response) {
+        const workspaces = response.data;
+        parseWorkspacesAndUpdateMenu(workspaces);
+      },
+      error: function (error) {
+        console.error(error);
+      },
+    });
+  }
 });
