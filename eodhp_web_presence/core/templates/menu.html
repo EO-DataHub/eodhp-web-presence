@@ -105,9 +105,22 @@
     <!-- <div class="menu__item">
       <img id="dark-theme-toggle" src="{% static 'img/general/theme-toggle.svg' %}" alt="Toggle theme" />
     </div> -->
-    <div class="menu__item">
-      <a href="{{ notebooks_url }}" target="_blank">Notebooks</a>
+    {% if user.is_authenticated %}
+    <div class="menu__item dropdown">
+      <div class="dropdown__toggle">
+        Notebooks
+        <img class="arrow" src="{% static 'img/general/arrow-down.svg' %}" alt="Expand" />
+      </div>
+      <div id="notebook-dropdown" class="dropdown__menu dropdown__notebooks">
+        <a href="#" class="dropdown__disabled">No Workspaces</a>
+      </div>
     </div>
+    {% else %}
+    <div class="menu__item">
+      <a aria-current="page" href="{% url 'sign_in' %}">Notebooks</a>
+    </div>
+    {% endif %}
+
     <div class="menu__item">
       <a href="/static-apps/stac-browser/main/index.html#//api/catalogue/stac/?.language=en">Catalogue</a>
     </div>
@@ -136,3 +149,23 @@
     {% endif %}
   </div>
 </div>
+
+<script>
+  // We need this as a script tag to be able to use Django template tags
+  let notebookLink = "{{ notebooks_url | safe }}";
+
+  const parseWorkspacesAndUpdateMenu = function(workspaces) {
+    const notebookDropdown = document.getElementById('notebook-dropdown');
+    if (!notebookDropdown) {
+      return;
+    }
+    if (workspaces && workspaces.length > 0) {
+      notebookDropdown.innerHTML = '';
+      workspaces.forEach(function(workspace) {
+        const workspaceNotebookLink = notebookLink.replace('{workspace}', workspace.name);
+        const workspaceLink = '<a href="' + workspaceNotebookLink + '" class="dropdown__item">' + workspace.name + '</a>';
+        notebookDropdown.insertAdjacentHTML('beforeend', workspaceLink);
+      });
+    }
+  };
+</script>
