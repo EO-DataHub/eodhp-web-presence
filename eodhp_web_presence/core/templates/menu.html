@@ -115,6 +115,16 @@
     </div>
 
     {% if user.is_authenticated %}
+    {% if user.is_authenticated %}
+      <script>
+        console.log("Current user:", {
+          username: "{{ user.username }}",
+          email: "{{ user.email }}",
+          firstName: "{{ user.first_name }}",
+          lastName: "{{ user.last_name }}"
+        });
+      </script>
+    {% endif %}
     <div class="menu__item dropdown">
       <div class="dropdown__toggle">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="avatar">
