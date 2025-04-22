@@ -21,6 +21,10 @@ $(document).ready(function () {
         <div class="account-card__header">
           <h2>${account.name}</h2>
         </div>
+        <div class="account-card__info ">
+          <h3>Status</h3>
+          <p><strong>Account Owner:</strong> ${account.status}</p>
+        </div>
         <div class="account-card__info">
           <h3>Contact</h3>
           <p><strong>Account Owner:</strong> ${account.accountOwner}</p>
