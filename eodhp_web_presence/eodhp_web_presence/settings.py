@@ -291,7 +291,9 @@ WAGTAILADMIN_BASE_URL = env("BASE_URL", default="www.example.com")
 SECRET_KEY = env("SECRET_KEY", default="None")
 
 # SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = [host.strip() for host in env("ALLOWED_HOSTS", default="localhost, 127.0.0.1").split(",")]
+ALLOWED_HOSTS = [
+    host.strip() for host in env("ALLOWED_HOSTS", default="localhost, 127.0.0.1").split(",")
+]
 
 CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
 
