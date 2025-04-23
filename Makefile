@@ -1,11 +1,9 @@
 .PHONY: dockerbuild dockerpush test testonce ruff black lint isort pre-commit-check requirements-update requirements setup deploy
-VERSION ?= 0.1.40-rc1
+VERSION ?= latest
 IMAGENAME = eodhp-web-presence
 DOCKERREPO ?= public.ecr.aws/eodh
 
 dockerbuild:
-	pip-compile --output-file=requirements.txt -U
-	pip-compile --extra=dev --output-file=requirements-dev.txt -U
 	DOCKER_BUILDKIT=1 docker build -t ${IMAGENAME}:${VERSION} .
 
 dockerpush:
@@ -59,7 +57,7 @@ requirements-update: venv
 	./venv/bin/pip-compile --extra dev -o requirements-dev.txt -U
 
 venv:
-	virtualenv -p python3.11 venv
+	virtualenv -p python3.12 venv
 	./venv/bin/python -m ensurepip -U 
 	./venv/bin/pip3 install pip-tools
 

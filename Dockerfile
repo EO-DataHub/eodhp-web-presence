@@ -32,8 +32,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install --upgrade pip
-RUN --mount=type=cache,target=/root/.cache/pip \
-    python -m pip install gunicorn==22.0.0 gevent==24.2.1
 
 WORKDIR /app
 COPY requirements.txt .

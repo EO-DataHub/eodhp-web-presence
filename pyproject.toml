@@ -14,13 +14,13 @@
 
 [project]
 name = "eodhp-website"
-version = "0.1.22"
+dynamic = ["version"]
 
 description = "Wagtail-based website for EODHP"
 readme = "README.md"
 
-# Our target version is Python 3.11, but it may work with earlier versions.
-requires-python = ">=3.11"
+# Our target version is Python 3.12, but it may work with earlier versions.
+requires-python = ">=3.12"
 
 license = { file = "LICENSE" }
 
@@ -54,7 +54,7 @@ classifiers = [
   # "License :: Other/Proprietary License",
 
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3 :: Only",
 ]
 
@@ -78,6 +78,8 @@ dependencies = [
   "pyjwt",
   "jinja2>=3.1.4",
   "wagtailcodeblock>=1.29.0.2",
+  "gunicorn",
+  "gevent",
 ]
 
 # List additional groups of dependencies here (e.g. development
@@ -122,15 +124,18 @@ changelog = "https://github.com/UKEODHP/eodhp-web-presence/main/CHANGELOG.md"
 [build-system]
 # These are the assumed default build requirements from pip:
 # https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
-requires = ["setuptools>=69.0.0", "wheel"]
+requires = ["setuptools>=69.0.0", "wheel", "setuptools-git-versioning>=2.0,<3"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools-git-versioning]
+enabled = true
 
 [tool.setuptools]
 packages = []
 
 [tool.black]
 line-length = 100
-target-version = ['py311']
+target-version = ['py312']
 
 
 [tool.isort]
@@ -138,7 +143,7 @@ skip_glob = ["*/migrations/*"]
 
 [tool.ruff]
 line-length = 110
-target-version = "py311"
+target-version = "py312"
 
 exclude = [
   ".bzr",
