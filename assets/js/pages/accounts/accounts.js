@@ -23,7 +23,7 @@ $(document).ready(function () {
         </div>
         <div class="account-card__info ">
           <h3>Status</h3>
-          <p><strong>Account Owner:</strong> ${account.status}</p>
+          <p><strong>${account.status}</strong></p>
         </div>
         <div class="account-card__info">
           <h3>Contact</h3>
