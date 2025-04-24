@@ -129,7 +129,7 @@
         </svg>
       </div>
       <div class="dropdown__menu">
-        <a href="/accounts">Manage Account</a>
+        <a href="/accounts">{{ user.username }}</a>
         <a href="{% url 'sign_out' %}">Sign out</a>
       </div>
     </div>
