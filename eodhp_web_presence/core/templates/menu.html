@@ -60,8 +60,9 @@
       <a href="{{ notebooks_url }}" target="_blank">Notebooks</a>
     </div>
 
-    <div class="menu__item single-link mobile-only">
-      <a href="/static-apps/stac-browser/main/index.html#//api/catalogue/stac/?.language=en">
+    <!-- Catalogue dropdown -->
+    <div class="menu__item dropdown mobile-only">
+      <div class="dropdown__toggle">
         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 576 512" height="200px"
           width="200px" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -69,8 +70,18 @@
           </path>
         </svg>
         Catalogue
-      </a>
+        <img class="arrow" src="{% static 'img/general/arrow-down.svg' %}" alt="Expand" />
+      </div>
+      <div class="dropdown__menu">
+        <!-- Browse, Maps, My Data (login only) -->
+        <a href="/static-apps/stac-browser/main/index.html#//api/catalogue/stac/?.language=en">Browse</a>
+        <a href="/static-apps/sg-rc-ui/prod/index.html#/finder/sentinel2_ard">Maps</a>
+        {% if user.is_authenticated %}
+          <a href="/static-apps/sg-rc-ui/prod/index.html#/my-data">My Data</a>
+        {% endif %}
+      </div>
     </div>
+
     <div class="menu__item single-link mobile-only">
       <a href="/workspaces">
         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="200px" width="200px"
@@ -112,8 +123,19 @@
     <div class="menu__item">
       <a href="{{ notebooks_url }}" target="_blank">Notebooks</a>
     </div>
-    <div class="menu__item">
-      <a href="/static-apps/stac-browser/main/index.html#//api/catalogue/stac/?.language=en">Catalogue</a>
+    <div class="menu__item dropdown">
+      <div class="dropdown__toggle">
+        Catalogue
+        <img class="arrow" src="{% static 'img/general/arrow-down.svg' %}" alt="Expand" />
+      </div>
+      <div class="dropdown__menu">
+        <!-- Browse, Maps, My Data -->
+        <a href="/static-apps/stac-browser/main/index.html#//api/catalogue/stac/?.language=en">Browse</a>
+        <a href="/static-apps/sg-rc-ui/prod/index.html#/finder/sentinel2_ard">Maps</a>
+        {% if user.is_authenticated %}
+          <a href="/static-apps/sg-rc-ui/prod/index.html#/my-data">My Data</a>
+        {% endif %}
+      </div>
     </div>
     <div class="menu__item">
       <a href="/workspaces">Workspaces</a>
