@@ -123,6 +123,20 @@
         {% endif %}
       </div>
     </div>
+
+        <!-- About dropdown -->
+    <div class="menu__item dropdown">
+      <div class="dropdown__toggle">
+        About
+        <img class="arrow" src="{% static 'img/general/arrow-down.svg' %}" alt="Expand" />
+      </div>
+      <div class="dropdown__menu">
+        <!-- Hub, Overview of Applications, Access Paths -->
+        <a href="/about/hub">Earth Observation Data Hub</a>
+        <a href="/about/applications">Access Points</a>
+      </div>
+    </div>
+
     <div class="menu__item">
       <a href="/workspaces">Workspaces</a>
     </div>
