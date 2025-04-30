@@ -125,7 +125,7 @@
       }
     }
 
-    &__menu {
+    &__menu, &__menu_r {
       display: none;
       position: absolute;
       top: 46px;
@@ -156,7 +156,7 @@
     }
 
     &.open {
-      .dropdown__menu {
+      .dropdown__menu, .dropdown__menu_r {
         display: block;
       }
 
@@ -239,7 +239,7 @@
         display: flex;
         flex-direction: column;
 
-        &__menu {
+        &__menu, &__menu_r {
           position: static;
           box-shadow: none;
           border: #d3d3d32b;
