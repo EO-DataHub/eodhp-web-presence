@@ -93,6 +93,9 @@
     }
 
     .dropdown__menu {
+      left: 0px !important;
+    }
+    .dropdown__menu_r {
       left: -110px !important;
     }
   }
@@ -122,11 +125,11 @@
       }
     }
 
-    &__menu {
+    &__menu, &__menu_r {
       display: none;
       position: absolute;
       top: 46px;
-      left: -40px;
+      left: 0px;
       background-color: var(--background);
 
       min-width: 200px;
@@ -153,7 +156,7 @@
     }
 
     &.open {
-      .dropdown__menu {
+      .dropdown__menu, .dropdown__menu_r {
         display: block;
       }
 
@@ -236,7 +239,7 @@
         display: flex;
         flex-direction: column;
 
-        &__menu {
+        &__menu, &__menu_r {
           position: static;
           box-shadow: none;
           border: #d3d3d32b;
