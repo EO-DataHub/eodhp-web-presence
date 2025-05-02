@@ -8,7 +8,7 @@
     email: "{{ user.email|default:'test'|escapejs }}",
     subject: "Insert one of the following: Accessing Site, Data Issue, Website Issue, Other",
   });
-  console.log('data:', user);
+  console.log('data:', "{{ user }}");
   </script>
   </body>
   </html>
