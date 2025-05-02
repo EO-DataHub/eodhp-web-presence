@@ -5,7 +5,7 @@
 <script type="text/javascript">window.Beacon('init', 'be95557e-ac63-4651-b7eb-756d544715f7')</script>
 <script type="text/javascript">window.Beacon('prefill', {
     name: "{{ user.username|default:''|escapejs }}",
-    email: "{{ user.email|default:''|escapejs }}",
+    email: "{{ user.email|default:'test'|escapejs }}",
     subject: "Insert one of the following: Accessing Site, Data Issue, Website Issue, Other",
   })</script>
   </body>
