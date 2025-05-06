@@ -27,15 +27,15 @@ class ClaimsBackend(BaseBackend):
             user.set_unusable_password()
             user.save()
 
-        if not user.is_active:
-            logger.warning(
-                "User '%s' is not active. They may have issues performing some actions.", user
-            )
-
         # Check admin status
-        if claims.admin != user.is_superuser or claims.admin != user.is_staff:
+        if (
+            claims.admin != user.is_superuser
+            or claims.admin != user.is_staff
+            or claims.admin != user.is_active
+        ):
             user.is_superuser = claims.admin
             user.is_staff = claims.admin
+            user.is_active = claims.admin
             user.save()
 
         user_groups = {
