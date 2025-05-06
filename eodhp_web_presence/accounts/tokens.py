@@ -14,6 +14,7 @@ CLAIMS_KEY_PATTERN = re.compile(r"(?<!\\)\.")  # delimit on '.' but not '\.'
 @dataclass(frozen=True)
 class UserClaims:
     username: str | None = None
+    email: str | None = None
     admin: bool = False
     moderator: bool = False
     editor: bool = False
@@ -21,6 +22,7 @@ class UserClaims:
     def to_dict(self) -> dict[str, str | bool]:
         return {
             "username": self.username,
+            "email": self.email,
             "admin": self.admin,
             "moderator": self.moderator,
             "editor": self.editor,
@@ -51,6 +53,11 @@ def extract_claims(auth_header: str | None) -> UserClaims:
         )
         return UserClaims()
 
+    email = _extract_field(settings.OIDC_CLAIMS["EMAIL_PATH"], data)
+    if not email or not isinstance(email, str):
+        logger.warning("Email '%s' is not str type ('%s'). Email ignored.", email, type(email))
+        return UserClaims()
+
     roles: list[str] = (
         _extract_field(settings.OIDC_CLAIMS["ROLES_PATH"], data) or []
     )  # if None then convert to empty list
@@ -67,7 +74,7 @@ def extract_claims(auth_header: str | None) -> UserClaims:
         if role in roles
     }
 
-    return UserClaims(username=username, **permissions)
+    return UserClaims(username=username, email=email, **permissions)
 
 
 def _extract_field(key_path: str, claims: ClaimsDict) -> ClaimsField:
