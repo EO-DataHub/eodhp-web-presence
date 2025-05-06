@@ -20,6 +20,7 @@ factory = RequestFactory()
     OIDC_CLAIMS={
         "ENABLED": True,
         "USERNAME_PATH": "username",
+        "EMAIL_PATH": "email",
         "ROLES_PATH": "roles",
         "SUPERUSER_ROLE": "admin",
         "MODERATOR_ROLE": "moderator",
@@ -41,6 +42,7 @@ class ClaimsMiddlewareTestCase(TestCase):
         auth_header = "Bearer " + jwt.encode(
             {
                 "username": "test-user",
+                "email": "test-user@email.com",
             },
             "secret",
             algorithm="HS256",
@@ -52,9 +54,7 @@ class ClaimsMiddlewareTestCase(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(
             request.claims,
-            UserClaims(
-                username="test-user",
-            ),
+            UserClaims(username="test-user", email="test-user@email.com"),
         )
         self.assertIsInstance(request.user, User)
         self.assertIsNotNone(User.objects.get(username="test-user"))
@@ -92,6 +92,7 @@ class ClaimsMiddlewareTestCase(TestCase):
         auth_header = "Bearer " + jwt.encode(
             {
                 "username": "test-user",
+                "email": "test-user@email.com",
             },
             "secret",
             algorithm="HS256",

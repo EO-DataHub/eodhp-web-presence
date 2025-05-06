@@ -87,6 +87,7 @@ KEYCLOAK = {
 OIDC_CLAIMS = {
     "ENABLED": env("OIDC_CLAIMS_ENABLED", cast=bool, default=False),
     "USERNAME_PATH": env("OIDC_CLAIMS_USERNAME_PATH", cast=str, default=None),
+    "EMAIL_PATH": env("OIDC_CLAIMS_EMAIL_PATH", cast=str, default=None),
     "ROLES_PATH": env("OIDC_CLAIMS_ROLES_PATH", cast=str, default=None),
     "SUPERUSER_ROLE": env("OIDC_CLAIMS_SUPERUSER_ROLE", cast=str, default=None),
     "MODERATOR_ROLE": env("OIDC_CLAIMS_MODERATOR_ROLE", cast=str, default=None),

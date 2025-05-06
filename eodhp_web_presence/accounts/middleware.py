@@ -34,6 +34,7 @@ class ClaimsMiddleware:
         )
         logger.debug("User claims: %s", json.dumps(claims.to_dict(), indent=2))
         request.claims = claims
+        request.user.email = claims.email
 
         if (
             self.force_logout

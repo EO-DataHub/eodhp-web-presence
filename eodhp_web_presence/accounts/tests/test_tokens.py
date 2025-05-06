@@ -9,6 +9,7 @@ from .. import tokens
     OIDC_CLAIMS={
         "ENABLED": True,
         "USERNAME_PATH": "username",
+        "EMAIL_PATH": "email",
         "ROLES_PATH": "roles",
         "SUPERUSER_ROLE": "admin",
         "MODERATOR_ROLE": "moderator",
@@ -20,19 +21,21 @@ class TestTokens(TestCase):
         bearer_token = "Bearer " + jwt.encode(
             {
                 "username": "test-user",
+                "email": "test-user@email.com",
             },
             "secret",
             algorithm="HS256",
         )
         self.assertEqual(
             tokens.extract_claims(bearer_token),
-            tokens.UserClaims(username="test-user", admin=False),
+            tokens.UserClaims(username="test-user", email="test-user@email.com", admin=False),
         )
 
     def test_extract_claims__valid_admin_token__success(self):
         bearer_token = "Bearer " + jwt.encode(
             {
                 "username": "test-user",
+                "email": "test-user@email.com",
                 "roles": ["admin"],
             },
             "secret",
@@ -40,7 +43,7 @@ class TestTokens(TestCase):
         )
         self.assertEqual(
             tokens.extract_claims(bearer_token),
-            tokens.UserClaims(username="test-user", admin=True),
+            tokens.UserClaims(username="test-user", email="test-user@email.com", admin=True),
         )
 
     def test_extract_claims__no_header__empty_claims(self):
@@ -71,6 +74,7 @@ class TestTokens(TestCase):
     @override_settings(
         OIDC_CLAIMS={
             "USERNAME_PATH": None,
+            "EMAIL_PATH": None,
             "ROLES_PATH": None,
             "ADMIN_ROLE": None,
         }
@@ -79,6 +83,7 @@ class TestTokens(TestCase):
         bearer_token = "Bearer " + jwt.encode(
             {
                 "username": "test-user",
+                "email": "test-user@email.com",
             },
             "secret",
             algorithm="HS256",
@@ -95,6 +100,15 @@ class TestTokens(TestCase):
         self.assertEqual(
             tokens._extract_field("username", claims),
             "test-user",
+        )
+
+    def test_extract_field__valid_key_email__success(self):
+        claims = {
+            "email": "test-user@email.com",
+        }
+        self.assertEqual(
+            tokens._extract_field("email", claims),
+            "test-user@email.com",
         )
 
     def test_extract_field__nested_valid_key__success(self):
