@@ -214,9 +214,7 @@ wheel==0.45.1
 whitenoise==6.9.0
     # via eodhp-website (pyproject.toml)
 willow[heif]==1.6.3
-    # via
-    #   wagtail
-    #   willow
+    # via wagtail
 zope-event==5.0
     # via gevent
 zope-interface==7.2
