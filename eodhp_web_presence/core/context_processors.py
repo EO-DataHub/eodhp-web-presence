@@ -1,10 +1,12 @@
+from urllib.parse import urlencode
+
 from eodhp_web_presence import settings
 
 
 def get_workspaces_ui_url(request):
     workspace = request.GET.get("workspace")
     if workspace:
-        return f"/workspaces?workspace={workspace}"
+        return f"/workspaces?{urlencode({'workspace': workspace})}"
     return "/workspaces"
 
 
