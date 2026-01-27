@@ -45,7 +45,7 @@ classifiers = [
 # For an analysis of this field vs pip's requirements files see:
 # https://packaging.python.org/discussions/install-requires-vs-requirements/
 dependencies = [
-  "Django>=4.2,<5.1",
+  "Django>=4.2.26,<4.3",
   "wagtail>=5.2,<5.3",
   "psycopg2-binary",
   "django-environ",
@@ -60,6 +60,7 @@ dependencies = [
   "wagtailcodeblock>=1.29.0.2",
   "gunicorn",
   "gevent",
+  "urllib3>=2.6.3",
 ]
 
 # List additional groups of dependencies here (e.g. development
