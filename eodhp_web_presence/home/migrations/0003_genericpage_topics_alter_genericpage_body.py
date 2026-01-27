@@ -7,7 +7,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("home", "0002_genericpage_back_button_location"),
     ]
@@ -70,9 +69,7 @@ class Migration(migrations.Migration):
                             [
                                 (
                                     "heading",
-                                    wagtail.blocks.CharBlock(
-                                        help_text="Optional heading", required=False
-                                    ),
+                                    wagtail.blocks.CharBlock(help_text="Optional heading", required=False),
                                 ),
                                 ("paragraph", wagtail.blocks.RichTextBlock(required=False)),
                                 ("image", wagtail.images.blocks.ImageChooserBlock(required=False)),

@@ -48,9 +48,7 @@ def extract_claims(auth_header: str | None) -> UserClaims:
     # Extract claims from the token, validate types
     username = _extract_field(settings.OIDC_CLAIMS["USERNAME_PATH"], data)
     if not username or not isinstance(username, str):
-        logger.warning(
-            "Username '%s' is not str type ('%s'). Username ignored.", username, type(username)
-        )
+        logger.warning("Username '%s' is not str type ('%s'). Username ignored.", username, type(username))
         return UserClaims()
 
     email = _extract_field(settings.OIDC_CLAIMS["EMAIL_PATH"], data)

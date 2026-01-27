@@ -123,20 +123,15 @@ class DocumentationPanel(blocks.StructBlock):
         help_text="Unique identifier in the url e.g. workflow",
         max_length=50,
     )
-    description = blocks.RichTextBlock(
-        required=True, help_text="Description of the documentation panel"
-    )
-    image = ImageChooserBlock(
-        required=False, help_text="Optional image for the documentation panel"
-    )
+    description = blocks.RichTextBlock(required=True, help_text="Description of the documentation panel")
+    image = ImageChooserBlock(required=False, help_text="Optional image for the documentation panel")
 
     class Meta:
         icon = "doc-full"
         label = "Documentation Panel"
         template = "blocks/documentation_panel.html"
         help_text = (
-            "Use this block to create documentation panels with title, description, "
-            "and optional image."
+            "Use this block to create documentation panels with title, description, and optional image."
         )
 
 
@@ -201,9 +196,7 @@ class GenericPage(WagtailCacheMixin, Page):
         max_length=255, blank=True, help_text="Caption or alt-text for the hero image"
     )
 
-    intro = RichTextField(
-        blank=True, help_text="A short intro paragraph that sits below the title/subtitle."
-    )
+    intro = RichTextField(blank=True, help_text="A short intro paragraph that sits below the title/subtitle.")
 
     body = StreamField(
         [

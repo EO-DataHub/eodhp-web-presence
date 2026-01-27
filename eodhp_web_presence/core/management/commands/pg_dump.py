@@ -34,9 +34,7 @@ def save_sql_file_locally(path: str, folder: str, target_folder_name: str) -> No
 
 def copy_files(source_bucket_name: str, target_bucket_name, output_folder_name: str):
     """Copies S3 files from one bucket to another"""
-    logging.info(
-        f"Copying files from {source_bucket_name} into {output_folder_name} in {target_bucket_name}"
-    )
+    logging.info(f"Copying files from {source_bucket_name} into {output_folder_name} in {target_bucket_name}")
 
     s3_client = boto3.client("s3")
     for key in s3_client.list_objects(Bucket=source_bucket_name)["Contents"]:
@@ -51,9 +49,7 @@ def copy_files(source_bucket_name: str, target_bucket_name, output_folder_name: 
 
 def copy_files_locally(source_bucket_name: str, target_folder_name, output_folder_name: str):
     """Copies S3 files into a local directory"""
-    logging.info(
-        f"Copying files from {source_bucket_name} into {output_folder_name} in {target_folder_name}"
-    )
+    logging.info(f"Copying files from {source_bucket_name} into {output_folder_name} in {target_folder_name}")
 
     s3 = boto3.resource("s3")
 
@@ -79,10 +75,10 @@ def copy_files_locally(source_bucket_name: str, target_folder_name, output_folde
 def run_sql_command(sql: str) -> str:
     return (
         f"psql "
-        f'-U {settings.DATABASES["default"]["USER"]} '
-        f'-h {settings.DATABASES["default"]["HOST"]} '
-        f'-p {settings.DATABASES["default"]["PORT"]} '
-        f'-d {settings.DATABASES["default"]["NAME"]} '
+        f"-U {settings.DATABASES['default']['USER']} "
+        f"-h {settings.DATABASES['default']['HOST']} "
+        f"-p {settings.DATABASES['default']['PORT']} "
+        f"-d {settings.DATABASES['default']['NAME']} "
         f"-c '{sql}'"
     )
 
@@ -106,20 +102,18 @@ def pg_dump(output_bucket_name: str, output_folder_name: str, backup_media_folde
     with tempfile.NamedTemporaryFile() as tf:
         tf.name = output_file
 
-        change_schema_name_command = (
-            f'ALTER SCHEMA {os.environ["ENV_NAME"]} RENAME TO {temp_schema_name}'
-        )
+        change_schema_name_command = f"ALTER SCHEMA {os.environ['ENV_NAME']} RENAME TO {temp_schema_name}"
         dump_command = (
             f"{pg_dump_path} "
-            f'-U {settings.DATABASES["default"]["USER"]} '
-            f'-h {settings.DATABASES["default"]["HOST"]} '
-            f'-p {settings.DATABASES["default"]["PORT"]} '
-            f'-d {settings.DATABASES["default"]["NAME"]} '
+            f"-U {settings.DATABASES['default']['USER']} "
+            f"-h {settings.DATABASES['default']['HOST']} "
+            f"-p {settings.DATABASES['default']['PORT']} "
+            f"-d {settings.DATABASES['default']['NAME']} "
             f"-n {temp_schema_name} "
             f"-f {output_file}"
         )
         change_schema_name_back_command = (
-            f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
+            f"ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ['ENV_NAME']}"
         )
 
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
@@ -127,7 +121,9 @@ def pg_dump(output_bucket_name: str, output_folder_name: str, backup_media_folde
         try:
             logging.info(f"Running: {change_schema_name_command}")
             subprocess.run(
-                run_sql_command(change_schema_name_command), shell=True, check=True  # nosec
+                run_sql_command(change_schema_name_command),
+                shell=True,
+                check=True,  # nosec
             )
             logging.info(f"Running: {dump_command}")
             subprocess.run(dump_command, shell=True, check=True)  # nosec
@@ -136,7 +132,9 @@ def pg_dump(output_bucket_name: str, output_folder_name: str, backup_media_folde
         finally:
             logging.info(f"Running: {change_schema_name_back_command}")
             subprocess.run(
-                run_sql_command(change_schema_name_back_command), shell=True, check=True  # nosec
+                run_sql_command(change_schema_name_back_command),
+                shell=True,
+                check=True,  # nosec
             )
 
         del os.environ["PGPASSWORD"]
@@ -179,8 +177,7 @@ class Command(BaseCommand):
 
         if not folder_name:
             folder_name = (
-                f'{os.environ.get("ENV_NAME", "default")}-'
-                f'{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}'
+                f"{os.environ.get('ENV_NAME', 'default')}-{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}"
             )
 
         if not bucket_name:

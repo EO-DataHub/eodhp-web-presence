@@ -9,7 +9,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -193,9 +192,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "aim_1_description",
-                    wagtail.fields.RichTextField(
-                        blank=True, default="Description of our first aim."
-                    ),
+                    wagtail.fields.RichTextField(blank=True, default="Description of our first aim."),
                 ),
                 ("aim_1_image", models.ImageField(blank=True, null=True, upload_to="aims/")),
                 (
@@ -204,9 +201,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "aim_2_description",
-                    wagtail.fields.RichTextField(
-                        blank=True, default="Description of our second aim."
-                    ),
+                    wagtail.fields.RichTextField(blank=True, default="Description of our second aim."),
                 ),
                 ("aim_2_image", models.ImageField(blank=True, null=True, upload_to="aims/")),
                 (
@@ -215,9 +210,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "aim_3_description",
-                    wagtail.fields.RichTextField(
-                        blank=True, default="Description of our third aim."
-                    ),
+                    wagtail.fields.RichTextField(blank=True, default="Description of our third aim."),
                 ),
                 ("aim_3_image", models.ImageField(blank=True, null=True, upload_to="aims/")),
                 (
@@ -226,9 +219,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "aim_4_description",
-                    wagtail.fields.RichTextField(
-                        blank=True, default="Description of our fourth aim."
-                    ),
+                    wagtail.fields.RichTextField(blank=True, default="Description of our fourth aim."),
                 ),
                 ("aim_4_image", models.ImageField(blank=True, null=True, upload_to="aims/")),
             ],
