@@ -82,6 +82,7 @@ dev = [
   "ruff",
   "pytest-django",
   "isort",
+  "pyright",
   "validate-pyproject[all]",
   "pre-commit",
   "gibberish"

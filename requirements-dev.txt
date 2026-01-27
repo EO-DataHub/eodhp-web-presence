@@ -118,7 +118,9 @@ markupsafe==3.0.3
 mypy-extensions==1.1.0
     # via black
 nodeenv==1.10.0
-    # via pre-commit
+    # via
+    #   pre-commit
+    #   pyright
 openpyxl==3.1.5
     # via wagtail
 packaging==26.0
@@ -129,7 +131,7 @@ packaging==26.0
     #   pytest
     #   validate-pyproject
     #   wheel
-pathspec==1.0.3
+pathspec==1.0.4
     # via black
 pillow==10.4.0
     # via
@@ -159,6 +161,8 @@ pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
+pyright==1.1.408
+    # via eodhp-website (pyproject.toml)
 pytest==9.0.2
     # via
     #   eodhp-website (pyproject.toml)
@@ -202,6 +206,8 @@ telepath==0.3.1
     # via wagtail
 trove-classifiers==2026.1.14.14
     # via validate-pyproject
+typing-extensions==4.15.0
+    # via pyright
 tzdata==2025.3
     # via django
 urllib3==2.6.3
