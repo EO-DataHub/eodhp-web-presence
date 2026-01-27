@@ -38,9 +38,7 @@ class ClaimsBackend(BaseBackend):
             user.is_active = claims.admin
             user.save()
 
-        user_groups = {
-            group.name: group for group in user.groups.filter(name__in=["Moderators", "Editors"])
-        }
+        user_groups = {group.name: group for group in user.groups.filter(name__in=["Moderators", "Editors"])}
         # Check moderator status
         if claims.moderator != ("Moderators" in user_groups):
             if claims.moderator:

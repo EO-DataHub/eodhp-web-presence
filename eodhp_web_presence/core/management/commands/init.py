@@ -30,9 +30,7 @@ def generate_date() -> datetime:
     period = datetime.datetime(2030, 12, 31) - datetime.datetime(1990, 1, 1)
     total_seconds = (period.days * 24 * 60 * 60) + period.seconds
     random_second = randrange(total_seconds)
-    return datetime.datetime(1990, 1, 1, tzinfo=pytz.UTC) + datetime.timedelta(
-        seconds=random_second
-    )
+    return datetime.datetime(1990, 1, 1, tzinfo=pytz.UTC) + datetime.timedelta(seconds=random_second)
 
 
 def generate_body() -> RichText:
@@ -40,12 +38,7 @@ def generate_body() -> RichText:
     for _ in range(randrange(1, 5)):  # no. paragraphs
         body += "<p>"
         for _ in range(randrange(1, 40)):  # no. sentences
-            body += (
-                gib.generate_word().title()
-                + " "
-                + " ".join(gib.generate_words(randrange(1, 20)))
-                + ". "
-            )
+            body += gib.generate_word().title() + " " + " ".join(gib.generate_words(randrange(1, 20))) + ". "
         body += "</p>\n\n"
 
     return RichText(body)

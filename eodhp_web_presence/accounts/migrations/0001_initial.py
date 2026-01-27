@@ -33,8 +33,7 @@ class Migration(migrations.Migration):
                     models.BooleanField(
                         default=False,
                         help_text=(
-                            "Designates that this user has all permissions without "
-                            "explicitly assigning them."
+                            "Designates that this user has all permissions without explicitly assigning them."
                         ),
                         verbose_name="superuser status",
                     ),
@@ -83,9 +82,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "date_joined",
-                    models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="date joined"
-                    ),
+                    models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined"),
                 ),
                 (
                     "groups",

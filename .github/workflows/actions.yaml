@@ -22,6 +22,14 @@ jobs:
             curl -o .pre-commit-config.yaml https://raw.githubusercontent.com/EO-DataHub/github-actions/main/.pre-commit-config-python.yaml
           fi
 
+      - name: Install uv + dev deps (for pyright)
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install uv
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          uv venv
+          uv pip install -r requirements-dev.txt
+
       - uses: pre-commit/action@v3.0.1
 
   security-scan:

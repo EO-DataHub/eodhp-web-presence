@@ -13,9 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class ClaimsMiddleware:
-    def __init__(
-        self, get_response: Callable[[HttpRequest], HttpResponse], *, force_logout: bool = True
-    ):
+    def __init__(self, get_response: Callable[[HttpRequest], HttpResponse], *, force_logout: bool = True):
         self.get_response = get_response
         self.force_logout = force_logout
 
@@ -36,11 +34,7 @@ class ClaimsMiddleware:
         request.claims = claims
         request.user.email = claims.email
 
-        if (
-            self.force_logout
-            and request.user.is_authenticated
-            and claims.username != request.user.username
-        ):
+        if self.force_logout and request.user.is_authenticated and claims.username != request.user.username:
             username = request.user.username
             logger.debug(
                 "User (%s) is authenticated but the claims username (%s) does not match",

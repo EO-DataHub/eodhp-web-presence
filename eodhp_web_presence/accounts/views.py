@@ -22,8 +22,6 @@ def sign_out(request):
         f"&post_logout_redirect_uri={quote(settings.KEYCLOAK['LOGOUT_REDIRECT_URL'])}"
     )
 
-    oauth2_proxy_logout_url = (
-        f"{settings.KEYCLOAK['OAUTH2_PROXY_SIGNOUT']}?rd={quote(keycloak_logout_url)}"
-    )
+    oauth2_proxy_logout_url = f"{settings.KEYCLOAK['OAUTH2_PROXY_SIGNOUT']}?rd={quote(keycloak_logout_url)}"
 
     return redirect(oauth2_proxy_logout_url)

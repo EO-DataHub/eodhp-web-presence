@@ -31,7 +31,7 @@ def copy_files(source_bucket_name: str, target_bucket_name, folder_name: str):
             s3_client.copy_object(
                 CopySource=f"/{source_bucket_name}/{path}",
                 Bucket=target_bucket_name,
-                Key=f'{os.environ["MEDIAFILES_LOCATION"]}/{new_path}',
+                Key=f"{os.environ['MEDIAFILES_LOCATION']}/{new_path}",
             )
     logging.info(f"Copying files from {source_bucket_name} into {target_bucket_name} complete")
 
@@ -54,10 +54,10 @@ def upload_files(export_bucket_name: str, media_bucket_name: str, folder_name: s
 def run_sql_command(sql: str) -> str:
     return (
         f"{pg_load_path} "
-        f'-U {settings.DATABASES["default"]["USER"]} '
-        f'-h {settings.DATABASES["default"]["HOST"]} '
-        f'-p {settings.DATABASES["default"]["PORT"]} '
-        f'-d {settings.DATABASES["default"]["NAME"]} '
+        f"-U {settings.DATABASES['default']['USER']} "
+        f"-h {settings.DATABASES['default']['HOST']} "
+        f"-p {settings.DATABASES['default']['PORT']} "
+        f"-d {settings.DATABASES['default']['NAME']} "
         f"-c '{sql}'"
     )
 
@@ -94,15 +94,15 @@ def pg_load(export_bucket_name: str, folder_name: str, load_media_folder: bool, 
 
         load_command = (
             f"{pg_load_path} "
-            f'-U {settings.DATABASES["default"]["USER"]} '
-            f'-h {settings.DATABASES["default"]["HOST"]} '
-            f'-p {settings.DATABASES["default"]["PORT"]} '
-            f'-d {settings.DATABASES["default"]["NAME"]} '
+            f"-U {settings.DATABASES['default']['USER']} "
+            f"-h {settings.DATABASES['default']['HOST']} "
+            f"-p {settings.DATABASES['default']['PORT']} "
+            f"-d {settings.DATABASES['default']['NAME']} "
             f"-f {tmpdir}/{database_dump_file} "
             f"--single-transaction"
         )
         change_schema_name_back_command = (
-            f'ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ["ENV_NAME"]}'
+            f"ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ['ENV_NAME']}"
         )
 
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
@@ -111,7 +111,7 @@ def pg_load(export_bucket_name: str, folder_name: str, load_media_folder: bool, 
         subprocess.run(load_command, shell=True, check=True)  # nosec
 
         set_admin_command = (
-            f"UPDATE {temp_schema_name}.accounts_user SET " f"password='password', is_active=false;"
+            f"UPDATE {temp_schema_name}.accounts_user SET password='password', is_active=false;"
         )
         logging.info(f"Running: {set_admin_command}")
         subprocess.run(run_sql_command(set_admin_command), shell=True, check=True)  # nosec
