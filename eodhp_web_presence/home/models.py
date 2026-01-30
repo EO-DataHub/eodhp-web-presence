@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from django.db import models
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
@@ -42,7 +44,7 @@ class HomePage(WagtailCacheMixin, Page):
     aim_4_description = RichTextField(blank=True, default="Description of our fourth aim.")
     aim_4_image = models.ImageField(upload_to="aims/", blank=True, null=True)
 
-    content_panels = Page.content_panels + [
+    content_panels: ClassVar[list] = Page.content_panels + [
         FieldPanel("overview_text"),
         FieldPanel("aim_1_title"),
         FieldPanel("aim_1_description"),
@@ -70,12 +72,12 @@ class AboutIndexPage(WagtailCacheMixin, Page):
 
     intro = RichTextField(blank=True)
 
-    content_panels = Page.content_panels + [
+    content_panels: ClassVar[list] = Page.content_panels + [
         FieldPanel("intro"),
     ]
 
-    subpage_types = ["GenericPage"]
-    parent_page_types = ["HomePage"]
+    subpage_types: ClassVar[list[str]] = ["GenericPage"]
+    parent_page_types: ClassVar[list[str]] = ["HomePage"]
 
 
 # ---------------------------------------------------------------------
@@ -89,12 +91,12 @@ class DataIndexPage(WagtailCacheMixin, Page):
 
     intro = RichTextField(blank=True)
 
-    content_panels = Page.content_panels + [
+    content_panels: ClassVar[list] = Page.content_panels + [
         FieldPanel("intro"),
     ]
 
-    subpage_types = ["GenericPage"]
-    parent_page_types = ["HomePage"]
+    subpage_types: ClassVar[list[str]] = ["GenericPage"]
+    parent_page_types: ClassVar[list[str]] = ["HomePage"]
 
 
 # ---------------------------------------------------------------------
@@ -108,12 +110,12 @@ class DocsIndexPage(WagtailCacheMixin, Page):
 
     intro = RichTextField(blank=True)
 
-    content_panels = Page.content_panels + [
+    content_panels: ClassVar[list] = Page.content_panels + [
         FieldPanel("intro"),
     ]
 
-    subpage_types = ["DocumentationPage"]
-    parent_page_types = ["HomePage"]
+    subpage_types: ClassVar[list[str]] = ["DocumentationPage"]
+    parent_page_types: ClassVar[list[str]] = ["HomePage"]
 
 
 class DocumentationPanel(blocks.StructBlock):
@@ -130,9 +132,7 @@ class DocumentationPanel(blocks.StructBlock):
         icon = "doc-full"
         label = "Documentation Panel"
         template = "blocks/documentation_panel.html"
-        help_text = (
-            "Use this block to create documentation panels with title, description, and optional image."
-        )
+        help_text = "Use this block to create documentation panels with title, description, and optional image."
 
 
 class DocumentationPage(WagtailCacheMixin, Page):
@@ -150,13 +150,13 @@ class DocumentationPage(WagtailCacheMixin, Page):
         help_text="Add documentation panels to this page.",
     )
 
-    content_panels = Page.content_panels + [
+    content_panels: ClassVar[list] = Page.content_panels + [
         FieldPanel("intro"),
         FieldPanel("topics"),
     ]
 
-    subpage_types = ["GenericPage"]
-    parent_page_types = ["DocsIndexPage"]
+    subpage_types: ClassVar[list[str]] = ["GenericPage"]
+    parent_page_types: ClassVar[list[str]] = ["DocsIndexPage"]
 
 
 # ---------------------------------------------------------------------
@@ -170,12 +170,12 @@ class CaseStudiesPage(WagtailCacheMixin, Page):
 
     intro = RichTextField(blank=True)
 
-    content_panels = Page.content_panels + [
+    content_panels: ClassVar[list] = Page.content_panels + [
         FieldPanel("intro"),
     ]
 
-    subpage_types = ["GenericPage"]
-    parent_page_types = ["HomePage"]
+    subpage_types: ClassVar[list[str]] = ["GenericPage"]
+    parent_page_types: ClassVar[list[str]] = ["HomePage"]
 
 
 class GenericPage(WagtailCacheMixin, Page):
@@ -192,9 +192,7 @@ class GenericPage(WagtailCacheMixin, Page):
         related_name="+",
         help_text="Main hero or banner image for the top of the page.",
     )
-    hero_caption = models.CharField(
-        max_length=255, blank=True, help_text="Caption or alt-text for the hero image"
-    )
+    hero_caption = models.CharField(max_length=255, blank=True, help_text="Caption or alt-text for the hero image")
 
     intro = RichTextField(blank=True, help_text="A short intro paragraph that sits below the title/subtitle.")
 
@@ -226,7 +224,7 @@ class GenericPage(WagtailCacheMixin, Page):
         help_text="URL to redirect to when the back button is clicked",
     )
 
-    content_panels = Page.content_panels + [
+    content_panels: ClassVar[list] = Page.content_panels + [
         MultiFieldPanel(
             [
                 FieldPanel("hero_image"),
@@ -252,7 +250,7 @@ class GenericPage(WagtailCacheMixin, Page):
         FieldPanel("back_button_location"),
     ]
 
-    parent_page_types = [
+    parent_page_types: ClassVar[list[str]] = [
         "AboutIndexPage",
         "DataIndexPage",
         "DocsIndexPage",
@@ -261,7 +259,7 @@ class GenericPage(WagtailCacheMixin, Page):
         "HomePage",
         "GenericPage",
     ]
-    subpage_types = ["GenericPage"]
+    subpage_types: ClassVar[list[str]] = ["GenericPage"]
 
     class Meta:
         verbose_name = "Generic Page"

@@ -7,7 +7,7 @@ import tempfile
 from pathlib import Path
 
 import boto3
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandParser
 
 from eodhp_web_presence import settings
 
@@ -32,7 +32,7 @@ def save_sql_file_locally(path: str, folder: str, target_folder_name: str) -> No
     shutil.copyfile(path, f"{target_folder_name}/{folder}/{path}")
 
 
-def copy_files(source_bucket_name: str, target_bucket_name, output_folder_name: str):
+def copy_files(source_bucket_name: str, target_bucket_name: str, output_folder_name: str) -> None:
     """Copies S3 files from one bucket to another"""
     logging.info(f"Copying files from {source_bucket_name} into {output_folder_name} in {target_bucket_name}")
 
@@ -47,7 +47,7 @@ def copy_files(source_bucket_name: str, target_bucket_name, output_folder_name: 
     logging.info(f"Copying files from {source_bucket_name} to {target_bucket_name} complete")
 
 
-def copy_files_locally(source_bucket_name: str, target_folder_name, output_folder_name: str):
+def copy_files_locally(source_bucket_name: str, target_folder_name: str, output_folder_name: str) -> None:
     """Copies S3 files into a local directory"""
     logging.info(f"Copying files from {source_bucket_name} into {output_folder_name} in {target_folder_name}")
 
@@ -83,7 +83,7 @@ def run_sql_command(sql: str) -> str:
     )
 
 
-def pg_dump(output_bucket_name: str, output_folder_name: str, backup_media_folder: bool, use_s3):
+def pg_dump(output_bucket_name: str, output_folder_name: str, backup_media_folder: bool, use_s3: bool) -> None:
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     logging.getLogger("database_dump").setLevel(logging.DEBUG)
 
@@ -112,9 +112,7 @@ def pg_dump(output_bucket_name: str, output_folder_name: str, backup_media_folde
             f"-n {temp_schema_name} "
             f"-f {output_file}"
         )
-        change_schema_name_back_command = (
-            f"ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ['ENV_NAME']}"
-        )
+        change_schema_name_back_command = f"ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ['ENV_NAME']}"
 
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
 
@@ -157,13 +155,13 @@ def pg_dump(output_bucket_name: str, output_folder_name: str, backup_media_folde
 class Command(BaseCommand):
     help = "Dump contents of CMS database and media"
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser: CommandParser) -> None:
         parser.add_argument("-b", "--bucket-name", type=str, default=None)
         parser.add_argument("-f", "--folder-name", type=str)
         parser.add_argument("-m", "--backup-media-folder", type=str, default="1")
         parser.add_argument("-s3", "--use-s3", default="1", type=str)
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args: object, **kwargs: object) -> None:
         bucket_name = kwargs["bucket_name"]
         folder_name = kwargs["folder_name"]
         backup_media_folder = kwargs["backup_media_folder"].lower() in [

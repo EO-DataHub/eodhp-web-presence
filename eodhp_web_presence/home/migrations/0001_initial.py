@@ -267,9 +267,7 @@ class Migration(migrations.Migration):
                                     [
                                         (
                                             "heading",
-                                            wagtail.blocks.CharBlock(
-                                                help_text="Optional heading", required=False
-                                            ),
+                                            wagtail.blocks.CharBlock(help_text="Optional heading", required=False),
                                         ),
                                         ("paragraph", wagtail.blocks.RichTextBlock(required=False)),
                                         (

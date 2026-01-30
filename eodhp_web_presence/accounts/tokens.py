@@ -39,9 +39,7 @@ def extract_claims(auth_header: str | None) -> UserClaims:
 
     token = auth_header.removeprefix("Bearer ")
     try:
-        data: dict[str, str | dict] = jwt.decode(
-            token, options={"verify_signature": False}, algorithms=["HS256"]
-        )
+        data: dict[str, str | dict] = jwt.decode(token, options={"verify_signature": False}, algorithms=["HS256"])
     except (jwt.DecodeError, jwt.ExpiredSignatureError, jwt.InvalidSignatureError):
         return UserClaims()
 

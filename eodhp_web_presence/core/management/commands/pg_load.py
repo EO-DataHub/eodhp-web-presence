@@ -1,3 +1,4 @@
+import contextlib
 import glob
 import logging
 import os
@@ -7,7 +8,7 @@ import sys
 import tempfile
 
 import boto3
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandParser
 
 from eodhp_web_presence import settings
 
@@ -18,7 +19,7 @@ media_bucket_name = os.environ["AWS_STORAGE_BUCKET_NAME"]
 temp_schema_name = "base_content"
 
 
-def copy_files(source_bucket_name: str, target_bucket_name, folder_name: str):
+def copy_files(source_bucket_name: str, target_bucket_name: str, folder_name: str) -> None:
     """Copy files from one S3 bucket to another"""
     logging.info(f"Copying files from {source_bucket_name} into {target_bucket_name}")
 
@@ -36,7 +37,7 @@ def copy_files(source_bucket_name: str, target_bucket_name, folder_name: str):
     logging.info(f"Copying files from {source_bucket_name} into {target_bucket_name} complete")
 
 
-def upload_files(export_bucket_name: str, media_bucket_name: str, folder_name: str):
+def upload_files(export_bucket_name: str, media_bucket_name: str, folder_name: str) -> None:
     """Updates files in S3 from local directory"""
     logging.info(f"Copying files from {export_bucket_name} into {media_bucket_name}")
     s3 = boto3.resource("s3")
@@ -45,10 +46,8 @@ def upload_files(export_bucket_name: str, media_bucket_name: str, folder_name: s
     for local_file_path in glob.glob(f"{root}*-static-apps/**", recursive=True):
         s3_path = local_file_path.replace(root, "")
         s3_path = os.environ["ENV_NAME"] + "-" + "-".join(s3_path.split("-")[1:])
-        try:
+        with contextlib.suppress(IsADirectoryError):
             s3.Bucket(media_bucket_name).upload_file(local_file_path, s3_path)
-        except IsADirectoryError:
-            pass
 
 
 def run_sql_command(sql: str) -> str:
@@ -62,7 +61,7 @@ def run_sql_command(sql: str) -> str:
     )
 
 
-def pg_load(export_bucket_name: str, folder_name: str, load_media_folder: bool, use_s3):
+def pg_load(export_bucket_name: str, folder_name: str, load_media_folder: bool, use_s3: bool) -> None:
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     logging.getLogger("database_load").setLevel(logging.DEBUG)
 
@@ -101,18 +100,14 @@ def pg_load(export_bucket_name: str, folder_name: str, load_media_folder: bool, 
             f"-f {tmpdir}/{database_dump_file} "
             f"--single-transaction"
         )
-        change_schema_name_back_command = (
-            f"ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ['ENV_NAME']}"
-        )
+        change_schema_name_back_command = f"ALTER SCHEMA {temp_schema_name} RENAME TO {os.environ['ENV_NAME']}"
 
         os.environ["PGPASSWORD"] = os.environ["SQL_PASSWORD"]
 
         logging.info(f"Running: {load_command}")
         subprocess.run(load_command, shell=True, check=True)  # nosec
 
-        set_admin_command = (
-            f"UPDATE {temp_schema_name}.accounts_user SET password='password', is_active=false;"
-        )
+        set_admin_command = f"UPDATE {temp_schema_name}.accounts_user SET password='password', is_active=false;"
         logging.info(f"Running: {set_admin_command}")
         subprocess.run(run_sql_command(set_admin_command), shell=True, check=True)  # nosec
 
@@ -137,14 +132,14 @@ def pg_load(export_bucket_name: str, folder_name: str, load_media_folder: bool, 
 class Command(BaseCommand):
     help = "Load CMS from S3"
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser: CommandParser) -> None:
         parser.add_argument("folder_name", type=str, default=None)
         parser.add_argument("-b", "--bucket-name", type=str, default=None)
 
         parser.add_argument("-m", "--load-media-folder", type=str, default="1")
         parser.add_argument("-s3", "--use-s3", type=str, default="1")
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args: object, **kwargs: object) -> None:
         bucket_name = kwargs["bucket_name"]
         folder_name = kwargs["folder_name"]
         load_media_folder = kwargs["load_media_folder"].lower() in ["true", "1", "t", "y", "yes"]
