@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 FROM node:22-slim AS js_builder
 
 # Only set in GitHub Actions.
@@ -16,13 +17,13 @@ COPY webpack.config.js .eslintrc.js .stylelintrc ./
 
 RUN npm run build
 
-FROM python:3.12-slim
+FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV TZ=Etc/UTC
 ENV DEBIAN_FRONTEND=noninteractive
-ENV SETUPTOOLS_USE_DISTUTILS=stdlib
+ENV UV_NO_DEV=1
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
@@ -30,24 +31,30 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     && apt-get install --yes --quiet --no-install-recommends \
     postgresql-client
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    python -m pip install --upgrade pip
-
 WORKDIR /app
-COPY requirements.txt .
-RUN --mount=type=cache,target=/root/.cache/pip \
-    python -m pip install -r requirements.txt
-COPY eodhp_web_presence .
-COPY --from=js_builder /app/eodhp_web_presence/staticfiles ./staticfiles
-RUN python manage.py collectstatic --noinput
 
+# Install dependencies
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project
+
+# Copy project files
+COPY . /app
+
+# Sync the project
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen
+
+COPY --from=js_builder /app/eodhp_web_presence/staticfiles ./eodhp_web_presence/staticfiles
+RUN uv run --no-sync python eodhp_web_presence/manage.py collectstatic --noinput
 
 # Create a convenience script to run manage.py commands from docker CLI, e.g.
 # `docker run --entrypoint manage <container_name> migrate`
-RUN printf '#!/bin/bash\n\npython /app/manage.py "$@"\n' \
+RUN printf '#!/bin/bash\n\nuv run --no-sync python /app/eodhp_web_presence/manage.py "$@"\n' \
     > /usr/local/bin/manage && chmod +x /usr/local/bin/manage
 
 EXPOSE 8000
-ENTRYPOINT ["gunicorn", "eodhp_web_presence.wsgi:application", \
+ENTRYPOINT ["uv", "run", "--no-sync", "gunicorn", "eodhp_web_presence.wsgi:application", \
     "--bind=0.0.0.0:8000"]
 CMD ["--timeout=30", "--worker-class=gevent", "--workers=4"]

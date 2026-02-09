@@ -4,11 +4,10 @@ import os
 from dataclasses import dataclass, field
 from io import BytesIO
 from random import randint, randrange
-from typing import Type
 
 import pytz
 from django.core.files.images import ImageFile
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandParser
 from gibberish import Gibberish
 from home import models
 from PIL import Image, ImageDraw
@@ -22,7 +21,7 @@ gib = Gibberish()
 @dataclass(frozen=True)
 class PageData:
     title: str
-    type: Type[Page]
+    type: type[Page]
     children: list[str, "PageData"] = field(default_factory=list)
 
 
@@ -77,10 +76,10 @@ def generate_image() -> str:
 class Command(BaseCommand):
     help = "Create an initial web presence"
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser: CommandParser) -> None:
         pass
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args: object, **kwargs: object) -> None:
         self.stdout.write("Creating initial web presence...")
         root = Page.objects.get(title="Root")
         site = Site.objects.get(is_default_site=True)
@@ -150,8 +149,7 @@ class Command(BaseCommand):
                         title="News",
                         type=models.NewsPage,
                         children=[
-                            PageData(title=gib.generate_word().title(), type=models.NewsArticlePage)
-                            for i in range(10)
+                            PageData(title=gib.generate_word().title(), type=models.NewsArticlePage) for i in range(10)
                         ],
                     ),
                 ],
@@ -188,7 +186,8 @@ class Command(BaseCommand):
                 elif "image" in name:
                     file_name = generate_image()
 
-                    img_bytes = open(f"media/original_images/{file_name}", "rb").read()
+                    with open(f"media/original_images/{file_name}", "rb") as f:
+                        img_bytes = f.read()
                     img_file = ImageFile(BytesIO(img_bytes), name=file_name)
 
                     image = WagtailImage(title=file_name, file=img_file)

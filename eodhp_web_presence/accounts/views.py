@@ -2,12 +2,13 @@ import logging
 from urllib.parse import quote
 
 from django.conf import settings
+from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import redirect
 
 logger = logging.getLogger(__name__)
 
 
-def sign_in(request):
+def sign_in(request: HttpRequest) -> HttpResponseRedirect:
     referer = request.headers.get("Referer")
 
     redirect_tag = f"?rd={quote(referer)}" if referer else ""
@@ -15,7 +16,7 @@ def sign_in(request):
     return redirect(f"{settings.KEYCLOAK['OAUTH2_PROXY_SIGNIN']}{redirect_tag}")
 
 
-def sign_out(request):
+def sign_out(request: HttpRequest) -> HttpResponseRedirect:
     keycloak_logout_url = (
         f"{settings.KEYCLOAK['LOGOUT_URL']}"
         f"?client_id={settings.KEYCLOAK['CLIENT_ID']}"

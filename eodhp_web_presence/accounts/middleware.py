@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class ClaimsMiddleware:
-    def __init__(self, get_response: Callable[[HttpRequest], HttpResponse], *, force_logout: bool = True):
+    def __init__(self, get_response: Callable[[HttpRequest], HttpResponse], *, force_logout: bool = True) -> None:
         self.get_response = get_response
         self.force_logout = force_logout
 

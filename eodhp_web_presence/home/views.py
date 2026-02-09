@@ -1,9 +1,10 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 from eodhp_web_presence import settings
 
 
-def catalogue_page_view(request):
+def catalogue_page_view(request: HttpRequest) -> HttpResponse:
     return render(
         request=request,
         template_name="home/catalogue_page.html",
@@ -17,7 +18,7 @@ def catalogue_page_view(request):
     )
 
 
-def workspaces_page_view(request):
+def workspaces_page_view(request: HttpRequest) -> HttpResponse:
     return render(
         request=request,
         template_name="home/workspaces_page.html",
@@ -30,7 +31,7 @@ def workspaces_page_view(request):
     )
 
 
-def accounts_page_view(request):
+def accounts_page_view(request: HttpRequest) -> HttpResponse:
     current_username = request.user.username
     return render(
         request=request,

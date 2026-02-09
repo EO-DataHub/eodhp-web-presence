@@ -1,5 +1,4 @@
 import logging
-from typing import Optional
 
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth.models import Group
@@ -12,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class ClaimsBackend(BaseBackend):
-    def authenticate(self, request: HttpRequest, **kwargs) -> Optional[User]:
+    def authenticate(self, request: HttpRequest, **kwargs: object) -> User | None:
         if not hasattr(request, "claims"):
             return None  # No OIDC claims attached to request
 
@@ -28,11 +27,7 @@ class ClaimsBackend(BaseBackend):
             user.save()
 
         # Check admin status
-        if (
-            claims.admin != user.is_superuser
-            or claims.admin != user.is_staff
-            or claims.admin != user.is_active
-        ):
+        if claims.admin != user.is_superuser or claims.admin != user.is_staff or claims.admin != user.is_active:
             user.is_superuser = claims.admin
             user.is_staff = claims.admin
             user.is_active = claims.admin
@@ -62,7 +57,7 @@ class ClaimsBackend(BaseBackend):
         )
         return user
 
-    def get_user(self, user_id: int) -> Optional[User]:
+    def get_user(self, user_id: int) -> User | None:
         try:
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:

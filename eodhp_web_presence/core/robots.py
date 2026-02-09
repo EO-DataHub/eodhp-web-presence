@@ -1,5 +1,5 @@
 import environ
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.views.decorators.http import require_GET
 
 env = environ.Env()
@@ -7,7 +7,7 @@ IS_PROD = env("IS_PROD", default=False, cast=bool)
 
 
 @require_GET
-def robots_txt(request):
+def robots_txt(request: HttpRequest) -> HttpResponse:
     return HttpResponse(robots_txt_file, content_type="text/plain")
 
 

@@ -95,7 +95,7 @@ OIDC_CLAIMS = {
 }
 
 
-def claims_middleware_factory(get_response):
+def claims_middleware_factory(get_response: object) -> object:
     module_name = "accounts.middleware"
     class_name = "ClaimsMiddleware"
 
@@ -324,6 +324,6 @@ LOGGING = {
 }
 
 try:
-    from .local import *  # noqa: F403
+    from .local import *
 except ImportError:
     pass
