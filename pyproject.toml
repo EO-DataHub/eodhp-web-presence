@@ -29,7 +29,7 @@ classifiers = [
 
 dependencies = [
   "Django>=4.2.26,<4.3",
-  "wagtail>=5.2,<5.3",
+  "wagtail>=6.3,<6.4",
   "psycopg2-binary",
   "django-environ",
   "whitenoise",
