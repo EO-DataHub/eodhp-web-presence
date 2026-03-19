@@ -294,6 +294,8 @@ ALLOWED_HOSTS = [host.strip() for host in env("ALLOWED_HOSTS", default="localhos
 
 CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
 
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 LOG_LEVEL = getattr(logging, env("LOG_LEVEL", default="WARNING").upper(), logging.WARNING)
