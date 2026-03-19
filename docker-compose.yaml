@@ -1,6 +1,6 @@
 services:
   db:
-    image: kartoza/postgis:latest
+    image: kartoza/postgis:latest@sha256:5c42c81bb6bbe4d42a4c1c87a98b4e3aaf9dca39fa3352047179552f4d622e5f
     volumes:
       - postgres_data:/var/lib/postgresql
     env_file:
