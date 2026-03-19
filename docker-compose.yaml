@@ -2,7 +2,7 @@ services:
   db:
     image: kartoza/postgis:latest
     volumes:
-      - ./db-data:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql
     env_file:
       - .env
     environment:
@@ -16,8 +16,6 @@ services:
     restart: on-failure
     healthcheck:
       test: "PGPASSWORD=${SQL_PASSWORD} pg_isready -h 127.0.0.1 -U ${SQL_USER} -d ${SQL_DATABASE}"
-    networks:
-      - eodhp-net
 
   web-presence:
     build:
@@ -26,13 +24,13 @@ services:
     env_file:
       - .env
     volumes:
-      - ./eodhp_web_presence/:/app/
+      - ./:/app/
+      - /app/.venv
     ports:
       - 8000:8000
-    networks:
-      - eodhp-net
+    depends_on:
+      db:
+        condition: service_healthy
 
-networks:
-  eodhp-net:
-
-
+volumes:
+  postgres_data:

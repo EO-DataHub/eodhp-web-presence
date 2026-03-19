@@ -5,7 +5,6 @@ from dataclasses import dataclass, field
 from io import BytesIO
 from random import randint, randrange
 
-import pytz
 from django.core.files.images import ImageFile
 from django.core.management.base import BaseCommand, CommandParser
 from gibberish import Gibberish
@@ -29,7 +28,7 @@ def generate_date() -> datetime:
     period = datetime.datetime(2030, 12, 31) - datetime.datetime(1990, 1, 1)
     total_seconds = (period.days * 24 * 60 * 60) + period.seconds
     random_second = randrange(total_seconds)
-    return datetime.datetime(1990, 1, 1, tzinfo=pytz.UTC) + datetime.timedelta(seconds=random_second)
+    return datetime.datetime(1990, 1, 1, tzinfo=datetime.UTC) + datetime.timedelta(seconds=random_second)
 
 
 def generate_body() -> RichText:

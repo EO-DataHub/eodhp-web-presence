@@ -15,6 +15,13 @@ FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim
 
 WORKDIR /app
 
+# Install build dependencies needed by libsass
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update --yes --quiet \
+    && apt-get install --yes --quiet --no-install-recommends \
+    build-essential
+
 # Install dependencies (including dev)
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
