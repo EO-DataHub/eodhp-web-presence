@@ -17,19 +17,16 @@ COPY webpack.config.js .eslintrc.js .stylelintrc ./
 
 RUN npm run build
 
-FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim
+# Build stage
+FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim AS py_builder
 
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-ENV TZ=Etc/UTC
-ENV DEBIAN_FRONTEND=noninteractive
 ENV UV_NO_DEV=1
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update --yes --quiet \
     && apt-get install --yes --quiet --no-install-recommends \
-    postgresql-client
+    build-essential
 
 WORKDIR /app
 
@@ -39,12 +36,29 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --frozen --no-install-project
 
-# Copy project files
+# Copy project files and sync the project
 COPY . /app
-
-# Sync the project
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen
+
+# Final stage
+FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV TZ=Etc/UTC
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update --yes --quiet \
+    && apt-get install --yes --quiet --no-install-recommends \
+    postgresql-client
+
+WORKDIR /app
+
+# Copy the entire app with venv from the builder
+COPY --from=py_builder /app /app
 
 COPY --from=js_builder /app/eodhp_web_presence/staticfiles ./eodhp_web_presence/staticfiles
 RUN uv run --no-sync python eodhp_web_presence/manage.py collectstatic --noinput

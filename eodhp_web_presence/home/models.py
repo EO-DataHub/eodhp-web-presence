@@ -146,7 +146,6 @@ class DocumentationPage(WagtailCacheMixin, Page):
     topics = StreamField(
         [("documentation_panel", DocumentationPanel())],
         blank=True,
-        use_json_field=True,
         help_text="Add documentation panels to this page.",
     )
 
@@ -204,14 +203,12 @@ class GenericPage(WagtailCacheMixin, Page):
             ("code", CodeBlock(label="Code")),
         ],
         blank=True,
-        use_json_field=True,
     )
 
     # New topics field to allow for nested pages as cards.
     topics = StreamField(
         [("topic_panel", DocumentationPanel())],
         blank=True,
-        use_json_field=True,
         help_text="Add topic cards to nest additional pages.",
     )
 

@@ -28,14 +28,14 @@ classifiers = [
 ]
 
 dependencies = [
-  "Django>=4.2.26,<4.3",
-  "wagtail>=5.2,<5.3",
+  "Django>=5.2.12",
+  "wagtail>=7.3.1",
   "psycopg2-binary",
   "django-environ",
   "whitenoise",
   "django-sass",
   "wagtail-cache",
-  "django-webpack-loader<=3.1.1",
+  "django-webpack-loader",
   "boto3",
   "django-storages",
   "pyjwt",
