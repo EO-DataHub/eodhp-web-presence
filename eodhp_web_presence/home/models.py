@@ -155,7 +155,7 @@ class LandingPageMixin(models.Model):
         blank=True,
         help_text="Caption or alt-text for the hero image",
     )
-    intro = RichTextField(blank=True)
+    intro = RichTextField(blank=True, help_text="A short intro paragraph below the title.")
 
     class Meta:
         abstract = True
