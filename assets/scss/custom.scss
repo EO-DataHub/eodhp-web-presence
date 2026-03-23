@@ -74,6 +74,7 @@ body {
   transition: var(--transition);
   background-color: var(--background);
   color: var(--text-primary);
+  overflow-x: clip;
 }
 
 .content-page {
