@@ -22,6 +22,25 @@ class ContentBlock(blocks.StructBlock):
         help_text = "Use this block to create flexible content sections."
 
 
+class AccordionItemBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=True, help_text="Accordion item heading")
+    content = blocks.RichTextBlock(required=True, help_text="Content revealed when expanded")
+
+    class Meta:
+        icon = "collapse-down"
+        label = "Accordion Item"
+
+
+class AccordionBlock(blocks.StructBlock):
+    items = blocks.ListBlock(AccordionItemBlock())
+
+    class Meta:
+        icon = "collapse-down"
+        label = "Accordion"
+        template = "blocks/accordion_block.html"
+        help_text = "A set of collapsible content sections."
+
+
 # ---------------------------------------------------------------------
 #  Home Page (Site Root)
 # ---------------------------------------------------------------------
@@ -188,6 +207,7 @@ class DocumentationPanel(blocks.StructBlock):
 def _body_blocks() -> list:
     return [
         ("content_block", ContentBlock()),
+        ("accordion", AccordionBlock()),
         ("blockquote", blocks.BlockQuoteBlock()),
         ("raw_html", blocks.RawHTMLBlock()),
         ("code", CodeBlock(label="Code")),
