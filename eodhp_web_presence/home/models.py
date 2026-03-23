@@ -31,33 +31,89 @@ class HomePage(WagtailCacheMixin, Page):
     aim_1_title = models.CharField(max_length=255, blank=True, default="Our First Aim")
     aim_1_description = RichTextField(blank=True, default="Description of our first aim.")
     aim_1_image = models.ImageField(upload_to="aims/", blank=True, null=True)
+    aim_1_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Optional internal page link for this card",
+    )
 
     aim_2_title = models.CharField(max_length=255, blank=True, default="Our Second Aim")
     aim_2_description = RichTextField(blank=True, default="Description of our second aim.")
     aim_2_image = models.ImageField(upload_to="aims/", blank=True, null=True)
+    aim_2_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Optional internal page link for this card",
+    )
 
     aim_3_title = models.CharField(max_length=255, blank=True, default="Our Third Aim")
     aim_3_description = RichTextField(blank=True, default="Description of our third aim.")
     aim_3_image = models.ImageField(upload_to="aims/", blank=True, null=True)
+    aim_3_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Optional internal page link for this card",
+    )
 
     aim_4_title = models.CharField(max_length=255, blank=True, default="Our Fourth Aim")
     aim_4_description = RichTextField(blank=True, default="Description of our fourth aim.")
     aim_4_image = models.ImageField(upload_to="aims/", blank=True, null=True)
+    aim_4_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Optional internal page link for this card",
+    )
 
     content_panels: ClassVar[list] = Page.content_panels + [
         FieldPanel("overview_text"),
-        FieldPanel("aim_1_title"),
-        FieldPanel("aim_1_description"),
-        FieldPanel("aim_1_image"),
-        FieldPanel("aim_2_title"),
-        FieldPanel("aim_2_description"),
-        FieldPanel("aim_2_image"),
-        FieldPanel("aim_3_title"),
-        FieldPanel("aim_3_description"),
-        FieldPanel("aim_3_image"),
-        FieldPanel("aim_4_title"),
-        FieldPanel("aim_4_description"),
-        FieldPanel("aim_4_image"),
+        MultiFieldPanel(
+            [
+                FieldPanel("aim_1_title"),
+                FieldPanel("aim_1_description"),
+                FieldPanel("aim_1_image"),
+                FieldPanel("aim_1_page"),
+            ],
+            heading="Aim 1",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("aim_2_title"),
+                FieldPanel("aim_2_description"),
+                FieldPanel("aim_2_image"),
+                FieldPanel("aim_2_page"),
+            ],
+            heading="Aim 2",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("aim_3_title"),
+                FieldPanel("aim_3_description"),
+                FieldPanel("aim_3_image"),
+                FieldPanel("aim_3_page"),
+            ],
+            heading="Aim 3",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("aim_4_title"),
+                FieldPanel("aim_4_description"),
+                FieldPanel("aim_4_image"),
+                FieldPanel("aim_4_page"),
+            ],
+            heading="Aim 4",
+        ),
     ]
 
 

@@ -40,26 +40,45 @@
             <h2>What are the aims of the EO DataHub</h2>
             <span class="subtitle">EO DataHub Pathfinder activities are designed to showcase:</span>
             <div class="aims__content__cards">
+                {% if page.aim_1_page %}
+                <a href="{{ page.aim_1_page.url }}" class="card-link">
+                {% endif %}
                 <div class="card">
                     <img src="{{ page.aim_1_image.url }}" alt="Aims 1" class="card__image" />
                     <h5>{{ page.aim_1_title|safe }}</h5>
                     {{ page.aim_1_description|richtext }}
                 </div>
+                {% if page.aim_1_page %}</a>{% endif %}
+
+                {% if page.aim_2_page %}
+                <a href="{{ page.aim_2_page.url }}" class="card-link">
+                {% endif %}
                 <div class="card">
                     <img src="{{ page.aim_2_image.url }}" alt="Aims 2" class="card__image" />
                     <h5>{{ page.aim_2_title|safe }}</h5>
                     {{ page.aim_2_description|richtext }}
                 </div>
+                {% if page.aim_2_page %}</a>{% endif %}
+
+                {% if page.aim_3_page %}
+                <a href="{{ page.aim_3_page.url }}" class="card-link">
+                {% endif %}
                 <div class="card">
                     <img src="{{ page.aim_3_image.url }}" alt="Aims 3" class="card__image" />
                     <h5>{{ page.aim_3_title|safe }}</h5>
                     {{ page.aim_3_description|richtext }}
                 </div>
+                {% if page.aim_3_page %}</a>{% endif %}
+
+                {% if page.aim_4_page %}
+                <a href="{{ page.aim_4_page.url }}" class="card-link">
+                {% endif %}
                 <div class="card">
                     <img src="{{ page.aim_4_image.url }}" alt="Aims 4" class="card__image" />
                     <h5>{{ page.aim_4_title|safe }}</h5>
                     {{ page.aim_4_description|richtext }}
                 </div>
+                {% if page.aim_4_page %}</a>{% endif %}
             </div>
         </div>
     </div>
