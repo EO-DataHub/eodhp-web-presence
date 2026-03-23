@@ -44,10 +44,17 @@ $(document).ready(function () {
   });
 
   // Dropdown toggles — arrow click opens/closes the dropdown menu
-  $('.dropdown__toggle .arrow').on('click', function (e) {
+  $('.dropdown__toggle').on('click', function (e) {
+    const $toggle = $(this);
+    const hasArrow = $toggle.find('.arrow').length > 0;
+
+    if (hasArrow && !$(e.target).closest('.arrow').length) {
+      return;
+    }
+
     e.preventDefault();
     e.stopPropagation();
-    const $parent = $(this).closest('.dropdown');
+    const $parent = $toggle.closest('.dropdown');
     const isOpen = $parent.hasClass('open');
 
     $('.dropdown').removeClass('open');
