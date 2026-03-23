@@ -227,6 +227,8 @@ class AboutIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
     Contains subpages: HubPage, ApplicationsPage, AccessPage
     """
 
+    template = "home/landing_page.html"
+
     body = StreamField(_body_blocks(), blank=True)
     topics = StreamField(
         _topic_blocks(),
@@ -249,6 +251,8 @@ class DataIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
     Contains: OpenAccessPage, CommercialPage
     """
 
+    template = "home/landing_page.html"
+
     body = StreamField(_body_blocks(), blank=True)
     topics = StreamField(
         _topic_blocks(),
@@ -270,6 +274,8 @@ class DocsIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
     /docs/ landing page.
     Contains: AccountSetupPage, FAQPage, DocumentationPage
     """
+
+    template = "home/landing_page.html"
 
     body = StreamField(_body_blocks(), blank=True)
     topics = StreamField(
@@ -316,6 +322,8 @@ class CaseStudiesPage(LandingPageMixin, WagtailCacheMixin, Page):
     Contains: CaseStudyPage
     """
 
+    template = "home/landing_page.html"
+
     body = StreamField(_body_blocks(), blank=True)
     topics = StreamField(
         _topic_blocks(),
@@ -336,6 +344,8 @@ class CatalogueIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
     """
     /catalogue/ landing page.
     """
+
+    template = "home/landing_page.html"
 
     body = StreamField(_body_blocks(), blank=True)
     topics = StreamField(
