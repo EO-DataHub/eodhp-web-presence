@@ -64,6 +64,18 @@ $(document).ready(function () {
     }
   });
 
+  // On mobile: first tap opens dropdown, second tap follows the link
+  $('.dropdown__toggle a').on('click', function (e) {
+    if (window.innerWidth <= 1200) {
+      const $parent = $(this).closest('.dropdown');
+      if (!$parent.hasClass('open')) {
+        e.preventDefault();
+        $('.dropdown').removeClass('open');
+        $parent.addClass('open');
+      }
+    }
+  });
+
   // close dropdown if user clicks outside
   $(document).on('click', function (e) {
     if (!$(e.target).closest('.dropdown').length) {
