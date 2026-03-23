@@ -117,6 +117,28 @@ class HomePage(WagtailCacheMixin, Page):
     ]
 
 
+class DocumentationPanel(blocks.StructBlock):
+    title = blocks.CharBlock(required=True, help_text="Title of the documentation panel")
+    slug = blocks.CharBlock(
+        required=True,
+        help_text="Unique identifier in the url e.g. workflow",
+        max_length=50,
+    )
+    description = blocks.RichTextBlock(required=True, help_text="Description of the documentation panel")
+    image = ImageChooserBlock(required=False, help_text="Optional image for the documentation panel")
+    featured_image = blocks.BooleanBlock(
+        required=False,
+        default=False,
+        help_text="Use the image as a full card background with the title overlaid",
+    )
+
+    class Meta:
+        icon = "doc-full"
+        label = "Documentation Panel"
+        template = "blocks/documentation_panel.html"
+        help_text = "Use this block to create documentation panels with title, description, and optional image."
+
+
 # ---------------------------------------------------------------------
 #  About Section
 # ---------------------------------------------------------------------
@@ -172,23 +194,6 @@ class DocsIndexPage(WagtailCacheMixin, Page):
 
     subpage_types: ClassVar[list[str]] = ["DocumentationPage"]
     parent_page_types: ClassVar[list[str]] = ["HomePage"]
-
-
-class DocumentationPanel(blocks.StructBlock):
-    title = blocks.CharBlock(required=True, help_text="Title of the documentation panel")
-    slug = blocks.CharBlock(
-        required=True,
-        help_text="Unique identifier in the url e.g. workflow",
-        max_length=50,
-    )
-    description = blocks.RichTextBlock(required=True, help_text="Description of the documentation panel")
-    image = ImageChooserBlock(required=False, help_text="Optional image for the documentation panel")
-
-    class Meta:
-        icon = "doc-full"
-        label = "Documentation Panel"
-        template = "blocks/documentation_panel.html"
-        help_text = "Use this block to create documentation panels with title, description, and optional image."
 
 
 class DocumentationPage(WagtailCacheMixin, Page):
