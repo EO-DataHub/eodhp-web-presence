@@ -103,7 +103,11 @@ class Migration(migrations.Migration):
                     4: (
                         "wagtail.blocks.BooleanBlock",
                         (),
-                        {"default": False, "help_text": "Featured image", "required": False},
+                        {
+                            "default": False,
+                            "help_text": "Use the image as a full card background with the title overlaid",
+                            "required": False,
+                        },
                     ),
                     5: (
                         "wagtail.blocks.StructBlock",
@@ -203,7 +207,11 @@ class Migration(migrations.Migration):
                     4: (
                         "wagtail.blocks.BooleanBlock",
                         (),
-                        {"default": False, "help_text": "Featured image", "required": False},
+                        {
+                            "default": False,
+                            "help_text": "Use the image as a full card background with the title overlaid",
+                            "required": False,
+                        },
                     ),
                     5: (
                         "wagtail.blocks.StructBlock",
@@ -303,7 +311,11 @@ class Migration(migrations.Migration):
                     4: (
                         "wagtail.blocks.BooleanBlock",
                         (),
-                        {"default": False, "help_text": "Featured image", "required": False},
+                        {
+                            "default": False,
+                            "help_text": "Use the image as a full card background with the title overlaid",
+                            "required": False,
+                        },
                     ),
                     5: (
                         "wagtail.blocks.StructBlock",
@@ -403,7 +415,11 @@ class Migration(migrations.Migration):
                     4: (
                         "wagtail.blocks.BooleanBlock",
                         (),
-                        {"default": False, "help_text": "Featured image", "required": False},
+                        {
+                            "default": False,
+                            "help_text": "Use the image as a full card background with the title overlaid",
+                            "required": False,
+                        },
                     ),
                     5: (
                         "wagtail.blocks.StructBlock",
@@ -508,7 +524,11 @@ class Migration(migrations.Migration):
                             4: (
                                 "wagtail.blocks.BooleanBlock",
                                 (),
-                                {"default": False, "help_text": "Featured image", "required": False},
+                                {
+                                    "default": False,
+                                    "help_text": "Use the image as a full card background with the title overlaid",
+                                    "required": False,
+                                },
                             ),
                             5: (
                                 "wagtail.blocks.StructBlock",
