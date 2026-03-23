@@ -28,7 +28,7 @@
     list-style: none;
     user-select: none;
     color: var(--text-primary);
-    background-color: var(--background);
+    background-color: var(--accordion-header-bg);
     transition: background-color 0.3s ease;
 
     &::-webkit-details-marker {
@@ -41,7 +41,7 @@
     }
 
     &:hover {
-        background-color: color-mix(in srgb, var(--button-bg) 6%, var(--background));
+        background-color: var(--accordion-header-hover);
     }
 }
 
@@ -67,6 +67,7 @@ details[open] > .accordion__header .accordion__chevron {
 
 .accordion__content {
     padding: 1rem 1.25rem 1.25rem;
+    background-color: var(--accordion-content-bg);
     color: var(--text-primary);
     font-size: 1rem;
     line-height: 1.6;
