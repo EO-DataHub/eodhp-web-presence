@@ -21,6 +21,15 @@
     {% if page.topics %}
     <section class="faq-cards">
         {% for panel in page.topics %}
+        {% if panel.value.featured_image and panel.value.image %}
+        {% image panel.value.image fill-600x400 as featured_img %}
+        <a href="{{ request.build_absolute_uri }}{{ panel.value.slug }}" class="faq-card faq-card--featured" style="background-image: url('{{ featured_img.url }}');">
+            <div class="faq-card__overlay">
+                <h2 class="faq-card__title">{{ panel.value.title }}</h2>
+                <div class="faq-card__description">{{ panel.value.description|richtext }}</div>
+            </div>
+        </a>
+        {% else %}
         <a href="{{ request.build_absolute_uri }}{{ panel.value.slug }}" class="faq-card">
             <div class="faq-card__header">
                 <h2 class="faq-card__title">{{ panel.value.title }}</h2>
@@ -29,8 +38,9 @@
                 <img src="{{ panel_image.url }}" alt="{{ panel.value.title }}" class="faq-card__image" />
                 {% endif %}
             </div>
-            <p class="faq-card__description">{{ panel.value.description|richtext }}</p>
+            <div class="faq-card__description">{{ panel.value.description|richtext }}</div>
         </a>
+        {% endif %}
         {% endfor %}
     </section>
     {% endif %}

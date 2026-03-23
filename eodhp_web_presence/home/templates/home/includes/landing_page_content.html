@@ -1,0 +1,61 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% if page.hero_image %}
+{% image page.hero_image fill-1600x600 as hero_img %}
+<header class="generic-page__hero" style="background-image: url('{{ hero_img.url }}');">
+    <div class="generic-page__hero-overlay">
+        <div class="generic-page__hero-content">
+            <h1>{{ page.title }}</h1>
+            {% if page.hero_caption %}
+            <h2>{{ page.hero_caption }}</h2>
+            {% endif %}
+        </div>
+    </div>
+</header>
+{% else %}
+<header class="generic-page__header">
+    <h1>{{ page.title }}</h1>
+    {% if page.hero_caption %}
+    <h2>{{ page.hero_caption }}</h2>
+    {% endif %}
+</header>
+{% endif %}
+
+{% if page.intro %}
+<section class="generic-page__intro">
+    <p>{{ page.intro|richtext }}</p>
+</section>
+{% endif %}
+
+{% if page.topics %}
+<section class="faq-cards">
+    {% for panel in page.topics %}
+    {% if panel.value.featured_image and panel.value.image %}
+    {% image panel.value.image fill-600x400 as featured_img %}
+    <a href="{{ request.build_absolute_uri }}{{ panel.value.slug }}" class="faq-card faq-card--featured" style="background-image: url('{{ featured_img.url }}');">
+        <div class="faq-card__overlay">
+            <h2 class="faq-card__title">{{ panel.value.title }}</h2>
+            <div class="faq-card__description">{{ panel.value.description|richtext }}</div>
+        </div>
+    </a>
+    {% else %}
+    <a href="{{ request.build_absolute_uri }}{{ panel.value.slug }}" class="faq-card">
+        <div class="faq-card__header">
+            <h2 class="faq-card__title">{{ panel.value.title }}</h2>
+            {% if panel.value.image %}
+            {% image panel.value.image fill-100x100 as panel_image %}
+            <img src="{{ panel_image.url }}" alt="{{ panel.value.title }}" class="faq-card__image" />
+            {% endif %}
+        </div>
+        <div class="faq-card__description">{{ panel.value.description|richtext }}</div>
+    </a>
+    {% endif %}
+    {% endfor %}
+</section>
+{% endif %}
+
+{% if page.body %}
+<main class="generic-page__body">
+    {{ page.body }}
+</main>
+{% endif %}

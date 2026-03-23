@@ -43,8 +43,9 @@ $(document).ready(function () {
     $('#mainMenu').toggleClass('open');
   });
 
-  // Dropdown toggles on small screens
-  $('.dropdown__toggle').on('click', function (e) {
+  // Dropdown toggles — arrow click opens/closes the dropdown menu
+  $('.dropdown__toggle .arrow').on('click', function (e) {
+    e.preventDefault();
     e.stopPropagation();
     const $parent = $(this).closest('.dropdown');
     const isOpen = $parent.hasClass('open');

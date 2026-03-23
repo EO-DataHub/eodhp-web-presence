@@ -17,6 +17,8 @@ $mobile-breakpoint: 1200px;
   --inverse-text: black;
   --transition: color 1s ease, background-color 1s ease, border-color 1s ease;
 
+  --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+
   // menu
   --menu-left-bg: #1a1a1a;
   --menu-right-bg: #444444;
@@ -36,6 +38,8 @@ $mobile-breakpoint: 1200px;
   --inverse-background: #000;
   --inverse-text: #fff;
   --transition: color 1s ease, background-color 1s ease, border-color 1s ease;
+
+  --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 
   // menu
   --menu-left-bg: white;
