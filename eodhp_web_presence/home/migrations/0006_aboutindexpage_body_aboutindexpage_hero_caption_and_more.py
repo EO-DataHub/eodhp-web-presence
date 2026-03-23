@@ -433,7 +433,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="genericpage",
             name="intro",
-            field=wagtail.fields.RichTextField(blank=True),
+            field=wagtail.fields.RichTextField(blank=True, help_text="A short intro paragraph below the title."),
         ),
         migrations.CreateModel(
             name="CatalogueIndexPage",
@@ -453,7 +453,10 @@ class Migration(migrations.Migration):
                     "hero_caption",
                     models.CharField(blank=True, help_text="Caption or alt-text for the hero image", max_length=255),
                 ),
-                ("intro", wagtail.fields.RichTextField(blank=True)),
+                (
+                    "intro",
+                    wagtail.fields.RichTextField(blank=True, help_text="A short intro paragraph below the title."),
+                ),
                 (
                     "body",
                     wagtail.fields.StreamField(
@@ -555,5 +558,25 @@ class Migration(migrations.Migration):
                 "abstract": False,
             },
             bases=(wagtailcache.cache.WagtailCacheMixin, "wagtailcore.page", models.Model),
+        ),
+        migrations.AlterField(
+            model_name="aboutindexpage",
+            name="intro",
+            field=wagtail.fields.RichTextField(blank=True, help_text="A short intro paragraph below the title."),
+        ),
+        migrations.AlterField(
+            model_name="casestudiespage",
+            name="intro",
+            field=wagtail.fields.RichTextField(blank=True, help_text="A short intro paragraph below the title."),
+        ),
+        migrations.AlterField(
+            model_name="dataindexpage",
+            name="intro",
+            field=wagtail.fields.RichTextField(blank=True, help_text="A short intro paragraph below the title."),
+        ),
+        migrations.AlterField(
+            model_name="docsindexpage",
+            name="intro",
+            field=wagtail.fields.RichTextField(blank=True, help_text="A short intro paragraph below the title."),
         ),
     ]
