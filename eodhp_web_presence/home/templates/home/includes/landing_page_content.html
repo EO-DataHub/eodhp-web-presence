@@ -1,0 +1,42 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% if page.hero_image %}
+{% image page.hero_image fill-1600x600 as hero_img %}
+<header class="generic-page__hero" style="background-image: url('{{ hero_img.url }}');">
+    <div class="generic-page__hero-overlay">
+        <div class="generic-page__hero-content">
+            <h1>{{ page.title }}</h1>
+            {% if page.hero_caption %}
+            <h2>{{ page.hero_caption }}</h2>
+            {% endif %}
+        </div>
+    </div>
+</header>
+{% else %}
+<header class="generic-page__header">
+    <h1>{{ page.title }}</h1>
+    {% if page.hero_caption %}
+    <h2>{{ page.hero_caption }}</h2>
+    {% endif %}
+</header>
+{% endif %}
+
+{% if page.intro %}
+<section class="generic-page__intro">
+    <p>{{ page.intro|richtext }}</p>
+</section>
+{% endif %}
+
+{% if page.topics %}
+<section class="faq-cards">
+    {% for panel in page.topics %}
+    {% include "home/includes/topic_card.html" with panel=panel %}
+    {% endfor %}
+</section>
+{% endif %}
+
+{% if page.body %}
+<main class="generic-page__body">
+    {{ page.body }}
+</main>
+{% endif %}

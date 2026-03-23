@@ -22,6 +22,25 @@ class ContentBlock(blocks.StructBlock):
         help_text = "Use this block to create flexible content sections."
 
 
+class AccordionItemBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=True, help_text="Accordion item heading")
+    content = blocks.RichTextBlock(required=True, help_text="Content revealed when expanded")
+
+    class Meta:
+        icon = "collapse-down"
+        label = "Accordion Item"
+
+
+class AccordionBlock(blocks.StructBlock):
+    items = blocks.ListBlock(AccordionItemBlock())
+
+    class Meta:
+        icon = "collapse-down"
+        label = "Accordion"
+        template = "blocks/accordion_block.html"
+        help_text = "A set of collapsible content sections."
+
+
 # ---------------------------------------------------------------------
 #  Home Page (Site Root)
 # ---------------------------------------------------------------------
@@ -31,91 +50,135 @@ class HomePage(WagtailCacheMixin, Page):
     aim_1_title = models.CharField(max_length=255, blank=True, default="Our First Aim")
     aim_1_description = RichTextField(blank=True, default="Description of our first aim.")
     aim_1_image = models.ImageField(upload_to="aims/", blank=True, null=True)
+    aim_1_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Optional internal page link for this card",
+    )
 
     aim_2_title = models.CharField(max_length=255, blank=True, default="Our Second Aim")
     aim_2_description = RichTextField(blank=True, default="Description of our second aim.")
     aim_2_image = models.ImageField(upload_to="aims/", blank=True, null=True)
+    aim_2_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Optional internal page link for this card",
+    )
 
     aim_3_title = models.CharField(max_length=255, blank=True, default="Our Third Aim")
     aim_3_description = RichTextField(blank=True, default="Description of our third aim.")
     aim_3_image = models.ImageField(upload_to="aims/", blank=True, null=True)
+    aim_3_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Optional internal page link for this card",
+    )
 
     aim_4_title = models.CharField(max_length=255, blank=True, default="Our Fourth Aim")
     aim_4_description = RichTextField(blank=True, default="Description of our fourth aim.")
     aim_4_image = models.ImageField(upload_to="aims/", blank=True, null=True)
+    aim_4_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Optional internal page link for this card",
+    )
 
     content_panels: ClassVar[list] = Page.content_panels + [
         FieldPanel("overview_text"),
-        FieldPanel("aim_1_title"),
-        FieldPanel("aim_1_description"),
-        FieldPanel("aim_1_image"),
-        FieldPanel("aim_2_title"),
-        FieldPanel("aim_2_description"),
-        FieldPanel("aim_2_image"),
-        FieldPanel("aim_3_title"),
-        FieldPanel("aim_3_description"),
-        FieldPanel("aim_3_image"),
-        FieldPanel("aim_4_title"),
-        FieldPanel("aim_4_description"),
-        FieldPanel("aim_4_image"),
+        MultiFieldPanel(
+            [
+                FieldPanel("aim_1_title"),
+                FieldPanel("aim_1_description"),
+                FieldPanel("aim_1_image"),
+                FieldPanel("aim_1_page"),
+            ],
+            heading="Aim 1",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("aim_2_title"),
+                FieldPanel("aim_2_description"),
+                FieldPanel("aim_2_image"),
+                FieldPanel("aim_2_page"),
+            ],
+            heading="Aim 2",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("aim_3_title"),
+                FieldPanel("aim_3_description"),
+                FieldPanel("aim_3_image"),
+                FieldPanel("aim_3_page"),
+            ],
+            heading="Aim 3",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("aim_4_title"),
+                FieldPanel("aim_4_description"),
+                FieldPanel("aim_4_image"),
+                FieldPanel("aim_4_page"),
+            ],
+            heading="Aim 4",
+        ),
     ]
 
 
 # ---------------------------------------------------------------------
-#  About Section
+#  Landing Page Mixin (shared fields for index pages)
 # ---------------------------------------------------------------------
-class AboutIndexPage(WagtailCacheMixin, Page):
-    """
-    Acts like /about/ index.
-    Contains subpages: HubPage, ApplicationsPage, AccessPage
-    """
+class LandingPageMixin(models.Model):
+    """Shared content fields for section index / landing pages."""
 
-    intro = RichTextField(blank=True)
+    hero_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Main hero or banner image for the top of the page.",
+    )
+    hero_caption = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Caption or alt-text for the hero image",
+    )
+    intro = RichTextField(blank=True, help_text="A short intro paragraph below the title.")
 
-    content_panels: ClassVar[list] = Page.content_panels + [
-        FieldPanel("intro"),
-    ]
+    class Meta:
+        abstract = True
 
-    subpage_types: ClassVar[list[str]] = ["GenericPage"]
-    parent_page_types: ClassVar[list[str]] = ["HomePage"]
+    # Panels defined as a classmethod so subclasses can include them
+    # in their own content_panels. StreamFields (body, topics) are
+    # declared on each concrete model because they reference block
+    # classes defined later in this file.
 
-
-# ---------------------------------------------------------------------
-#  Data Section
-# ---------------------------------------------------------------------
-class DataIndexPage(WagtailCacheMixin, Page):
-    """
-    /data/ index.
-    Contains: OpenAccessPage, CommercialPage
-    """
-
-    intro = RichTextField(blank=True)
-
-    content_panels: ClassVar[list] = Page.content_panels + [
-        FieldPanel("intro"),
-    ]
-
-    subpage_types: ClassVar[list[str]] = ["GenericPage"]
-    parent_page_types: ClassVar[list[str]] = ["HomePage"]
-
-
-# ---------------------------------------------------------------------
-#  Docs Section (Getting Started)
-# ---------------------------------------------------------------------
-class DocsIndexPage(WagtailCacheMixin, Page):
-    """
-    /docs/ index.
-    Contains: AccountSetupPage, FAQPage, DocumentationPage
-    """
-
-    intro = RichTextField(blank=True)
-
-    content_panels: ClassVar[list] = Page.content_panels + [
-        FieldPanel("intro"),
-    ]
-
-    subpage_types: ClassVar[list[str]] = ["DocumentationPage"]
-    parent_page_types: ClassVar[list[str]] = ["HomePage"]
+    @classmethod
+    def landing_panels(cls) -> list:
+        return [
+            MultiFieldPanel(
+                [
+                    FieldPanel("hero_image"),
+                    FieldPanel("hero_caption"),
+                ],
+                heading="Hero Image",
+            ),
+            FieldPanel("intro"),
+            FieldPanel("body"),
+            FieldPanel("topics"),
+        ]
 
 
 class DocumentationPanel(blocks.StructBlock):
@@ -127,12 +190,104 @@ class DocumentationPanel(blocks.StructBlock):
     )
     description = blocks.RichTextBlock(required=True, help_text="Description of the documentation panel")
     image = ImageChooserBlock(required=False, help_text="Optional image for the documentation panel")
+    featured_image = blocks.BooleanBlock(
+        required=False,
+        default=False,
+        help_text="Use the image as a full card background with the title overlaid",
+    )
 
     class Meta:
         icon = "doc-full"
         label = "Documentation Panel"
         template = "blocks/documentation_panel.html"
         help_text = "Use this block to create documentation panels with title, description, and optional image."
+
+
+# Helper: StreamField definitions shared by landing / index pages
+def _body_blocks() -> list:
+    return [
+        ("content_block", ContentBlock()),
+        ("accordion", AccordionBlock()),
+        ("blockquote", blocks.BlockQuoteBlock()),
+        ("raw_html", blocks.RawHTMLBlock()),
+        ("code", CodeBlock(label="Code")),
+    ]
+
+
+def _topic_blocks() -> list:
+    return [("topic_panel", DocumentationPanel())]
+
+
+# ---------------------------------------------------------------------
+#  About Section
+# ---------------------------------------------------------------------
+class AboutIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
+    """
+    /about/ landing page.
+    Contains subpages: HubPage, ApplicationsPage, AccessPage
+    """
+
+    template = "home/landing_page.html"
+
+    body = StreamField(_body_blocks(), blank=True)
+    topics = StreamField(
+        _topic_blocks(),
+        blank=True,
+        help_text="Add topic cards to nest additional pages.",
+    )
+
+    content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
+
+    subpage_types: ClassVar[list[str]] = ["GenericPage"]
+    parent_page_types: ClassVar[list[str]] = ["HomePage"]
+
+
+# ---------------------------------------------------------------------
+#  Data Section
+# ---------------------------------------------------------------------
+class DataIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
+    """
+    /data/ landing page.
+    Contains: OpenAccessPage, CommercialPage
+    """
+
+    template = "home/landing_page.html"
+
+    body = StreamField(_body_blocks(), blank=True)
+    topics = StreamField(
+        _topic_blocks(),
+        blank=True,
+        help_text="Add topic cards to nest additional pages.",
+    )
+
+    content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
+
+    subpage_types: ClassVar[list[str]] = ["GenericPage"]
+    parent_page_types: ClassVar[list[str]] = ["HomePage"]
+
+
+# ---------------------------------------------------------------------
+#  Docs Section (Getting Started)
+# ---------------------------------------------------------------------
+class DocsIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
+    """
+    /docs/ landing page.
+    Contains: AccountSetupPage, FAQPage, DocumentationPage
+    """
+
+    template = "home/landing_page.html"
+
+    body = StreamField(_body_blocks(), blank=True)
+    topics = StreamField(
+        _topic_blocks(),
+        blank=True,
+        help_text="Add topic cards to nest additional pages.",
+    )
+
+    content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
+
+    subpage_types: ClassVar[list[str]] = ["DocumentationPage"]
+    parent_page_types: ClassVar[list[str]] = ["HomePage"]
 
 
 class DocumentationPage(WagtailCacheMixin, Page):
@@ -161,53 +316,62 @@ class DocumentationPage(WagtailCacheMixin, Page):
 # ---------------------------------------------------------------------
 #  Case Studies Section
 # ---------------------------------------------------------------------
-class CaseStudiesPage(WagtailCacheMixin, Page):
+class CaseStudiesPage(LandingPageMixin, WagtailCacheMixin, Page):
     """
-    /case-studies/ index.
+    /case-studies/ landing page.
     Contains: CaseStudyPage
     """
 
-    intro = RichTextField(blank=True)
+    template = "home/landing_page.html"
 
-    content_panels: ClassVar[list] = Page.content_panels + [
-        FieldPanel("intro"),
-    ]
+    body = StreamField(_body_blocks(), blank=True)
+    topics = StreamField(
+        _topic_blocks(),
+        blank=True,
+        help_text="Add topic cards to nest additional pages.",
+    )
+
+    content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
 
     subpage_types: ClassVar[list[str]] = ["GenericPage"]
     parent_page_types: ClassVar[list[str]] = ["HomePage"]
 
 
-class GenericPage(WagtailCacheMixin, Page):
+# ---------------------------------------------------------------------
+#  Catalogue Section
+# ---------------------------------------------------------------------
+class CatalogueIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
+    """
+    /catalogue/ landing page.
+    """
+
+    template = "home/landing_page.html"
+
+    body = StreamField(_body_blocks(), blank=True)
+    topics = StreamField(
+        _topic_blocks(),
+        blank=True,
+        help_text="Add topic cards to nest additional pages.",
+    )
+
+    content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
+
+    subpage_types: ClassVar[list[str]] = ["GenericPage"]
+    parent_page_types: ClassVar[list[str]] = ["HomePage"]
+
+
+# ---------------------------------------------------------------------
+#  Generic Page (flexible content page used throughout the site)
+# ---------------------------------------------------------------------
+class GenericPage(LandingPageMixin, WagtailCacheMixin, Page):
     """
     We can use this as a generic page type for any page.
     """
 
-    # Hero / banner
-    hero_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Main hero or banner image for the top of the page.",
-    )
-    hero_caption = models.CharField(max_length=255, blank=True, help_text="Caption or alt-text for the hero image")
+    body = StreamField(_body_blocks(), blank=True)
 
-    intro = RichTextField(blank=True, help_text="A short intro paragraph that sits below the title/subtitle.")
-
-    body = StreamField(
-        [
-            ("content_block", ContentBlock()),
-            ("blockquote", blocks.BlockQuoteBlock()),
-            ("raw_html", blocks.RawHTMLBlock()),
-            ("code", CodeBlock(label="Code")),
-        ],
-        blank=True,
-    )
-
-    # New topics field to allow for nested pages as cards.
     topics = StreamField(
-        [("topic_panel", DocumentationPanel())],
+        _topic_blocks(),
         blank=True,
         help_text="Add topic cards to nest additional pages.",
     )
@@ -221,34 +385,24 @@ class GenericPage(WagtailCacheMixin, Page):
         help_text="URL to redirect to when the back button is clicked",
     )
 
-    content_panels: ClassVar[list] = Page.content_panels + [
-        MultiFieldPanel(
-            [
-                FieldPanel("hero_image"),
-                FieldPanel("hero_caption"),
-            ],
-            heading="Hero Image",
-        ),
-        MultiFieldPanel(
-            [
-                FieldPanel("intro"),
-            ],
-            heading="Intro",
-        ),
-        FieldPanel("body"),
-        FieldPanel("topics"),
-        MultiFieldPanel(
-            [
-                FieldPanel("cta_text"),
-                FieldPanel("cta_url"),
-            ],
-            heading="Call to Action",
-        ),
-        FieldPanel("back_button_location"),
-    ]
+    content_panels: ClassVar[list] = (
+        Page.content_panels
+        + LandingPageMixin.landing_panels()
+        + [
+            MultiFieldPanel(
+                [
+                    FieldPanel("cta_text"),
+                    FieldPanel("cta_url"),
+                ],
+                heading="Call to Action",
+            ),
+            FieldPanel("back_button_location"),
+        ]
+    )
 
     parent_page_types: ClassVar[list[str]] = [
         "AboutIndexPage",
+        "CatalogueIndexPage",
         "DataIndexPage",
         "DocsIndexPage",
         "CaseStudiesPage",

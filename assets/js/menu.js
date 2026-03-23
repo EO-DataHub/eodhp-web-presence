@@ -43,16 +43,36 @@ $(document).ready(function () {
     $('#mainMenu').toggleClass('open');
   });
 
-  // Dropdown toggles on small screens
+  // Dropdown toggles — arrow click opens/closes the dropdown menu
   $('.dropdown__toggle').on('click', function (e) {
+    const $toggle = $(this);
+    const hasArrow = $toggle.find('.arrow').length > 0;
+
+    if (hasArrow && !$(e.target).closest('.arrow').length) {
+      return;
+    }
+
+    e.preventDefault();
     e.stopPropagation();
-    const $parent = $(this).closest('.dropdown');
+    const $parent = $toggle.closest('.dropdown');
     const isOpen = $parent.hasClass('open');
 
     $('.dropdown').removeClass('open');
 
     if (!isOpen) {
       $parent.addClass('open');
+    }
+  });
+
+  // On mobile: first tap opens dropdown, second tap follows the link
+  $('.dropdown__toggle a').on('click', function (e) {
+    if (window.innerWidth <= 1200) {
+      const $parent = $(this).closest('.dropdown');
+      if (!$parent.hasClass('open')) {
+        e.preventDefault();
+        $('.dropdown').removeClass('open');
+        $parent.addClass('open');
+      }
     }
   });
 
