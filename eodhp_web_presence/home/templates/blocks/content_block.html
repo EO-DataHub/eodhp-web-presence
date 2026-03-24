@@ -1,5 +1,6 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 {% load table_block_tags %}
+<div class="block-layout block-layout--{{ self.width }} block-layout--align-{{ self.alignment }}">
 <div class="content-block{% if self.background_color != 'default' %} bg--{{ self.background_color }}{% endif %}">
 
     {% if self.heading %}
@@ -20,4 +21,5 @@
     </div>
     {% endif %}
 
+</div>
 </div>

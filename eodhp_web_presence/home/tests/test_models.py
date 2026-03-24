@@ -7,12 +7,14 @@ from home.models import (
     AccordionItemBlock,
     CaseStudiesPage,
     CatalogueIndexPage,
+    ContentBlock,
     DataIndexPage,
     DocsIndexPage,
     DocumentationPage,
     DocumentationPanel,
     GenericPage,
     HomePage,
+    LayoutMixin,
 )
 
 
@@ -213,6 +215,56 @@ class TestAccordionBlock(TestCase):
         html = block.render(value)
         assert "accordion--header-navy" in html
         assert "accordion--content-light-grey" in html
+
+    def test_accordion_renders_layout_wrapper(self):
+        block = AccordionBlock()
+        value = block.to_python(
+            {
+                "width": "small",
+                "alignment": "centre",
+                "items": [
+                    {"title": "Q1", "content": "<p>A1</p>"},
+                ],
+            }
+        )
+        html = block.render(value)
+        assert "block-layout--small" in html
+        assert "block-layout--align-centre" in html
+
+
+class TestLayoutMixin(TestCase):
+    def test_layout_fields_exist(self):
+        block = LayoutMixin()
+        assert "width" in block.child_blocks
+        assert "alignment" in block.child_blocks
+
+    def test_layout_defaults(self):
+        block = LayoutMixin()
+        assert block.child_blocks["width"].meta.default == "default"
+        assert block.child_blocks["alignment"].meta.default == "none"
+
+    def test_content_block_inherits_layout(self):
+        block = ContentBlock()
+        assert "width" in block.child_blocks
+        assert "alignment" in block.child_blocks
+
+    def test_accordion_block_inherits_layout(self):
+        block = AccordionBlock()
+        assert "width" in block.child_blocks
+        assert "alignment" in block.child_blocks
+
+    def test_content_block_renders_layout_classes(self):
+        block = ContentBlock()
+        value = block.to_python(
+            {
+                "width": "medium",
+                "alignment": "right",
+                "heading": "Test",
+            }
+        )
+        html = block.render(value)
+        assert "block-layout--medium" in html
+        assert "block-layout--align-right" in html
 
 
 class TestDocumentationPanel(TestCase):

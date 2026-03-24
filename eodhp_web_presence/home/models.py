@@ -11,8 +11,38 @@ from wagtailcodeblock.blocks import CodeBlock
 
 from .colors import THEME_COLOR_CHOICES
 
+WIDTH_CHOICES = [
+    ("default", "Default"),
+    ("medium", "Medium"),
+    ("small", "Small"),
+]
 
-class ContentBlock(blocks.StructBlock):
+ALIGNMENT_CHOICES = [
+    ("none", "None"),
+    ("left", "Left"),
+    ("centre", "Centre"),
+    ("right", "Right"),
+]
+
+
+class LayoutMixin(blocks.StructBlock):
+    """Reusable layout options — inherit from this instead of StructBlock."""
+
+    width = blocks.ChoiceBlock(
+        choices=WIDTH_CHOICES,
+        default="default",
+        required=False,
+        help_text="Control how wide this block spans.",
+    )
+    alignment = blocks.ChoiceBlock(
+        choices=ALIGNMENT_CHOICES,
+        default="none",
+        required=False,
+        help_text="Horizontal alignment within the page.",
+    )
+
+
+class ContentBlock(LayoutMixin):
     background_color = blocks.ChoiceBlock(
         choices=THEME_COLOR_CHOICES,
         default="default",
@@ -39,7 +69,7 @@ class AccordionItemBlock(blocks.StructBlock):
         label = "Accordion Item"
 
 
-class AccordionBlock(blocks.StructBlock):
+class AccordionBlock(LayoutMixin):
     header_color = blocks.ChoiceBlock(
         choices=THEME_COLOR_CHOICES,
         default="default",
