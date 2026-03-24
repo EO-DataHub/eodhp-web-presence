@@ -3,6 +3,7 @@ from typing import ClassVar
 from django.db import models
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.embeds.blocks import EmbedBlock
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page
@@ -89,6 +90,17 @@ class AccordionBlock(LayoutMixin):
         label = "Accordion"
         template = "blocks/accordion_block.html"
         help_text = "A set of collapsible content sections."
+
+
+class MediaEmbedBlock(LayoutMixin):
+    url = EmbedBlock(help_text="Paste a URL to embed (YouTube, Vimeo, Spotify, etc.).")
+    caption = blocks.CharBlock(required=False, help_text="Optional caption below the embed.")
+
+    class Meta:
+        icon = "media"
+        label = "Embed"
+        template = "blocks/embed_block.html"
+        help_text = "Embed content from YouTube, Vimeo, Spotify, and other providers."
 
 
 # ---------------------------------------------------------------------
@@ -268,6 +280,7 @@ def _inner_blocks() -> list:
     return [
         ("content_block", ContentBlock()),
         ("accordion", AccordionBlock()),
+        ("embed", MediaEmbedBlock()),
         ("blockquote", blocks.BlockQuoteBlock()),
         ("raw_html", blocks.RawHTMLBlock()),
         ("code", CodeBlock(label="Code")),

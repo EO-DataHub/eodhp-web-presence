@@ -16,6 +16,7 @@ from home.models import (
     GenericPage,
     HomePage,
     LayoutMixin,
+    MediaEmbedBlock,
     RowBlock,
     _body_blocks,
     _inner_blocks,
@@ -345,6 +346,26 @@ class TestColumnBlock(TestCase):
         block = ColumnBlock()
         inner_types = list(block.child_blocks["content"].child_blocks.keys())
         assert "columns" not in inner_types
+
+
+class TestMediaEmbedBlock(TestCase):
+    def test_embed_block_fields(self):
+        block = MediaEmbedBlock()
+        assert "url" in block.child_blocks
+        assert "caption" in block.child_blocks
+
+    def test_embed_block_inherits_layout(self):
+        block = MediaEmbedBlock()
+        assert "width" in block.child_blocks
+        assert "alignment" in block.child_blocks
+
+    def test_embed_in_inner_blocks(self):
+        block_types = [name for name, _ in _inner_blocks()]
+        assert "embed" in block_types
+
+    def test_embed_in_body_blocks(self):
+        block_types = [name for name, _ in _body_blocks()]
+        assert "embed" in block_types
 
 
 class TestBodyBlockHelpers(TestCase):
