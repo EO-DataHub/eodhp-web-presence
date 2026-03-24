@@ -1,0 +1,14 @@
+{% load wagtailcore_tags %}
+<div class="block-layout block-layout--{{ self.width }} block-layout--align-{{ self.alignment }}">
+<div class="embed-block">
+
+    <div class="embed-block__content">
+        {{ self.url }}
+    </div>
+
+    {% if self.caption %}
+    <p class="embed-block__caption">{{ self.caption }}</p>
+    {% endif %}
+
+</div>
+</div>
