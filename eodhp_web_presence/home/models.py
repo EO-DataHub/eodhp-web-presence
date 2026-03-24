@@ -9,8 +9,16 @@ from wagtail.models import Page
 from wagtailcache.cache import WagtailCacheMixin
 from wagtailcodeblock.blocks import CodeBlock
 
+from .colors import THEME_COLOR_CHOICES
+
 
 class ContentBlock(blocks.StructBlock):
+    background_color = blocks.ChoiceBlock(
+        choices=THEME_COLOR_CHOICES,
+        default="default",
+        required=False,
+        help_text="Background color for this content block.",
+    )
     heading = blocks.CharBlock(required=False, help_text="Optional heading")
     paragraph = blocks.RichTextBlock(required=False)
     image = ImageChooserBlock(required=False)
@@ -32,6 +40,18 @@ class AccordionItemBlock(blocks.StructBlock):
 
 
 class AccordionBlock(blocks.StructBlock):
+    header_color = blocks.ChoiceBlock(
+        choices=THEME_COLOR_CHOICES,
+        default="default",
+        required=False,
+        help_text="Background color for accordion headers.",
+    )
+    content_color = blocks.ChoiceBlock(
+        choices=THEME_COLOR_CHOICES,
+        default="default",
+        required=False,
+        help_text="Background color for accordion content panels.",
+    )
     items = blocks.ListBlock(AccordionItemBlock())
 
     class Meta:

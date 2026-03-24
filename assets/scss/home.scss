@@ -134,7 +134,7 @@
           background-color: var(--background);
           color: var(--text-primary);
           padding: 1rem;
-          border-radius: 10px;
+          border-radius: $radius-lg;
           display: flex;
           flex-direction: column;
           gap: 1rem;
@@ -148,7 +148,7 @@
             height: 130px;
             background-size: cover;
             background-position: center;
-            border-radius: 10px;
+            border-radius: $radius-lg;
             object-fit: cover;
           }
 
@@ -156,7 +156,7 @@
             background-color: var(--button-bg);
             color: var(--button-text);
             padding: 1rem;
-            border-radius: 50%;
+            border-radius: $radius-circle;
           }
 
           h5 {
@@ -209,7 +209,7 @@
           .arrow-left svg,
           .arrow-right svg {
             fill: var(--text-primary);
-            border-radius: 50%;
+            border-radius: $radius-circle;
             border: 1px solid var(--text-primary);
             padding: 0.3rem;
             cursor: pointer;
@@ -240,7 +240,7 @@
           gap: 1rem;
           min-height: 300px;
           padding: 2rem;
-          border-radius: 30px;
+          border-radius: $radius-pill;
           font-size: 1rem;
 
           h3 {

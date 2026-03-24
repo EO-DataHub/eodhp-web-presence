@@ -1,0 +1,27 @@
+@use 'custom' as *;
+
+// ── Primary colour palette ─────────────────────────────────────────
+// Reusable map for any component that needs palette-based modifiers.
+// Each entry: slug → (background, hover, text-color)
+
+$theme-colors: (
+  "nceo-purple": (#4c72ba, #3f64ab, #fff),
+  "navy":        (#1a273f, #2a3559, #fff),
+  "light-grey":  (#f3f3f3, #e6e8ec, #000),
+  "steel":       (#637189, #56647a, #fff),
+  "blue":        (#2a3559, #34416b, #fff),
+);
+
+// ── Generic background utility classes ─────────────────────────────
+// Apply .bg--{slug} to any element for palette background + text contrast.
+@each $name, $vals in $theme-colors {
+  $bg:   nth($vals, 1);
+  $text: nth($vals, 3);
+
+  .bg--#{$name} {
+    background-color: #{$bg};
+    color: #{$text};
+    padding: 1.25rem;
+    border-radius: $radius-md;
+  }
+}
