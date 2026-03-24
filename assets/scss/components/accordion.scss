@@ -1,4 +1,5 @@
 @use '../custom' as *;
+@use '../theme-colors' as *;
 
 .accordion {
     display: flex;
@@ -77,6 +78,38 @@ details[open] > .accordion__header .accordion__chevron {
 
         &:last-child {
             margin-bottom: 0;
+        }
+    }
+}
+
+// ── Header color modifiers ─────────────────────────────────────────
+@each $name, $vals in $theme-colors {
+    $bg:    nth($vals, 1);
+    $hover: nth($vals, 2);
+    $text:  nth($vals, 3);
+
+    .accordion--header-#{$name} {
+        .accordion__header {
+            --accordion-header-bg: #{$bg};
+            --accordion-header-hover: #{$hover};
+            color: #{$text};
+        }
+
+        .accordion__chevron {
+            color: #{$text};
+        }
+    }
+}
+
+// ── Content color modifiers ────────────────────────────────────────
+@each $name, $vals in $theme-colors {
+    $bg:   nth($vals, 1);
+    $text: nth($vals, 3);
+
+    .accordion--content-#{$name} {
+        .accordion__content {
+            --accordion-content-bg: #{$bg};
+            color: #{$text};
         }
     }
 }

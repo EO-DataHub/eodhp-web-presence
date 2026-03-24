@@ -58,7 +58,6 @@ $mobile-breakpoint: 1200px;
 
 html * {
   font-family: Fira Sans, sans-serif;
-  margin: 0;
   padding: 0;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -185,7 +184,7 @@ p {
 h2,
 h3,
 h4 {
-  margin: 1rem 0 !important;
+  margin: 1rem 0;
 }
 
 a {

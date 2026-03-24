@@ -165,6 +165,11 @@ class TestAccordionBlock(TestCase):
         block = AccordionBlock()
         assert "items" in block.child_blocks
 
+    def test_accordion_block_has_color_fields(self):
+        block = AccordionBlock()
+        assert "header_color" in block.child_blocks
+        assert "content_color" in block.child_blocks
+
     def test_accordion_renders_details_element(self):
         block = AccordionBlock()
         value = block.to_python(
@@ -180,6 +185,34 @@ class TestAccordionBlock(TestCase):
         assert "Question 1" in html
         assert "Question 2" in html
         assert "accordion__chevron" in html
+
+    def test_accordion_default_color_no_modifier_classes(self):
+        block = AccordionBlock()
+        value = block.to_python(
+            {
+                "items": [
+                    {"title": "Q", "content": "<p>A</p>"},
+                ]
+            }
+        )
+        html = block.render(value)
+        assert "accordion--header-" not in html
+        assert "accordion--content-" not in html
+
+    def test_accordion_custom_colors_add_modifier_classes(self):
+        block = AccordionBlock()
+        value = block.to_python(
+            {
+                "header_color": "navy",
+                "content_color": "light-grey",
+                "items": [
+                    {"title": "Q", "content": "<p>A</p>"},
+                ],
+            }
+        )
+        html = block.render(value)
+        assert "accordion--header-navy" in html
+        assert "accordion--content-light-grey" in html
 
 
 class TestDocumentationPanel(TestCase):

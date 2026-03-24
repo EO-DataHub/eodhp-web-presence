@@ -1,6 +1,6 @@
 .generic-page {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: min(1200px, 100% - 3rem);
+  margin-inline: auto;
 
   &__hero {
     position: relative;
@@ -107,6 +107,15 @@
       margin-bottom: 2rem;
       padding: 1rem 0;
       border-bottom: 1px solid #e2e2e2;
+
+      &[class*="bg--"] {
+        padding: 1.5rem;
+        border-bottom: none;
+
+        > :first-child {
+          margin-top: 0;
+        }
+      }
 
       &:last-child {
         border-bottom: none;
