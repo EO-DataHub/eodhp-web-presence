@@ -7,6 +7,7 @@ from home.models import (
     AccordionItemBlock,
     CaseStudiesPage,
     CatalogueIndexPage,
+    ColumnBlock,
     ContentBlock,
     DataIndexPage,
     DocsIndexPage,
@@ -15,6 +16,9 @@ from home.models import (
     GenericPage,
     HomePage,
     LayoutMixin,
+    RowBlock,
+    _body_blocks,
+    _inner_blocks,
 )
 
 
@@ -279,3 +283,75 @@ class TestDocumentationPanel(TestCase):
     def test_featured_image_defaults_false(self):
         block = DocumentationPanel()
         assert block.child_blocks["featured_image"].meta.default is False
+
+
+class TestRowBlock(TestCase):
+    def test_row_block_fields(self):
+        block = RowBlock()
+        assert "layout" in block.child_blocks
+        assert "columns" in block.child_blocks
+
+    def test_row_block_renders_grid_classes(self):
+        block = RowBlock()
+        value = block.to_python(
+            {
+                "layout": "1-2",
+                "columns": [
+                    {"content": [{"type": "content_block", "value": {"heading": "Left"}}]},
+                    {"content": [{"type": "content_block", "value": {"heading": "Right"}}]},
+                ],
+            }
+        )
+        html = block.render(value)
+        assert "grid-layout--1-2" in html
+
+    def test_row_block_renders_columns_content(self):
+        block = RowBlock()
+        value = block.to_python(
+            {
+                "layout": "1-1",
+                "columns": [
+                    {"content": [{"type": "content_block", "value": {"heading": "Left Col"}}]},
+                    {"content": [{"type": "content_block", "value": {"heading": "Right Col"}}]},
+                ],
+            }
+        )
+        html = block.render(value)
+        assert "Left Col" in html
+        assert "Right Col" in html
+        assert html.count("grid-layout__column") == 2
+
+    def test_row_block_gap_default(self):
+        block = RowBlock()
+        value = block.to_python(
+            {
+                "layout": "2-1",
+                "columns": [
+                    {"content": []},
+                ],
+            }
+        )
+        html = block.render(value)
+        assert "grid-layout--2-1" in html
+
+
+class TestColumnBlock(TestCase):
+    def test_column_block_has_content_stream(self):
+        block = ColumnBlock()
+        assert "content" in block.child_blocks
+
+    def test_column_cannot_contain_rows(self):
+        """Columns should not allow nested row blocks (prevents infinite nesting)."""
+        block = ColumnBlock()
+        inner_types = list(block.child_blocks["content"].child_blocks.keys())
+        assert "columns" not in inner_types
+
+
+class TestBodyBlockHelpers(TestCase):
+    def test_body_blocks_includes_columns(self):
+        block_types = [name for name, _ in _body_blocks()]
+        assert "columns" in block_types
+
+    def test_inner_blocks_excludes_columns(self):
+        block_types = [name for name, _ in _inner_blocks()]
+        assert "columns" not in block_types
