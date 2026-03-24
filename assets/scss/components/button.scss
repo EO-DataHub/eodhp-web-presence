@@ -1,7 +1,9 @@
+@use '../custom' as *;
+
 .button {
   padding: 5px 20px;
   border: none;
-  border-radius: 3px;
+  border-radius: $radius-sm;
   cursor: pointer;
   font-weight: 500;
   transition: background-color 0.3s;

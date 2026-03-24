@@ -1,3 +1,5 @@
+@use 'custom' as *;
+
 // ── Primary colour palette ─────────────────────────────────────────
 // Reusable map for any component that needs palette-based modifiers.
 // Each entry: slug → (background, hover, text-color)
@@ -20,6 +22,6 @@ $theme-colors: (
     background-color: #{$bg};
     color: #{$text};
     padding: 1.25rem;
-    border-radius: 8px;
+    border-radius: $radius-md;
   }
 }

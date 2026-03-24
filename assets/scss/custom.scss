@@ -2,6 +2,12 @@
 
 $mobile-breakpoint: 1200px;
 
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 10px;
+$radius-pill: 30px;
+$radius-circle: 50%;
+
 .dark-theme {
   --background: #060606;
   --text-primary: #fff;
@@ -58,6 +64,7 @@ $mobile-breakpoint: 1200px;
 
 html * {
   font-family: Fira Sans, sans-serif;
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -184,7 +191,7 @@ p {
 h2,
 h3,
 h4 {
-  margin: 1rem 0;
+  margin: 1rem 0 !important;
 }
 
 a {
