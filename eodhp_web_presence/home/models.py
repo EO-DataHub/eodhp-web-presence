@@ -11,8 +11,38 @@ from wagtailcodeblock.blocks import CodeBlock
 
 from .colors import THEME_COLOR_CHOICES
 
+WIDTH_CHOICES = [
+    ("default", "Default"),
+    ("medium", "Medium"),
+    ("small", "Small"),
+]
 
-class ContentBlock(blocks.StructBlock):
+ALIGNMENT_CHOICES = [
+    ("none", "None"),
+    ("left", "Left"),
+    ("centre", "Centre"),
+    ("right", "Right"),
+]
+
+
+class LayoutMixin(blocks.StructBlock):
+    """Reusable layout options — inherit from this instead of StructBlock."""
+
+    width = blocks.ChoiceBlock(
+        choices=WIDTH_CHOICES,
+        default="default",
+        required=False,
+        help_text="Control how wide this block spans.",
+    )
+    alignment = blocks.ChoiceBlock(
+        choices=ALIGNMENT_CHOICES,
+        default="none",
+        required=False,
+        help_text="Horizontal alignment within the page.",
+    )
+
+
+class ContentBlock(LayoutMixin):
     background_color = blocks.ChoiceBlock(
         choices=THEME_COLOR_CHOICES,
         default="default",
@@ -39,7 +69,7 @@ class AccordionItemBlock(blocks.StructBlock):
         label = "Accordion Item"
 
 
-class AccordionBlock(blocks.StructBlock):
+class AccordionBlock(LayoutMixin):
     header_color = blocks.ChoiceBlock(
         choices=THEME_COLOR_CHOICES,
         default="default",
@@ -223,14 +253,55 @@ class DocumentationPanel(blocks.StructBlock):
         help_text = "Use this block to create documentation panels with title, description, and optional image."
 
 
-# Helper: StreamField definitions shared by landing / index pages
-def _body_blocks() -> list:
+COLUMN_LAYOUT_CHOICES = [
+    ("1-1", "Two columns (50 / 50)"),
+    ("1-2", "Two columns (33 / 67)"),
+    ("2-1", "Two columns (67 / 33)"),
+    ("1-1-1", "Three columns (33 / 33 / 33)"),
+    ("1-1-1-1", "Four columns (25 / 25 / 25 / 25)"),
+    ("1-2-1", "Three columns (25 / 50 / 25)"),
+]
+
+
+# Helper: blocks allowed inside columns (no nesting of rows)
+def _inner_blocks() -> list:
     return [
         ("content_block", ContentBlock()),
         ("accordion", AccordionBlock()),
         ("blockquote", blocks.BlockQuoteBlock()),
         ("raw_html", blocks.RawHTMLBlock()),
         ("code", CodeBlock(label="Code")),
+    ]
+
+
+class ColumnBlock(blocks.StructBlock):
+    content = blocks.StreamBlock(_inner_blocks())
+
+    class Meta:
+        icon = "placeholder"
+        label = "Column"
+        template = "blocks/column_block.html"
+
+
+class RowBlock(blocks.StructBlock):
+    layout = blocks.ChoiceBlock(
+        choices=COLUMN_LAYOUT_CHOICES,
+        default="1-1",
+        help_text="Choose a column layout for this row.",
+    )
+    columns = blocks.ListBlock(ColumnBlock(), min_num=1, max_num=4)
+
+    class Meta:
+        icon = "grip"
+        label = "Columns"
+        template = "blocks/row_block.html"
+        help_text = "Arrange content in side-by-side columns."
+
+
+# Helper: StreamField definitions shared by landing / index pages
+def _body_blocks() -> list:
+    return _inner_blocks() + [
+        ("columns", RowBlock()),
     ]
 
 

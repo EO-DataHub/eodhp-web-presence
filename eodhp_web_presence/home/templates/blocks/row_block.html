@@ -1,0 +1,8 @@
+{% load wagtailcore_tags %}
+<div class="grid-layout grid-layout--{{ self.layout }}">
+    {% for column in self.columns %}
+    <div class="grid-layout__column">
+        {% include_block column %}
+    </div>
+    {% endfor %}
+</div>

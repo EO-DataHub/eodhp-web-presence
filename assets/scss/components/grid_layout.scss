@@ -1,0 +1,32 @@
+@use '../custom' as *;
+
+.grid-layout {
+  display: grid;
+  width: 100%;
+  gap: 1.5rem;
+
+  // --- Layout presets ---
+  &--1-1     { grid-template-columns: 1fr 1fr; }
+  &--1-2     { grid-template-columns: 1fr 2fr; }
+  &--2-1     { grid-template-columns: 2fr 1fr; }
+  &--1-1-1   { grid-template-columns: 1fr 1fr 1fr; }
+  &--1-1-1-1 { grid-template-columns: repeat(4, 1fr); }
+  &--1-2-1   { grid-template-columns: 1fr 2fr 1fr; }
+
+  // --- Responsive: stack on mobile ---
+  @media (max-width: $mobile-breakpoint) {
+    grid-template-columns: 1fr !important;
+  }
+
+  // --- Column children ---
+  &__column {
+    min-width: 0; // prevent grid blowout from wide content
+
+    // Images fill their column (standard CMS behavior)
+    .content-block__image img {
+      width: 100%;
+      height: auto;
+      max-height: none;
+    }
+  }
+}
