@@ -112,7 +112,7 @@ class ContentBlock(LayoutMixin):
         help_text = "Use this block to create flexible content sections."
 
 
-class ImageBlock(blocks.StructBlock):
+class ImageBlock(LayoutMixin):
     """Standalone image block — lightweight alternative to ContentBlock for columns."""
 
     image = ImageChooserBlock(required=True)
@@ -135,12 +135,6 @@ class ImageBlock(blocks.StructBlock):
         default="rounded",
         required=False,
         help_text="Visual style for the image.",
-    )
-    image_alignment = blocks.ChoiceBlock(
-        choices=ALIGNMENT_CHOICES,
-        default="centre",
-        required=False,
-        help_text="Horizontal alignment of the image.",
     )
 
     class Meta:
