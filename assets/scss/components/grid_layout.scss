@@ -37,11 +37,6 @@
       justify-content: end;
     }
 
-    // Stretched columns: content is absolutely positioned so it does not
-    // influence the grid row height — the row is sized by the other columns.
-    &:has(.column-block--stretch) {
-      position: relative;
-    }
 
     // Images fill their column (standard CMS behavior)
     .content-block__image img {
@@ -56,10 +51,10 @@
     margin-top: 2rem;
   }
 
-  // --- Stretch: fill column height determined by sibling columns ---
+  // --- Stretch: fill column height via flex, staying in flow ---
   &--stretch {
-    position: absolute;
-    inset: 0;
+    flex: 1;
+    min-height: 0;
     overflow: hidden;
     display: flex;
     flex-direction: column;
