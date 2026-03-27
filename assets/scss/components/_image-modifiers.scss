@@ -1,0 +1,33 @@
+@use '../custom' as *;
+
+// Width modifiers — call with parent selector that has `--w{N}` suffixes
+@mixin image-widths {
+  &--w100 img { width: 100%; }
+  &--w75  img { width: 75%;  }
+  &--w50  img { width: 50%;  }
+  &--w25  img { width: 25%;  }
+}
+
+// Style modifiers — rounded, square (default/no-op), pill
+@mixin image-styles {
+  &--rounded img { border-radius: $radius-md;   }
+  &--pill    img { border-radius: $radius-pill;  }
+}
+
+// Alignment — uses margin-based centering (requires img { display: block })
+@mixin image-alignment {
+  &--align-none img,
+  &--align-centre img {
+    margin-inline: auto;
+  }
+  &--align-left img  { margin-right: auto; }
+  &--align-right img { margin-left: auto;  }
+}
+
+// Clickable image link wrapper
+@mixin image-link($link-class) {
+  a.#{$link-class} {
+    display: contents;
+    &:hover img { opacity: 0.85; }
+  }
+}

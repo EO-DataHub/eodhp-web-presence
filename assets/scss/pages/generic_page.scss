@@ -1,4 +1,5 @@
 @use '../custom' as *;
+@use '../components/image-modifiers' as img;
 
 .generic-page {
   width: min(1200px, 100% - 3rem);
@@ -137,60 +138,18 @@
 
       &__image {
         margin-top: 1rem;
-        text-align: center;
 
         img {
+          display: block;
           max-width: 100%;
           height: auto;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        // Width modifiers
-        &--w100 img {
-          width: 100%;
-        }
-
-        &--w75 img {
-          width: 75%;
-        }
-
-        &--w50 img {
-          width: 50%;
-        }
-
-        &--w25 img {
-          width: 25%;
-        }
-
-        // Style modifiers
-        &--rounded img {
-          border-radius: $radius-md;
-        }
-
-        &--pill img {
-          border-radius: $radius-pill;
-        }
-
-        // Image alignment
-        &--align-left {
-          text-align: left;
-        }
-
-        &--align-centre {
-          text-align: center;
-        }
-
-        &--align-right {
-          text-align: right;
-        }
-
-        a.content-block__image-link {
-          display: contents;
-
-          &:hover img {
-            opacity: 0.85;
-          }
-        }
+        @include img.image-widths;
+        @include img.image-styles;
+        @include img.image-alignment;
+        @include img.image-link('content-block__image-link');
       }
 
       &__table {

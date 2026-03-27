@@ -1,4 +1,5 @@
 @use '../custom' as *;
+@use 'image-modifiers' as img;
 
 .image-block {
   img {
@@ -8,52 +9,8 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
-  // Width modifiers
-  &--w100 img {
-    width: 100%;
-  }
-
-  &--w75 img {
-    width: 75%;
-  }
-
-  &--w50 img {
-    width: 50%;
-  }
-
-  &--w25 img {
-    width: 25%;
-  }
-
-  // Style modifiers
-  &--rounded img {
-    border-radius: $radius-md;
-  }
-
-  &--pill img {
-    border-radius: $radius-pill;
-  }
-
-  // Alignment (margin-based since img is display:block)
-  &--align-none img,
-  &--align-centre img {
-    margin-inline: auto;
-  }
-
-  &--align-left img {
-    margin-right: auto;
-  }
-
-  &--align-right img {
-    margin-left: auto;
-  }
-
-  // Clickable image link — display:contents so link doesn't affect sizing
-  a.image-block__link {
-    display: contents;
-
-    &:hover img {
-      opacity: 0.85;
-    }
-  }
+  @include img.image-widths;
+  @include img.image-styles;
+  @include img.image-alignment;
+  @include img.image-link('image-block__link');
 }
