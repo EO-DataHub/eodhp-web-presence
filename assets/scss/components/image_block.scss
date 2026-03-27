@@ -1,0 +1,16 @@
+@use '../custom' as *;
+@use 'image-modifiers' as img;
+
+.image-block {
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  @include img.image-widths;
+  @include img.image-styles;
+  @include img.image-alignment;
+  @include img.image-link('image-block__link');
+}

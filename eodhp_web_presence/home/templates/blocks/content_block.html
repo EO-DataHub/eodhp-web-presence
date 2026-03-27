@@ -1,6 +1,6 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 {% load table_block_tags %}
-<div class="block-layout block-layout--{{ self.width }} block-layout--align-{{ self.alignment }}">
+<div class="block-layout block-layout--{{ self.width }} block-layout--align-{{ self.alignment }} block-layout--valign-{{ self.vertical_alignment|default:'top' }}">
 <div class="content-block{% if self.background_color != 'default' %} bg--{{ self.background_color }}{% endif %}">
 
     {% if self.heading %}
@@ -15,9 +15,19 @@
 
 
     {% if self.image %}
-    <div class="content-block__image">
+    <div class="content-block__image content-block__image--w{{ self.image_width|default:'100' }} content-block__image--{{ self.image_style|default:'rounded' }} content-block__image--align-{{ self.image_alignment|default:'centre' }}">
         {% image self.image original as img %}
-        <img src="{{ img.url }}" alt="">
+        {% if self.image_link_page %}
+        <a href="{% pageurl self.image_link_page %}" class="content-block__image-link">
+            <img src="{{ img.url }}" alt="{{ img.alt }}">
+        </a>
+        {% elif self.image_link_url %}
+        <a href="{{ self.image_link_url }}" class="content-block__image-link">
+            <img src="{{ img.url }}" alt="{{ img.alt }}">
+        </a>
+        {% else %}
+        <img src="{{ img.url }}" alt="{{ img.alt }}">
+        {% endif %}
     </div>
     {% endif %}
 

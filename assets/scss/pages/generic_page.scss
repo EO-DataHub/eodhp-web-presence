@@ -1,4 +1,5 @@
 @use '../custom' as *;
+@use '../components/image-modifiers' as img;
 
 .generic-page {
   width: min(1200px, 100% - 3rem);
@@ -137,15 +138,18 @@
 
       &__image {
         margin-top: 1rem;
-        text-align: center;
 
         img {
+          display: block;
           max-width: 100%;
-          max-height: 350px;
           height: auto;
-          border-radius: $radius-sm;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
+
+        @include img.image-widths;
+        @include img.image-styles;
+        @include img.image-alignment;
+        @include img.image-link('content-block__image-link');
       }
 
       &__table {
