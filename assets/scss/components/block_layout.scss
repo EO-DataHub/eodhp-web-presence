@@ -27,4 +27,17 @@
   &--align-none {
     /* no alignment override */
   }
+
+  // --- Vertical alignment ---
+  &--valign-top {
+    align-self: start;
+  }
+
+  &--valign-centre {
+    align-self: center;
+  }
+
+  &--valign-bottom {
+    align-self: end;
+  }
 }

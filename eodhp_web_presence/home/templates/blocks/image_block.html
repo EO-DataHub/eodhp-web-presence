@@ -1,0 +1,15 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+<div class="image-block image-block--w{{ self.image_width|default:'100' }} image-block--{{ self.image_style|default:'rounded' }} image-block--align-{{ self.image_alignment|default:'centre' }}">
+    {% image self.image original as img %}
+    {% if self.image_link_page %}
+    <a href="{% pageurl self.image_link_page %}" class="image-block__link">
+        <img src="{{ img.url }}" alt="">
+    </a>
+    {% elif self.image_link_url %}
+    <a href="{{ self.image_link_url }}" class="image-block__link">
+        <img src="{{ img.url }}" alt="">
+    </a>
+    {% else %}
+    <img src="{{ img.url }}" alt="">
+    {% endif %}
+</div>

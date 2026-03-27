@@ -141,10 +141,55 @@
 
         img {
           max-width: 100%;
-          max-height: 350px;
           height: auto;
-          border-radius: $radius-sm;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        // Width modifiers
+        &--w100 img {
+          width: 100%;
+        }
+
+        &--w75 img {
+          width: 75%;
+        }
+
+        &--w50 img {
+          width: 50%;
+        }
+
+        &--w25 img {
+          width: 25%;
+        }
+
+        // Style modifiers
+        &--rounded img {
+          border-radius: $radius-md;
+        }
+
+        &--pill img {
+          border-radius: $radius-pill;
+        }
+
+        // Image alignment
+        &--align-left {
+          text-align: left;
+        }
+
+        &--align-centre {
+          text-align: center;
+        }
+
+        &--align-right {
+          text-align: right;
+        }
+
+        a.content-block__image-link {
+          display: contents;
+
+          &:hover img {
+            opacity: 0.85;
+          }
         }
       }
 

@@ -15,6 +15,7 @@ from home.models import (
     DocumentationPanel,
     GenericPage,
     HomePage,
+    ImageBlock,
     LayoutMixin,
     MediaEmbedBlock,
     RowBlock,
@@ -247,16 +248,19 @@ class TestLayoutMixin(TestCase):
         block = LayoutMixin()
         assert block.child_blocks["width"].meta.default == "default"
         assert block.child_blocks["alignment"].meta.default == "none"
+        assert block.child_blocks["vertical_alignment"].meta.default == "top"
 
     def test_content_block_inherits_layout(self):
         block = ContentBlock()
         assert "width" in block.child_blocks
         assert "alignment" in block.child_blocks
+        assert "vertical_alignment" in block.child_blocks
 
     def test_accordion_block_inherits_layout(self):
         block = AccordionBlock()
         assert "width" in block.child_blocks
         assert "alignment" in block.child_blocks
+        assert "vertical_alignment" in block.child_blocks
 
     def test_content_block_renders_layout_classes(self):
         block = ContentBlock()
@@ -270,6 +274,74 @@ class TestLayoutMixin(TestCase):
         html = block.render(value)
         assert "block-layout--medium" in html
         assert "block-layout--align-right" in html
+        assert "block-layout--valign-top" in html
+
+    def test_content_block_renders_vertical_alignment(self):
+        block = ContentBlock()
+        value = block.to_python(
+            {
+                "vertical_alignment": "centre",
+                "heading": "Test",
+            }
+        )
+        html = block.render(value)
+        assert "block-layout--valign-centre" in html
+
+
+class TestContentBlockImage(TestCase):
+    def test_content_block_has_image_link_page_field(self):
+        block = ContentBlock()
+        assert "image_link_page" in block.child_blocks
+
+    def test_content_block_has_image_link_url_field(self):
+        block = ContentBlock()
+        assert "image_link_url" in block.child_blocks
+
+    def test_content_block_has_image_width_field(self):
+        block = ContentBlock()
+        assert "image_width" in block.child_blocks
+
+    def test_content_block_image_width_default(self):
+        block = ContentBlock()
+        assert block.child_blocks["image_width"].meta.default == "100"
+
+    def test_content_block_has_image_style_field(self):
+        block = ContentBlock()
+        assert "image_style" in block.child_blocks
+
+    def test_content_block_image_style_default(self):
+        block = ContentBlock()
+        assert block.child_blocks["image_style"].meta.default == "rounded"
+
+    def test_content_block_has_image_alignment_field(self):
+        block = ContentBlock()
+        assert "image_alignment" in block.child_blocks
+
+    def test_content_block_image_alignment_default(self):
+        block = ContentBlock()
+        assert block.child_blocks["image_alignment"].meta.default == "centre"
+
+
+class TestImageBlock(TestCase):
+    def test_image_block_fields(self):
+        block = ImageBlock()
+        assert "image" in block.child_blocks
+        assert "image_link_page" in block.child_blocks
+        assert "image_link_url" in block.child_blocks
+        assert "image_width" in block.child_blocks
+        assert "image_style" in block.child_blocks
+        assert "image_alignment" in block.child_blocks
+
+    def test_image_block_defaults(self):
+        block = ImageBlock()
+        assert block.child_blocks["image_width"].meta.default == "100"
+        assert block.child_blocks["image_style"].meta.default == "rounded"
+        assert block.child_blocks["image_alignment"].meta.default == "centre"
+
+    def test_image_block_in_inner_blocks(self):
+        block = ColumnBlock()
+        inner_types = list(block.child_blocks["content"].child_blocks.keys())
+        assert "image" in inner_types
 
 
 class TestDocumentationPanel(TestCase):
@@ -341,11 +413,37 @@ class TestColumnBlock(TestCase):
         block = ColumnBlock()
         assert "content" in block.child_blocks
 
+    def test_column_block_has_stretch_field(self):
+        block = ColumnBlock()
+        assert "stretch" in block.child_blocks
+
     def test_column_cannot_contain_rows(self):
         """Columns should not allow nested row blocks (prevents infinite nesting)."""
         block = ColumnBlock()
         inner_types = list(block.child_blocks["content"].child_blocks.keys())
         assert "columns" not in inner_types
+
+    def test_column_renders_stretch_class_when_enabled(self):
+        block = ColumnBlock()
+        value = block.to_python(
+            {
+                "stretch": True,
+                "content": [{"type": "content_block", "value": {"heading": "Hello"}}],
+            }
+        )
+        html = block.render(value)
+        assert "column-block--stretch" in html
+
+    def test_column_no_stretch_class_when_disabled(self):
+        block = ColumnBlock()
+        value = block.to_python(
+            {
+                "stretch": False,
+                "content": [{"type": "content_block", "value": {"heading": "Hello"}}],
+            }
+        )
+        html = block.render(value)
+        assert "column-block--stretch" not in html
 
 
 class TestMediaEmbedBlock(TestCase):

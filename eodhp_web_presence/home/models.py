@@ -25,6 +25,25 @@ ALIGNMENT_CHOICES = [
     ("right", "Right"),
 ]
 
+VERTICAL_ALIGNMENT_CHOICES = [
+    ("top", "Top"),
+    ("centre", "Centre"),
+    ("bottom", "Bottom"),
+]
+
+IMAGE_WIDTH_CHOICES = [
+    ("100", "Full width (100%)"),
+    ("75", "Three-quarters (75%)"),
+    ("50", "Half (50%)"),
+    ("25", "Quarter (25%)"),
+]
+
+IMAGE_STYLE_CHOICES = [
+    ("rounded", "Rounded corners"),
+    ("square", "Square corners"),
+    ("pill", "Pill / circular"),
+]
+
 
 class LayoutMixin(blocks.StructBlock):
     """Reusable layout options — inherit from this instead of StructBlock."""
@@ -41,6 +60,12 @@ class LayoutMixin(blocks.StructBlock):
         required=False,
         help_text="Horizontal alignment within the page.",
     )
+    vertical_alignment = blocks.ChoiceBlock(
+        choices=VERTICAL_ALIGNMENT_CHOICES,
+        default="top",
+        required=False,
+        help_text="Vertical alignment within a column layout.",
+    )
 
 
 class ContentBlock(LayoutMixin):
@@ -53,12 +78,76 @@ class ContentBlock(LayoutMixin):
     heading = blocks.CharBlock(required=False, help_text="Optional heading")
     paragraph = blocks.RichTextBlock(required=False)
     image = ImageChooserBlock(required=False)
+    image_link_page = blocks.PageChooserBlock(
+        required=False,
+        help_text="Link the image to an internal page.",
+    )
+    image_link_url = blocks.URLBlock(
+        required=False,
+        help_text="Link the image to an external URL. Page link takes priority if both are set.",
+    )
+    image_width = blocks.ChoiceBlock(
+        choices=IMAGE_WIDTH_CHOICES,
+        default="100",
+        required=False,
+        help_text="Control the display width of the image.",
+    )
+    image_style = blocks.ChoiceBlock(
+        choices=IMAGE_STYLE_CHOICES,
+        default="rounded",
+        required=False,
+        help_text="Visual style for the image.",
+    )
+    image_alignment = blocks.ChoiceBlock(
+        choices=ALIGNMENT_CHOICES,
+        default="centre",
+        required=False,
+        help_text="Horizontal alignment of the image within the block.",
+    )
 
     class Meta:
         icon = "doc-full"
         label = "Content Block"
         template = "blocks/content_block.html"
         help_text = "Use this block to create flexible content sections."
+
+
+class ImageBlock(blocks.StructBlock):
+    """Standalone image block — lightweight alternative to ContentBlock for columns."""
+
+    image = ImageChooserBlock(required=True)
+    image_link_page = blocks.PageChooserBlock(
+        required=False,
+        help_text="Link the image to an internal page.",
+    )
+    image_link_url = blocks.URLBlock(
+        required=False,
+        help_text="Link the image to an external URL. Page link takes priority if both are set.",
+    )
+    image_width = blocks.ChoiceBlock(
+        choices=IMAGE_WIDTH_CHOICES,
+        default="100",
+        required=False,
+        help_text="Control the display width of the image.",
+    )
+    image_style = blocks.ChoiceBlock(
+        choices=IMAGE_STYLE_CHOICES,
+        default="rounded",
+        required=False,
+        help_text="Visual style for the image.",
+    )
+    image_alignment = blocks.ChoiceBlock(
+        choices=ALIGNMENT_CHOICES,
+        default="centre",
+        required=False,
+        help_text="Horizontal alignment of the image.",
+    )
+
+    class Meta:
+        icon = "image"
+        label = "Image"
+        template = "blocks/image_block.html"
+        help_text = "A standalone image with optional link and styling."
 
 
 class AccordionItemBlock(blocks.StructBlock):
@@ -279,6 +368,7 @@ COLUMN_LAYOUT_CHOICES = [
 def _inner_blocks() -> list:
     return [
         ("content_block", ContentBlock()),
+        ("image", ImageBlock()),
         ("accordion", AccordionBlock()),
         ("embed", MediaEmbedBlock()),
         ("blockquote", blocks.BlockQuoteBlock()),
@@ -288,6 +378,11 @@ def _inner_blocks() -> list:
 
 
 class ColumnBlock(blocks.StructBlock):
+    stretch = blocks.BooleanBlock(
+        required=False,
+        default=False,
+        help_text="Stretch text content to fill the full column height.",
+    )
     content = blocks.StreamBlock(_inner_blocks())
 
     class Meta:
