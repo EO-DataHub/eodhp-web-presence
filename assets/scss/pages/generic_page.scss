@@ -4,6 +4,10 @@
   width: min(1200px, 100% - 3rem);
   margin-inline: auto;
 
+  > * + * {
+    margin-top: 2rem;
+  }
+
   &__hero {
     position: relative;
     width: 100vw;
@@ -96,8 +100,12 @@
   &__body {
     margin-bottom: 2rem;
 
+    > * + * {
+      margin-top: 2rem;
+    }
+
     blockquote {
-      margin: 1rem 0;
+      margin: 0;
       padding: 1rem;
       background: var(--inverse-background);
       color: var(--inverse-text);
@@ -106,8 +114,6 @@
     }
 
     .content-block {
-      margin-bottom: 2rem;
-      padding: 1rem 0;
       border-bottom: 1px solid #e2e2e2;
 
       &[class*="bg--"] {

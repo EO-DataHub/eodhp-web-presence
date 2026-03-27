@@ -22,6 +22,10 @@
   &__column {
     min-width: 0; // prevent grid blowout from wide content
 
+    > * + * {
+      margin-top: 2rem;
+    }
+
     // Images fill their column (standard CMS behavior)
     .content-block__image img {
       width: 100%;
