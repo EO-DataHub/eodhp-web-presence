@@ -4,14 +4,14 @@
     {% image self.image original as img %}
     {% if self.image_link_page %}
     <a href="{% pageurl self.image_link_page %}" class="image-block__link">
-        <img src="{{ img.url }}" alt="">
+        <img src="{{ img.url }}" alt="{{ img.alt }}">
     </a>
     {% elif self.image_link_url %}
     <a href="{{ self.image_link_url }}" class="image-block__link">
-        <img src="{{ img.url }}" alt="">
+        <img src="{{ img.url }}" alt="{{ img.alt }}">
     </a>
     {% else %}
-    <img src="{{ img.url }}" alt="">
+    <img src="{{ img.url }}" alt="{{ img.alt }}">
     {% endif %}
 </div>
 </div>

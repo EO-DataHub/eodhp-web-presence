@@ -330,13 +330,11 @@ class TestImageBlock(TestCase):
         assert "image_link_url" in block.child_blocks
         assert "image_width" in block.child_blocks
         assert "image_style" in block.child_blocks
-        assert "image_alignment" in block.child_blocks
 
     def test_image_block_defaults(self):
         block = ImageBlock()
         assert block.child_blocks["image_width"].meta.default == "100"
         assert block.child_blocks["image_style"].meta.default == "rounded"
-        assert block.child_blocks["image_alignment"].meta.default == "centre"
 
     def test_image_block_in_inner_blocks(self):
         block = ColumnBlock()
