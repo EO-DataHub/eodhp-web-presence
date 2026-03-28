@@ -19,7 +19,6 @@ $theme-colors: (
   $text: nth($vals, 3);
 
   .bg--#{$name} {
-    --block-bg: #{$bg};
     background-color: #{$bg};
     color: #{$text};
     padding: 1.25rem;
