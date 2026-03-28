@@ -19,9 +19,21 @@ $theme-colors: (
   $text: nth($vals, 3);
 
   .bg--#{$name} {
+    --block-bg: #{$bg};
     background-color: #{$bg};
     color: #{$text};
     padding: 1.25rem;
     border-radius: $radius-md;
   }
+}
+
+// ── Full-width background utility ───────────────────────────────────
+// Makes the element itself full-viewport-width (same pattern as the
+// hero), then re-constrains its content to match the page width.
+// No pseudo-elements — the background is on the actual element.
+.bg-full-width[class*="bg--"] {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  border-radius: 0;
+  padding-inline: max(1.5rem, calc(50vw - 600px));
 }

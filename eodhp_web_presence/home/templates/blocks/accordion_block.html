@@ -1,5 +1,5 @@
-{% load wagtailcore_tags %}
-<div class="block-layout block-layout--{{ self.width }} block-layout--align-{{ self.alignment }} block-layout--valign-{{ self.vertical_alignment|default:'top' }}">
+{% load wagtailcore_tags bg_tags %}
+<div class="block-layout block-layout--{{ self.width }} block-layout--align-{{ self.alignment }} block-layout--valign-{{ self.vertical_alignment|default:'top' }} {% bg_classes self.background_color self.full_width_background %}">
 <div class="accordion{% if self.header_color != 'default' %} accordion--header-{{ self.header_color }}{% endif %}{% if self.content_color != 'default' %} accordion--content-{{ self.content_color }}{% endif %}">
     {% for item in self.items %}
     <details class="accordion__item">

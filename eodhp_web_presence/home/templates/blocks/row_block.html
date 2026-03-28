@@ -1,5 +1,5 @@
-{% load wagtailcore_tags %}
-<div class="grid-layout grid-layout--{{ self.layout }}">
+{% load wagtailcore_tags bg_tags %}
+<div class="grid-layout grid-layout--{{ self.layout }} {% bg_classes self.background_color self.full_width_background %}">
     {% for column in self.columns %}
     <div class="grid-layout__column">
         {% include_block column %}
