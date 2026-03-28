@@ -79,6 +79,8 @@
   .faq-card.faq-card--featured {
     padding: 0;
     overflow: hidden;
+    border: none;
+    background-color: transparent;
     position: relative;
     min-height: 220px;
     background-size: cover;
