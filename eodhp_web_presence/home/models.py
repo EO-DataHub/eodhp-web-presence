@@ -68,13 +68,23 @@ class LayoutMixin(blocks.StructBlock):
     )
 
 
-class ContentBlock(LayoutMixin):
+class BackgroundMixin(blocks.StructBlock):
+    """Reusable background color option."""
+
     background_color = blocks.ChoiceBlock(
         choices=THEME_COLOR_CHOICES,
         default="default",
         required=False,
-        help_text="Background color for this content block.",
+        help_text="Background color for this block.",
     )
+    full_width_background = blocks.BooleanBlock(
+        required=False,
+        default=False,
+        help_text="Stretch the background to the full width of the page.",
+    )
+
+
+class ContentBlock(LayoutMixin, BackgroundMixin):
     heading = blocks.CharBlock(required=False, help_text="Optional heading")
     paragraph = blocks.RichTextBlock(required=False)
     image = ImageChooserBlock(required=False)
@@ -112,7 +122,7 @@ class ContentBlock(LayoutMixin):
         help_text = "Use this block to create flexible content sections."
 
 
-class ImageBlock(LayoutMixin):
+class ImageBlock(LayoutMixin, BackgroundMixin):
     """Standalone image block — lightweight alternative to ContentBlock for columns."""
 
     image = ImageChooserBlock(required=True)
@@ -153,7 +163,7 @@ class AccordionItemBlock(blocks.StructBlock):
         label = "Accordion Item"
 
 
-class AccordionBlock(LayoutMixin):
+class AccordionBlock(LayoutMixin, BackgroundMixin):
     header_color = blocks.ChoiceBlock(
         choices=THEME_COLOR_CHOICES,
         default="default",
@@ -175,7 +185,7 @@ class AccordionBlock(LayoutMixin):
         help_text = "A set of collapsible content sections."
 
 
-class MediaEmbedBlock(LayoutMixin):
+class MediaEmbedBlock(LayoutMixin, BackgroundMixin):
     url = EmbedBlock(help_text="Paste a URL to embed (YouTube, Vimeo, Spotify, etc.).")
     caption = blocks.CharBlock(required=False, help_text="Optional caption below the embed.")
 
@@ -301,6 +311,28 @@ class LandingPageMixin(models.Model):
         help_text="Caption or alt-text for the hero image",
     )
     intro = RichTextField(blank=True, help_text="A short intro paragraph below the title.")
+    intro_background_color = models.CharField(
+        max_length=20,
+        choices=THEME_COLOR_CHOICES,
+        default="default",
+        blank=True,
+        help_text="Background color for the intro section.",
+    )
+    intro_full_width_background = models.BooleanField(
+        default=False,
+        help_text="Stretch the intro background to the full width of the page.",
+    )
+    topics_background_color = models.CharField(
+        max_length=20,
+        choices=THEME_COLOR_CHOICES,
+        default="default",
+        blank=True,
+        help_text="Background color for the topics grid section.",
+    )
+    topics_full_width_background = models.BooleanField(
+        default=False,
+        help_text="Stretch the topics background to the full width of the page.",
+    )
 
     class Meta:
         abstract = True
@@ -321,8 +353,12 @@ class LandingPageMixin(models.Model):
                 heading="Hero Image",
             ),
             FieldPanel("intro"),
+            FieldPanel("intro_background_color"),
+            FieldPanel("intro_full_width_background"),
             FieldPanel("body"),
             FieldPanel("topics"),
+            FieldPanel("topics_background_color"),
+            FieldPanel("topics_full_width_background"),
         ]
 
 
@@ -371,7 +407,11 @@ def _inner_blocks() -> list:
     ]
 
 
-class ColumnBlock(blocks.StructBlock):
+class ColumnBlock(BackgroundMixin):
+    # Columns live inside a RowBlock grid — full-width breakout would escape
+    # the grid cell, so we hide the option from editors.
+    full_width_background = None
+
     stretch = blocks.BooleanBlock(
         required=False,
         default=False,
@@ -385,7 +425,7 @@ class ColumnBlock(blocks.StructBlock):
         template = "blocks/column_block.html"
 
 
-class RowBlock(blocks.StructBlock):
+class RowBlock(BackgroundMixin):
     layout = blocks.ChoiceBlock(
         choices=COLUMN_LAYOUT_CHOICES,
         default="1-1",
@@ -490,16 +530,42 @@ class DocumentationPage(WagtailCacheMixin, Page):
     """
 
     intro = RichTextField(blank=True)
+    intro_background_color = models.CharField(
+        max_length=20,
+        choices=THEME_COLOR_CHOICES,
+        default="default",
+        blank=True,
+        help_text="Background color for the intro section.",
+    )
+    intro_full_width_background = models.BooleanField(
+        default=False,
+        help_text="Stretch the intro background to the full width of the page.",
+    )
 
     topics = StreamField(
         [("documentation_panel", DocumentationPanel())],
         blank=True,
         help_text="Add documentation panels to this page.",
     )
+    topics_background_color = models.CharField(
+        max_length=20,
+        choices=THEME_COLOR_CHOICES,
+        default="default",
+        blank=True,
+        help_text="Background color for the topics grid section.",
+    )
+    topics_full_width_background = models.BooleanField(
+        default=False,
+        help_text="Stretch the topics background to the full width of the page.",
+    )
 
     content_panels: ClassVar[list] = Page.content_panels + [
         FieldPanel("intro"),
+        FieldPanel("intro_background_color"),
+        FieldPanel("intro_full_width_background"),
         FieldPanel("topics"),
+        FieldPanel("topics_background_color"),
+        FieldPanel("topics_full_width_background"),
     ]
 
     subpage_types: ClassVar[list[str]] = ["GenericPage"]

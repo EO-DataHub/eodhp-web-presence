@@ -1,7 +1,7 @@
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags bg_tags %}
 {% load table_block_tags %}
-<div class="block-layout block-layout--{{ self.width }} block-layout--align-{{ self.alignment }} block-layout--valign-{{ self.vertical_alignment|default:'top' }}">
-<div class="content-block{% if self.background_color != 'default' %} bg--{{ self.background_color }}{% endif %}">
+<div class="block-layout block-layout--{{ self.width }} block-layout--align-{{ self.alignment }} block-layout--valign-{{ self.vertical_alignment|default:'top' }}{% if self.full_width_background %} {% bg_classes self.background_color True %}{% endif %}">
+<div class="content-block {% bg_classes self.background_color %}">
 
     {% if self.heading %}
     <h3>{{ self.heading }}</h3>

@@ -9,6 +9,39 @@
     margin-top: 2rem;
   }
 
+  // ─── Collapse white gaps between adjacent full-width coloured sections ───
+  // Margin is removed; blocks get symmetric padding-block to preserve content spacing.
+  > .bg-full-width[class*="bg--"] + .bg-full-width[class*="bg--"] {
+    margin-top: 0;
+    padding-block: 2.25rem;
+  }
+  > .bg-full-width[class*="bg--"]:has(+ .bg-full-width[class*="bg--"]) {
+    margin-bottom: 0;
+    padding-block: 2.25rem;
+  }
+
+  // Hero followed by a full-width coloured section
+  > .generic-page__hero + .bg-full-width[class*="bg--"] {
+    margin-top: 0;
+    padding-block: 2.25rem;
+  }
+  > .generic-page__hero:has(+ .bg-full-width[class*="bg--"]) {
+    margin-bottom: 0;
+  }
+
+  // Full-width section → body whose first block is also full-width
+  // (Wagtail wraps each block in a div, so bg-full-width is one level deeper)
+  > .bg-full-width[class*="bg--"]:has(+ .generic-page__body > :first-child > .bg-full-width[class*="bg--"]) {
+    padding-block: 2.25rem;
+  }
+  > .bg-full-width[class*="bg--"] + .generic-page__body:has(> :first-child > .bg-full-width[class*="bg--"]) {
+    margin-top: 0;
+
+    > :first-child > .bg-full-width[class*="bg--"] {
+      padding-block: 2.25rem;
+    }
+  }
+
   &__hero {
     position: relative;
     width: 100vw;
@@ -103,6 +136,21 @@
 
     > * + * {
       margin-top: 2rem;
+    }
+
+    // Collapse gap between adjacent full-width coloured blocks
+    // (Wagtail wraps each block in a div, so target wrappers whose child is bg-full-width)
+    > *:has(> .bg-full-width[class*="bg--"]) + *:has(> .bg-full-width[class*="bg--"]) {
+      margin-top: 0;
+
+      > .bg-full-width[class*="bg--"] {
+        padding-block: 2.25rem;
+      }
+    }
+    > *:has(> .bg-full-width[class*="bg--"]):has(+ * > .bg-full-width[class*="bg--"]) {
+      > .bg-full-width[class*="bg--"] {
+        padding-block: 2.25rem;
+      }
     }
 
     blockquote {

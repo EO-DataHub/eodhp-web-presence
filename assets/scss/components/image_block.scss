@@ -9,6 +9,19 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
+  &[class*="bg--"] {
+    width: fit-content;
+
+    // When a background is applied the container must shrink-wrap the image,
+    // so widths move from the <img> to the container itself.
+    &.image-block--w100 { width: 100%; }
+    &.image-block--w75  { width: 75%;  }
+    &.image-block--w50  { width: 50%;  }
+    &.image-block--w25  { width: 25%;  }
+
+    img { width: 100%; }
+  }
+
   @include img.image-widths;
   @include img.image-styles;
   @include img.image-alignment;

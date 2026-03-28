@@ -1,5 +1,5 @@
-{% load wagtailcore_tags %}
-<div class="column-block{% if self.stretch %} column-block--stretch{% endif %}">
+{% load wagtailcore_tags bg_tags %}
+<div class="column-block{% if self.stretch %} column-block--stretch{% endif %} {% bg_classes self.background_color %}">
 {% for block in self.content %}
     {% include_block block %}
 {% endfor %}

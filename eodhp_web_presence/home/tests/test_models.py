@@ -5,6 +5,7 @@ from home.models import (
     AboutIndexPage,
     AccordionBlock,
     AccordionItemBlock,
+    BackgroundMixin,
     CaseStudiesPage,
     CatalogueIndexPage,
     ColumnBlock,
@@ -236,6 +237,90 @@ class TestAccordionBlock(TestCase):
         html = block.render(value)
         assert "block-layout--small" in html
         assert "block-layout--align-centre" in html
+
+
+class TestBackgroundMixin(TestCase):
+    def test_background_color_field_exists(self):
+        block = BackgroundMixin()
+        assert "background_color" in block.child_blocks
+
+    def test_background_color_default(self):
+        block = BackgroundMixin()
+        assert block.child_blocks["background_color"].meta.default == "default"
+
+    def test_content_block_inherits_background(self):
+        block = ContentBlock()
+        assert "background_color" in block.child_blocks
+
+    def test_accordion_block_inherits_background(self):
+        block = AccordionBlock()
+        assert "background_color" in block.child_blocks
+
+    def test_embed_block_inherits_background(self):
+        block = MediaEmbedBlock()
+        assert "background_color" in block.child_blocks
+
+    def test_image_block_inherits_background(self):
+        block = ImageBlock()
+        assert "background_color" in block.child_blocks
+
+    def test_column_block_inherits_background(self):
+        block = ColumnBlock()
+        assert "background_color" in block.child_blocks
+
+    def test_accordion_background_renders_class(self):
+        block = AccordionBlock()
+        value = block.to_python(
+            {
+                "background_color": "navy",
+                "items": [{"title": "Q", "content": "<p>A</p>"}],
+            }
+        )
+        html = block.render(value)
+        assert "bg--navy" in html
+
+    def test_accordion_default_background_no_class(self):
+        block = AccordionBlock()
+        value = block.to_python(
+            {
+                "items": [{"title": "Q", "content": "<p>A</p>"}],
+            }
+        )
+        html = block.render(value)
+        assert "bg--" not in html
+
+    def test_content_block_background_renders_class(self):
+        block = ContentBlock()
+        value = block.to_python({"background_color": "nceo-purple", "heading": "Test"})
+        html = block.render(value)
+        assert "bg--nceo-purple" in html
+
+    def test_content_block_default_background_no_class(self):
+        block = ContentBlock()
+        value = block.to_python({"heading": "Test"})
+        html = block.render(value)
+        assert "bg--" not in html
+
+    def test_column_background_renders_class(self):
+        block = ColumnBlock()
+        value = block.to_python(
+            {
+                "background_color": "steel",
+                "content": [{"type": "content_block", "value": {"heading": "Hi"}}],
+            }
+        )
+        html = block.render(value)
+        assert "bg--steel" in html
+
+    def test_column_default_background_no_class(self):
+        block = ColumnBlock()
+        value = block.to_python(
+            {
+                "content": [{"type": "content_block", "value": {"heading": "Hi"}}],
+            }
+        )
+        html = block.render(value)
+        assert "bg--" not in html
 
 
 class TestLayoutMixin(TestCase):
