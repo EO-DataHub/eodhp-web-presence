@@ -1,27 +1,29 @@
 from django.test import TestCase, override_settings
 from wagtail.models import Page, Site
 
-from home.models import (
-    AboutIndexPage,
+from home.blocks import (
     AccordionBlock,
     AccordionItemBlock,
     BackgroundMixin,
-    CaseStudiesPage,
-    CatalogueIndexPage,
     ColumnBlock,
     ContentBlock,
-    DataIndexPage,
-    DocsIndexPage,
-    DocumentationPage,
     DocumentationPanel,
-    GenericPage,
-    HomePage,
     ImageBlock,
     LayoutMixin,
     MediaEmbedBlock,
     RowBlock,
     _body_blocks,
     _inner_blocks,
+)
+from home.models import (
+    AboutIndexPage,
+    CaseStudiesPage,
+    CatalogueIndexPage,
+    DataIndexPage,
+    DocsIndexPage,
+    DocumentationPage,
+    GenericPage,
+    HomePage,
 )
 
 
