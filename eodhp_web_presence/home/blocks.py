@@ -351,9 +351,9 @@ class DocumentationPanel(blocks.StructBlock):
 
     class Meta:
         icon = "doc-full"
-        label = "Documentation Panel"
+        label = "Page Card"
         template = "blocks/documentation_panel.html"
-        help_text = "Use this block to create documentation panels with title, description, and optional image."
+        help_text = "A card with title, description, and optional image — used in card grids."
         form_layout = BlockGroup(
             children=["title", "slug", "description", "image", "featured_image"],
         )

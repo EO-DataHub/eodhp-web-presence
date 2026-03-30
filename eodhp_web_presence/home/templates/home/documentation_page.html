@@ -13,7 +13,7 @@
     </header>
 
     {% if page.intro %}
-    <section class="generic-page__intro {% bg_classes page.intro_background_color page.intro_full_width_background %}">
+    <section class="generic-page__intro {% bg_classes page.intro_background_color True %}">
         <p>{{ page.intro|richtext }}</p>
     </section>
     {% endif %}
