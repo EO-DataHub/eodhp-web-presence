@@ -40,3 +40,10 @@ $theme-colors: (
   border-radius: 0;
   padding-inline: max(1.5rem, calc(50vw - 600px));
 }
+
+// ── Brand colours (global, not scoped to a .bg-- block) ───────────────
+:root {
+  --eodhp-navy: #{nth(map-get($theme-colors, "navy"), 1)};
+  --eodhp-purple: #{nth(map-get($theme-colors, "nceo-purple"), 1)};
+  --eodhp-light-grey: #{nth(map-get($theme-colors, "light-grey"), 1)};
+}

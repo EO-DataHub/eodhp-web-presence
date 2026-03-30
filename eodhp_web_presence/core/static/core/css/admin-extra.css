@@ -1,0 +1,77 @@
+/* ── EO DataHub Admin Branding ──────────────────────────────────────
+ * Injected via insert_global_admin_css hook.
+ * Customises the Wagtail color scheme per:
+ * docs.wagtail.org/en/latest/advanced_topics/customization/admin_templates.html
+ */
+
+/* ── Static colours: shared across light & dark themes ─────────────
+ *
+ * --w-color-primary   → Branding, panels, headings, labels
+ *   #1a273f (EODHP navy) ≈ hsl(218, 40%, 17%)
+ *
+ * --w-color-primary-200 → Accent alongside primary in sidebar
+ *   #4c72ba (EODHP purple) ≈ hsl(218, 41%, 51%)
+ *
+ * --w-color-secondary → Primary buttons, action links, checkboxes
+ *   #4c72ba (EODHP purple) ≈ hsl(218, 41%, 51%)
+ */
+:root {
+    /* Primary: EODHP navy */
+    --w-color-primary-hue: 218;
+    --w-color-primary-saturation: 40%;
+    --w-color-primary-lightness: 17%;
+
+    /* Primary-200: EODHP purple (sidebar accent) */
+    --w-color-primary-200-hue: 218;
+    --w-color-primary-200-saturation: 41%;
+    --w-color-primary-200-lightness: 51%;
+
+    /* Secondary: EODHP purple (buttons, links, checkboxes) */
+    --w-color-secondary-hue: 218;
+    --w-color-secondary-saturation: 41%;
+    --w-color-secondary-lightness: 51%;
+}
+
+/* ── Local variables for block preview styling ─────────────────────── */
+:root {
+    --eodhp-navy: #1a273f;
+    --eodhp-purple: #4c72ba;
+    --eodhp-steel: #637189;
+    --eodhp-light-grey: #f3f3f3;
+}
+
+/* ── Block preview: RowBlock column layout hint ────────────────────── */
+[data-contentpath="columns"] > .w-field__wrapper {
+    border-left: 3px solid var(--eodhp-purple);
+    padding-left: 0.75rem;
+}
+
+/* ── Block preview: QuoteBlock styling ─────────────────────────────── */
+[data-block-type="blockquote"] .w-field--char_field,
+[data-block-type="blockquote"] .w-field--text_field {
+    border-left: 4px solid var(--eodhp-purple);
+    padding-left: 1rem;
+    font-style: italic;
+}
+
+/* ── Block preview: AccordionBlock hint ────────────────────────────── */
+[data-block-type="accordion"] {
+    border-left: 3px solid var(--eodhp-steel);
+    padding-left: 0.5rem;
+}
+
+/* ── Block preview: ImageBlock framing ─────────────────────────────── */
+[data-block-type="image"] .w-field--image_chooser .chooser__preview img {
+    border: 2px solid var(--eodhp-light-grey);
+    border-radius: 6px;
+}
+
+/* ── Callout block styling in rich text editor ─────────────────────── */
+.Draftail-block--callout {
+    background: var(--eodhp-light-grey);
+    color: var(--eodhp-navy);
+    border-left: 4px solid var(--eodhp-purple);
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+}

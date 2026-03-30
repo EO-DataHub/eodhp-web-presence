@@ -1,0 +1,24 @@
+@use '../_theme-colors' as *;
+
+/* Callout block — rendered from rich text editor's "callout" feature.
+ * Uses a contrasting background that stands out from the parent section. */
+
+/* Default: dark callout for light backgrounds */
+.callout {
+  background: var(--eodhp-navy);
+  color: #fff;
+  border-left: 4px solid var(--eodhp-purple);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+}
+
+/* Dark backgrounds: flip to light callout */
+.bg--nceo-purple .callout,
+.bg--navy .callout,
+.bg--steel .callout,
+.bg--blue .callout {
+  background: var(--eodhp-light-grey);
+  color: var(--eodhp-navy);
+  border-left-color: var(--eodhp-purple);
+}
