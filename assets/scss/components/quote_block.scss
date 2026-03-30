@@ -5,8 +5,8 @@
   padding: 1.5rem;
   border-left: 4px solid var(--button-bg);
 
-  &.bg--nceo-purple {
-    border-left-color: var(--navy);
+  &[class*="bg--"] {
+    border-left-color: var(--theme-secondary);
   }
 
   // Font size
