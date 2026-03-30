@@ -1,4 +1,5 @@
 from wagtail import blocks
+from wagtail.blocks.struct_block import BlockGroup
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtailcodeblock.blocks import CodeBlock
@@ -52,6 +53,33 @@ FONT_STYLE_CHOICES = [
     ("italic", "Italic"),
     ("normal", "Normal"),
 ]
+
+# ── Reusable form-layout field lists & group helpers ──────────────────
+LAYOUT_FIELDS = ["width", "alignment", "vertical_alignment"]
+BACKGROUND_FIELDS = ["background_color", "full_width_background"]
+FONT_FIELDS = ["font_size", "font_weight", "font_style"]
+
+
+def _layout_group() -> BlockGroup:
+    return BlockGroup(LAYOUT_FIELDS, heading="Layout", icon="sliders", classname="collapsed")
+
+
+def _background_group() -> BlockGroup:
+    return BlockGroup(BACKGROUND_FIELDS, heading="Background", icon="cog", classname="collapsed")
+
+
+def _font_group() -> BlockGroup:
+    return BlockGroup(FONT_FIELDS, heading="Typography", icon="bold", classname="collapsed")
+
+
+def _image_options_group(*extra_fields: str) -> BlockGroup:
+    """Image styling fields. Pass extra field names for block-specific additions."""
+    fields = ["image_width", "image_style"] + list(extra_fields)
+    return BlockGroup(fields, heading="Image Options", icon="image", classname="collapsed")
+
+
+def _image_link_group() -> BlockGroup:
+    return BlockGroup(["image_link_page", "image_link_url"], heading="Image Link", icon="link", classname="collapsed")
 
 
 class FontMixin(blocks.StructBlock):
@@ -152,6 +180,15 @@ class ContentBlock(LayoutMixin, BackgroundMixin):
         label = "Content Block"
         template = "blocks/content_block.html"
         help_text = "Use this block to create flexible content sections."
+        form_layout = BlockGroup(
+            children=["heading", "paragraph", "image"],
+            settings=[
+                _image_link_group(),
+                _image_options_group("image_alignment"),
+                _layout_group(),
+                _background_group(),
+            ],
+        )
 
 
 class ImageBlock(LayoutMixin, BackgroundMixin):
@@ -184,6 +221,15 @@ class ImageBlock(LayoutMixin, BackgroundMixin):
         label = "Image"
         template = "blocks/image_block.html"
         help_text = "A standalone image with optional link and styling."
+        form_layout = BlockGroup(
+            children=["image"],
+            settings=[
+                _image_link_group(),
+                _image_options_group(),
+                _layout_group(),
+                _background_group(),
+            ],
+        )
 
 
 class AccordionItemBlock(blocks.StructBlock):
@@ -193,6 +239,9 @@ class AccordionItemBlock(blocks.StructBlock):
     class Meta:
         icon = "collapse-down"
         label = "Accordion Item"
+        form_layout = BlockGroup(
+            children=["title", "content"],
+        )
 
 
 class AccordionBlock(LayoutMixin, BackgroundMixin):
@@ -215,6 +264,14 @@ class AccordionBlock(LayoutMixin, BackgroundMixin):
         label = "Accordion"
         template = "blocks/accordion_block.html"
         help_text = "A set of collapsible content sections."
+        form_layout = BlockGroup(
+            children=["items"],
+            settings=[
+                BlockGroup(["header_color", "content_color"], heading="Colors", icon="cogs", classname="collapsed"),
+                _layout_group(),
+                _background_group(),
+            ],
+        )
 
 
 class MediaEmbedBlock(LayoutMixin, BackgroundMixin):
@@ -226,6 +283,13 @@ class MediaEmbedBlock(LayoutMixin, BackgroundMixin):
         label = "Embed"
         template = "blocks/embed_block.html"
         help_text = "Embed content from YouTube, Vimeo, Spotify, and other providers."
+        form_layout = BlockGroup(
+            children=["url", "caption"],
+            settings=[
+                _layout_group(),
+                _background_group(),
+            ],
+        )
 
 
 class QuoteBlock(LayoutMixin, BackgroundMixin, FontMixin):
@@ -260,6 +324,14 @@ class QuoteBlock(LayoutMixin, BackgroundMixin, FontMixin):
         icon = "openquote"
         label = "Quote"
         template = "blocks/quote_block.html"
+        form_layout = BlockGroup(
+            children=["quote", "attribution"],
+            settings=[
+                _font_group(),
+                _layout_group(),
+                _background_group(),
+            ],
+        )
 
 
 class DocumentationPanel(blocks.StructBlock):
@@ -282,6 +354,9 @@ class DocumentationPanel(blocks.StructBlock):
         label = "Documentation Panel"
         template = "blocks/documentation_panel.html"
         help_text = "Use this block to create documentation panels with title, description, and optional image."
+        form_layout = BlockGroup(
+            children=["title", "slug", "description", "image", "featured_image"],
+        )
 
 
 COLUMN_LAYOUT_CHOICES = [
@@ -323,6 +398,12 @@ class ColumnBlock(BackgroundMixin):
         icon = "placeholder"
         label = "Column"
         template = "blocks/column_block.html"
+        form_layout = BlockGroup(
+            children=["content"],
+            settings=[
+                BlockGroup(["stretch", "background_color"], heading="Options", icon="cog", classname="collapsed"),
+            ],
+        )
 
 
 class RowBlock(BackgroundMixin):
@@ -338,6 +419,12 @@ class RowBlock(BackgroundMixin):
         label = "Columns"
         template = "blocks/row_block.html"
         help_text = "Arrange content in side-by-side columns."
+        form_layout = BlockGroup(
+            children=["layout", "columns"],
+            settings=[
+                _background_group(),
+            ],
+        )
 
 
 # Helper: StreamField definitions shared by landing / index pages
