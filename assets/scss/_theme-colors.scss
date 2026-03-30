@@ -2,25 +2,28 @@
 
 // ── Primary colour palette ─────────────────────────────────────────
 // Reusable map for any component that needs palette-based modifiers.
-// Each entry: slug → (background, hover, text-color)
+// Each entry: slug → (primary, hover, text-color, secondary)
 
 $theme-colors: (
-  "nceo-purple": (#4c72ba, #3f64ab, #fff),
-  "navy":        (#1a273f, #2a3559, #fff),
-  "light-grey":  (#f3f3f3, #e6e8ec, #000),
-  "steel":       (#637189, #56647a, #fff),
-  "blue":        (#2a3559, #34416b, #fff),
+  "nceo-purple": (#4c72ba, #3f64ab, #fff, #1a273f),
+  "navy":        (#1a273f, #2a3559, #fff, #4c72ba),
+  "light-grey":  (#f3f3f3, #e6e8ec, #000, #637189),
+  "steel":       (#637189, #56647a, #fff, #1a273f),
+  "blue":        (#2a3559, #34416b, #fff, #4c72ba),
 );
 
 // ── Generic background utility classes ─────────────────────────────
 // Apply .bg--{slug} to any element for palette background + text contrast.
 @each $name, $vals in $theme-colors {
   $bg:   nth($vals, 1);
+  $sec:  nth($vals, 4);
   $text: nth($vals, 3);
 
   .bg--#{$name} {
     background-color: #{$bg};
     color: #{$text};
+    --theme-primary: #{$bg};
+    --theme-secondary: #{$sec};
     padding: 1.25rem;
     border-radius: $radius-md;
   }
