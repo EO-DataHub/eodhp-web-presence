@@ -1,0 +1,54 @@
+@use '../theme-colors' as *;
+
+.quote-block {
+  margin: 0;
+  padding: 1.5rem;
+  border-left: 4px solid var(--button-bg);
+
+  &.bg--nceo-purple {
+    border-left-color: var(--navy);
+  }
+
+  // Font size
+  &--size-small .quote-block__text {
+    font-size: 0.875rem;
+  }
+
+  &--size-default .quote-block__text {
+    font-size: 1rem;
+  }
+
+  &--size-large .quote-block__text {
+    font-size: 1.25rem;
+  }
+
+  // Font weight
+  &--weight-normal .quote-block__text {
+    font-weight: 400;
+  }
+
+  &--weight-bold .quote-block__text {
+    font-weight: 700;
+  }
+
+  // Font style
+  &--style-italic .quote-block__text {
+    font-style: italic;
+  }
+
+  &--style-normal .quote-block__text {
+    font-style: normal;
+  }
+
+  &__text {
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  &__attribution {
+    margin-top: 0.75rem;
+    font-size: 0.9em;
+    font-style: normal;
+    opacity: 0.85;
+  }
+}

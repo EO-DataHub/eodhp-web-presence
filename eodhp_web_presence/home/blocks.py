@@ -37,6 +37,45 @@ IMAGE_STYLE_CHOICES = [
     ("pill", "Pill / circular"),
 ]
 
+FONT_SIZE_CHOICES = [
+    ("default", "Default"),
+    ("small", "Small"),
+    ("large", "Large"),
+]
+
+FONT_WEIGHT_CHOICES = [
+    ("normal", "Normal"),
+    ("bold", "Bold"),
+]
+
+FONT_STYLE_CHOICES = [
+    ("italic", "Italic"),
+    ("normal", "Normal"),
+]
+
+
+class FontMixin(blocks.StructBlock):
+    """Reusable font options — inherit from this for typography control."""
+
+    font_size = blocks.ChoiceBlock(
+        choices=FONT_SIZE_CHOICES,
+        default="default",
+        required=False,
+        help_text="Font size for this block.",
+    )
+    font_weight = blocks.ChoiceBlock(
+        choices=FONT_WEIGHT_CHOICES,
+        default="normal",
+        required=False,
+        help_text="Font weight for this block.",
+    )
+    font_style = blocks.ChoiceBlock(
+        choices=FONT_STYLE_CHOICES,
+        default="normal",
+        required=False,
+        help_text="Font style for this block.",
+    )
+
 
 class LayoutMixin(blocks.StructBlock):
     """Reusable layout options — inherit from this instead of StructBlock."""
@@ -189,6 +228,40 @@ class MediaEmbedBlock(LayoutMixin, BackgroundMixin):
         help_text = "Embed content from YouTube, Vimeo, Spotify, and other providers."
 
 
+class QuoteBlock(LayoutMixin, BackgroundMixin, FontMixin):
+    """A styled blockquote with layout, background, and font options."""
+
+    # Override BackgroundMixin default — quotes get a background by default.
+    background_color = blocks.ChoiceBlock(
+        choices=THEME_COLOR_CHOICES,
+        default="light-grey",
+        required=False,
+        help_text="Background color for this block.",
+    )
+
+    # Override FontMixin default — quotes are italic by default.
+    font_style = blocks.ChoiceBlock(
+        choices=FONT_STYLE_CHOICES,
+        default="italic",
+        required=False,
+        help_text="Font style for this block.",
+    )
+
+    quote = blocks.TextBlock(
+        required=True,
+        help_text="The quote text.",
+    )
+    attribution = blocks.CharBlock(
+        required=False,
+        help_text="Optional attribution (e.g., author name).",
+    )
+
+    class Meta:
+        icon = "openquote"
+        label = "Quote"
+        template = "blocks/quote_block.html"
+
+
 class DocumentationPanel(blocks.StructBlock):
     title = blocks.CharBlock(required=True, help_text="Title of the documentation panel")
     slug = blocks.CharBlock(
@@ -228,7 +301,7 @@ def _inner_blocks() -> list:
         ("image", ImageBlock()),
         ("accordion", AccordionBlock()),
         ("embed", MediaEmbedBlock()),
-        ("blockquote", blocks.BlockQuoteBlock()),
+        ("blockquote", QuoteBlock()),
         ("raw_html", blocks.RawHTMLBlock()),
         ("code", CodeBlock(label="Code")),
     ]
