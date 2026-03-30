@@ -74,6 +74,7 @@ class HomePage(WagtailCacheMixin, Page):
                 FieldPanel("aim_1_page"),
             ],
             heading="Aim 1",
+            classname="collapsed",
         ),
         MultiFieldPanel(
             [
@@ -83,6 +84,7 @@ class HomePage(WagtailCacheMixin, Page):
                 FieldPanel("aim_2_page"),
             ],
             heading="Aim 2",
+            classname="collapsed",
         ),
         MultiFieldPanel(
             [
@@ -92,6 +94,7 @@ class HomePage(WagtailCacheMixin, Page):
                 FieldPanel("aim_3_page"),
             ],
             heading="Aim 3",
+            classname="collapsed",
         ),
         MultiFieldPanel(
             [
@@ -101,6 +104,7 @@ class HomePage(WagtailCacheMixin, Page):
                 FieldPanel("aim_4_page"),
             ],
             heading="Aim 4",
+            classname="collapsed",
         ),
     ]
 
@@ -165,14 +169,37 @@ class LandingPageMixin(models.Model):
                     FieldPanel("hero_caption"),
                 ],
                 heading="Hero Image",
+                classname="collapsed",
             ),
-            FieldPanel("intro"),
-            FieldPanel("intro_background_color"),
-            FieldPanel("intro_full_width_background"),
+            MultiFieldPanel(
+                [
+                    FieldPanel("intro"),
+                    MultiFieldPanel(
+                        [
+                            FieldPanel("intro_background_color"),
+                            FieldPanel("intro_full_width_background"),
+                        ],
+                        heading="Intro Style",
+                        classname="collapsed",
+                    ),
+                ],
+                heading="Intro",
+            ),
             FieldPanel("body"),
-            FieldPanel("topics"),
-            FieldPanel("topics_background_color"),
-            FieldPanel("topics_full_width_background"),
+            MultiFieldPanel(
+                [
+                    FieldPanel("topics"),
+                    MultiFieldPanel(
+                        [
+                            FieldPanel("topics_background_color"),
+                            FieldPanel("topics_full_width_background"),
+                        ],
+                        heading="Topics Style",
+                        classname="collapsed",
+                    ),
+                ],
+                heading="Topics",
+            ),
         ]
 
 
@@ -285,12 +312,34 @@ class DocumentationPage(WagtailCacheMixin, Page):
     )
 
     content_panels: ClassVar[list] = Page.content_panels + [
-        FieldPanel("intro"),
-        FieldPanel("intro_background_color"),
-        FieldPanel("intro_full_width_background"),
-        FieldPanel("topics"),
-        FieldPanel("topics_background_color"),
-        FieldPanel("topics_full_width_background"),
+        MultiFieldPanel(
+            [
+                FieldPanel("intro"),
+                MultiFieldPanel(
+                    [
+                        FieldPanel("intro_background_color"),
+                        FieldPanel("intro_full_width_background"),
+                    ],
+                    heading="Intro Style",
+                    classname="collapsed",
+                ),
+            ],
+            heading="Intro",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("topics"),
+                MultiFieldPanel(
+                    [
+                        FieldPanel("topics_background_color"),
+                        FieldPanel("topics_full_width_background"),
+                    ],
+                    heading="Topics Style",
+                    classname="collapsed",
+                ),
+            ],
+            heading="Topics",
+        ),
     ]
 
     subpage_types: ClassVar[list[str]] = ["GenericPage"]
