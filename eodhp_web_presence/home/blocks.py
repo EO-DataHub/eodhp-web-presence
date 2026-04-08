@@ -26,10 +26,10 @@ VERTICAL_ALIGNMENT_CHOICES = [
 ]
 
 IMAGE_WIDTH_CHOICES = [
-    ("100", "Full width (100%)"),
-    ("75", "Three-quarters (75%)"),
-    ("50", "Half (50%)"),
-    ("25", "Quarter (25%)"),
+    ("100", "Original dimensions (100%)"),
+    ("75", "75% of original dimensions"),
+    ("50", "50% of original dimensions"),
+    ("25", "25% of original dimensions"),
 ]
 
 IMAGE_STYLE_CHOICES = [
@@ -160,7 +160,7 @@ class ContentBlock(LayoutMixin, BackgroundMixin):
         choices=IMAGE_WIDTH_CHOICES,
         default="100",
         required=False,
-        help_text="Control the display width of the image.",
+        help_text="Display width as a percentage of the image's original dimensions.",
     )
     image_style = blocks.ChoiceBlock(
         choices=IMAGE_STYLE_CHOICES,
@@ -207,7 +207,7 @@ class ImageBlock(LayoutMixin, BackgroundMixin):
         choices=IMAGE_WIDTH_CHOICES,
         default="100",
         required=False,
-        help_text="Control the display width of the image.",
+        help_text="Display width as a percentage of the image's original dimensions.",
     )
     image_style = blocks.ChoiceBlock(
         choices=IMAGE_STYLE_CHOICES,

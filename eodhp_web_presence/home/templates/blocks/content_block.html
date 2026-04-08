@@ -15,8 +15,10 @@
 
 
     {% if self.image %}
-    <div class="content-block__image content-block__image--w{{ self.image_width|default:'100' }} content-block__image--{{ self.image_style|default:'rounded' }} content-block__image--align-{{ self.image_alignment|default:'centre' }}">
-        {% image self.image original as img %}
+    {% image self.image original as img %}
+    {% widthratio self.image_width|default:"100" 100 img.width as img_max_w %}
+    <div class="content-block__image content-block__image--{{ self.image_style|default:'rounded' }} content-block__image--align-{{ self.image_alignment|default:'centre' }}"
+         style="max-width: {{ img_max_w }}px">
         {% if self.image_link_page %}
         <a href="{% pageurl self.image_link_page %}" class="content-block__image-link">
             <img src="{{ img.url }}" alt="{{ img.alt }}">

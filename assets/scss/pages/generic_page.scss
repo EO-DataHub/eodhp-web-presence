@@ -190,11 +190,12 @@
         img {
           display: block;
           max-width: 100%;
+          max-height: $image-max-height;
+          object-fit: contain;
           height: auto;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        @include img.image-widths;
         @include img.image-styles;
         @include img.image-alignment;
         @include img.image-link('content-block__image-link');
