@@ -6,14 +6,15 @@
   &--pill    img { border-radius: $radius-pill;  }
 }
 
-// Alignment — uses margin-based centering (requires img { display: block })
+// Alignment — uses margin-based centering on the wrapper div
+// (the wrapper has max-width set, so margins position it within its parent)
 @mixin image-alignment {
-  &--align-none img,
-  &--align-centre img {
+  &--align-none,
+  &--align-centre {
     margin-inline: auto;
   }
-  &--align-left img  { margin-right: auto; }
-  &--align-right img { margin-left: auto;  }
+  &--align-left  { margin-right: auto; }
+  &--align-right { margin-left: auto;  }
 }
 
 // Clickable image link wrapper
