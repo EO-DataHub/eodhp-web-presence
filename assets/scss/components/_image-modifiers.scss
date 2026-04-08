@@ -1,13 +1,5 @@
 @use '../custom' as *;
 
-// Width modifiers — call with parent selector that has `--w{N}` suffixes
-@mixin image-widths {
-  &--w100 img { width: 100%; }
-  &--w75  img { width: 75%;  }
-  &--w50  img { width: 50%;  }
-  &--w25  img { width: 25%;  }
-}
-
 // Style modifiers — rounded, square (default/no-op), pill
 @mixin image-styles {
   &--rounded img { border-radius: $radius-md;   }
