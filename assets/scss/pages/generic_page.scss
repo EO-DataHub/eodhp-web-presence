@@ -124,6 +124,10 @@
     margin-bottom: 2rem;
     border-bottom: var(--content-border);
 
+    &:has(+ .bg-full-width[class*="bg--"]) {
+      border-bottom: none;
+    }
+
     p {
       font-size: 1.125rem;
       line-height: 1.6;

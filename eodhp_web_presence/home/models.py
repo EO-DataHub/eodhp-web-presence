@@ -1,7 +1,7 @@
 from typing import ClassVar
 
 from django.db import models
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, ObjectList, TabbedInterface
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Page
 from wagtailcache.cache import WagtailCacheMixin
@@ -136,10 +136,6 @@ class LandingPageMixin(models.Model):
         blank=True,
         help_text="Background color for the intro section.",
     )
-    intro_full_width_background = models.BooleanField(
-        default=False,
-        help_text="Stretch the intro background to the full width of the page.",
-    )
     topics_background_color = models.CharField(
         max_length=20,
         choices=THEME_COLOR_CHOICES,
@@ -155,13 +151,13 @@ class LandingPageMixin(models.Model):
     class Meta:
         abstract = True
 
-    # Panels defined as a classmethod so subclasses can include them
-    # in their own content_panels. StreamFields (body, topics) are
-    # declared on each concrete model because they reference block
-    # classes defined in blocks.py.
+    # Panels defined as classmethods so subclasses can include them
+    # in their own content_panels or compose them into a TabbedInterface.
+    # StreamFields (body, topics) are declared on each concrete model
+    # because they reference block classes defined in blocks.py.
 
     @classmethod
-    def landing_panels(cls) -> list:
+    def hero_panels(cls) -> list:
         return [
             MultiFieldPanel(
                 [
@@ -171,13 +167,17 @@ class LandingPageMixin(models.Model):
                 heading="Hero Image",
                 classname="collapsed",
             ),
+        ]
+
+    @classmethod
+    def intro_panels(cls) -> list:
+        return [
             MultiFieldPanel(
                 [
                     FieldPanel("intro"),
                     MultiFieldPanel(
                         [
                             FieldPanel("intro_background_color"),
-                            FieldPanel("intro_full_width_background"),
                         ],
                         heading="Intro Style",
                         classname="collapsed",
@@ -185,7 +185,11 @@ class LandingPageMixin(models.Model):
                 ],
                 heading="Intro",
             ),
-            FieldPanel("body"),
+        ]
+
+    @classmethod
+    def card_panels(cls) -> list:
+        return [
             MultiFieldPanel(
                 [
                     FieldPanel("topics"),
@@ -194,13 +198,17 @@ class LandingPageMixin(models.Model):
                             FieldPanel("topics_background_color"),
                             FieldPanel("topics_full_width_background"),
                         ],
-                        heading="Topics Style",
+                        heading="Card Grid Style",
                         classname="collapsed",
                     ),
                 ],
-                heading="Topics",
+                heading="Page Cards",
             ),
         ]
+
+    @classmethod
+    def landing_panels(cls) -> list:
+        return [*cls.hero_panels(), *cls.intro_panels(), FieldPanel("body"), *cls.card_panels()]
 
 
 # ---------------------------------------------------------------------
@@ -218,7 +226,7 @@ class AboutIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
     topics = StreamField(
         _topic_blocks(),
         blank=True,
-        help_text="Add topic cards to nest additional pages.",
+        help_text="Add page cards to create a linked card grid.",
     )
 
     content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
@@ -242,7 +250,7 @@ class DataIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
     topics = StreamField(
         _topic_blocks(),
         blank=True,
-        help_text="Add topic cards to nest additional pages.",
+        help_text="Add page cards to create a linked card grid.",
     )
 
     content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
@@ -266,7 +274,7 @@ class DocsIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
     topics = StreamField(
         _topic_blocks(),
         blank=True,
-        help_text="Add topic cards to nest additional pages.",
+        help_text="Add page cards to create a linked card grid.",
     )
 
     content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
@@ -275,72 +283,24 @@ class DocsIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
     parent_page_types: ClassVar[list[str]] = ["HomePage"]
 
 
-class DocumentationPage(WagtailCacheMixin, Page):
+class DocumentationPage(LandingPageMixin, WagtailCacheMixin, Page):
     """
     /docs/documentation/ page.
     Contains: GenericPage
     """
 
-    intro = RichTextField(blank=True)
-    intro_background_color = models.CharField(
-        max_length=20,
-        choices=THEME_COLOR_CHOICES,
-        default="default",
-        blank=True,
-        help_text="Background color for the intro section.",
-    )
-    intro_full_width_background = models.BooleanField(
-        default=False,
-        help_text="Stretch the intro background to the full width of the page.",
-    )
-
     topics = StreamField(
         [("documentation_panel", DocumentationPanel())],
         blank=True,
-        help_text="Add documentation panels to this page.",
-    )
-    topics_background_color = models.CharField(
-        max_length=20,
-        choices=THEME_COLOR_CHOICES,
-        default="default",
-        blank=True,
-        help_text="Background color for the topics grid section.",
-    )
-    topics_full_width_background = models.BooleanField(
-        default=False,
-        help_text="Stretch the topics background to the full width of the page.",
+        help_text="Add page cards to create a linked card grid.",
     )
 
-    content_panels: ClassVar[list] = Page.content_panels + [
-        MultiFieldPanel(
-            [
-                FieldPanel("intro"),
-                MultiFieldPanel(
-                    [
-                        FieldPanel("intro_background_color"),
-                        FieldPanel("intro_full_width_background"),
-                    ],
-                    heading="Intro Style",
-                    classname="collapsed",
-                ),
-            ],
-            heading="Intro",
-        ),
-        MultiFieldPanel(
-            [
-                FieldPanel("topics"),
-                MultiFieldPanel(
-                    [
-                        FieldPanel("topics_background_color"),
-                        FieldPanel("topics_full_width_background"),
-                    ],
-                    heading="Topics Style",
-                    classname="collapsed",
-                ),
-            ],
-            heading="Topics",
-        ),
-    ]
+    content_panels: ClassVar[list] = (
+        Page.content_panels
+        + LandingPageMixin.hero_panels()
+        + LandingPageMixin.intro_panels()
+        + LandingPageMixin.card_panels()
+    )
 
     subpage_types: ClassVar[list[str]] = ["GenericPage"]
     parent_page_types: ClassVar[list[str]] = ["DocsIndexPage"]
@@ -361,7 +321,7 @@ class CaseStudiesPage(LandingPageMixin, WagtailCacheMixin, Page):
     topics = StreamField(
         _topic_blocks(),
         blank=True,
-        help_text="Add topic cards to nest additional pages.",
+        help_text="Add page cards to create a linked card grid.",
     )
 
     content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
@@ -384,7 +344,7 @@ class CatalogueIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
     topics = StreamField(
         _topic_blocks(),
         blank=True,
-        help_text="Add topic cards to nest additional pages.",
+        help_text="Add page cards to create a linked card grid.",
     )
 
     content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
@@ -406,7 +366,7 @@ class GenericPage(LandingPageMixin, WagtailCacheMixin, Page):
     topics = StreamField(
         _topic_blocks(),
         blank=True,
-        help_text="Add topic cards to nest additional pages.",
+        help_text="Add page cards to create a linked card grid.",
     )
 
     cta_text = models.CharField(max_length=255, blank=True, help_text="Button or link text")
@@ -418,18 +378,30 @@ class GenericPage(LandingPageMixin, WagtailCacheMixin, Page):
         help_text="URL to redirect to when the back button is clicked",
     )
 
-    content_panels: ClassVar[list] = (
-        Page.content_panels
-        + LandingPageMixin.landing_panels()
-        + [
-            MultiFieldPanel(
-                [
-                    FieldPanel("cta_text"),
-                    FieldPanel("cta_url"),
-                ],
-                heading="Call to Action",
-            ),
-            FieldPanel("back_button_location"),
+    content_panels: ClassVar[list] = Page.content_panels + [
+        *LandingPageMixin.hero_panels(),
+        *LandingPageMixin.intro_panels(),
+        FieldPanel("body"),
+    ]
+
+    extras_panels: ClassVar[list] = [
+        MultiFieldPanel(
+            [
+                FieldPanel("cta_text"),
+                FieldPanel("cta_url"),
+            ],
+            heading="Call to Action",
+        ),
+        FieldPanel("back_button_location"),
+    ]
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(LandingPageMixin.card_panels(), heading="Page Cards"),
+            ObjectList(extras_panels, heading="Extras"),
+            ObjectList(Page.promote_panels, heading="Promote"),
+            ObjectList(Page.settings_panels, heading="Settings"),
         ]
     )
 
