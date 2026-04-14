@@ -167,6 +167,13 @@ WSGI_APPLICATION = "eodhp_web_presence.wsgi.application"
 
 NOTEBOOKS = {"url": env("NOTEBOOKS_URL", default="/notebooks")}
 
+USERDOCS = {
+    "base_url": env("USERDOCS_BASE_URL", default="https://eo-datahub.github.io/eodh-userdocs"),
+    "faqs": "/Help/faqs/",
+    "user_accounts": "/Getting-Started/user-accounts/",
+    "community": "/Help/community/",
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
