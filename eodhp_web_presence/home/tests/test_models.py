@@ -102,19 +102,25 @@ class TestGenericPage(LandingPageTestMixin, TestCase):
         response = self.client.get(page.url)
         assert response.status_code == 200
 
-    def test_generic_page_with_topics(self):
+    def test_generic_page_with_topics_grid(self):
         page = GenericPage(
             title="Topics Page",
             slug="topics-page",
-            topics=[
+            body=[
                 (
-                    "topic_panel",
+                    "topics_grid",
                     {
-                        "title": "My Topic",
-                        "slug": "my-topic",
-                        "description": "<p>A description</p>",
-                        "image": None,
-                        "featured_image": False,
+                        "background_color": "default",
+                        "full_width_background": False,
+                        "topics": [
+                            {
+                                "title": "My Topic",
+                                "slug": "my-topic",
+                                "description": "<p>A description</p>",
+                                "image": None,
+                                "featured_image": False,
+                            }
+                        ],
                     },
                 )
             ],
@@ -124,7 +130,34 @@ class TestGenericPage(LandingPageTestMixin, TestCase):
         response = self.client.get(page.url)
         assert response.status_code == 200
         self.assertContains(response, "My Topic")
-        self.assertTemplateUsed(response, "home/includes/topic_card.html")
+
+    def test_topics_grid_renders_page_scoped_links(self):
+        """The topics_grid block template must see `page` to build slug links."""
+        page = GenericPage(
+            title="Topics Page",
+            slug="topics-page-links",
+            body=[
+                (
+                    "topics_grid",
+                    {
+                        "topics": [
+                            {
+                                "title": "T",
+                                "slug": "my-topic",
+                                "description": "<p>d</p>",
+                                "image": None,
+                                "featured_image": False,
+                            }
+                        ],
+                    },
+                )
+            ],
+        )
+        self.home.add_child(instance=page)
+
+        response = self.client.get(page.url)
+        assert response.status_code == 200
+        self.assertContains(response, f'href="{page.url}my-topic"')
 
 
 @override_settings(WAGTAIL_CACHE=False)

@@ -6,7 +6,7 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Page
 from wagtailcache.cache import WagtailCacheMixin
 
-from .blocks import DocumentationPanel, _body_blocks, _topic_blocks
+from .blocks import DocumentationPanel, _body_blocks
 from .colors import THEME_COLOR_CHOICES
 
 
@@ -140,25 +140,14 @@ class LandingPageMixin(models.Model):
         default=False,
         help_text="Stretch the intro background to the full width of the page.",
     )
-    topics_background_color = models.CharField(
-        max_length=20,
-        choices=THEME_COLOR_CHOICES,
-        default="default",
-        blank=True,
-        help_text="Background color for the topics grid section.",
-    )
-    topics_full_width_background = models.BooleanField(
-        default=False,
-        help_text="Stretch the topics background to the full width of the page.",
-    )
 
     class Meta:
         abstract = True
 
     # Panels defined as a classmethod so subclasses can include them
-    # in their own content_panels. StreamFields (body, topics) are
-    # declared on each concrete model because they reference block
-    # classes defined in blocks.py.
+    # in their own content_panels. The body StreamField is declared on
+    # each concrete model because it references block classes defined
+    # in blocks.py.
 
     @classmethod
     def landing_panels(cls) -> list:
@@ -186,20 +175,6 @@ class LandingPageMixin(models.Model):
                 heading="Intro",
             ),
             FieldPanel("body"),
-            MultiFieldPanel(
-                [
-                    FieldPanel("topics"),
-                    MultiFieldPanel(
-                        [
-                            FieldPanel("topics_background_color"),
-                            FieldPanel("topics_full_width_background"),
-                        ],
-                        heading="Topics Style",
-                        classname="collapsed",
-                    ),
-                ],
-                heading="Topics",
-            ),
         ]
 
 
@@ -215,11 +190,6 @@ class AboutIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
     template = "home/landing_page.html"
 
     body = StreamField(_body_blocks(), blank=True)
-    topics = StreamField(
-        _topic_blocks(),
-        blank=True,
-        help_text="Add topic cards to nest additional pages.",
-    )
 
     content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
 
@@ -239,11 +209,6 @@ class DataIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
     template = "home/landing_page.html"
 
     body = StreamField(_body_blocks(), blank=True)
-    topics = StreamField(
-        _topic_blocks(),
-        blank=True,
-        help_text="Add topic cards to nest additional pages.",
-    )
 
     content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
 
@@ -263,11 +228,6 @@ class DocsIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
     template = "home/landing_page.html"
 
     body = StreamField(_body_blocks(), blank=True)
-    topics = StreamField(
-        _topic_blocks(),
-        blank=True,
-        help_text="Add topic cards to nest additional pages.",
-    )
 
     content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
 
@@ -358,11 +318,6 @@ class CaseStudiesPage(LandingPageMixin, WagtailCacheMixin, Page):
     template = "home/landing_page.html"
 
     body = StreamField(_body_blocks(), blank=True)
-    topics = StreamField(
-        _topic_blocks(),
-        blank=True,
-        help_text="Add topic cards to nest additional pages.",
-    )
 
     content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
 
@@ -381,11 +336,6 @@ class CatalogueIndexPage(LandingPageMixin, WagtailCacheMixin, Page):
     template = "home/landing_page.html"
 
     body = StreamField(_body_blocks(), blank=True)
-    topics = StreamField(
-        _topic_blocks(),
-        blank=True,
-        help_text="Add topic cards to nest additional pages.",
-    )
 
     content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
 
@@ -402,12 +352,6 @@ class GenericPage(LandingPageMixin, WagtailCacheMixin, Page):
     """
 
     body = StreamField(_body_blocks(), blank=True)
-
-    topics = StreamField(
-        _topic_blocks(),
-        blank=True,
-        help_text="Add topic cards to nest additional pages.",
-    )
 
     cta_text = models.CharField(max_length=255, blank=True, help_text="Button or link text")
     cta_url = models.URLField(blank=True, help_text="Target URL for the call-to-action")
