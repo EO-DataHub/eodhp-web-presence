@@ -27,16 +27,8 @@
 </section>
 {% endif %}
 
-{% if page.topics %}
-<section class="faq-cards {% bg_classes page.topics_background_color page.topics_full_width_background %}">
-    {% for panel in page.topics %}
-    {% include "home/includes/topic_card.html" with panel=panel %}
-    {% endfor %}
-</section>
-{% endif %}
-
 {% if page.body %}
 <main class="generic-page__body">
-    {{ page.body }}
+    {% include_block page.body %}
 </main>
 {% endif %}

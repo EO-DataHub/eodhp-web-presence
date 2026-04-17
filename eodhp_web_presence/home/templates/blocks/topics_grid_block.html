@@ -1,0 +1,25 @@
+{% load wagtailcore_tags wagtailimages_tags bg_tags %}
+<section class="faq-cards {% bg_classes value.background_color value.full_width_background %}">
+    {% for panel in value.topics %}
+    {% if panel.featured_image and panel.image %}
+    {% image panel.image fill-600x400 as featured_img %}
+    <a href="{{ page.url }}{{ panel.slug }}" class="faq-card faq-card--featured" style="background-image: url('{{ featured_img.url }}');" aria-label="{{ panel.title }}">
+        <div class="faq-card__overlay">
+            <h2 class="faq-card__title">{{ panel.title }}</h2>
+            <div class="faq-card__description">{{ panel.description|richtext }}</div>
+        </div>
+    </a>
+    {% else %}
+    <a href="{{ page.url }}{{ panel.slug }}" class="faq-card">
+        <div class="faq-card__header">
+            <h2 class="faq-card__title">{{ panel.title }}</h2>
+            {% if panel.image %}
+            {% image panel.image fill-100x100 as panel_image %}
+            <img src="{{ panel_image.url }}" alt="{{ panel.title }}" class="faq-card__image" />
+            {% endif %}
+        </div>
+        <div class="faq-card__description">{{ panel.description|richtext }}</div>
+    </a>
+    {% endif %}
+    {% endfor %}
+</section>

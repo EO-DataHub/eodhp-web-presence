@@ -427,12 +427,25 @@ class RowBlock(BackgroundMixin):
         )
 
 
+class TopicsGridBlock(BackgroundMixin):
+    """A grid of topic / documentation cards"""
+
+    topics = blocks.ListBlock(DocumentationPanel(), label="Topic cards")
+
+    class Meta:
+        icon = "grip"
+        label = "Topics Grid"
+        template = "blocks/topics_grid_block.html"
+        help_text = "A grid of topic / documentation cards."
+        form_layout = BlockGroup(
+            children=["topics"],
+            settings=[_background_group()],
+        )
+
+
 # Helper: StreamField definitions shared by landing / index pages
 def _body_blocks() -> list:
     return _inner_blocks() + [
         ("columns", RowBlock()),
+        ("topics_grid", TopicsGridBlock()),
     ]
-
-
-def _topic_blocks() -> list:
-    return [("topic_panel", DocumentationPanel())]
