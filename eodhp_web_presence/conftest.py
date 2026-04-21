@@ -1,4 +1,5 @@
 from collections.abc import Generator
+from unittest.mock import patch
 
 import pytest
 from home import icons
@@ -13,7 +14,6 @@ _TEST_ICONS = {
 
 @pytest.fixture(scope="session", autouse=True)
 def _stub_mdi_icons() -> Generator[None]:
-    original = icons._icon_map_cache
-    icons._icon_map_cache = _TEST_ICONS
-    yield
-    icons._icon_map_cache = original
+    icons._load_icon_map.cache_clear()
+    with patch.object(icons, "_icon_map", return_value=_TEST_ICONS):
+        yield
