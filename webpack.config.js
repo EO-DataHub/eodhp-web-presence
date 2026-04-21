@@ -11,8 +11,11 @@ module.exports = {
     // This is included on every page.
     main: './assets/entrypoint.js',
 
+    // Admin-only icon picker for Draftail rich text.
+    'icon-picker': './assets/admin/icon-picker/index.js',
 
-
+    // Admin-only icon field widget for StructBlock fields.
+    'icon-field': './assets/admin/icon-field/index.js',
   },
   output: {
     path: path.resolve(__dirname, 'eodhp_web_presence/staticfiles/bundles'),
@@ -62,6 +65,10 @@ module.exports = {
             presets: [['@babel/preset-env', { targets: 'defaults' }]],
           },
         },
+      },
+      {
+        test: /\.(?:woff2?|ttf|eot|otf)$/,
+        type: 'asset/resource',
       },
     ],
   },

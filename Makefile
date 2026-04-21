@@ -40,6 +40,7 @@ runserver:
 
 .make-node_modules-installed: package-lock.json
 	npm install --from-lock-file
+	npm run build:icons
 	touch .make-node_modules-installed
 
 .PHONY: setup

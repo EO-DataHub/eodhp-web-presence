@@ -15,7 +15,7 @@ services:
       - ${SQL_PORT}:${SQL_PORT}
     restart: on-failure
     healthcheck:
-      test: "PGPASSWORD=${SQL_PASSWORD} pg_isready -h 127.0.0.1 -U ${SQL_USER} -d ${SQL_DATABASE}"
+      test: 'PGPASSWORD=${SQL_PASSWORD} pg_isready -h 127.0.0.1 -U ${SQL_USER} -d ${SQL_DATABASE}'
 
   web-presence:
     build:
@@ -26,6 +26,8 @@ services:
     volumes:
       - ./:/app/
       - /app/.venv
+      - /app/eodhp_web_presence/dist
+      - /app/eodhp_web_presence/staticfiles
     ports:
       - 8000:8000
     depends_on:

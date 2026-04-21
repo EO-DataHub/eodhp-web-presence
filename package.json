@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "preserve": "npm run build:icons",
     "serve": "webpack serve --config webpack.config.js --mode development",
+    "prebuild": "npm run build:icons",
     "build": "webpack --config webpack.config.js --mode production",
     "lint": "eslint  --ext js,jsx,ts,tsx assets",
     "lint:fix": "eslint assets --ext js,jsx,ts,tsx --fix",
@@ -13,19 +15,24 @@
     "lint:css": "stylelint 'assets/**/*.{css,scss}'",
     "lint:css:fix": "stylelint 'assets/**/*.{css,scss}' --fix",
     "lint:css:rules": "stylelint --print-config rules > stylelint-rules.json",
+    "predev": "npm run build:icons",
     "dev": "webpack --config webpack.config.js --mode development",
-    "dev-watch": "webpack --config webpack.config.js --mode development --watch"
+    "predev-watch": "npm run build:icons",
+    "dev-watch": "webpack --config webpack.config.js --mode development --watch",
+    "build:icons": "node scripts/build_mdi_icons.mjs eodhp_web_presence/dist/mdi_icons.json"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "bootstrap": "^5.3.5",
     "jquery": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.29.0",
     "@babel/preset-env": "7.29.2",
+    "@mdi/svg": "^7.4.47",
     "@tpzdsp/eslint-config-dsp": "1.8.4",
     "@typescript-eslint/eslint-plugin": "8.57.1",
     "babel-loader": "10.1.1",
