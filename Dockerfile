@@ -13,6 +13,7 @@ COPY package*.json .
 RUN npm install
 
 COPY assets ./assets
+COPY scripts ./scripts
 COPY webpack.config.js .eslintrc.js .stylelintrc ./
 
 RUN npm run build
@@ -61,6 +62,7 @@ WORKDIR /app
 COPY --from=py_builder /app /app
 
 COPY --from=js_builder /app/eodhp_web_presence/staticfiles ./eodhp_web_presence/staticfiles
+COPY --from=js_builder /app/eodhp_web_presence/dist/mdi_icons.json ./eodhp_web_presence/dist/mdi_icons.json
 RUN uv run --no-sync python eodhp_web_presence/manage.py collectstatic --noinput
 
 # Create a convenience script to run manage.py commands from docker CLI, e.g.

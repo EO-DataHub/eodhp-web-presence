@@ -11,6 +11,7 @@ node_modules/
 webpack-stats.json
 eodhp_web_presence/static/
 eodhp_web_presence/staticfiles/
+eodhp_web_presence/dist/
 cache/
 *.egg-info/
 .make-venv-installed

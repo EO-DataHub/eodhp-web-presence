@@ -7,6 +7,7 @@ COPY package*.json .
 RUN npm install
 
 COPY assets ./assets
+COPY scripts ./scripts
 COPY webpack.config.js .eslintrc.js .stylelintrc ./
 
 RUN npm run build
@@ -35,6 +36,7 @@ COPY . /app
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen
 
+COPY --from=js_builder /app/eodhp_web_presence/dist/mdi_icons.json ./eodhp_web_presence/dist/mdi_icons.json
 COPY --from=js_builder /app/eodhp_web_presence/staticfiles ./eodhp_web_presence/staticfiles
 RUN uv run --no-sync python eodhp_web_presence/manage.py collectstatic --noinput
 
