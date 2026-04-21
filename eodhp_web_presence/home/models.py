@@ -1,13 +1,70 @@
 from typing import ClassVar
 
 from django.db import models
+from django.db.models.signals import post_delete, post_save
+from django.dispatch import receiver
+from django.utils.text import slugify
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Page
-from wagtailcache.cache import WagtailCacheMixin
+from wagtail.snippets.models import register_snippet
+from wagtailcache.cache import WagtailCacheMixin, clear_cache
 
 from .blocks import DocumentationPanel, _body_blocks
-from .colors import THEME_COLOR_CHOICES
+from .colors import LABEL_COLOR_CHOICES, THEME_COLOR_CHOICES
+
+
+@register_snippet
+class Label(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True, blank=True)
+    color = models.CharField(
+        max_length=20,
+        choices=LABEL_COLOR_CHOICES,
+        default="nceo-purple",
+    )
+
+    panels: ClassVar[list] = [
+        FieldPanel("name"),
+        FieldPanel("slug"),
+        FieldPanel("color"),
+    ]
+
+    def save(self, *args: object, **kwargs: object) -> None:
+        if not self.slug:
+            self.slug = self._generate_unique_slug()
+        super().save(*args, **kwargs)
+
+    SLUG_MAX_LENGTH = 50
+
+    def _generate_unique_slug(self) -> str:
+        base = slugify(self.name)
+        if not base:
+            base = "label"
+        slug = base[: self.SLUG_MAX_LENGTH]
+        num = 1
+        while Label.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+            suffix = f"-{num}"
+            slug = f"{base[: self.SLUG_MAX_LENGTH - len(suffix)]}{suffix}"
+            num += 1
+        return slug
+
+    def __str__(self) -> str:
+        return self.name
+
+    class Meta:
+        ordering: ClassVar[list[str]] = ["name"]
+
+
+@receiver(post_save, sender=Label)
+@receiver(post_delete, sender=Label)
+def purge_cache_on_label_change(sender: type, **kwargs: object) -> None:
+    """Purge the entire wagtailcache when a Label snippet changes.
+
+    Labels are rendered across many pages via template tags, so any
+    change must invalidate all cached page output.
+    """
+    clear_cache()
 
 
 # ---------------------------------------------------------------------
@@ -270,6 +327,10 @@ class DocumentationPage(WagtailCacheMixin, Page):
         default=False,
         help_text="Stretch the topics background to the full width of the page.",
     )
+    topics_show_filter = models.BooleanField(
+        default=False,
+        help_text="Show a label filter bar above the topic cards.",
+    )
 
     content_panels: ClassVar[list] = Page.content_panels + [
         MultiFieldPanel(
@@ -293,6 +354,7 @@ class DocumentationPage(WagtailCacheMixin, Page):
                     [
                         FieldPanel("topics_background_color"),
                         FieldPanel("topics_full_width_background"),
+                        FieldPanel("topics_show_filter"),
                     ],
                     heading="Topics Style",
                     classname="collapsed",

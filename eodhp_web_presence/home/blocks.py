@@ -2,6 +2,7 @@ from wagtail import blocks
 from wagtail.blocks.struct_block import BlockGroup
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.snippets.blocks import SnippetChooserBlock
 from wagtailcodeblock.blocks import CodeBlock
 
 from .colors import THEME_COLOR_CHOICES
@@ -424,6 +425,12 @@ class DocumentationPanel(IconMixin, blocks.StructBlock):
         default=False,
         help_text="Use the image as a full card background with the title overlaid",
     )
+    labels = blocks.ListBlock(
+        SnippetChooserBlock("home.Label"),
+        required=False,
+        label="Labels",
+        default=[],
+    )
 
     class Meta:
         icon = "doc-full"
@@ -431,7 +438,7 @@ class DocumentationPanel(IconMixin, blocks.StructBlock):
         template = "blocks/documentation_panel.html"
         help_text = "Use this block to create documentation panels with title, description, and optional image."
         form_layout = BlockGroup(
-            children=["title", "slug", "description", "image", "featured_image"],
+            children=["title", "slug", "labels", "description", "image", "featured_image"],
             settings=[
                 _icon_group(),
             ],
@@ -511,6 +518,11 @@ class TopicsGridBlock(BackgroundMixin):
     """A grid of topic / documentation cards"""
 
     topics = blocks.ListBlock(DocumentationPanel(), label="Topic cards")
+    show_filter = blocks.BooleanBlock(
+        required=False,
+        default=False,
+        help_text="Show a label filter bar above the topic cards.",
+    )
 
     class Meta:
         icon = "grip"
@@ -519,7 +531,10 @@ class TopicsGridBlock(BackgroundMixin):
         help_text = "A grid of topic / documentation cards."
         form_layout = BlockGroup(
             children=["topics"],
-            settings=[_background_group()],
+            settings=[
+                BlockGroup(["show_filter"], heading="Filter", icon="tag", classname="collapsed"),
+                _background_group(),
+            ],
         )
 
 

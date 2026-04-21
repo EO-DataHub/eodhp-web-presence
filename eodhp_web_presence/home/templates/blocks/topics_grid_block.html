@@ -1,22 +1,51 @@
-{% load wagtailcore_tags wagtailimages_tags bg_tags mdi_tags %}
+{% load wagtailcore_tags wagtailimages_tags bg_tags mdi_tags label_tags %}
+{% unique_labels value.topics as filter_labels %}
+{% if value.show_filter and filter_labels %}
+<div class="faq-filters">
+    <button class="faq-filter-btn faq-filter-btn--active" data-label="">All</button>
+    {% for label in filter_labels %}
+    <button class="faq-filter-btn" data-label="{{ label.slug }}">{{ label.name }}</button>
+    {% endfor %}
+</div>
+{% endif %}
 <section class="faq-cards {% bg_classes value.background_color value.full_width_background %}">
     {% for panel in value.topics %}
     {% if panel.featured_image and panel.image %}
     {% image panel.image fill-600x400 as featured_img %}
-    <a href="{{ page.url }}{{ panel.slug }}" class="faq-card faq-card--featured" style="background-image: url('{{ featured_img.url }}');" aria-label="{{ panel.title }}">
+    <a href="{{ page.url }}{{ panel.slug }}" class="faq-card faq-card--featured" data-labels="{{ panel.labels|label_slugs }}" style="background-image: url('{{ featured_img.url }}');" aria-label="{{ panel.title }}">
         <div class="faq-card__overlay">
             <h2 class="faq-card__title">{% if panel.icon_name %}{% mdi_icon panel.icon_name panel.icon_size %} {% endif %}{{ panel.title }}</h2>
+            {% if panel.labels %}
+            <div class="faq-card__labels">
+                {% for label in panel.labels %}
+                {% if label %}
+                <span class="faq-card__label faq-card__label--{{ label.color }}">{{ label.name }}</span>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
             <div class="faq-card__description">{{ panel.description|richtext }}</div>
         </div>
     </a>
     {% else %}
-    <a href="{{ page.url }}{{ panel.slug }}" class="faq-card">
+    <a href="{{ page.url }}{{ panel.slug }}" class="faq-card" data-labels="{{ panel.labels|label_slugs }}">
         <div class="faq-card__header">
             <h2 class="faq-card__title">{% if panel.icon_name %}{% mdi_icon panel.icon_name panel.icon_size %} {% endif %}{{ panel.title }}</h2>
-            {% if panel.image %}
-            {% image panel.image fill-100x100 as panel_image %}
-            <img src="{{ panel_image.url }}" alt="{{ panel.title }}" class="faq-card__image" />
-            {% endif %}
+            <div class="faq-card__header-right">
+                {% if panel.labels %}
+                <div class="faq-card__labels">
+                    {% for label in panel.labels %}
+                    {% if label %}
+                    <span class="faq-card__label faq-card__label--{{ label.color }}">{{ label.name }}</span>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% if panel.image %}
+                {% image panel.image fill-100x100 as panel_image %}
+                <img src="{{ panel_image.url }}" alt="{{ panel.title }}" class="faq-card__image" />
+                {% endif %}
+            </div>
         </div>
         <div class="faq-card__description">{{ panel.description|richtext }}</div>
     </a>

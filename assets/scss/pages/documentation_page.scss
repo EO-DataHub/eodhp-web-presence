@@ -1,4 +1,5 @@
 @use '../custom' as *;
+@use '../theme-colors' as *;
 
 .documentation-page {
   min-height: 100vh;
@@ -20,6 +21,29 @@
         border-radius: $radius-sm $radius-sm 0 0;
       }
     }
+  }
+}
+
+.faq-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.faq-filter-btn {
+  padding: 4px 12px;
+  border: 1px solid #ddd;
+  border-radius: $radius-pill;
+  background: #fff;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  &--active {
+    background: var(--button-bg);
+    color: #fff;
+    border-color: var(--button-bg);
   }
 }
 
@@ -55,6 +79,14 @@
       margin-bottom: 12px;
     }
 
+    &__header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
     &__title {
       width: 84%;
       font-size: 1.2rem;
@@ -67,6 +99,29 @@
       height: 50px;
       object-fit: cover;
       border-radius: $radius-sm;
+    }
+
+    &__labels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    &__label {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: $radius-pill;
+      font-size: 0.7rem;
+      font-weight: 600;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    @each $name, $vals in $theme-colors {
+      &__label--#{$name} {
+        background-color: nth($vals, 1);
+        color: nth($vals, 3);
+      }
     }
 
     &__description {
@@ -106,6 +161,31 @@
       line-height: 1.2;
       margin: 0;
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+    }
+
+    .faq-card__labels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .faq-card__label {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: $radius-pill;
+      font-size: 0.7rem;
+      font-weight: 600;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    @each $name, $vals in $theme-colors {
+      .faq-card__label--#{$name} {
+        background-color: nth($vals, 1);
+        color: nth($vals, 3);
+        opacity: 0.85;
+      }
     }
 
     .faq-card__description {
