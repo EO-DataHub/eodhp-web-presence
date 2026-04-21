@@ -40,6 +40,11 @@ IMAGE_STYLE_CHOICES = [
     ("pill", "Pill / circular"),
 ]
 
+BUTTON_STYLE_CHOICES = [
+    ("primary", "Primary"),
+    ("secondary", "Secondary"),
+]
+
 FONT_SIZE_CHOICES = [
     ("default", "Default"),
     ("small", "Small"),
@@ -373,6 +378,38 @@ class QuoteBlock(IconMixin, LayoutMixin, BackgroundMixin, FontMixin):
         )
 
 
+class CTABlock(LayoutMixin, BackgroundMixin):
+    text = blocks.CharBlock(required=True, help_text="Button label text")
+    link_page = blocks.PageChooserBlock(
+        required=False,
+        help_text="Link to an internal page. Takes priority over the URL field if both are set.",
+    )
+    link_url = blocks.URLBlock(
+        required=False,
+        help_text="Link to an external URL.",
+    )
+    button_style = blocks.ChoiceBlock(
+        choices=BUTTON_STYLE_CHOICES,
+        default="primary",
+        required=False,
+        help_text="Visual style for the button.",
+    )
+
+    class Meta:
+        icon = "link"
+        label = "Call to Action"
+        template = "blocks/cta_block.html"
+        help_text = "A call-to-action button or link."
+        form_layout = BlockGroup(
+            children=["text", "link_page", "link_url"],
+            settings=[
+                BlockGroup(["button_style"], heading="Style", icon="tag", classname="collapsed"),
+                _layout_group(),
+                _background_group(),
+            ],
+        )
+
+
 class DocumentationPanel(IconMixin, blocks.StructBlock):
     title = blocks.CharBlock(required=True, help_text="Title of the documentation panel")
     slug = blocks.CharBlock(
@@ -421,6 +458,7 @@ def _inner_blocks() -> list:
         ("blockquote", QuoteBlock()),
         ("raw_html", blocks.RawHTMLBlock()),
         ("code", CodeBlock(label="Code")),
+        ("cta", CTABlock()),
     ]
 
 

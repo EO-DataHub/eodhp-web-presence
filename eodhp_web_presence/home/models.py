@@ -353,9 +353,6 @@ class GenericPage(LandingPageMixin, WagtailCacheMixin, Page):
 
     body = StreamField(_body_blocks(), blank=True)
 
-    cta_text = models.CharField(max_length=255, blank=True, help_text="Button or link text")
-    cta_url = models.URLField(blank=True, help_text="Target URL for the call-to-action")
-
     back_button_location = models.CharField(
         max_length=255,
         blank=True,
@@ -366,13 +363,6 @@ class GenericPage(LandingPageMixin, WagtailCacheMixin, Page):
         Page.content_panels
         + LandingPageMixin.landing_panels()
         + [
-            MultiFieldPanel(
-                [
-                    FieldPanel("cta_text"),
-                    FieldPanel("cta_url"),
-                ],
-                heading="Call to Action",
-            ),
             FieldPanel("back_button_location"),
         ]
     )
