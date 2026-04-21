@@ -1,0 +1,26 @@
+@use "../../scss/components/mdi_icon";
+
+.icon-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.icon-field__preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+
+  .mdi {
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--w-color-text-default, #000);
+  }
+}
+
+.icon-field__label {
+  font-size: 0.8125rem;
+  color: var(--w-color-text-meta, #666);
+}

@@ -9,7 +9,7 @@ import re
 
 VALID_ICON_NAME = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 
-VALID_SIZES = frozenset({"sm", "md", "lg", "xl"})
+VALID_SIZES = ("sm", "md", "lg", "xl")
 DEFAULT_SIZE = "sm"
 
 

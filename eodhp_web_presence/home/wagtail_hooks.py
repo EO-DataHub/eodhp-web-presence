@@ -1,10 +1,13 @@
-"""Rich-text extensions for the `home` app.
+"""Rich-text extensions and admin widgets for the `home` app.
 
 Registers a Draftail inline entity that lets editors insert Material Design
 Icons (https://pictogrammers.com/library/mdi/) anywhere rich text is edited,
-with UX modelled on the existing emoji copy-paste workflow.
+with UX modelled on the existing emoji copy-paste workflow. Also registers
+the admin JS for the ``IconPickerWidget`` used by ``IconMixin`` blocks.
 """
 
+from django.templatetags.static import static
+from django.utils.safestring import mark_safe
 from draftjs_exporter.dom import DOM, Element
 from wagtail import hooks
 from wagtail.admin.rich_text.converters.html_to_contentstate import (
@@ -14,6 +17,7 @@ from wagtail.admin.rich_text.editors.draftail import features as draftail_featur
 from wagtail.rich_text.feature_registry import FeatureRegistry
 
 from .mdi import clean_name, clean_size
+from .widgets import IconPickerWidget
 
 ICON_FEATURE_NAME = "icon"
 ICON_ENTITY_TYPE = "ICON"
@@ -97,3 +101,10 @@ def register_icon_feature(features: FeatureRegistry) -> None:
     )
 
     features.default_features.append(ICON_FEATURE_NAME)
+
+
+@hooks.register("insert_editor_js")
+def editor_js() -> str:
+    js_urls = IconPickerWidget().media._js
+    tags = "".join(f'<script src="{static(url)}"></script>' for url in js_urls)
+    return mark_safe(tags)

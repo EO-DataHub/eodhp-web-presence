@@ -3,8 +3,9 @@ from draftjs_exporter.dom import DOM
 
 from home.icons import get_icon_path
 from home.mdi import clean_name, clean_size
-from home.templatetags.mdi_tags import inject_mdi_icons
+from home.templatetags.mdi_tags import inject_mdi_icons, mdi_icon
 from home.wagtail_hooks import ICON_ENTITY_TYPE, IconEntityElementHandler, icon_entity
+from home.widgets import IconPickerWidget
 
 
 class GetIconPathTests(SimpleTestCase):
@@ -160,3 +161,45 @@ class ValidatorTests(SimpleTestCase):
     def test_clean_size_rejects_invalid(self) -> None:
         for bad in ("", "SM", "huge", " sm", "sm ", None, 0, True):
             assert clean_size(bad) == "sm", f"expected 'sm' default for {bad!r}"
+
+
+class MdiIconTagTests(SimpleTestCase):
+    def test_valid_icon_renders_svg(self) -> None:
+        result = mdi_icon("account", "md")
+        assert "<svg" in result
+        assert 'class="mdi mdi-account"' in result
+        assert 'data-mdi-icon="account"' in result
+        assert 'data-mdi-size="md"' in result
+        assert 'aria-hidden="true"' in result
+
+    def test_default_size_is_sm(self) -> None:
+        result = mdi_icon("account")
+        assert 'data-mdi-size="sm"' in result
+
+    def test_unknown_icon_returns_empty_string(self) -> None:
+        assert mdi_icon("nonexistent-xyz") == ""
+
+    def test_invalid_name_returns_empty_string(self) -> None:
+        assert mdi_icon("") == ""
+        assert mdi_icon("<script>") == ""
+
+    def test_invalid_size_falls_back_to_sm(self) -> None:
+        result = mdi_icon("account", "huge")
+        assert 'data-mdi-size="sm"' in result
+
+
+class IconPickerWidgetTests(SimpleTestCase):
+    def test_media_includes_icon_field_js(self) -> None:
+        widget = IconPickerWidget()
+        assert "bundles/icon-field.js" in widget.media._js
+
+    def test_is_text_input(self) -> None:
+        widget = IconPickerWidget()
+        assert widget.is_hidden is False
+        html = widget.render("icon_name", "")
+        assert 'type="text"' in html
+
+    def test_value_rendered_in_input(self) -> None:
+        widget = IconPickerWidget()
+        html = widget.render("icon_name", "rocket-launch")
+        assert "rocket-launch" in html

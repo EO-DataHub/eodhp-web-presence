@@ -13,6 +13,9 @@ module.exports = {
 
     // Admin-only icon picker for Draftail rich text.
     'icon-picker': './assets/admin/icon-picker/index.js',
+
+    // Admin-only icon field widget for StructBlock fields.
+    'icon-field': './assets/admin/icon-field/index.js',
   },
   output: {
     path: path.resolve(__dirname, 'eodhp_web_presence/staticfiles/bundles'),

@@ -1,13 +1,11 @@
-"""Template filter that injects inline SVG into MDI icon spans at render time.
+"""Template filter and tags for MDI icon rendering.
 
-Stored rich text contains ``<span data-mdi-icon="NAME" data-mdi-size="SIZE">``
-placeholders. This filter replaces their contents with the appropriate inline
-SVG markup looked up from ``icons.get_icon_path``, so no SVG is persisted in
-the database.
+``inject_mdi_icons`` filter — replaces ``<span data-mdi-icon="NAME">``
+placeholders in stored rich text with inline SVG at render time.
 
-The filter is idempotent: if a span already contains an ``<svg>`` child
-(e.g. content saved by a previous version of the exporter), it is left
-untouched.
+``{% mdi_icon name [size] %}`` tag — outputs a fully-rendered inline SVG
+icon directly, for use in block templates where icon_name / icon_size are
+explicit StructBlock field values.
 """
 
 import re
@@ -16,7 +14,7 @@ from django import template
 from django.utils.safestring import SafeString, mark_safe
 
 from home.icons import get_icon_path
-from home.mdi import clean_name, clean_size
+from home.mdi import DEFAULT_SIZE, clean_name, clean_size
 
 register = template.Library()
 
@@ -45,10 +43,6 @@ def _inject_svg_into_span(match: re.Match) -> str:
     if path_d is None:
         return match.group(0)
 
-    size_match = _ATTR_RE.search(pre_attrs + post_attrs)
-    size_raw = size_match.group(1) if size_match else ""
-    clean_size(size_raw)
-
     zwsp = "\u200b"
 
     svg = f'<svg viewBox="0 0 24 24" fill="currentColor"><path d="{path_d}"/></svg>'
@@ -66,3 +60,32 @@ def inject_mdi_icons(value: str) -> str:
     if isinstance(value, SafeString):
         return mark_safe(result)
     return result
+
+
+@register.simple_tag
+def mdi_icon(name: str, size: str = DEFAULT_SIZE) -> str:
+    """Render an MDI icon as an inline SVG ``<span>`` directly.
+
+    Usage::
+
+        {% load mdi_tags %}
+        {% mdi_icon "account" "md" %}
+        {% mdi_icon "rocket-launch" %}       {# size defaults to "sm" #}
+
+    Returns a ``<span class="mdi" data-mdi-icon="NAME" data-mdi-size="SIZE">``
+    containing the inline SVG. If *name* is invalid or unknown, returns an
+    empty string.
+    """
+    clean = clean_name(name)
+    if not clean:
+        return ""
+
+    path_d = get_icon_path(clean)
+    if path_d is None:
+        return ""
+
+    sz = clean_size(size) if size else DEFAULT_SIZE
+    svg = f'<svg viewBox="0 0 24 24" fill="currentColor"><path d="{path_d}"/></svg>'
+    return mark_safe(
+        f'<span class="mdi mdi-{clean}" aria-hidden="true" data-mdi-icon="{clean}" data-mdi-size="{sz}">{svg}</span>'
+    )

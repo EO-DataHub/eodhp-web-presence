@@ -5,6 +5,8 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtailcodeblock.blocks import CodeBlock
 
 from .colors import THEME_COLOR_CHOICES
+from .mdi import VALID_SIZES
+from .widgets import IconPickerWidget
 
 WIDTH_CHOICES = [
     ("default", "Default"),
@@ -58,6 +60,14 @@ FONT_STYLE_CHOICES = [
 LAYOUT_FIELDS = ["width", "alignment", "vertical_alignment"]
 BACKGROUND_FIELDS = ["background_color", "full_width_background"]
 FONT_FIELDS = ["font_size", "font_weight", "font_style"]
+
+ICON_SIZE_CHOICES = [(s, s.upper()) for s in VALID_SIZES]
+
+ICON_FIELDS = ["icon_name", "icon_size"]
+
+
+def _icon_group() -> BlockGroup:
+    return BlockGroup(ICON_FIELDS, heading="Icon", icon="snippet", classname="collapsed")
 
 
 def _layout_group() -> BlockGroup:
@@ -144,7 +154,31 @@ class BackgroundMixin(blocks.StructBlock):
     )
 
 
-class ContentBlock(LayoutMixin, BackgroundMixin):
+class IconPickerBlock(blocks.CharBlock):
+    """CharBlock whose form field uses the MDI icon picker widget."""
+
+    def __init__(self, **kwargs: object) -> None:
+        super().__init__(**kwargs)
+        self.field.widget = IconPickerWidget()
+
+
+class IconMixin(blocks.StructBlock):
+    """Reusable icon options — inherit from this to add an icon beside a heading/title."""
+
+    icon_name = IconPickerBlock(
+        required=False,
+        max_length=100,
+        help_text="Click the Pick icon button to browse available icons.",
+    )
+    icon_size = blocks.ChoiceBlock(
+        choices=ICON_SIZE_CHOICES,
+        default="sm",
+        required=False,
+        help_text="Icon size.",
+    )
+
+
+class ContentBlock(IconMixin, LayoutMixin, BackgroundMixin):
     heading = blocks.CharBlock(required=False, help_text="Optional heading")
     paragraph = blocks.RichTextBlock(required=False)
     image = ImageChooserBlock(required=False)
@@ -183,6 +217,7 @@ class ContentBlock(LayoutMixin, BackgroundMixin):
         form_layout = BlockGroup(
             children=["heading", "paragraph", "image"],
             settings=[
+                _icon_group(),
                 _image_link_group(),
                 _image_options_group("image_alignment"),
                 _layout_group(),
@@ -232,7 +267,7 @@ class ImageBlock(LayoutMixin, BackgroundMixin):
         )
 
 
-class AccordionItemBlock(blocks.StructBlock):
+class AccordionItemBlock(IconMixin, blocks.StructBlock):
     title = blocks.CharBlock(required=True, help_text="Accordion item heading")
     content = blocks.RichTextBlock(required=True, help_text="Content revealed when expanded")
 
@@ -241,6 +276,9 @@ class AccordionItemBlock(blocks.StructBlock):
         label = "Accordion Item"
         form_layout = BlockGroup(
             children=["title", "content"],
+            settings=[
+                _icon_group(),
+            ],
         )
 
 
@@ -292,7 +330,7 @@ class MediaEmbedBlock(LayoutMixin, BackgroundMixin):
         )
 
 
-class QuoteBlock(LayoutMixin, BackgroundMixin, FontMixin):
+class QuoteBlock(IconMixin, LayoutMixin, BackgroundMixin, FontMixin):
     """A styled blockquote with layout, background, and font options."""
 
     # Override BackgroundMixin default — quotes get a background by default.
@@ -327,6 +365,7 @@ class QuoteBlock(LayoutMixin, BackgroundMixin, FontMixin):
         form_layout = BlockGroup(
             children=["quote", "attribution"],
             settings=[
+                _icon_group(),
                 _font_group(),
                 _layout_group(),
                 _background_group(),
@@ -334,7 +373,7 @@ class QuoteBlock(LayoutMixin, BackgroundMixin, FontMixin):
         )
 
 
-class DocumentationPanel(blocks.StructBlock):
+class DocumentationPanel(IconMixin, blocks.StructBlock):
     title = blocks.CharBlock(required=True, help_text="Title of the documentation panel")
     slug = blocks.CharBlock(
         required=True,
@@ -356,6 +395,9 @@ class DocumentationPanel(blocks.StructBlock):
         help_text = "Use this block to create documentation panels with title, description, and optional image."
         form_layout = BlockGroup(
             children=["title", "slug", "description", "image", "featured_image"],
+            settings=[
+                _icon_group(),
+            ],
         )
 
 

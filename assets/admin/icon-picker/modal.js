@@ -62,6 +62,7 @@ export function openIconModal() {
     };
 
     const close = (value) => {
+      document.removeEventListener("keydown", onKeydown);
       dialog.setAttribute("aria-hidden", "true");
       document.documentElement.style.overflowY = "";
       if (previouslyFocused) previouslyFocused.focus();
@@ -123,7 +124,6 @@ export function openIconModal() {
     grid.addEventListener("click", (e) => {
       const cell = e.target.closest(".mdi-picker__cell");
       if (!cell) return;
-      document.removeEventListener("keydown", onKeydown);
       close({ name: cell.dataset.name, size: selectedSize });
     });
 
