@@ -21,22 +21,20 @@
 <a href="{{ page.url }}{{ panel.value.slug }}" class="faq-card" data-labels="{{ panel.value.labels|label_slugs }}">
     <div class="faq-card__header">
         <h2 class="faq-card__title">{% if panel.value.icon_name %}{% mdi_icon panel.value.icon_name panel.value.icon_size %} {% endif %}{{ panel.value.title }}</h2>
-        <div class="faq-card__header-right">
-            {% if panel.value.labels %}
-            <div class="faq-card__labels">
-                {% for label in panel.value.labels %}
-                {% if label %}
-                <span class="faq-card__label faq-card__label--{{ label.color }}">{{ label.name }}</span>
-                {% endif %}
-                {% endfor %}
-            </div>
-            {% endif %}
-            {% if panel.value.image %}
-            {% image panel.value.image fill-100x100 as panel_image %}
-            <img src="{{ panel_image.url }}" alt="{{ panel.value.title }}" class="faq-card__image" />
-            {% endif %}
-        </div>
+        {% if panel.value.image %}
+        {% image panel.value.image fill-100x100 as panel_image %}
+        <img src="{{ panel_image.url }}" alt="{{ panel.value.title }}" class="faq-card__image" />
+        {% endif %}
     </div>
+    {% if panel.value.labels %}
+    <div class="faq-card__labels">
+        {% for label in panel.value.labels %}
+        {% if label %}
+        <span class="faq-card__label faq-card__label--{{ label.color }}">{{ label.name }}</span>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
     <div class="faq-card__description">{{ panel.value.description|richtext }}</div>
 </a>
 {% endif %}
