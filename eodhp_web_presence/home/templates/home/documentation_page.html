@@ -20,14 +20,16 @@
 
     {% if page.topics %}
     {% unique_labels page.topics as filter_labels %}
+    <div class="faq-cards-wrapper {% bg_classes page.topics_background_color page.topics_full_width_background %}">
     {% if page.topics_show_filter and filter_labels %}
     {% include "home/includes/topics_filter_bar.html" with filter_labels=filter_labels %}
     {% endif %}
-    <section class="faq-cards {% bg_classes page.topics_background_color page.topics_full_width_background %}">
+    <section class="faq-cards">
         {% for panel in page.topics %}
         {% include "home/includes/topic_card.html" with panel=panel %}
         {% endfor %}
     </section>
+    </div>
     {% endif %}
 
 </div>

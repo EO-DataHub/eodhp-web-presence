@@ -1,9 +1,10 @@
 {% load wagtailcore_tags wagtailimages_tags bg_tags mdi_tags label_tags %}
 {% unique_labels value.topics as filter_labels %}
+<div class="faq-cards-wrapper {% bg_classes value.background_color value.full_width_background %}">
 {% if value.show_filter and filter_labels %}
 {% include "home/includes/topics_filter_bar.html" with filter_labels=filter_labels %}
 {% endif %}
-<section class="faq-cards {% bg_classes value.background_color value.full_width_background %}">
+<section class="faq-cards">
     {% for panel in value.topics %}
     {% if panel.featured_image and panel.image %}
     {% image panel.image fill-600x400 as featured_img %}
@@ -47,3 +48,4 @@
     {% endif %}
     {% endfor %}
 </section>
+</div>
