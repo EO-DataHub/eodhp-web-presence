@@ -25,6 +25,9 @@ jobs:
           uv sync
           npm ci
 
+      - name: Check for missing migrations
+        run: uv run python ./eodhp_web_presence/manage.py makemigrations --check
+
       - name: Build
         run: |
           npm run build

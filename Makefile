@@ -60,6 +60,7 @@ check:
 	${uv-run} ruff format --check --diff
 	${uv-run} pyright
 	${uv-run} validate-pyproject pyproject.toml
+	${uv-run} eodhp_web_presence/manage.py makemigrations --check
 
 .PHONY: format
 format:
