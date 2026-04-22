@@ -114,3 +114,6 @@ ignore = [
 "**/tests/*.py" = ["ANN"]
 "**/test_*.py" = ["ANN"]
 "**/settings.py" = ["SIM105", "F403"]
+
+[tool.ruff.format]
+exclude = ["**/migrations/*.py"]
