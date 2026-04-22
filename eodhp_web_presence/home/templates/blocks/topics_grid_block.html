@@ -1,12 +1,7 @@
 {% load wagtailcore_tags wagtailimages_tags bg_tags mdi_tags label_tags %}
 {% unique_labels value.topics as filter_labels %}
 {% if value.show_filter and filter_labels %}
-<div class="faq-filters">
-    <button class="faq-filter-btn faq-filter-btn--active" data-label="">All</button>
-    {% for label in filter_labels %}
-    <button class="faq-filter-btn" data-label="{{ label.slug }}">{{ label.name }}</button>
-    {% endfor %}
-</div>
+{% include "home/includes/topics_filter_bar.html" with filter_labels=filter_labels %}
 {% endif %}
 <section class="faq-cards {% bg_classes value.background_color value.full_width_background %}">
     {% for panel in value.topics %}

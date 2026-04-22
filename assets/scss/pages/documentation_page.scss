@@ -164,28 +164,11 @@
     }
 
     .faq-card__labels {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
       margin-top: 6px;
     }
 
     .faq-card__label {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: $radius-pill;
-      font-size: 0.7rem;
-      font-weight: 600;
-      line-height: 1.4;
-      white-space: nowrap;
-    }
-
-    @each $name, $vals in $theme-colors {
-      .faq-card__label--#{$name} {
-        background-color: nth($vals, 1);
-        color: nth($vals, 3);
-        opacity: 0.85;
-      }
+      opacity: 0.85;
     }
 
     .faq-card__description {

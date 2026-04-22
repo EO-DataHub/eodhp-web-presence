@@ -30,12 +30,12 @@ class Label(models.Model):
         FieldPanel("color"),
     ]
 
+    SLUG_MAX_LENGTH = 50
+
     def save(self, *args: object, **kwargs: object) -> None:
         if not self.slug:
             self.slug = self._generate_unique_slug()
         super().save(*args, **kwargs)
-
-    SLUG_MAX_LENGTH = 50
 
     def _generate_unique_slug(self) -> str:
         base = slugify(self.name)
