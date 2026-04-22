@@ -180,10 +180,9 @@ class LandingPageMixin(models.Model):
         related_name="+",
         help_text="Main hero or banner image for the top of the page.",
     )
-    hero_caption = models.CharField(
-        max_length=255,
+    hero_caption = models.TextField(
         blank=True,
-        help_text="Caption or alt-text for the hero image",
+        help_text="Caption or alt-text for the hero image. Press Enter for a new line.",
     )
     intro = RichTextField(blank=True, help_text="A short intro paragraph below the title.")
     intro_background_color = models.CharField(
