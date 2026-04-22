@@ -46,12 +46,6 @@
         {% include_block page.body %}
     </main>
 
-    {% if page.cta_text and page.cta_url %}
-    <div class="generic-page__cta">
-        <a href="{{ page.cta_url }}" class="btn btn-primary">{{ page.cta_text }}</a>
-    </div>
-    {% endif %}
-
 </div>
 
 {% endblock content %}

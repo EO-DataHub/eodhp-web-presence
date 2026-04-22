@@ -27,3 +27,24 @@
     background-color: var(--button-disabled);
   }
 }
+
+// Prevent content-page link styles from overriding button appearance.
+// .dark-theme .content-page a / .light-theme .content-page a (0,2,1) beat
+// .button.primary-button (0,2,0), so we match the same specificity tier.
+.content-page {
+  a.button {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &.primary-button {
+      color: var(--button-text);
+    }
+
+    &.secondary-button {
+      color: var(--button-bg);
+    }
+  }
+}

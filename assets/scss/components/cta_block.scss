@@ -1,0 +1,35 @@
+@use '../custom' as *;
+
+.cta-block {
+  text-align: center;
+  margin: 3rem 0;
+
+  a.button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: $radius-sm;
+    transition: background-color 0.3s ease;
+
+    &.primary-button {
+      background-color: #0066cc;
+      color: #fff;
+
+      &:hover {
+        background-color: #0055a0;
+      }
+    }
+
+    &.secondary-button {
+      background-color: transparent;
+      color: #0066cc;
+      border: 1px solid #0066cc;
+
+      &:hover {
+        background-color: rgba(#0066cc, 0.1);
+      }
+    }
+  }
+}

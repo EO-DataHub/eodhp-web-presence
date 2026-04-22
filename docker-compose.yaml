@@ -27,7 +27,7 @@ services:
       - ./:/app/
       - /app/.venv
       - /app/eodhp_web_presence/dist
-      - /app/eodhp_web_presence/staticfiles
+      # - /app/eodhp_web_presence/staticfiles
     ports:
       - 8000:8000
     depends_on:

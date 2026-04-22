@@ -7,6 +7,7 @@ from home.blocks import (
     BackgroundMixin,
     ColumnBlock,
     ContentBlock,
+    CTABlock,
     DocumentationPanel,
     ImageBlock,
     LayoutMixin,
@@ -158,6 +159,28 @@ class TestGenericPage(LandingPageTestMixin, TestCase):
         response = self.client.get(page.url)
         assert response.status_code == 200
         self.assertContains(response, f'href="{page.url}my-topic"')
+
+    def test_generic_page_cta_in_body(self):
+        """CTA blocks render inside the body streamfield."""
+        page = GenericPage(
+            title="CTA Page",
+            slug="cta-page",
+            body=[
+                (
+                    "cta",
+                    {
+                        "text": "Sign Up Now",
+                        "link_url": "https://example.com/signup",
+                    },
+                )
+            ],
+        )
+        self.home.add_child(instance=page)
+
+        response = self.client.get(page.url)
+        assert response.status_code == 200
+        self.assertContains(response, "Sign Up Now")
+        self.assertContains(response, "primary-button")
 
 
 @override_settings(WAGTAIL_CACHE=False)
@@ -592,3 +615,66 @@ class TestBodyBlockHelpers(TestCase):
     def test_inner_blocks_excludes_columns(self):
         block_types = [name for name, _ in _inner_blocks()]
         assert "columns" not in block_types
+
+    def test_inner_blocks_includes_cta(self):
+        block_types = [name for name, _ in _inner_blocks()]
+        assert "cta" in block_types
+
+    def test_body_blocks_includes_cta(self):
+        block_types = [name for name, _ in _body_blocks()]
+        assert "cta" in block_types
+
+
+class TestCTABlock(TestCase):
+    def test_cta_block_fields(self):
+        block = CTABlock()
+        assert "text" in block.child_blocks
+        assert "link_page" in block.child_blocks
+        assert "link_url" in block.child_blocks
+        assert "button_style" in block.child_blocks
+
+    def test_cta_block_inherits_layout(self):
+        block = CTABlock()
+        assert "width" in block.child_blocks
+        assert "alignment" in block.child_blocks
+        assert "vertical_alignment" in block.child_blocks
+
+    def test_cta_block_inherits_background(self):
+        block = CTABlock()
+        assert "background_color" in block.child_blocks
+        assert "full_width_background" in block.child_blocks
+
+    def test_cta_button_style_default(self):
+        block = CTABlock()
+        assert block.child_blocks["button_style"].meta.default == "primary"
+
+    def test_cta_renders_url_link(self):
+        block = CTABlock()
+        value = block.to_python(
+            {
+                "text": "Sign Up",
+                "link_url": "https://example.com/signup",
+            }
+        )
+        html = block.render(value)
+        assert "Sign Up" in html
+        assert 'href="https://example.com/signup"' in html
+        assert "primary-button" in html
+
+    def test_cta_secondary_style(self):
+        block = CTABlock()
+        value = block.to_python(
+            {
+                "text": "Learn More",
+                "link_url": "https://example.com",
+                "button_style": "secondary",
+            }
+        )
+        html = block.render(value)
+        assert "secondary-button" in html
+
+    def test_cta_no_link_renders_nothing(self):
+        block = CTABlock()
+        value = block.to_python({"text": "Orphan"})
+        html = block.render(value)
+        assert "<a" not in html
