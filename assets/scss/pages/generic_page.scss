@@ -29,6 +29,12 @@
     margin-bottom: 0;
   }
 
+  // Intro followed by a body whose first block is full-width
+  > .generic-page__intro:has(+ .generic-page__body > :first-child > .bg-full-width[class*="bg--"]) {
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+
   // Full-width section → body whose first block is also full-width
   // (Wagtail wraps each block in a div, so bg-full-width is one level deeper)
   > .bg-full-width[class*="bg--"]:has(+ .generic-page__body > :first-child > .bg-full-width[class*="bg--"]) {
@@ -123,6 +129,11 @@
     padding: 2rem 0;
     margin-bottom: 2rem;
     border-bottom: var(--content-border);
+
+    &.bg-full-width {
+      margin-bottom: 0;
+      border-bottom: none;
+    }
 
     p {
       font-size: 1.125rem;

@@ -24,7 +24,16 @@
   }
 }
 
-.faq-filters {
+.faq-cards-wrapper {
+  border-radius: $radius-md;
+  padding: 1.5rem;
+
+  &.bg-full-width[class*="bg--"] {
+    border-radius: 0;
+  }
+}
+
+.faq-cards-wrapper > .faq-filters {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
