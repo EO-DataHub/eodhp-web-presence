@@ -1,21 +1,41 @@
-{% load wagtailcore_tags wagtailimages_tags mdi_tags %}
+{% load wagtailcore_tags wagtailimages_tags mdi_tags label_tags %}
 
 {% if panel.value.featured_image and panel.value.image %}
 {% image panel.value.image fill-600x400 as featured_img %}
-<a href="{{ page.url }}{{ panel.value.slug }}" class="faq-card faq-card--featured" style="background-image: url('{{ featured_img.url }}');" aria-label="{{ panel.value.title }}">
+<a href="{{ page.url }}{{ panel.value.slug }}" class="faq-card faq-card--featured" data-labels="{{ panel.value.labels|label_slugs }}" style="background-image: url('{{ featured_img.url }}');" aria-label="{{ panel.value.title }}">
     <div class="faq-card__overlay">
         <h2 class="faq-card__title">{% if panel.value.icon_name %}{% mdi_icon panel.value.icon_name panel.value.icon_size %} {% endif %}{{ panel.value.title }}</h2>
+        {% if panel.value.labels %}
+        <div class="faq-card__labels">
+            {% for label in panel.value.labels %}
+            {% if label %}
+            <span class="faq-card__label faq-card__label--{{ label.color }}">{{ label.name }}</span>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
         <div class="faq-card__description">{{ panel.value.description|richtext }}</div>
     </div>
 </a>
 {% else %}
-<a href="{{ page.url }}{{ panel.value.slug }}" class="faq-card">
+<a href="{{ page.url }}{{ panel.value.slug }}" class="faq-card" data-labels="{{ panel.value.labels|label_slugs }}">
     <div class="faq-card__header">
         <h2 class="faq-card__title">{% if panel.value.icon_name %}{% mdi_icon panel.value.icon_name panel.value.icon_size %} {% endif %}{{ panel.value.title }}</h2>
-        {% if panel.value.image %}
-        {% image panel.value.image fill-100x100 as panel_image %}
-        <img src="{{ panel_image.url }}" alt="{{ panel.value.title }}" class="faq-card__image" />
-        {% endif %}
+        <div class="faq-card__header-right">
+            {% if panel.value.labels %}
+            <div class="faq-card__labels">
+                {% for label in panel.value.labels %}
+                {% if label %}
+                <span class="faq-card__label faq-card__label--{{ label.color }}">{{ label.name }}</span>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if panel.value.image %}
+            {% image panel.value.image fill-100x100 as panel_image %}
+            <img src="{{ panel_image.url }}" alt="{{ panel.value.title }}" class="faq-card__image" />
+            {% endif %}
+        </div>
     </div>
     <div class="faq-card__description">{{ panel.value.description|richtext }}</div>
 </a>

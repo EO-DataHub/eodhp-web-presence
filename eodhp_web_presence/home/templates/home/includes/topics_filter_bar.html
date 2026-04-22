@@ -1,0 +1,6 @@
+<div class="faq-filters">
+    <button class="faq-filter-btn faq-filter-btn--active" data-label="">All</button>
+    {% for label in filter_labels %}
+    <button class="faq-filter-btn" data-label="{{ label.slug }}">{{ label.name }}</button>
+    {% endfor %}
+</div>

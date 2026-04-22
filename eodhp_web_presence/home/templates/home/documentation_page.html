@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags wagtailuserbar bg_tags %}
+{% load wagtailcore_tags wagtailimages_tags wagtailuserbar bg_tags label_tags %}
 {% load static %}
 
 {% block content %}
@@ -19,6 +19,10 @@
     {% endif %}
 
     {% if page.topics %}
+    {% unique_labels page.topics as filter_labels %}
+    {% if page.topics_show_filter and filter_labels %}
+    {% include "home/includes/topics_filter_bar.html" with filter_labels=filter_labels %}
+    {% endif %}
     <section class="faq-cards {% bg_classes page.topics_background_color page.topics_full_width_background %}">
         {% for panel in page.topics %}
         {% include "home/includes/topic_card.html" with panel=panel %}

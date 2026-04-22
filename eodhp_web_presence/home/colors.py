@@ -8,4 +8,17 @@ THEME_COLOR_CHOICES = [
     ("light-grey", "Light Grey"),
     ("steel", "Steel"),
     ("blue", "Blue"),
+    ("green", "Green"),
+    ("orange", "Orange"),
+    ("red", "Red"),
+]
+
+LABEL_COLOR_CHOICES = [
+    ("nceo-purple", "NCEO Purple"),
+    ("navy", "Navy"),
+    ("steel", "Steel"),
+    ("blue", "Blue"),
+    ("green", "Green"),
+    ("orange", "Orange"),
+    ("red", "Red"),
 ]

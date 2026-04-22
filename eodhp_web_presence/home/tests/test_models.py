@@ -1,3 +1,7 @@
+from unittest.mock import patch
+
+import pytest
+from django.db import IntegrityError
 from django.test import TestCase, override_settings
 from wagtail.models import Page, Site
 
@@ -25,6 +29,7 @@ from home.models import (
     DocumentationPage,
     GenericPage,
     HomePage,
+    Label,
 )
 
 
@@ -678,3 +683,77 @@ class TestCTABlock(TestCase):
         value = block.to_python({"text": "Orphan"})
         html = block.render(value)
         assert "<a" not in html
+
+
+class TestLabel(TestCase):
+    def test_slug_auto_filled(self):
+        label = Label(name="Getting Started", color="nceo-purple")
+        label.save()
+        assert label.slug == "getting-started"
+
+    def test_slug_deduplicated_on_collision(self):
+        Label.objects.create(name="Getting Started", color="navy")
+        label2 = Label(name="Getting Started!", color="steel")
+        label2.save()
+        assert label2.slug == "getting-started-1"
+
+    def test_slug_fallback_when_name_slugifies_to_empty(self):
+        label = Label(name="🎉🎉", color="nceo-purple")
+        label.save()
+        assert label.slug.startswith("label")
+
+    def test_slug_truncated_when_suffixed_exceeds_max_length(self):
+        long_name = "a" * 50
+        Label.objects.create(name=long_name, color="navy")
+        label2 = Label(name=long_name + "!", color="steel")
+        label2.save()
+        assert len(label2.slug) <= 50
+
+    def test_slug_not_overwritten_on_rename(self):
+        label = Label(name="Getting Started", color="nceo-purple")
+        label.save()
+        original_slug = label.slug
+        label.name = "Getting Started Guide"
+        label.save()
+        assert label.slug == original_slug
+
+    def test_unique_name(self):
+        Label.objects.create(name="Unique", color="navy")
+        with pytest.raises(IntegrityError):
+            Label.objects.create(name="Unique", color="steel")
+
+    def test_str_returns_name(self):
+        label = Label(name="API Docs", color="blue")
+        label.save()
+        assert str(label) == "API Docs"
+
+    def test_ordering_by_name(self):
+        Label.objects.create(name="Charlie", color="navy")
+        Label.objects.create(name="Alpha", color="steel")
+        Label.objects.create(name="Bravo", color="blue")
+        names = list(Label.objects.values_list("name", flat=True))
+        assert names == ["Alpha", "Bravo", "Charlie"]
+
+    @patch("home.models.clear_cache")
+    def test_save_purges_cache(self, mock_clear):
+        label = Label(name="Cache Test", color="navy")
+        label.save()
+        mock_clear.assert_called_once()
+
+    @patch("home.models.clear_cache")
+    def test_delete_purges_cache(self, mock_clear):
+        label = Label(name="Cache Test", color="navy")
+        label.save()
+        mock_clear.reset_mock()
+        label.delete()
+        mock_clear.assert_called_once()
+
+
+class TestDocumentationPanelLabels(TestCase):
+    def test_panel_has_labels_field(self):
+        block = DocumentationPanel()
+        assert "labels" in block.child_blocks
+
+    def test_labels_not_required(self):
+        block = DocumentationPanel()
+        assert block.child_blocks["labels"].meta.required is False
