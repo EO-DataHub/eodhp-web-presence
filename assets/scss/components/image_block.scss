@@ -2,8 +2,13 @@
 @use 'image-modifiers' as img;
 
 .image-block {
+  picture {
+    display: block;
+  }
+
   img {
     display: block;
+    width: 100%;
     max-width: 100%;
     max-height: $image-max-height;
     object-fit: contain;

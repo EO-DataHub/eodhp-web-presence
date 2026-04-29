@@ -282,6 +282,14 @@ WAGTAIL_SITE_NAME = "eodhp_web_presence"
 WAGTAILDOCS_SERVE_METHOD = "direct"
 WAGTAILIMAGES_MAX_UPLOAD_SIZE = 30 * 1024 * 1024  # 30MB
 
+WAGTAILIMAGES_FORMAT_CONVERSIONS = {
+    "avif": "avif",
+    "webp": "webp",
+}
+WAGTAILIMAGES_JPEG_QUALITY = 76
+WAGTAILIMAGES_WEBP_QUALITY = 80
+WAGTAILIMAGES_AVIF_QUALITY = 61
+
 # Search
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
 WAGTAILSEARCH_BACKENDS = {
