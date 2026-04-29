@@ -1,19 +1,18 @@
-{% load wagtailcore_tags wagtailimages_tags bg_tags %}
+{% load wagtailcore_tags wagtailimages_tags bg_tags picture_tags %}
 <div class="block-layout block-layout--{{ self.width }} block-layout--align-{{ self.alignment }} block-layout--valign-{{ self.vertical_alignment|default:'top' }}{% if self.full_width_background %} {% bg_classes self.background_color True %}{% endif %}">
-{% image self.image original as img %}
-{% widthratio self.image_width|default:"100" 100 img.width as img_max_w %}
+{% widthratio self.image_width|default:"100" 100 self.image.width as img_max_w %}
 <div class="image-block image-block--{{ self.image_style|default:'rounded' }} image-block--align-{{ self.alignment|default:'centre' }}{% if not self.full_width_background %} {% bg_classes self.background_color %}{% endif %}"
      style="max-width: {{ img_max_w }}px">
     {% if self.image_link_page %}
     <a href="{% pageurl self.image_link_page %}" class="image-block__link">
-        <img src="{{ img.url }}" alt="{{ img.alt }}">
+        {% content_picture self.image %}
     </a>
     {% elif self.image_link_url %}
     <a href="{{ self.image_link_url }}" class="image-block__link">
-        <img src="{{ img.url }}" alt="{{ img.alt }}">
+        {% content_picture self.image %}
     </a>
     {% else %}
-    <img src="{{ img.url }}" alt="{{ img.alt }}">
+    {% content_picture self.image %}
     {% endif %}
 </div>
 </div>

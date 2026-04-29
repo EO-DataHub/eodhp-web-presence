@@ -44,6 +44,7 @@ dependencies = [
   "gunicorn",
   "gevent",
   "urllib3>=2.6.3",
+  "Pillow>=11.2",
 ]
 
 [dependency-groups]

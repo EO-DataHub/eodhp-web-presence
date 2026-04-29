@@ -1,4 +1,4 @@
-{% load wagtailcore_tags wagtailimages_tags bg_tags mdi_tags label_tags %}
+{% load wagtailcore_tags wagtailimages_tags bg_tags mdi_tags label_tags picture_tags %}
 {% unique_labels value.topics as filter_labels %}
 <div class="faq-cards-wrapper {% bg_classes value.background_color value.full_width_background %}">
 {% if value.show_filter and filter_labels %}
@@ -7,8 +7,10 @@
 <section class="faq-cards">
     {% for panel in value.topics %}
     {% if panel.featured_image and panel.image %}
-    {% image panel.image fill-600x400 as featured_img %}
-    <a href="{{ page.url }}{{ panel.slug }}" class="faq-card faq-card--featured" data-labels="{{ panel.labels|label_slugs }}" style="background-image: url('{{ featured_img.url }}');" aria-label="{{ panel.title }}">
+    <a href="{{ page.url }}{{ panel.slug }}" class="faq-card faq-card--featured" data-labels="{{ panel.labels|label_slugs }}" aria-label="{{ panel.title }}">
+        <div class="faq-card__bg" aria-hidden="true">
+            {% featured_card_picture panel.image %}
+        </div>
         <div class="faq-card__overlay">
             <h2 class="faq-card__title">{% if panel.icon_name %}{% mdi_icon panel.icon_name panel.icon_size %} {% endif %}{{ panel.title }}</h2>
             {% if panel.labels %}
@@ -38,8 +40,9 @@
                 </div>
                 {% endif %}
                 {% if panel.image %}
-                {% image panel.image fill-100x100 as panel_image %}
-                <img src="{{ panel_image.url }}" alt="{{ panel.title }}" class="faq-card__image" />
+                <div class="faq-card__thumb">
+                    {% thumb_picture panel.image %}
+                </div>
                 {% endif %}
             </div>
         </div>
