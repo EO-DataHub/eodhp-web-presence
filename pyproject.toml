@@ -45,6 +45,7 @@ dependencies = [
   "gevent",
   "urllib3>=2.6.3",
   "Pillow>=11.2",
+  "redis>=5.0",
 ]
 
 [dependency-groups]

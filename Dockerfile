@@ -73,4 +73,4 @@ RUN printf '#!/bin/bash\n\nuv run --no-sync python /app/eodhp_web_presence/manag
 EXPOSE 8000
 ENTRYPOINT ["uv", "run", "--no-sync", "gunicorn", "eodhp_web_presence.wsgi:application", \
     "--chdir=/app/eodhp_web_presence", "--bind=0.0.0.0:8000"]
-CMD ["--timeout=30", "--worker-class=gevent", "--workers=4"]
+CMD ["--timeout=30", "--worker-class=gevent", "--workers=4", "--max-requests=1000", "--max-requests-jitter=200"]
