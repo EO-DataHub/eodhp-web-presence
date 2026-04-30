@@ -271,6 +271,8 @@ if env("USE_S3", default=False, cast=bool):
     AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME", default="static-web-artefacts-eodhp")
     AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME", default="eu-west-2")
 
+    AWS_S3_CUSTOM_DOMAIN = env("AWS_S3_CUSTOM_DOMAIN", default=None)
+
     # Set the media files locations relative to the S3 bucket
     MEDIAFILES_LOCATION = env("MEDIAFILES_LOCATION", default="static-apps/web-presence-media/media")
 
@@ -278,9 +280,14 @@ if env("USE_S3", default=False, cast=bool):
     class MediaStorage(S3Boto3Storage):
         location = MEDIAFILES_LOCATION
         file_overwrite = False
+        custom_domain = AWS_S3_CUSTOM_DOMAIN
+        querystring_auth = AWS_S3_CUSTOM_DOMAIN is None
 
     STORAGES["default"]["BACKEND"] = "eodhp_web_presence.settings.MediaStorage"
-    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{MEDIAFILES_LOCATION}/"
+    if AWS_S3_CUSTOM_DOMAIN:
+        MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/"
+    else:
+        MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{MEDIAFILES_LOCATION}/"
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
     MEDIA_URL = "/media/"
