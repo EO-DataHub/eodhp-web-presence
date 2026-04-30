@@ -133,14 +133,24 @@ if DEBUG:
     MIDDLEWARE.remove("wagtailcache.cache.FetchFromCacheMiddleware")
 
 WHITENOISE_MAX_AGE = env("STATIC_FILE_CACHE_LENGTH", cast=int, default=3600)
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
-        "LOCATION": os.path.join(BASE_DIR, "cache"),
-        "KEY_PREFIX": "wagtailcache",
-        "TIMEOUT": env("PAGE_CACHE_LENGTH", cast=int, default=300),  # seconds
+if env("USE_REDIS", default=False, cast=bool):
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": env("REDIS_URL", default="redis://localhost:6379/1"),
+            "KEY_PREFIX": "wagtailcache",
+            "TIMEOUT": env("PAGE_CACHE_LENGTH", cast=int, default=300),  # seconds
+        }
     }
-}
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+            "LOCATION": os.path.join(BASE_DIR, "cache"),
+            "KEY_PREFIX": "wagtailcache",
+            "TIMEOUT": env("PAGE_CACHE_LENGTH", cast=int, default=300),  # seconds
+        }
+    }
 
 ROOT_URLCONF = "eodhp_web_presence.urls"
 
