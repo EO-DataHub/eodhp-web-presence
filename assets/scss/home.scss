@@ -2,8 +2,13 @@
 
 .home {
   .hero {
+    margin-top: -74px;
     width: 100%;
     height: 85vh;
+
+    @media (max-width: $mobile-breakpoint) {
+      margin-top: -45px;
+    }
     min-height: 500px;
     display: flex;
     justify-content: center;
@@ -16,6 +21,11 @@
 
     &-position {
       width: 80%;
+      padding-top: 74px;
+
+      @media (max-width: $mobile-breakpoint) {
+        padding-top: 45px;
+      }
     }
 
     &-content {

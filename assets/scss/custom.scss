@@ -84,14 +84,6 @@ body {
   overflow-x: clip;
 }
 
-.content-page {
-  padding-top: 74px;
-
-  @media (max-width: $mobile-breakpoint) {
-    padding-top: 45px;
-  }
-}
-
 .logo {
   padding-right: 1.15rem;
   width: 180px;
