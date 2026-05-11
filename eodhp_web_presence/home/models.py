@@ -206,6 +206,29 @@ class NotificationBanner(models.Model):
             )
         return banner
 
+    @classmethod
+    def get_next_boundary(cls, now: datetime.datetime | None = None) -> datetime.datetime | None:
+        """Return the nearest future starts_at or ends_at among enabled banners.
+
+        Used to decide whether it is safe to cache a page response: if the
+        boundary is closer than the cache timeout, the response should not be
+        cached so the banner state can refresh on time.
+        """
+        if now is None:
+            now = timezone.now()
+
+        future_start = (
+            cls.objects.filter(is_enabled=True, starts_at__gt=now).aggregate(min=models.Min("starts_at")).get("min")
+        )
+        future_end = (
+            cls.objects.filter(is_enabled=True, ends_at__gt=now)
+            .filter(models.Q(starts_at__isnull=True) | models.Q(starts_at__lte=now))
+            .aggregate(min=models.Min("ends_at"))
+            .get("min")
+        )
+
+        boundaries = [b for b in (future_start, future_end) if b is not None]
+        return min(boundaries) if boundaries else None
 
 
 @receiver(post_save, sender=NotificationBanner)

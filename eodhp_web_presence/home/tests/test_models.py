@@ -982,3 +982,155 @@ class TestNotificationBannerGetActiveBanner(TestCase):
         NotificationBanner.objects.create(message="<p>Low</p>", is_enabled=True, priority=1)
         high = NotificationBanner.objects.create(message="<p>High</p>", is_enabled=True, priority=10)
         assert NotificationBanner.get_active_banner() == high
+
+
+class TestNotificationBannerBoundary(TestCase):
+    def test_next_boundary_from_starts_at(self):
+        now = timezone.now()
+        future = now + timedelta(minutes=10)
+        NotificationBanner.objects.create(message="<p>Upcoming</p>", is_enabled=True, starts_at=future)
+        assert NotificationBanner.get_next_boundary(now) == future
+
+    def test_next_boundary_from_ends_at(self):
+        now = timezone.now()
+        end = now + timedelta(minutes=5)
+        NotificationBanner.objects.create(
+            message="<p>Current</p>", is_enabled=True, starts_at=now - timedelta(minutes=1), ends_at=end
+        )
+        assert NotificationBanner.get_next_boundary(now) == end
+
+    def test_next_boundary_picks_nearest(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Far</p>", is_enabled=True, starts_at=now + timedelta(minutes=20))
+        near = now + timedelta(minutes=3)
+        NotificationBanner.objects.create(
+            message="<p>Near</p>", is_enabled=True, starts_at=now - timedelta(minutes=1), ends_at=near
+        )
+        assert NotificationBanner.get_next_boundary(now) == near
+
+    def test_no_boundary_when_no_time_bound_banners(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Permanent</p>", is_enabled=True)
+        assert NotificationBanner.get_next_boundary(now) is None
+
+    def test_no_boundary_when_only_disabled_time_bound_banners(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(
+            message="<p>Disabled</p>", is_enabled=False, starts_at=now + timedelta(minutes=5)
+        )
+        assert NotificationBanner.get_next_boundary(now) is None
+
+
+class TestBannerCacheMiddleware(TestCase):
+    def _make_middleware(self, response):
+        return BannerCacheMiddleware(lambda req: response)
+
+    def test_skips_non_html_responses(self):
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("{}", status=200, content_type="application/json")
+        result = self._make_middleware(response)(request)
+        assert "Cache-Control" not in result
+
+    def test_skips_non_html_404(self):
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("not found", status=404, content_type="application/json")
+        result = self._make_middleware(response)(request)
+        assert "Cache-Control" not in result
+
+    def test_sets_no_cache_on_404_html_when_boundary_near(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=2))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html>not found</html>", status=404, content_type="text/html")
+        with override_settings(
+            CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}}
+        ):
+            result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "no-cache"
+
+    def test_skips_when_boundary_beyond_timeout(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=10))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        with override_settings(
+            CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}}
+        ):
+            result = self._make_middleware(response)(request)
+        assert "Cache-Control" not in result
+
+    def test_sets_no_cache_when_boundary_within_timeout(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=2))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        with override_settings(
+            CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}}
+        ):
+            result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "no-cache"
+
+    def test_sets_no_cache_when_timeout_is_none(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(hours=1))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        with override_settings(
+            CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": None}}
+        ):
+            result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "no-cache"
+
+    def test_overrides_existing_cache_control_when_boundary_near(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=1))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        response["Cache-Control"] = "max-age=60"
+        with override_settings(
+            CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}}
+        ):
+            result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "no-cache"
+
+    def test_leaves_existing_cache_control_when_boundary_beyond_timeout(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=10))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        response["Cache-Control"] = "max-age=60"
+        with override_settings(
+            CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}}
+        ):
+            result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "max-age=60"
+
+    @override_settings(CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}})
+    def test_preserves_private_when_boundary_near(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=1))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        response["Cache-Control"] = "private, max-age=60"
+        result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "private, max-age=60"
+
+    @override_settings(CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}})
+    def test_preserves_no_store_when_boundary_near(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=1))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        response["Cache-Control"] = "no-store, max-age=60"
+        result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "no-store, max-age=60"
+
+    @override_settings(CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}})
+    def test_preserves_no_cache_when_boundary_near(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=1))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        response["Cache-Control"] = "no-cache, max-age=60"
+        result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "no-cache, max-age=60"
