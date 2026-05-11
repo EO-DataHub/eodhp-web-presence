@@ -168,6 +168,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "core.context_processors.menu_links",
+                "core.context_processors.notification_banner",
             ],
         },
     },
