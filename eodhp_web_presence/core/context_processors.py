@@ -1,8 +1,12 @@
+import logging
 from urllib.parse import urlencode
 
 from django.http import HttpRequest
+from home.models import NotificationBanner
 
 from eodhp_web_presence import settings
+
+logger = logging.getLogger(__name__)
 
 
 def get_workspaces_ui_url(request: HttpRequest) -> str:
@@ -23,3 +27,8 @@ def menu_links(request: HttpRequest) -> dict[str, str]:
         "userdocs_accounts_url": userdocs_base + settings.USERDOCS["user_accounts"],
         "userdocs_community_url": userdocs_base + settings.USERDOCS["community"],
     }
+
+
+def notification_banner(request: HttpRequest) -> dict[str, object]:
+    banner = NotificationBanner.get_active_banner()
+    return {"notification_banner": banner}

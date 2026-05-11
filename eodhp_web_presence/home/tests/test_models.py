@@ -1,8 +1,13 @@
+from datetime import timedelta
 from unittest.mock import patch
 
 import pytest
+from core.middleware import BannerCacheMiddleware
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError
+from django.http import HttpResponse
 from django.test import TestCase, override_settings
+from django.utils import timezone
 from wagtail.models import Page, Site
 
 from home.blocks import (
@@ -30,6 +35,7 @@ from home.models import (
     GenericPage,
     HomePage,
     Label,
+    NotificationBanner,
 )
 
 
@@ -757,3 +763,374 @@ class TestDocumentationPanelLabels(TestCase):
     def test_labels_not_required(self):
         block = DocumentationPanel()
         assert block.child_blocks["labels"].meta.required is False
+
+
+class TestNotificationBannerModel(TestCase):
+    def test_permanent_banner_is_active(self):
+        banner = NotificationBanner(message="<p>Always on</p>", is_enabled=True)
+        banner.save()
+        assert banner.is_active() is True
+
+    def test_disabled_banner_is_inactive(self):
+        banner = NotificationBanner(message="<p>Off</p>", is_enabled=False)
+        banner.save()
+        assert banner.is_active() is False
+
+    def test_future_banner_is_inactive(self):
+        future = timezone.now() + timedelta(hours=1)
+        banner = NotificationBanner(message="<p>Future</p>", is_enabled=True, starts_at=future)
+        banner.save()
+        assert banner.is_active() is False
+
+    def test_expired_banner_is_inactive(self):
+        past = timezone.now() - timedelta(hours=1)
+        banner = NotificationBanner(message="<p>Expired</p>", is_enabled=True, ends_at=past)
+        banner.save()
+        assert banner.is_active() is False
+
+    def test_current_window_banner_is_active(self):
+        now = timezone.now()
+        banner = NotificationBanner(
+            message="<p>Current</p>",
+            is_enabled=True,
+            starts_at=now - timedelta(hours=1),
+            ends_at=now + timedelta(hours=1),
+        )
+        banner.save()
+        assert banner.is_active() is True
+
+    def test_active_queryset_excludes_inactive(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Active</p>", is_enabled=True)
+        NotificationBanner.objects.create(message="<p>Disabled</p>", is_enabled=False)
+        NotificationBanner.objects.create(message="<p>Future</p>", is_enabled=True, starts_at=now + timedelta(hours=1))
+        NotificationBanner.objects.create(message="<p>Expired</p>", is_enabled=True, ends_at=now - timedelta(hours=1))
+        active = list(NotificationBanner.objects.active(now))
+        assert len(active) == 1
+        assert active[0].message == "<p>Active</p>"
+
+    def test_active_queryset_orders_by_priority(self):
+        NotificationBanner.objects.create(message="<p>Low</p>", is_enabled=True, priority=1)
+        NotificationBanner.objects.create(message="<p>High</p>", is_enabled=True, priority=10)
+        active = list(NotificationBanner.objects.active())
+        assert active[0].message == "<p>High</p>"
+        assert active[1].message == "<p>Low</p>"
+
+    def test_clean_rejects_both_link_page_and_url(self):
+        banner = NotificationBanner(
+            message="<p>Test</p>",
+            link_page_id=1,
+            link_url="https://example.com",
+        )
+        with pytest.raises(ValidationError) as exc_info:
+            banner.clean()
+        assert "link_page" in exc_info.value.message_dict
+        assert "link_url" in exc_info.value.message_dict
+
+    def test_clean_rejects_invalid_date_range(self):
+        now = timezone.now()
+        banner = NotificationBanner(
+            message="<p>Test</p>",
+            starts_at=now,
+            ends_at=now - timedelta(hours=1),
+        )
+        with pytest.raises(ValidationError) as exc_info:
+            banner.clean()
+        assert "ends_at" in exc_info.value.message_dict
+
+    def test_str_returns_title_when_present(self):
+        banner = NotificationBanner(title="Maintenance", message="<p>Test</p>")
+        banner.save()
+        assert str(banner) == "Maintenance"
+
+    def test_str_returns_fallback_when_title_blank(self):
+        banner = NotificationBanner(message="<p>Test</p>")
+        banner.save()
+        assert str(banner) == f"Banner {banner.pk}"
+
+    @patch("home.models.clear_cache")
+    def test_save_purges_cache(self, mock_clear):
+        banner = NotificationBanner(message="<p>Test</p>")
+        banner.save()
+        mock_clear.assert_called_once()
+
+    @patch("home.models.clear_cache")
+    def test_delete_purges_cache(self, mock_clear):
+        banner = NotificationBanner(message="<p>Test</p>")
+        banner.save()
+        mock_clear.reset_mock()
+        banner.delete()
+        mock_clear.assert_called_once()
+
+
+@override_settings(WAGTAIL_CACHE=False)
+class TestNotificationBannerRendering(LandingPageTestMixin, TestCase):
+    def test_no_inactive_banner_renders(self):
+        response = self.client.get(self.home.url)
+        assert response.status_code == 200
+        self.assertNotContains(response, "notification-banner")
+
+    def test_active_banner_renders_on_page(self):
+        NotificationBanner.objects.create(
+            title="Heads up",
+            message="<p>System update today</p>",
+            status="info",
+            is_enabled=True,
+        )
+        response = self.client.get(self.home.url)
+        assert response.status_code == 200
+        self.assertContains(response, "notification-banner")
+        self.assertContains(response, "Heads up")
+        self.assertContains(response, "System update today")
+
+    def test_highest_priority_wins(self):
+        NotificationBanner.objects.create(
+            title="Low",
+            message="<p>Low priority</p>",
+            is_enabled=True,
+            priority=1,
+        )
+        NotificationBanner.objects.create(
+            title="High",
+            message="<p>High priority</p>",
+            is_enabled=True,
+            priority=10,
+        )
+        response = self.client.get(self.home.url)
+        assert response.status_code == 200
+        self.assertContains(response, "High priority")
+        self.assertNotContains(response, "Low priority")
+
+    def test_internal_cta_link_renders(self):
+        target = GenericPage(title="Target", slug="target")
+        self.home.add_child(instance=target)
+        NotificationBanner.objects.create(
+            message="<p>Click here</p>",
+            is_enabled=True,
+            link_text="Go",
+            link_page=target,
+        )
+        response = self.client.get(self.home.url)
+        assert response.status_code == 200
+        self.assertContains(response, f'href="{target.url}"')
+        self.assertContains(response, "Go")
+
+    def test_external_cta_link_renders(self):
+        NotificationBanner.objects.create(
+            message="<p>Click here</p>",
+            is_enabled=True,
+            link_text="External",
+            link_url="https://example.com",
+        )
+        response = self.client.get(self.home.url)
+        assert response.status_code == 200
+        self.assertContains(response, 'href="https://example.com"')
+        self.assertContains(response, 'target="_blank"')
+        self.assertContains(response, "External")
+
+    def test_critical_banner_has_alert_role(self):
+        NotificationBanner.objects.create(
+            message="<p>Critical</p>",
+            status="critical",
+            is_enabled=True,
+        )
+        response = self.client.get(self.home.url)
+        assert response.status_code == 200
+        self.assertContains(response, 'role="alert"')
+
+    def test_non_critical_banner_has_status_role(self):
+        NotificationBanner.objects.create(
+            message="<p>Info</p>",
+            status="info",
+            is_enabled=True,
+        )
+        response = self.client.get(self.home.url)
+        assert response.status_code == 200
+        self.assertContains(response, 'role="status"')
+        self.assertNotContains(response, 'role="alert"')
+
+    def test_banner_renders_dismiss_button(self):
+        banner = NotificationBanner.objects.create(
+            message="<p>Dismiss me</p>",
+            status="info",
+            is_enabled=True,
+        )
+        response = self.client.get(self.home.url)
+        assert response.status_code == 200
+        self.assertContains(response, "notification-banner__dismiss")
+        self.assertContains(response, 'aria-label="Dismiss notification"')
+        self.assertContains(
+            response,
+            f'data-dismiss-key="banner-{banner.id}-',
+        )
+
+
+class TestNotificationBannerGetActiveBanner(TestCase):
+    def test_get_active_banner_returns_none_when_empty(self):
+        assert NotificationBanner.get_active_banner() is None
+
+    def test_get_active_banner_returns_past_start_banner(self):
+        now = timezone.now()
+        banner = NotificationBanner.objects.create(
+            message="<p>Test</p>",
+            is_enabled=True,
+            starts_at=now - timedelta(minutes=5),
+        )
+        assert NotificationBanner.get_active_banner() == banner
+
+    def test_get_active_banner_prefers_higher_priority(self):
+        NotificationBanner.objects.create(message="<p>Low</p>", is_enabled=True, priority=1)
+        high = NotificationBanner.objects.create(message="<p>High</p>", is_enabled=True, priority=10)
+        assert NotificationBanner.get_active_banner() == high
+
+
+class TestNotificationBannerBoundary(TestCase):
+    def test_next_boundary_from_starts_at(self):
+        now = timezone.now()
+        future = now + timedelta(minutes=10)
+        NotificationBanner.objects.create(message="<p>Upcoming</p>", is_enabled=True, starts_at=future)
+        assert NotificationBanner.get_next_boundary(now) == future
+
+    def test_next_boundary_from_ends_at(self):
+        now = timezone.now()
+        end = now + timedelta(minutes=5)
+        NotificationBanner.objects.create(
+            message="<p>Current</p>", is_enabled=True, starts_at=now - timedelta(minutes=1), ends_at=end
+        )
+        assert NotificationBanner.get_next_boundary(now) == end
+
+    def test_next_boundary_picks_nearest(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Far</p>", is_enabled=True, starts_at=now + timedelta(minutes=20))
+        near = now + timedelta(minutes=3)
+        NotificationBanner.objects.create(
+            message="<p>Near</p>", is_enabled=True, starts_at=now - timedelta(minutes=1), ends_at=near
+        )
+        assert NotificationBanner.get_next_boundary(now) == near
+
+    def test_no_boundary_when_no_time_bound_banners(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Permanent</p>", is_enabled=True)
+        assert NotificationBanner.get_next_boundary(now) is None
+
+    def test_no_boundary_when_only_disabled_time_bound_banners(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(
+            message="<p>Disabled</p>", is_enabled=False, starts_at=now + timedelta(minutes=5)
+        )
+        assert NotificationBanner.get_next_boundary(now) is None
+
+
+class TestBannerCacheMiddleware(TestCase):
+    def _make_middleware(self, response):
+        return BannerCacheMiddleware(lambda req: response)
+
+    def test_skips_non_html_responses(self):
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("{}", status=200, content_type="application/json")
+        result = self._make_middleware(response)(request)
+        assert "Cache-Control" not in result
+
+    def test_skips_non_html_404(self):
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("not found", status=404, content_type="application/json")
+        result = self._make_middleware(response)(request)
+        assert "Cache-Control" not in result
+
+    def test_sets_no_cache_on_404_html_when_boundary_near(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=2))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html>not found</html>", status=404, content_type="text/html")
+        with override_settings(
+            CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}}
+        ):
+            result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "no-cache"
+
+    def test_skips_when_boundary_beyond_timeout(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=10))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        with override_settings(
+            CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}}
+        ):
+            result = self._make_middleware(response)(request)
+        assert "Cache-Control" not in result
+
+    def test_sets_no_cache_when_boundary_within_timeout(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=2))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        with override_settings(
+            CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}}
+        ):
+            result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "no-cache"
+
+    def test_sets_no_cache_when_timeout_is_none(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(hours=1))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        with override_settings(
+            CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": None}}
+        ):
+            result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "no-cache"
+
+    def test_overrides_existing_cache_control_when_boundary_near(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=1))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        response["Cache-Control"] = "max-age=60"
+        with override_settings(
+            CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}}
+        ):
+            result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "no-cache"
+
+    def test_leaves_existing_cache_control_when_boundary_beyond_timeout(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=10))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        response["Cache-Control"] = "max-age=60"
+        with override_settings(
+            CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}}
+        ):
+            result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "max-age=60"
+
+    @override_settings(CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}})
+    def test_preserves_private_when_boundary_near(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=1))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        response["Cache-Control"] = "private, max-age=60"
+        result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "private, max-age=60"
+
+    @override_settings(CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}})
+    def test_preserves_no_store_when_boundary_near(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=1))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        response["Cache-Control"] = "no-store, max-age=60"
+        result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "no-store, max-age=60"
+
+    @override_settings(CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache", "TIMEOUT": 300}})
+    def test_preserves_no_cache_when_boundary_near(self):
+        now = timezone.now()
+        NotificationBanner.objects.create(message="<p>Test</p>", is_enabled=True, ends_at=now + timedelta(minutes=1))
+        request = type("R", (), {"path": "/"})()
+        response = HttpResponse("<html></html>", status=200, content_type="text/html")
+        response["Cache-Control"] = "no-cache, max-age=60"
+        result = self._make_middleware(response)(request)
+        assert result.get("Cache-Control") == "no-cache, max-age=60"
