@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}Page not found{% endblock %}
+{% block title %}Bad request{% endblock %}
 
 {% block body_class %}template-error{% endblock %}
 
 {% block content %}
 <div class="error-page">
     <div class="error-page__content">
-        <h1 class="error-page__code">404</h1>
-        <h2 class="error-page__title">Page not found</h2>
-        <p class="error-page__message">Sorry, this page could not be found.</p>
+        <h1 class="error-page__code">400</h1>
+        <h2 class="error-page__title">Bad request</h2>
+        <p class="error-page__message">The request could not be understood by the server. Please check your input and try again.</p>
         <div class="error-page__actions">
             <a href="/" class="button primary-button">Go home</a>
         </div>
