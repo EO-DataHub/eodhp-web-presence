@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}Page not found{% endblock %}
+{% block title %}Forbidden{% endblock %}
 
 {% block body_class %}template-error{% endblock %}
 
 {% block content %}
 <div class="error-page">
     <div class="error-page__content">
-        <h1 class="error-page__code">404</h1>
-        <h2 class="error-page__title">Page not found</h2>
-        <p class="error-page__message">Sorry, this page could not be found.</p>
+        <h1 class="error-page__code">403</h1>
+        <h2 class="error-page__title">Forbidden</h2>
+        <p class="error-page__message">You do not have permission to access this resource.</p>
         <div class="error-page__actions">
             <a href="/" class="button primary-button">Go home</a>
         </div>
