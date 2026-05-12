@@ -186,6 +186,14 @@ USERDOCS = {
     "community": "/Help/community/",
 }
 
+SOCIALS = {
+    "github_org_url": env("GITHUB_ORG_BASE_URL", default="https://github.com/EO-DataHub"),
+    "github_discussions_url": env(
+        "GITHUB_DISCUSSION_URL", default="https://github.com/EO-DataHub/eodh-userdocs/discussions"
+    ),
+    "linkedin_url": env("LINKEDIN_URL", default="https://www.linkedin.com/company/eo-datahub"),
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
