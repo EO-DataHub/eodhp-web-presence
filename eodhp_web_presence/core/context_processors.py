@@ -26,6 +26,9 @@ def menu_links(request: HttpRequest) -> dict[str, str]:
         "userdocs_faqs_url": userdocs_base + settings.USERDOCS["faqs"],
         "userdocs_accounts_url": userdocs_base + settings.USERDOCS["user_accounts"],
         "userdocs_community_url": userdocs_base + settings.USERDOCS["community"],
+        "github_org_url": settings.SOCIALS["github_org_url"],
+        "github_discussions_url": settings.SOCIALS["github_discussions_url"],
+        "linkedin_url": settings.SOCIALS["linkedin_url"],
     }
 
 

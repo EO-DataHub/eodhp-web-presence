@@ -49,7 +49,11 @@
       gap: 1rem;
       align-items: center;
 
-      img {
+      a {
+        color: var(--text-secondary);
+      }
+
+      svg {
         width: 22px;
         height: 22px;
       }
