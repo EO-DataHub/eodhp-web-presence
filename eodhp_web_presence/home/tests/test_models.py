@@ -118,7 +118,8 @@ class TestLandingPages(LandingPageTestMixin, TestCase):
             with self.subTest(page_type=cls.__name__):
                 response = self.client.get(page.url)
                 self.assertContains(response, '<nav class="breadcrumbs"')
-                self.assertContains(response, f'<a href="{self.home.url}">{self.home.title}</a>')
+                self.assertContains(response, f'<a href="{self.home.url}" aria-label="Home">')
+                self.assertContains(response, 'data-mdi-icon="home"')
                 self.assertContains(response, f'<span aria-current="page">{cls.__name__}</span>')
 
 
@@ -137,7 +138,8 @@ class TestGenericPage(LandingPageTestMixin, TestCase):
 
         response = self.client.get(page.url)
         self.assertContains(response, '<nav class="breadcrumbs"')
-        self.assertContains(response, f'<a href="{self.home.url}">{self.home.title}</a>')
+        self.assertContains(response, f'<a href="{self.home.url}" aria-label="Home">')
+        self.assertContains(response, 'data-mdi-icon="home"')
         self.assertContains(response, '<span aria-current="page">Test Page</span>')
 
     def test_nested_generic_page_renders_full_ancestry(self):
@@ -147,7 +149,8 @@ class TestGenericPage(LandingPageTestMixin, TestCase):
         parent.add_child(instance=child)
 
         response = self.client.get(child.url)
-        self.assertContains(response, f'<a href="{self.home.url}">{self.home.title}</a>')
+        self.assertContains(response, f'<a href="{self.home.url}" aria-label="Home">')
+        self.assertContains(response, 'data-mdi-icon="home"')
         self.assertContains(response, f'<a href="{parent.url}">Parent</a>')
         self.assertContains(response, '<span aria-current="page">Child</span>')
 
@@ -286,7 +289,8 @@ class TestDocumentationPage(LandingPageTestMixin, TestCase):
 
         response = self.client.get(page.url)
         self.assertContains(response, '<nav class="breadcrumbs"')
-        self.assertContains(response, f'<a href="{self.home.url}">{self.home.title}</a>')
+        self.assertContains(response, f'<a href="{self.home.url}" aria-label="Home">')
+        self.assertContains(response, 'data-mdi-icon="home"')
         self.assertContains(response, f'<a href="{self.docs_index.url}">Docs</a>')
         self.assertContains(response, '<span aria-current="page">Documentation</span>')
 

@@ -321,6 +321,27 @@
       // Current page styles handled by [aria-current='page']
     }
 
+    &__item--home {
+      a {
+        display: inline-flex;
+        align-items: center;
+        line-height: 1;
+      }
+
+      .mdi {
+        width: 1.2em;
+        height: 1.2em;
+      }
+
+      @media (max-width: $mobile-breakpoint) {
+        a {
+          max-width: none;
+          overflow: visible;
+          text-overflow: clip;
+        }
+      }
+    }
+
     &__ellipsis {
       display: none;
 
