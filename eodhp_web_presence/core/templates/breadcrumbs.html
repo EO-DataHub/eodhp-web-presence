@@ -1,14 +1,14 @@
-{% load static %}
+{% load wagtailcore_tags %}
 
-<nav class="breadcrumbs" aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
-    {% if self.get_ancestors|length > 1 %}
-    <ol class="breadcrumb">
-        {% for p in self.get_ancestors %}
-        {% if p.is_root == False %}
-        <li class="breadcrumb-item"><a href="{{ p.url }}">{{ p.title }}</a></li>
-        {% endif %}
+{% if page.depth > 2 %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol>
+        {% for ancestor in page.get_ancestors %}
+            {% if not ancestor.is_root %}
+                <li><a href="{{ ancestor.url }}">{{ ancestor.title }}</a></li>
+            {% endif %}
         {% endfor %}
-        <li aria-current="page" class="breadcrumb-item active">{{ self.title }}</li>
+        <li><span aria-current="page">{{ page.title }}</span></li>
     </ol>
-    {% endif %}
 </nav>
+{% endif %}
