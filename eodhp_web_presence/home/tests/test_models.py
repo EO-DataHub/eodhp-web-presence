@@ -151,6 +151,41 @@ class TestGenericPage(LandingPageTestMixin, TestCase):
         self.assertContains(response, f'<a href="{parent.url}">Parent</a>')
         self.assertContains(response, '<span aria-current="page">Child</span>')
 
+    def test_shallow_breadcrumbs_no_ellipsis(self):
+        parent = GenericPage(title="Parent", slug="parent-shallow")
+        self.home.add_child(instance=parent)
+        child = GenericPage(title="Child", slug="child-shallow")
+        parent.add_child(instance=child)
+
+        response = self.client.get(child.url)
+        self.assertNotContains(response, "breadcrumbs__ellipsis")
+        self.assertNotContains(response, "breadcrumbs__item--hidden-mobile")
+
+    def test_deep_breadcrumbs_render_ellipsis(self):
+        level1 = GenericPage(title="Level1", slug="level1")
+        self.home.add_child(instance=level1)
+        level2 = GenericPage(title="Level2", slug="level2")
+        level1.add_child(instance=level2)
+        level3 = GenericPage(title="Level3", slug="level3")
+        level2.add_child(instance=level3)
+
+        response = self.client.get(level3.url)
+        self.assertContains(response, "breadcrumbs__ellipsis")
+        self.assertContains(response, "breadcrumbs__item--hidden-mobile")
+
+    def test_deep_breadcrumbs_hidden_ancestors_in_html(self):
+        level1 = GenericPage(title="Level1Deep", slug="level1deep")
+        self.home.add_child(instance=level1)
+        level2 = GenericPage(title="Level2Deep", slug="level2deep")
+        level1.add_child(instance=level2)
+        level3 = GenericPage(title="Level3Deep", slug="level3deep")
+        level2.add_child(instance=level3)
+
+        response = self.client.get(level3.url)
+        self.assertContains(response, f'<a href="{level1.url}">Level1Deep</a>')
+        self.assertContains(response, f'<a href="{level2.url}">Level2Deep</a>')
+        self.assertContains(response, '<span aria-current="page">Level3Deep</span>')
+
     def test_generic_page_with_topics_grid(self):
         page = GenericPage(
             title="Topics Page",

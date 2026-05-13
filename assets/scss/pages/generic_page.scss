@@ -282,9 +282,20 @@
       margin: 0;
       padding: 0;
       gap: 0.5rem;
+
+      @media (max-width: $mobile-breakpoint) {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
     }
 
-    li {
+    &__item {
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -293,6 +304,51 @@
         content: '>';
         color: var(--text-secondary);
         font-size: 0.75rem;
+      }
+
+      @media (max-width: $mobile-breakpoint) {
+        flex-shrink: 0;
+      }
+    }
+
+    &__item--hidden-mobile {
+      @media (max-width: $mobile-breakpoint) {
+        display: none;
+      }
+    }
+
+    &__item--current {
+      // Current page styles handled by [aria-current='page']
+    }
+
+    &__ellipsis {
+      display: none;
+
+      @media (max-width: $mobile-breakpoint) {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-shrink: 0;
+
+        &::after {
+          content: '>';
+          color: var(--text-secondary);
+          font-size: 0.75rem;
+        }
+      }
+    }
+
+    &__ellipsis-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 0.875rem;
+      padding: 0;
+      line-height: 1;
+
+      &:hover {
+        color: var(--text-primary);
       }
     }
 
@@ -304,11 +360,46 @@
         text-decoration: underline;
         color: var(--text-primary);
       }
+
+      @media (max-width: $mobile-breakpoint) {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 20ch;
+        display: inline-block;
+        white-space: nowrap;
+      }
     }
 
     [aria-current='page'] {
       color: var(--text-primary);
       font-weight: 500;
+
+      @media (max-width: $mobile-breakpoint) {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 20ch;
+        display: inline-block;
+        white-space: nowrap;
+      }
+    }
+
+    &--expanded {
+      .breadcrumbs__item--hidden-mobile {
+        display: flex !important;
+      }
+
+      .breadcrumbs__ellipsis {
+        display: none !important;
+      }
+
+      @media (max-width: $mobile-breakpoint) {
+        a,
+        [aria-current='page'] {
+          max-width: none;
+          overflow: visible;
+          text-overflow: clip;
+        }
+      }
     }
   }
 
@@ -316,7 +407,8 @@
   [class*='bg--'] > .breadcrumbs {
     color: inherit;
 
-    li:not(:last-child)::after {
+    .breadcrumbs__item:not(:last-child)::after,
+    .breadcrumbs__ellipsis::after {
       color: inherit;
       opacity: 0.7;
     }
@@ -331,6 +423,15 @@
 
     [aria-current='page'] {
       color: inherit;
+    }
+
+    .breadcrumbs__ellipsis-btn {
+      color: inherit;
+
+      &:hover {
+        color: inherit;
+        opacity: 0.8;
+      }
     }
   }
 }
