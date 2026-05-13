@@ -59,6 +59,11 @@ class TestHomePage(LandingPageTestMixin, TestCase):
         response = self.client.get(self.home.url)
         assert response.status_code == 200
 
+    def test_home_page_no_breadcrumbs(self):
+        response = self.client.get(self.home.url)
+        assert response.status_code == 200
+        self.assertNotContains(response, '<nav class="breadcrumbs"')
+
     def test_aim_page_links_render(self):
         """Aim cards with linked pages render an anchor tag."""
         target = GenericPage(title="Target", slug="target")
@@ -104,6 +109,18 @@ class TestLandingPages(LandingPageTestMixin, TestCase):
                 self.assertTemplateUsed(response, "home/landing_page.html")
                 self.assertTemplateUsed(response, "home/includes/landing_page_content.html")
 
+    def test_landing_pages_render_breadcrumbs(self):
+        for cls in self.page_classes:
+            slug = cls.__name__.lower()
+            page = cls(title=cls.__name__, slug=slug)
+            self.home.add_child(instance=page)
+
+            with self.subTest(page_type=cls.__name__):
+                response = self.client.get(page.url)
+                self.assertContains(response, '<nav class="breadcrumbs"')
+                self.assertContains(response, f'<a href="{self.home.url}">{self.home.title}</a>')
+                self.assertContains(response, f'<span aria-current="page">{cls.__name__}</span>')
+
 
 @override_settings(WAGTAIL_CACHE=False)
 class TestGenericPage(LandingPageTestMixin, TestCase):
@@ -113,6 +130,26 @@ class TestGenericPage(LandingPageTestMixin, TestCase):
 
         response = self.client.get(page.url)
         assert response.status_code == 200
+
+    def test_generic_page_renders_breadcrumbs(self):
+        page = GenericPage(title="Test Page", slug="test-page")
+        self.home.add_child(instance=page)
+
+        response = self.client.get(page.url)
+        self.assertContains(response, '<nav class="breadcrumbs"')
+        self.assertContains(response, f'<a href="{self.home.url}">{self.home.title}</a>')
+        self.assertContains(response, '<span aria-current="page">Test Page</span>')
+
+    def test_nested_generic_page_renders_full_ancestry(self):
+        parent = GenericPage(title="Parent", slug="parent")
+        self.home.add_child(instance=parent)
+        child = GenericPage(title="Child", slug="child")
+        parent.add_child(instance=child)
+
+        response = self.client.get(child.url)
+        self.assertContains(response, f'<a href="{self.home.url}">{self.home.title}</a>')
+        self.assertContains(response, f'<a href="{parent.url}">Parent</a>')
+        self.assertContains(response, '<span aria-current="page">Child</span>')
 
     def test_generic_page_with_topics_grid(self):
         page = GenericPage(
@@ -207,6 +244,16 @@ class TestDocumentationPage(LandingPageTestMixin, TestCase):
 
         response = self.client.get(page.url)
         assert response.status_code == 200
+
+    def test_documentation_page_renders_breadcrumbs(self):
+        page = DocumentationPage(title="Documentation", slug="documentation")
+        self.docs_index.add_child(instance=page)
+
+        response = self.client.get(page.url)
+        self.assertContains(response, '<nav class="breadcrumbs"')
+        self.assertContains(response, f'<a href="{self.home.url}">{self.home.title}</a>')
+        self.assertContains(response, f'<a href="{self.docs_index.url}">Docs</a>')
+        self.assertContains(response, '<span aria-current="page">Documentation</span>')
 
     def test_featured_image_card_class(self):
         """When featured_image is true but no image, the featured variant should not render."""

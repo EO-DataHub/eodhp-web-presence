@@ -14,8 +14,11 @@
 
     {% if page.intro %}
     <section class="generic-page__intro {% bg_classes page.intro_background_color page.intro_full_width_background %}">
+        {% include "breadcrumbs.html" %}
         <p>{{ page.intro|richtext }}</p>
     </section>
+    {% else %}
+    {% include "breadcrumbs.html" %}
     {% endif %}
 
     {% if page.topics %}
