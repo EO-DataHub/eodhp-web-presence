@@ -1,12 +1,17 @@
 {% load wagtailcore_tags %}
+{% load mdi_tags %}
 
 {% if page.depth > 2 %}
 <nav class="breadcrumbs" aria-label="Breadcrumb">
     <ol>
         {% for ancestor in page.get_ancestors %}
             {% if not ancestor.is_root %}
-                <li class="breadcrumbs__item{% if ancestor.depth > 2 and not forloop.last %} breadcrumbs__item--hidden-mobile{% endif %}">
-                    <a href="{{ ancestor.url }}">{{ ancestor.title }}</a>
+                <li class="breadcrumbs__item{% if ancestor.depth == 2 %} breadcrumbs__item--home{% endif %}{% if ancestor.depth > 2 and not forloop.last %} breadcrumbs__item--hidden-mobile{% endif %}">
+                    {% if ancestor.depth == 2 %}
+                        <a href="{{ ancestor.url }}" aria-label="Home">{% mdi_icon "home" %}</a>
+                    {% else %}
+                        <a href="{{ ancestor.url }}">{{ ancestor.title }}</a>
+                    {% endif %}
                 </li>
                 {% if page.depth > 4 and ancestor.depth == 2 %}
                 <li class="breadcrumbs__ellipsis">
