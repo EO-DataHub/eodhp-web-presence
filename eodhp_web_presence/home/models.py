@@ -589,19 +589,7 @@ class GenericPage(LandingPageMixin, WagtailCacheMixin, Page):
 
     body = StreamField(_body_blocks(), blank=True)
 
-    back_button_location = models.CharField(
-        max_length=255,
-        blank=True,
-        help_text="URL to redirect to when the back button is clicked",
-    )
-
-    content_panels: ClassVar[list] = (
-        Page.content_panels
-        + LandingPageMixin.landing_panels()
-        + [
-            FieldPanel("back_button_location"),
-        ]
-    )
+    content_panels: ClassVar[list] = Page.content_panels + LandingPageMixin.landing_panels()
 
     parent_page_types: ClassVar[list[str]] = [
         "AboutIndexPage",
