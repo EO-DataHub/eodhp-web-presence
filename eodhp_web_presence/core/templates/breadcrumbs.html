@@ -5,10 +5,19 @@
     <ol>
         {% for ancestor in page.get_ancestors %}
             {% if not ancestor.is_root %}
-                <li><a href="{{ ancestor.url }}">{{ ancestor.title }}</a></li>
+                <li class="breadcrumbs__item{% if ancestor.depth > 2 and not forloop.last %} breadcrumbs__item--hidden-mobile{% endif %}">
+                    <a href="{{ ancestor.url }}">{{ ancestor.title }}</a>
+                </li>
+                {% if page.depth > 4 and ancestor.depth == 2 %}
+                <li class="breadcrumbs__ellipsis">
+                    <button class="breadcrumbs__ellipsis-btn" aria-label="Show full breadcrumb path">&hellip;</button>
+                </li>
+                {% endif %}
             {% endif %}
         {% endfor %}
-        <li><span aria-current="page">{{ page.title }}</span></li>
+        <li class="breadcrumbs__item breadcrumbs__item--current">
+            <span aria-current="page">{{ page.title }}</span>
+        </li>
     </ol>
 </nav>
 {% endif %}
