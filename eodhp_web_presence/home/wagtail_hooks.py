@@ -6,6 +6,9 @@ with UX modelled on the existing emoji copy-paste workflow. Also registers
 the admin JS for the ``IconPickerWidget`` used by ``IconMixin`` blocks.
 """
 
+from typing import ClassVar
+
+from django.http import HttpRequest
 from django.templatetags.static import static
 from django.utils.safestring import mark_safe
 from draftjs_exporter.dom import DOM, Element
@@ -14,6 +17,8 @@ from wagtail.admin.rich_text.converters.html_to_contentstate import (
     InlineEntityElementHandler,
 )
 from wagtail.admin.rich_text.editors.draftail import features as draftail_features
+from wagtail.admin.userbar import ContentCheckerItem
+from wagtail.models import Page
 from wagtail.rich_text.feature_registry import FeatureRegistry
 
 from .mdi import clean_name, clean_size
@@ -108,3 +113,17 @@ def editor_js() -> str:
     js_urls = IconPickerWidget().media._js
     tags = "".join(f'<script src="{static(url)}"></script>' for url in js_urls)
     return mark_safe(tags)
+
+
+class ExternalContentCheckerItem(ContentCheckerItem):
+    # #root is the mount point for externally-controlled apps where we do not control the content
+    axe_exclude: ClassVar[list[str]] = ["#root"]
+
+
+@hooks.register("construct_wagtail_userbar")
+def exclude_external_content_from_axe(
+    request: HttpRequest,
+    items: list,
+    page: Page | None,
+) -> None:
+    items[:] = [ExternalContentCheckerItem() if isinstance(item, ContentCheckerItem) else item for item in items]
