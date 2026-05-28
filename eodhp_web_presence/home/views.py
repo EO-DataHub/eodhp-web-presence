@@ -1,5 +1,5 @@
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from eodhp_web_presence import settings
 
@@ -28,6 +28,15 @@ def workspaces_page_view(request: HttpRequest) -> HttpResponse:
                 version=settings.WORKSPACE_UI["version"],
             ),
         },
+    )
+
+
+def eodhp_guide_page_view(request: HttpRequest) -> HttpResponse:
+    return redirect(
+        "{url}/{version}/".format(
+            url=settings.EODHP_GUIDE["url"],
+            version=settings.EODHP_GUIDE["version"],
+        )
     )
 
 
