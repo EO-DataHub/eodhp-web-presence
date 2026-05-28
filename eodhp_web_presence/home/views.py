@@ -33,7 +33,7 @@ def workspaces_page_view(request: HttpRequest) -> HttpResponse:
 
 def eodhp_guide_page_view(request: HttpRequest) -> HttpResponse:
     return redirect(
-        "{url}/{version}/".format(
+        "{url}/{version}/index.html".format(
             url=settings.EODHP_GUIDE["url"],
             version=settings.EODHP_GUIDE["version"],
         )
