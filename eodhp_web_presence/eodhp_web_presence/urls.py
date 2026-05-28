@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, re_path
-from home.views import accounts_page_view, catalogue_page_view, workspaces_page_view
+from home.views import accounts_page_view, catalogue_page_view, eodhp_guide_page_view, workspaces_page_view
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
@@ -18,6 +18,7 @@ urlpatterns = [
     ),
     re_path(r"^catalogue/.*$", catalogue_page_view),
     path("workspaces/", workspaces_page_view),
+    path("eodhp-guide/", eodhp_guide_page_view),
     path("accounts/", accounts_page_view),
     path("", include("core.urls")),
     path("", include("accounts.urls")),

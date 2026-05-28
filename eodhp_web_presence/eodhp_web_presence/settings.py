@@ -225,6 +225,11 @@ WORKSPACE_UI = {
     "url": env("WORKSPACE_UI_URL", default=None),
 }
 
+EODHP_GUIDE = {
+    "version": env("EODHP_GUIDE_VERSION", default="v1.0.0"),
+    "url": env("EODHP_GUIDE_URL", default=None),
+}
+
 CATALOGUE_DATA = {"url": env("CATALOGUE_DATA_URL", default=None)}
 
 # Password validation
