@@ -56,15 +56,14 @@ class TestMenuTemplate(SimpleTestCase):
                 f'<button type="button" class="dropdown__toggle" aria-expanded="false" aria-controls="{menu_id}"'
             ) in html
 
-    def test_catalogue_parent_destination_matches_nav_label(self):
+    def test_catalogue_dropdown_contains_browse_parent_link(self):
         html = self.render_menu()
 
         assert '<span class="dropdown__label">Catalogue</span>' in html
         assert (
-            html.count('<a class="dropdown__parent-link" href="/static-apps/sg-rc-ui/prod/index.html#/">Catalogue</a>')
+            html.count('<a class="dropdown__parent-link" href="/static-apps/sg-rc-ui/prod/index.html#/">Browse</a>')
             == 2
         )
-        assert '<a href="/static-apps/sg-rc-ui/prod/index.html#/">Browse</a>' not in html
 
     def test_authenticated_account_menus_are_accessible_buttons(self):
         html = self.render_menu(User(username="test-user"))
