@@ -60,9 +60,10 @@ class TestMenuTemplate(SimpleTestCase):
         html = self.render_menu()
 
         assert '<span class="dropdown__label">Catalogue</span>' in html
-        assert html.count(
-            '<a class="dropdown__parent-link" href="/static-apps/sg-rc-ui/prod/index.html#/">Catalogue</a>'
-        ) == 2
+        assert (
+            html.count('<a class="dropdown__parent-link" href="/static-apps/sg-rc-ui/prod/index.html#/">Catalogue</a>')
+            == 2
+        )
         assert '<a href="/static-apps/sg-rc-ui/prod/index.html#/">Browse</a>' not in html
 
     def test_authenticated_account_menus_are_accessible_buttons(self):

@@ -29,12 +29,6 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  &.open {
-    .menu__left {
-      display: block;
-    }
-  }
-
   &__toggle {
     display: none;
     cursor: pointer;
@@ -304,6 +298,10 @@
           }
         }
       }
+    }
+
+    &.open > &__left {
+      display: flex;
     }
 
     &__item {
