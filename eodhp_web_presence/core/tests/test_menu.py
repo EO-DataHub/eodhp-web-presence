@@ -23,15 +23,16 @@ class TestMenuTemplate(SimpleTestCase):
             },
         )
 
-    def test_dropdown_parent_destinations_are_child_links(self):
+    def test_dropdown_parent_destinations_match_nav_labels_and_are_distinctive(self):
         html = self.render_menu()
 
+        assert '<div class="menu top" id="mainMenu">' in html
         assert '<span class="dropdown__label">About</span>' in html
-        assert '<a href="/about/">About EO Data Hub</a>' in html
+        assert '<a class="dropdown__parent-link" href="/about/">About</a>' in html
         assert '<span class="dropdown__label">Data</span>' in html
-        assert '<a href="/data/">All Data</a>' in html
+        assert '<a class="dropdown__parent-link" href="/data/">Data</a>' in html
         assert '<span class="dropdown__label">Getting Started</span>' in html
-        assert '<a href="/docs/">Start Here</a>' in html
+        assert '<a class="dropdown__parent-link" href="/docs/">Getting Started</a>' in html
 
     def test_dropdown_parents_render_as_accessible_buttons(self):
         html = self.render_menu()
@@ -55,12 +56,14 @@ class TestMenuTemplate(SimpleTestCase):
                 f'<button type="button" class="dropdown__toggle" aria-expanded="false" aria-controls="{menu_id}"'
             ) in html
 
-    def test_catalogue_uses_existing_browse_link_without_parent_link_duplicate(self):
+    def test_catalogue_parent_destination_matches_nav_label(self):
         html = self.render_menu()
 
         assert '<span class="dropdown__label">Catalogue</span>' in html
-        assert html.count('<a href="/static-apps/sg-rc-ui/prod/index.html#/">Browse</a>') == 2
-        assert '<a href="/static-apps/sg-rc-ui/prod/index.html#/">Catalogue</a>' not in html
+        assert html.count(
+            '<a class="dropdown__parent-link" href="/static-apps/sg-rc-ui/prod/index.html#/">Catalogue</a>'
+        ) == 2
+        assert '<a href="/static-apps/sg-rc-ui/prod/index.html#/">Browse</a>' not in html
 
     def test_authenticated_account_menus_are_accessible_buttons(self):
         html = self.render_menu(User(username="test-user"))
