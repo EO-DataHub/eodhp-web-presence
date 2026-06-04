@@ -192,6 +192,9 @@ SOCIALS = {
         "GITHUB_DISCUSSION_URL", default="https://github.com/EO-DataHub/eodh-userdocs/discussions"
     ),
     "linkedin_url": env("LINKEDIN_URL", default="https://www.linkedin.com/company/eo-datahub"),
+    "mailing_list_url": env(
+        "MAILING_LIST_URL", default="https://www.jiscmail.ac.uk/cgi-bin/wa-jisc.exe?SUBED1=EODH-ALL"
+    ),
 }
 
 

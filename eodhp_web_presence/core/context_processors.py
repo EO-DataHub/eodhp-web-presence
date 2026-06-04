@@ -29,6 +29,7 @@ def menu_links(request: HttpRequest) -> dict[str, str]:
         "github_org_url": settings.SOCIALS["github_org_url"],
         "github_discussions_url": settings.SOCIALS["github_discussions_url"],
         "linkedin_url": settings.SOCIALS["linkedin_url"],
+        "mailing_list_url": settings.SOCIALS["mailing_list_url"],
     }
 
 
