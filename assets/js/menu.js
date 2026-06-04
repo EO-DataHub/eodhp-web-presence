@@ -43,43 +43,42 @@ $(document).ready(function () {
     $('#mainMenu').toggleClass('open');
   });
 
-  // Dropdown toggles — arrow click opens/closes the dropdown menu
+  const closeDropdowns = function ($dropdowns) {
+    $dropdowns.removeClass('open').find('> .dropdown__toggle').attr('aria-expanded', 'false');
+  };
+
+  const openDropdown = function ($dropdown) {
+    $dropdown.addClass('open').find('> .dropdown__toggle').attr('aria-expanded', 'true');
+  };
+
+  // Dropdown toggles — the whole parent control opens/closes the child menu.
   $('.dropdown__toggle').on('click', function (e) {
-    const $toggle = $(this);
-    const hasArrow = $toggle.find('.arrow').length > 0;
-
-    if (hasArrow && !$(e.target).closest('.arrow').length) {
-      return;
-    }
-
     e.preventDefault();
     e.stopPropagation();
-    const $parent = $toggle.closest('.dropdown');
+
+    const $parent = $(this).closest('.dropdown');
     const isOpen = $parent.hasClass('open');
 
-    $('.dropdown').removeClass('open');
+    closeDropdowns($('.dropdown').not($parent));
 
-    if (!isOpen) {
-      $parent.addClass('open');
+    if (isOpen) {
+      closeDropdowns($parent);
+    } else {
+      openDropdown($parent);
     }
   });
 
-  // On mobile: first tap opens dropdown, second tap follows the link
-  $('.dropdown__toggle a').on('click', function (e) {
-    if (window.innerWidth <= 1200) {
-      const $parent = $(this).closest('.dropdown');
-      if (!$parent.hasClass('open')) {
-        e.preventDefault();
-        $('.dropdown').removeClass('open');
-        $parent.addClass('open');
-      }
+  $('.dropdown').on('keydown', function (e) {
+    if (e.key === 'Escape') {
+      closeDropdowns($(this));
+      $(this).find('> .dropdown__toggle').trigger('focus');
     }
   });
 
   // close dropdown if user clicks outside
   $(document).on('click', function (e) {
     if (!$(e.target).closest('.dropdown').length) {
-      $('.dropdown').removeClass('open');
+      closeDropdowns($('.dropdown'));
     }
   });
 });
