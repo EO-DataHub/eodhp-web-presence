@@ -33,7 +33,7 @@
     "@babel/core": "7.29.0",
     "@babel/preset-env": "7.29.2",
     "@mdi/svg": "^7.4.47",
-    "@tpzdsp/eslint-config-dsp": "1.8.4",
+    "@tpzdsp/eslint-config-dsp": "1.9.2",
     "@typescript-eslint/eslint-plugin": "8.57.1",
     "babel-loader": "10.1.1",
     "css-loader": "7.1.4",
