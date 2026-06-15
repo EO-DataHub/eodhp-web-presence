@@ -181,3 +181,14 @@ class TestFeaturedCaseStudy(FeaturedCaseStudiesTestMixin, TestCase):
     def test_clean_accepts_case_study_pages(self):
         featured = self.home.featured_case_studies.first()
         featured.clean()
+
+    def test_clean_accepts_pages_under_legacy_generic_case_studies_section(self):
+        legacy_home = self.home.__class__(title="Legacy Home", slug="legacy-home")
+        self.root.add_child(instance=legacy_home)
+        legacy_case_studies_index = GenericPage(title="Case Studies", slug="case-studies")
+        legacy_home.add_child(instance=legacy_case_studies_index)
+        legacy_case_study = GenericPage(title="Legacy case study", slug="legacy-case-study")
+        legacy_case_studies_index.add_child(instance=legacy_case_study)
+
+        featured = FeaturedCaseStudy(page=legacy_home, case_study=legacy_case_study.page_ptr)
+        featured.clean()

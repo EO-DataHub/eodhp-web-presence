@@ -375,6 +375,7 @@ class FeaturedCaseStudy(Orderable):
     """Case study shown in the homepage carousel."""
 
     SUMMARY_MAX_WORDS = 40
+    CASE_STUDIES_SECTION_SLUG = "case-studies"
 
     page = ParentalKey(
         "home.HomePage",
@@ -418,7 +419,14 @@ class FeaturedCaseStudy(Orderable):
 
     def clean(self) -> None:
         super().clean()
-        if self.case_study_id and not (self.case_study.get_ancestors().type(CaseStudiesPage).exists()):
+        if (
+            self.case_study_id
+            and not self.case_study.get_ancestors()
+            .filter(
+                slug=self.CASE_STUDIES_SECTION_SLUG,
+            )
+            .exists()
+        ):
             raise ValidationError({"case_study": "Choose a page from the Case Studies section."})
 
     @property
