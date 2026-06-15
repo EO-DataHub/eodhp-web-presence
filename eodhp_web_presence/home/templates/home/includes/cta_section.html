@@ -8,7 +8,7 @@
         <!-- Sign up and Contact Us -->
         <div class="ready-to-get-started__content__right">
             <input type="button" class="button primary-button" value="Sign Up"
-                onclick="window.open('{{ userdocs_accounts_url }}', '_blank')" />
+                onclick="window.location.href='{% url 'sign_in' %}'" />
             <input type="button" class="button secondary-button" value="Contact Us"
                 onclick="window.open('{{ userdocs_community_url }}', '_blank')" />
         </div>
