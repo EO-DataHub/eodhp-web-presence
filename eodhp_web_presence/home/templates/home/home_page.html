@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags mdi_tags %}
 
 {% block content %}
 
@@ -75,18 +75,13 @@
     {% endif %}
     {% endwith %}
 
-    <div class="overview" id="overview">
-        <div class="overview__content">
-            <div class="overview__content__left">
-                <div class="overview__content__left__title">
-                    <h2>Overview</h2>
-                </div>
-            </div>
-            <div class="overview__content__right">
+    <div class="overview-band" id="overview">
+        <div class="overview-band__inner">
+            <span class="section-kicker section-kicker--ruled">Overview</span>
+            <div class="overview-band__text">
                 {{ page.overview_text|safe }}
             </div>
         </div>
-
     </div>
 
     {% if page.featured_case_studies.all %}
@@ -105,112 +100,68 @@
     </div>
     {% endif %}
 
-    <div class="who-is-it-for">
-        <div class="who-is-it-for__content">
-            <div class="who-is-it-for__content__left">
-                <h2>Who is the Earth Observation DataHub for?</h2>
-                <div class="arrows">
-                    <div class="arrow-left" id="arrowLeft">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15.5 4L6.5 12L15.5 20" stroke="#FEF7FF" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                    <div class="arrow-right" id="arrowRight">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.5 4L17.5 12L8.5 20" stroke="#FEF7FF" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="who-is-it-for__content__right">
-                <!-- Slide 1 -->
-                <div class="scroll-card active">
-                    <img src="{% static 'img/general/city-hall.svg' %}" alt="Government" class="scroll-card__image" />
+    <div class="audience">
+        <div class="audience__inner">
+            <span class="section-kicker section-kicker--ruled">Who is it for</span>
+            <h2>Who is the Earth Observation DataHub for?</h2>
+            <div class="audience__cards">
+                <div class="audience-card">
+                    <span class="audience-card__icon">{% mdi_icon "bank-outline" "md" %}</span>
                     <h3>Government and Public Sector</h3>
-                    <p>
-                        Providing collective purchasing power and access to a wide range of EO
+                    <p>Providing collective purchasing power and access to a wide range of EO
                         data and processing services. The EO DataHub is a one-stop-shop for
-                        all your EO data needs.
-                    </p>
+                        all your EO data needs.</p>
                 </div>
-
-                <!-- Slide 2 -->
-                <div class="scroll-card">
-                    <img src="{% static 'img/general/industry.svg' %}" alt="Industry" class="scroll-card__image" />
+                <div class="audience-card">
+                    <span class="audience-card__icon">{% mdi_icon "factory" "md" %}</span>
                     <h3>Industry &amp; Commercial Operators</h3>
-                    <p>
-                        Gain quick and easy access to essential data and powerful processing tools to foster innovation,
-                        cut
-                        costs, and speed up your projects with dependable EO insights.
-                    </p>
+                    <p>Gain quick and easy access to essential data and powerful processing tools to foster innovation,
+                        cut costs, and speed up your projects with dependable EO insights.</p>
                 </div>
-
-                <!-- Slide 3 -->
-                <div class="scroll-card">
-                    <img src="{% static 'img/general/research.svg' %}" alt="Academia" class="scroll-card__image" />
+                <div class="audience-card">
+                    <span class="audience-card__icon">{% mdi_icon "school-outline" "md" %}</span>
                     <h3>Academia &amp; Researchers</h3>
-                    <p>
-                        Discover new perspectives with advanced geospatial analysis and a wealth of historical data.
+                    <p>Discover new perspectives with advanced geospatial analysis and a wealth of historical data.
                         Work together with colleagues and push your research forward with comprehensive EO data
-                        services.
-                    </p>
+                        services.</p>
                 </div>
             </div>
         </div>
     </div>
-    <div>
 
-        <div class="ready-to-get-started">
-            <div class="ready-to-get-started__content">
-                <div class="ready-to-get-started__content__left">
-                    <h4>Ready to get started?</h4>
-                    <p>Sign up, contact us, or join the community</p>
+    {% if page.aims %}
+    <div class="platform">
+        <div class="platform__inner">
+            <div class="platform__header">
+                <span class="section-kicker section-kicker--ruled">EO DataHub Aims</span>
+                <h2>What are the aims of the EO DataHub</h2>
+                <p>EO DataHub Pathfinder activities are designed to showcase:</p>
+            </div>
+            <div class="platform__tiles">
+                {% for aim in page.aims %}
+                {% if aim.page %}
+                <a href="{% pageurl aim.page %}" class="platform-tile">
+                {% else %}
+                <div class="platform-tile">
+                {% endif %}
+                    {% if aim.image %}
+                    <img src="{{ aim.image.url }}" alt="" class="platform-tile__image" />
+                    {% endif %}
+                    <h3>{{ aim.title|safe }}</h3>
+                    {{ aim.description|richtext }}
+                    {% if aim.page %}
+                    <span class="platform-tile__more">Find out more</span>
+                    </a>
+                    {% else %}
                 </div>
-                <!-- Sign up and Contact Us -->
-                <div class="ready-to-get-started__content__right">
-                    <input type="button" class="button primary-button" value="Sign Up"
-                        onclick="window.open('{{ userdocs_accounts_url }}', '_blank')" />
-                    <input type="button" class="button secondary-button" value="Contact Us"
-                        onclick="window.open('{{ userdocs_community_url }}', '_blank')" />
-                </div>
-
-                <div class="ready-to-get-started__content__community" aria-label="Community links">
-                    <div class="ready-to-get-started__content__community-links">
-                        <a class="button secondary-button community-link" href="{{ github_discussions_url }}" target="_blank" rel="noopener noreferrer">
-                            <svg class="community-link-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path d="M4 4H20C21.1 4 22 4.9 22 6V16C22 17.1 21.1 18 20 18H8L4 22V18C2.9 18 2 17.1 2 16V6C2 4.9 2.9 4 4 4ZM6 9H18V7H6V9ZM6 13H15V11H6V13Z" fill="currentColor"/>
-                            </svg>
-                            <span>GitHub Discussions</span>
-                        </a>
-                        <a class="button secondary-button community-link" href="{{ mailing_list_url }}" target="_blank" rel="noopener noreferrer">
-                            <svg class="community-link-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path d="M3 5H21C21.55 5 22 5.45 22 6V18C22 18.55 21.55 19 21 19H3C2.45 19 2 18.55 2 18V6C2 5.45 2.45 5 3 5ZM12 12.75L20 7.75V7L12 12L4 7V7.75L12 12.75Z" fill="currentColor"/>
-                            </svg>
-                            <span>Mailing list</span>
-                        </a>
-                        <a class="button secondary-button community-link" href="{{ linkedin_url }}" target="_blank" rel="noopener noreferrer">
-                            <svg class="community-link-icon" width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path d="M19.98 0H5.98004C3.21904 0 0.980042 2.239 0.980042 5V19C0.980042 21.761 3.21904 24 5.98004 24H19.98C22.742 24 24.98 21.761 24.98 19V5C24.98 2.239 22.742 0 19.98 0ZM8.98004 19H5.98004V8H8.98004V19ZM7.48004 6.732C6.51404 6.732 5.73004 5.942 5.73004 4.968C5.73004 3.994 6.51404 3.204 7.48004 3.204C8.44604 3.204 9.23004 3.994 9.23004 4.968C9.23004 5.942 8.44704 6.732 7.48004 6.732ZM20.98 19H17.98V13.396C17.98 10.028 13.98 10.283 13.98 13.396V19H10.98V8H13.98V9.765C15.376 7.179 20.98 6.988 20.98 12.241V19Z" fill="currentColor"/>
-                            </svg>
-                            <span>LinkedIn</span>
-                        </a>
-                    </div>
-                </div>
+                {% endif %}
+                {% endfor %}
             </div>
         </div>
-
     </div>
+    {% endif %}
 
-    <!-- Must be inline style so that we can still use Django's static -->
-    <style>
-        .overview__content__right::before {
-            background: url("{% static 'img/general/overview-bg.png' %}") no-repeat center center;
+    {% include "home/includes/cta_section.html" %}
+</div>
 
-        }
-    </style>
-
-
-    {% endblock content %}
+{% endblock content %}
