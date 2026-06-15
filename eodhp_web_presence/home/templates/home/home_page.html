@@ -5,21 +5,75 @@
 {% block content %}
 
 <div class="home">
+    {% with hero_items=page.hero_images.all %}
+    {% if hero_items %}
+    <div class="hero-carousel" data-hero-carousel data-interval="8000">
+        <div class="hero-carousel__backgrounds" aria-hidden="true">
+            {% for item in hero_items %}
+            {% image item.image fill-1920x900 as bg %}
+            <div class="hero-carousel__bg{% if forloop.first %} is-active{% endif %}"
+                style="background-image: url('{{ bg.url }}')"></div>
+            {% endfor %}
+        </div>
+        <div class="hero-carousel__scrim"></div>
+
+        <div class="hero-carousel__position">
+            <div class="hero-carousel__content">
+                <span class="hero-carousel__kicker">UK Earth Observation DataHub</span>
+                <div class="hero-carousel__headline">We provide a single point of access to<br />
+                    <span class="thin-underline">EO data</span> and
+                    <span class="thin-underline">processing infrastructure</span>.
+                </div>
+                <div class="hero-carousel__actions">
+                    <input type="button" class="button primary-button" value="Get started"
+                        onclick="window.location.href='/docs/'" />
+                    <input type="button" class="button secondary-button" value="Explore our Catalogue"
+                        onclick="window.location.href='/static-apps/sg-rc-ui/prod/index.html'" />
+                </div>
+                <a class="hero-carousel__read-more" href="/about/">Read more about EO DataHub →</a>
+            </div>
+        </div>
+
+        <div class="hero-carousel__captions">
+            {% for item in hero_items %}
+            <span class="hero-carousel__caption{% if forloop.first %} is-active{% endif %}">{{ item.caption }}</span>
+            {% endfor %}
+        </div>
+        <div class="hero-carousel__controls">
+            <button type="button" class="hero-carousel__arrow hero-carousel__arrow--prev"
+                aria-label="Previous background image">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M15.5 4L6.5 12L15.5 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+            <div class="hero-carousel__dots"></div>
+            <button type="button" class="hero-carousel__arrow hero-carousel__arrow--next"
+                aria-label="Next background image">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M8.5 4L17.5 12L8.5 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    {% else %}
     <div class="hero" style="background-image: url({% static 'img/general/hero.jpg' %})">
         <div class="hero-position">
             <div class="hero-content">
                 <div>We provide a single point of access to<br /><span class="thin-underline">EO data</span> and
                     <span class="thin-underline">processing infrastructure</span>.
                 </div>
-                <div>
-                    <input type="button" class="button primary-button" value="Read More"
-                        onclick="window.location.href='/about/'" />
+                <div class="hero-carousel__actions">
+                    <input type="button" class="button primary-button" value="Get started"
+                        onclick="window.location.href='/docs/'" />
                     <input type="button" class="button secondary-button" value="Explore our Catalogue"
                         onclick="window.location.href='/static-apps/sg-rc-ui/prod/index.html'" />
                 </div>
+                <a class="hero-carousel__read-more" href="/about/">Read more about EO DataHub →</a>
             </div>
         </div>
     </div>
+    {% endif %}
+    {% endwith %}
 
     <div class="overview" id="overview">
         <div class="overview__content">
