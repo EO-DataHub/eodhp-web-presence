@@ -1,12 +1,22 @@
 @use '../custom' as *;
 
 .button {
-  padding: 5px 20px;
+  padding: 0.6rem 1.4rem;
   border: none;
-  border-radius: $radius-sm;
+  border-radius: $radius-md;
   cursor: pointer;
+  font-size: 0.95rem;
   font-weight: 500;
-  transition: background-color 0.3s;
+  line-height: 1.2;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+
+  &:focus-visible {
+    outline: 2px solid var(--button-bg);
+    outline-offset: 2px;
+  }
 
   &.primary-button {
     background-color: var(--button-bg);
@@ -21,10 +31,15 @@
     background-color: transparent;
     color: var(--button-bg);
     border: 1px solid var(--button-bg);
+
+    &:hover {
+      background-color: rgb(76 114 186 / 8%);
+    }
   }
 
   &.disabled {
     background-color: var(--button-disabled);
+    cursor: not-allowed;
   }
 }
 
