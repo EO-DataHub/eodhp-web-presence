@@ -145,7 +145,7 @@
                 <div class="platform-tile">
                 {% endif %}
                     {% if aim.image %}
-                    <img src="{{ aim.image.url }}" alt="" class="platform-tile__image" />
+                    <img src="{{ aim.image.url }}" alt="" class="platform-tile__image" loading="lazy" />
                     {% endif %}
                     <h3>{{ aim.title|safe }}</h3>
                     {{ aim.description|richtext }}
