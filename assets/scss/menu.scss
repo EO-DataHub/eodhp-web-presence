@@ -36,7 +36,7 @@
         color: #000;
 
         &:hover {
-          background-color: #000;
+          background-color: $navy;
           color: #fff;
         }
       }
@@ -182,8 +182,8 @@
           color 0.2s;
 
         &:hover {
-          background-color: var(--inverse-background);
-          color: var(--inverse-text);
+          background-color: $navy;
+          color: #fff;
         }
       }
 
@@ -341,6 +341,35 @@
             padding: 1rem;
             white-space: normal;
           }
+        }
+      }
+    }
+
+    &.transparent .menu__left {
+      background-color: $navy;
+      color: #fff;
+
+      .menu__item,
+      .menu__item a,
+      .dropdown__toggle {
+        color: #fff;
+      }
+
+      .dropdown__menu,
+      .dropdown__menu_r {
+        background-color: #253a61;
+        border: 1px solid rgb(255 255 255 / 10%);
+
+        a {
+          color: #fff;
+
+          &:hover {
+            background-color: rgb(255 255 255 / 10%);
+          }
+        }
+
+        .dropdown__parent-link {
+          border-bottom-color: rgb(255 255 255 / 20%);
         }
       }
     }

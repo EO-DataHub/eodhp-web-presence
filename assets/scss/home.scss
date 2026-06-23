@@ -56,13 +56,24 @@
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(to bottom, rgb(26 39 63 / 85%) 0%, rgb(26 39 63 / 0%) 26%),
+        linear-gradient(
+          90deg,
+          rgb(26 39 63 / 82%) 0%,
+          rgb(26 39 63 / 58%) 38%,
+          rgb(26 39 63 / 14%) 72%,
+          rgb(26 39 63 / 18%) 100%
+        ),
+        linear-gradient(to bottom, rgb(26 39 63 / 72%) 0%, rgb(26 39 63 / 0%) 24%),
         linear-gradient(
           to top,
-          rgb(26 39 63 / 88%) 0%,
-          rgb(26 39 63 / 42%) 50%,
-          rgb(26 39 63 / 30%) 100%
+          rgb(26 39 63 / 74%) 0%,
+          rgb(26 39 63 / 28%) 48%,
+          rgb(26 39 63 / 12%) 100%
         );
+
+      @media (width <= 700px) {
+        background: linear-gradient(to bottom, rgb(26 39 63 / 88%) 0%, rgb(26 39 63 / 70%) 100%);
+      }
     }
 
     &__position {
@@ -86,7 +97,6 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-
       max-width: 920px;
     }
 
@@ -128,7 +138,6 @@
       z-index: 2;
       bottom: 1.4rem;
       left: clamp(1.5rem, 6vw, 5rem);
-
       right: 17rem;
 
       @media (width <= 700px) {
@@ -245,9 +254,11 @@
   }
 
   .hero {
-    margin-top: -74px;
+    position: relative;
     width: 100%;
     height: 85vh;
+    margin-top: -74px;
+    overflow: hidden;
 
     @media (max-width: $mobile-breakpoint) {
       margin-top: -45px;
@@ -263,7 +274,23 @@
     background-position: bottom;
     background-repeat: no-repeat;
 
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          90deg,
+          rgb(26 39 63 / 78%) 0%,
+          rgb(26 39 63 / 42%) 55%,
+          rgb(26 39 63 / 14%) 100%
+        ),
+        linear-gradient(to top, rgb(26 39 63 / 62%) 0%, rgb(26 39 63 / 10%) 100%);
+    }
+
     &-position {
+      position: relative;
+      z-index: 1;
       width: 80%;
       padding-top: 74px;
 
@@ -294,7 +321,6 @@
   .overview-band {
     position: relative;
     overflow: hidden;
-
 
     &::before {
       content: '';
@@ -333,6 +359,12 @@
   }
 
   .platform {
+    background: linear-gradient(180deg, #fff 0%, #f5f7fb 100%);
+
+    .dark-theme & {
+      background: linear-gradient(180deg, #0b1220 0%, #121a2b 100%);
+    }
+
     &__inner {
       max-width: 1200px;
       margin: 0 auto;
@@ -348,7 +380,7 @@
       }
 
       p {
-        color: var(--text-secondary);
+        color: $steel;
       }
     }
 
@@ -368,14 +400,19 @@
     }
 
     .platform-tile {
+      position: relative;
       display: flex;
       flex-direction: column;
       gap: 0.8rem;
+      overflow: hidden;
       padding: 1.75rem 1.5rem;
-      border: var(--content-border);
+      border: 1px solid rgb(255 255 255 / 10%);
       border-radius: $radius-lg;
-      background-color: var(--background);
-      color: var(--text-primary);
+      background:
+        radial-gradient(circle at 100% 0%, rgb(76 114 186 / 34%) 0, rgb(76 114 186 / 0%) 42%),
+        linear-gradient(145deg, #1a273f 0%, #253a61 100%);
+      box-shadow: 0 18px 40px rgb(26 39 63 / 18%);
+      color: #fff;
       text-decoration: none;
       transition:
         transform 0.3s ease,
@@ -383,33 +420,36 @@
 
       &:hover {
         transform: translateY(-5px);
-        box-shadow: var(--card-shadow);
+        box-shadow: 0 24px 48px rgb(26 39 63 / 28%);
         text-decoration: none;
       }
 
       &__image {
+        position: relative;
         width: 100%;
         height: 130px;
         border-radius: $radius-md;
         object-fit: cover;
+        opacity: 0.88;
       }
 
       h3 {
         margin: 0 !important;
+        color: #fff;
         font-size: 1.02rem;
         line-height: 1.35;
       }
 
       p {
+        color: rgb(255 255 255 / 76%);
         font-size: 0.9rem;
         line-height: 1.55;
-        opacity: 0.75;
       }
 
       &__more {
         margin-top: auto;
         padding-top: 0.5rem;
-        color: $accent;
+        color: #d5e1ff;
         font-size: 0.85rem;
         font-weight: 500;
       }
@@ -452,9 +492,11 @@
       flex-direction: column;
       gap: 0.8rem;
       padding: 1.75rem 1.5rem;
-      border: 1px solid rgb(255 255 255 / 14%);
+      border: 1px solid rgb(255 255 255 / 26%);
       border-radius: $radius-lg;
-      background-color: rgb(255 255 255 / 5%);
+      background-color: #f7f9fc;
+      box-shadow: 0 18px 40px rgb(0 0 0 / 16%);
+      color: $navy;
 
       &__icon {
         display: flex;
@@ -463,7 +505,7 @@
         width: 2.75rem;
         height: 2.75rem;
         border-radius: $radius-circle;
-        background-color: rgb(255 255 255 / 12%);
+        background-color: $accent;
         color: #fff;
 
         svg {
@@ -473,12 +515,13 @@
 
       h3 {
         margin: 0 !important;
+        color: $navy;
         font-size: 1.02rem;
         line-height: 1.35;
       }
 
       p {
-        color: rgb(255 255 255 / 75%);
+        color: rgb(26 39 63 / 76%);
         font-size: 0.9rem;
         line-height: 1.55;
       }
