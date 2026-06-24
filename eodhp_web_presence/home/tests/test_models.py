@@ -49,7 +49,11 @@ class LandingPageTestMixin:
         self.root.add_child(instance=self.home)
         Site.objects.update_or_create(
             is_default_site=True,
-            defaults={"root_page": self.home, "hostname": "localhost"},
+            defaults={
+                "root_page": self.home,
+                "hostname": "localhost",
+                "site_name": "EO DataHub",
+            },
         )
 
 
@@ -58,6 +62,11 @@ class TestHomePage(LandingPageTestMixin, TestCase):
     def test_home_page_serves(self):
         response = self.client.get(self.home.url)
         assert response.status_code == 200
+
+    def test_homepage_tab_title_is_brand_only(self):
+        """The homepage browser tab shows just the brand, not 'Home - EO DataHub'."""
+        response = self.client.get(self.home.url)
+        self.assertContains(response, "<title>EO DataHub</title>", html=True)
 
     def test_home_page_no_breadcrumbs(self):
         response = self.client.get(self.home.url)
@@ -108,6 +117,14 @@ class TestLandingPages(LandingPageTestMixin, TestCase):
                 response = self.client.get(page.url)
                 self.assertTemplateUsed(response, "home/landing_page.html")
                 self.assertTemplateUsed(response, "home/includes/landing_page_content.html")
+
+    def test_child_page_tab_title_has_brand_suffix(self):
+        """Child pages show '<Page title> - EO DataHub' in the browser tab."""
+        page = AboutIndexPage(title="About", slug="about")
+        self.home.add_child(instance=page)
+
+        response = self.client.get(page.url)
+        self.assertContains(response, "<title>About - EO DataHub</title>", html=True)
 
     def test_landing_pages_render_breadcrumbs(self):
         for cls in self.page_classes:

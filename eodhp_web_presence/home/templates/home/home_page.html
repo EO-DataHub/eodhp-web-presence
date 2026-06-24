@@ -2,6 +2,11 @@
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags mdi_tags %}
 
+{% block title %}{% endblock %}
+{% block title_suffix %}
+{% wagtail_site as current_site %}{{ current_site.site_name }}
+{% endblock %}
+
 {% block content %}
 
 <div class="home">
