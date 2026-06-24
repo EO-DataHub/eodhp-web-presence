@@ -1,4 +1,5 @@
 @use 'custom' as *;
+@use 'components/more_link' as *;
 
 .home {
   .hero-carousel {
@@ -226,31 +227,18 @@
     }
   }
 
-  .hero-carousel__read-more,
-  .hero__read-more {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
+  .hero-carousel .more-link,
+  .hero .more-link {
     margin-top: 0.9rem;
-    color: rgb(255 255 255 / 82%);
+    padding-top: 0;
     font-size: 0.95rem;
-    font-weight: 500;
-    text-decoration: none;
-    border-bottom: 1px solid rgb(255 255 255 / 35%);
-    transition:
-      color 0.2s ease,
-      border-color 0.2s ease;
 
-    &:hover {
-      color: #fff;
-      border-color: #fff;
-      text-decoration: none;
-    }
-
-    &:focus-visible {
-      outline: 2px solid #fff;
-      outline-offset: 4px;
-    }
+    --more-link-color: rgb(255 255 255 / 82%);
+    --more-link-hover-color: #fff;
+    --more-link-border: rgb(255 255 255 / 35%);
+    --more-link-hover-border: #fff;
+    --more-link-focus-color: #fff;
+    --more-link-focus-offset: 4px;
   }
 
   .hero {
@@ -414,6 +402,12 @@
       box-shadow: 0 18px 40px rgb(26 39 63 / 18%);
       color: #fff;
       text-decoration: none;
+
+      --more-link-color: #d5e1ff;
+      --more-link-hover-color: #fff;
+      --more-link-border: rgb(255 255 255 / 22%);
+      --more-link-hover-border: rgb(255 255 255 / 60%);
+
       transition:
         transform 0.3s ease,
         box-shadow 0.3s ease;
@@ -423,13 +417,8 @@
         box-shadow: 0 24px 48px rgb(26 39 63 / 28%);
         text-decoration: none;
 
-        .platform-tile__more {
-          color: #fff;
-          border-color: rgb(255 255 255 / 60%);
-        }
-
-        .platform-tile__more-arrow {
-          transform: translateX(4px);
+        .more-link {
+          @include more-link-active;
         }
       }
 
@@ -453,25 +442,6 @@
         color: rgb(255 255 255 / 76%);
         font-size: 0.9rem;
         line-height: 1.55;
-      }
-
-      &__more {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        margin-top: auto;
-        padding-top: 0.5rem;
-        color: #d5e1ff;
-        font-size: 0.85rem;
-        font-weight: 500;
-        border-bottom: 1px solid rgb(255 255 255 / 22%);
-        width: fit-content;
-        transition: color 0.2s ease, border-color 0.2s ease;
-
-        &-arrow {
-          flex-shrink: 0;
-          transition: transform 0.25s ease;
-        }
       }
     }
   }

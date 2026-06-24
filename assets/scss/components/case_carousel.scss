@@ -1,5 +1,6 @@
 @use '../custom' as *;
 @use '../theme-colors' as *;
+@use 'more_link' as *;
 
 .case-carousel {
   position: relative;
@@ -144,6 +145,10 @@
         transform: translateY(-5px);
         box-shadow: var(--card-shadow);
         text-decoration: none;
+
+        .more-link {
+          @include more-link-active;
+        }
       }
     }
 
@@ -165,14 +170,6 @@
     .case-carousel__summary {
       color: var(--text-primary);
       opacity: 0.75;
-    }
-
-    .case-carousel__read-more {
-      margin-top: auto;
-      padding-top: 0.5rem;
-      color: var(--button-bg);
-      font-size: 0.9rem;
-      font-weight: 500;
     }
   }
 }
