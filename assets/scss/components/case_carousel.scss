@@ -7,6 +7,10 @@
 
   &__viewport {
     overflow: hidden;
+    padding-top: 1rem;
+    padding-bottom: 1.25rem;
+    margin-top: -1rem;
+    margin-bottom: -1.25rem;
   }
 
   &__track {
