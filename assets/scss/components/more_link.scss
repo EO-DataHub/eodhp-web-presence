@@ -4,8 +4,8 @@
 // otherwise it falls back to the site theme tokens.
 
 @mixin more-link-active {
-  color: var(--more-link-hover-color, var(--text-primary));
-  border-color: var(--more-link-hover-border, var(--button-bg));
+  color: var(--more-link-hover-color, var(--button-hover));
+  border-color: var(--more-link-hover-border, var(--button-hover));
   text-decoration: none;
 
   .more-link__arrow {
