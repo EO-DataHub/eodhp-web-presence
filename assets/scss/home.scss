@@ -422,6 +422,15 @@
         transform: translateY(-5px);
         box-shadow: 0 24px 48px rgb(26 39 63 / 28%);
         text-decoration: none;
+
+        .platform-tile__more {
+          color: #fff;
+          border-color: rgb(255 255 255 / 60%);
+        }
+
+        .platform-tile__more-arrow {
+          transform: translateX(4px);
+        }
       }
 
       &__image {
@@ -447,11 +456,22 @@
       }
 
       &__more {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
         margin-top: auto;
         padding-top: 0.5rem;
         color: #d5e1ff;
         font-size: 0.85rem;
         font-weight: 500;
+        border-bottom: 1px solid rgb(255 255 255 / 22%);
+        width: fit-content;
+        transition: color 0.2s ease, border-color 0.2s ease;
+
+        &-arrow {
+          flex-shrink: 0;
+          transition: transform 0.25s ease;
+        }
       }
     }
   }
