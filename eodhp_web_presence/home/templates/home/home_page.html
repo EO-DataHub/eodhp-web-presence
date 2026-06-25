@@ -99,7 +99,8 @@
         </div>
     </div>
 
-    {% if page.featured_case_studies.all %}
+    {% with featured=page.featured_case_study_items %}
+    {% if featured %}
     <div class="proven">
         <div class="proven__content">
             <div class="proven__header">
@@ -110,10 +111,11 @@
                 </div>
                 <a href="/case-studies/" class="button secondary-button">All case studies</a>
             </div>
-            {% include "home/includes/case_study_carousel.html" %}
+            {% include "home/includes/case_study_carousel.html" with items=featured %}
         </div>
     </div>
     {% endif %}
+    {% endwith %}
 
     <div class="audience">
         <div class="audience__inner">

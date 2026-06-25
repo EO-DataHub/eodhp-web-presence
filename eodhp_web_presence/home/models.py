@@ -2,11 +2,13 @@ import datetime
 import logging
 from typing import ClassVar
 
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.utils import timezone
+from django.utils.functional import cached_property
 from django.utils.html import strip_tags
 from django.utils.text import Truncator, slugify
 from modelcluster.fields import ParentalKey
@@ -370,6 +372,10 @@ class HomePage(WagtailCacheMixin, Page):
             )
         return slots
 
+    @property
+    def featured_case_study_items(self) -> "models.QuerySet[FeaturedCaseStudy]":
+        return self.featured_case_studies.select_related("label", "image_override")
+
 
 class FeaturedCaseStudy(Orderable):
     """Case study shown in the homepage carousel."""
@@ -419,27 +425,34 @@ class FeaturedCaseStudy(Orderable):
 
     def clean(self) -> None:
         super().clean()
-        if (
-            self.case_study_id
-            and not self.case_study.get_ancestors()
+        if not self.case_study_id:
+            return
+        in_section = (
+            self.case_study.get_ancestors()
             .filter(
-                slug=self.CASE_STUDIES_SECTION_SLUG,
+                models.Q(content_type=ContentType.objects.get_for_model(CaseStudiesPage))
+                | models.Q(slug=self.CASE_STUDIES_SECTION_SLUG)
             )
             .exists()
-        ):
+        )
+        if not in_section:
             raise ValidationError({"case_study": "Choose a page from the Case Studies section."})
+
+    @cached_property
+    def case_study_specific(self) -> Page:
+        return self.case_study.specific
 
     @property
     def display_image(self) -> models.Model | None:
         if self.image_override:
             return self.image_override
-        return getattr(self.case_study.specific, "hero_image", None)
+        return getattr(self.case_study_specific, "hero_image", None)
 
     @property
     def display_summary(self) -> str:
         if self.summary_override:
             return self.summary_override
-        intro = getattr(self.case_study.specific, "intro", "")
+        intro = getattr(self.case_study_specific, "intro", "")
         return Truncator(strip_tags(str(intro))).words(self.SUMMARY_MAX_WORDS)
 
     def __str__(self) -> str:

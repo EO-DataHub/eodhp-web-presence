@@ -135,6 +135,27 @@ class TestHeroCarousel(FeaturedCaseStudiesTestMixin, TestCase):
         self.assertContains(response, 'class="hero"')
         self.assertContains(response, "We provide a single point of access to")
 
+    def test_hero_carousel_headline_is_h1(self):
+        for i in range(2):
+            image = Image.objects.create(title=f"Hero {i}", file=get_test_image_file())
+            HeroCarouselImage.objects.create(
+                page=self.home,
+                image=image,
+                caption=f"Caption {i}",
+                sort_order=i,
+            )
+
+        response = self.client.get(self.home.url)
+        assert response.status_code == 200
+        self.assertContains(response, "<h1", count=1)
+        self.assertContains(response, "We provide a single point of access to")
+
+    def test_hero_fallback_headline_is_h1(self):
+        response = self.client.get(self.home.url)
+        assert response.status_code == 200
+        self.assertContains(response, "<h1", count=1)
+        self.assertContains(response, "We provide a single point of access to")
+
 
 @override_settings(WAGTAIL_CACHE=False)
 class TestFeaturedCaseStudy(FeaturedCaseStudiesTestMixin, TestCase):
@@ -191,4 +212,13 @@ class TestFeaturedCaseStudy(FeaturedCaseStudiesTestMixin, TestCase):
         legacy_case_studies_index.add_child(instance=legacy_case_study)
 
         featured = FeaturedCaseStudy(page=legacy_home, case_study=legacy_case_study.page_ptr)
+        featured.clean()
+
+    def test_clean_accepts_pages_under_renamed_case_studies_section(self):
+        renamed_case_studies_index = CaseStudiesPage(title="Case Studies", slug="case-studies-2026")
+        self.home.add_child(instance=renamed_case_studies_index)
+        renamed_case_study = GenericPage(title="Renamed case study", slug="renamed-case-study")
+        renamed_case_studies_index.add_child(instance=renamed_case_study)
+
+        featured = FeaturedCaseStudy(page=self.home, case_study=renamed_case_study.page_ptr)
         featured.clean()

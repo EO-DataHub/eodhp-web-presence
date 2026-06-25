@@ -1,5 +1,4 @@
 {% load wagtailcore_tags wagtailimages_tags %}
-{% with items=page.featured_case_studies.all %}
 {% if items %}
 <div class="case-carousel case-carousel--cards"
      data-carousel
@@ -56,4 +55,3 @@
     </div>
 </div>
 {% endif %}
-{% endwith %}
