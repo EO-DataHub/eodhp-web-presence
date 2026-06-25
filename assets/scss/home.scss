@@ -416,7 +416,7 @@
 
       &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 24px 48px rgb(26 39 63 / 28%);
+        box-shadow: var(--card-shadow);
         text-decoration: none;
 
         .more-link {
