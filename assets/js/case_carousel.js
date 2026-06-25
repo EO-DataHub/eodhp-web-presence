@@ -101,8 +101,10 @@ function initCarousel(root) {
   $root.on('keydown', (event) => {
     if (event.key === 'ArrowLeft') {
       goTo(index - 1);
+      startAutoplay();
     } else if (event.key === 'ArrowRight') {
       goTo(index + 1);
+      startAutoplay();
     }
   });
 
