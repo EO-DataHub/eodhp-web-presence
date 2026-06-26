@@ -2,9 +2,9 @@
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags mdi_tags %}
 
-{% block title %}{% endblock %}
+{% block title %}{% wagtail_site as current_site %}{% if not current_site.site_name %}{{ page.title }}{% endif %}{% endblock %}
 {% block title_suffix %}
-{% wagtail_site as current_site %}{{ current_site.site_name }}
+{% wagtail_site as current_site %}{% if current_site.site_name %}{{ current_site.site_name }}{% endif %}
 {% endblock %}
 
 {% block content %}
