@@ -6,6 +6,8 @@ function initHeroCarousel(root) {
   const $captions = $root.find('.hero-carousel__caption');
   const $dots = $root.find('.hero-carousel__dots');
   const interval = parseInt($root.attr('data-interval'), 10) || 8000;
+  const fadeCleanupMs = 1500;
+  const leavingTimers = new WeakMap();
 
   if ($backgrounds.length <= 1) {
     $root.find('.hero-carousel__controls').hide();
@@ -15,9 +17,63 @@ function initHeroCarousel(root) {
   let index = 0;
   let timer = null;
 
+  function clearLeavingState(background) {
+    const leaveTimer = leavingTimers.get(background);
+    if (leaveTimer) {
+      clearTimeout(leaveTimer);
+      leavingTimers.delete(background);
+    }
+
+    $(background).off('transitionend.heroCarouselLeave');
+    background.classList.remove('is-leaving');
+    background.style.transform = '';
+  }
+
+  function cleanupAfterFade(background) {
+    const finish = () => clearLeavingState(background);
+
+    $(background)
+      .off('transitionend.heroCarouselLeave')
+      .on('transitionend.heroCarouselLeave', (event) => {
+        const { propertyName } = event.originalEvent;
+        if (propertyName && propertyName !== 'opacity') {
+          return;
+        }
+        finish();
+      });
+
+    leavingTimers.set(background, setTimeout(finish, fadeCleanupMs));
+  }
+
+  function freezeAndFadeBackground(background) {
+    // Freeze the animated zoom before removing is-active, otherwise the
+    // background falls back to its final scale while it fades out.
+    const currentTransform = window.getComputedStyle(background).transform || 'none';
+    background.style.transform = currentTransform;
+    background.classList.remove('is-active');
+    background.classList.add('is-leaving');
+    cleanupAfterFade(background);
+  }
+
   function show(i) {
-    index = (i + $backgrounds.length) % $backgrounds.length;
-    $backgrounds.removeClass('is-active').eq(index).addClass('is-active');
+    const nextIndex = (i + $backgrounds.length) % $backgrounds.length;
+    if (nextIndex === index) return;
+
+    const currentBackground = $backgrounds.eq(index)[0];
+    const nextBackground = $backgrounds.eq(nextIndex)[0];
+
+    if (nextBackground) {
+      clearLeavingState(nextBackground);
+    }
+    if (currentBackground) {
+      freezeAndFadeBackground(currentBackground);
+    }
+
+    index = nextIndex;
+    $backgrounds.not(nextBackground).removeClass('is-active');
+    if (nextBackground) {
+      nextBackground.classList.add('is-active');
+    }
     $captions.removeClass('is-active').eq(index).addClass('is-active');
     $dots.children().each(function (j) {
       $(this).toggleClass('is-active', j === index);

@@ -32,6 +32,10 @@
       inset: 0;
     }
 
+    &__backgrounds {
+      z-index: 0;
+    }
+
     &__bg {
       background-color: $navy;
       background-position: center;
@@ -39,10 +43,17 @@
       opacity: 0;
       transform: scale(1.06);
       transition: opacity 1.4s ease;
+      z-index: 0;
+
+      &.is-leaving {
+        opacity: 0;
+        z-index: 1;
+      }
 
       &.is-active {
         opacity: 1;
         animation: hero-carousel-zoom 10s ease-out forwards;
+        z-index: 2;
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -58,6 +69,7 @@
     &__scrim {
       position: absolute;
       inset: 0;
+      z-index: 1;
       background:
         linear-gradient(
           90deg,
