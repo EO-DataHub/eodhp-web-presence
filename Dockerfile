@@ -14,7 +14,7 @@ RUN npm install
 
 COPY assets ./assets
 COPY scripts ./scripts
-COPY webpack.config.js .eslintrc.js .stylelintrc ./
+COPY webpack.config.js ./
 
 RUN npm run build
 

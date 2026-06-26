@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 const path = require('path');
 
-const StyleLintPlugin = require('stylelint-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -37,19 +35,7 @@ module.exports = {
     static: [],
     watchFiles: ['assets/**/*'],
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new StyleLintPlugin({
-      failOnError: false,
-      configFile: '.stylelintrc',
-      files: ['**/*.sass'],
-      context: 'js-src',
-      quiet: false,
-      emitError: true,
-      cache: true,
-      customSyntax: 'postcss-sass',
-    }),
-  ],
+  plugins: [new webpack.HotModuleReplacementPlugin()],
   module: {
     rules: [
       {

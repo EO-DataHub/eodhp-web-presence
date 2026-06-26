@@ -94,7 +94,7 @@ function initHeroCarousel(root) {
     timer = setInterval(() => show(index + 1), interval);
   }
 
-  $backgrounds.each(function (i) {
+  $backgrounds.each((i) => {
     $('<button>', {
       type: 'button',
       class: 'hero-carousel__dot',

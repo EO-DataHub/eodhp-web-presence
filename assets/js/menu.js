@@ -1,8 +1,8 @@
 import $ from 'jquery';
 
-$(document).ready(function () {
+$(document).ready(() => {
   // Theme toggle
-  $('#dark-theme-toggle').on('click', function () {
+  $('#dark-theme-toggle').on('click', () => {
     $('body').toggleClass('light-theme dark-theme');
 
     // Update local storage
@@ -20,13 +20,13 @@ $(document).ready(function () {
     $('body').removeClass('dark-theme').addClass('light-theme');
   }
 
-  setTimeout(function () {
+  setTimeout(() => {
     $('body').removeClass('no-transition');
   }, 1000);
 
   // if on the home page, add transparent class to the menu
   if (window.location.pathname === '/') {
-    let $menu = $('.menu');
+    const $menu = $('.menu');
     $menu.addClass('transparent top dark-theme');
 
     $(window).on('scroll', function () {
@@ -39,15 +39,15 @@ $(document).ready(function () {
   }
 
   // Mobile hamburger toggle
-  $('#menuToggle').on('click', function () {
+  $('#menuToggle').on('click', () => {
     $('#mainMenu').toggleClass('open');
   });
 
-  const closeDropdowns = function ($dropdowns) {
+  const closeDropdowns = ($dropdowns) => {
     $dropdowns.removeClass('open').find('> .dropdown__toggle').attr('aria-expanded', 'false');
   };
 
-  const openDropdown = function ($dropdown) {
+  const openDropdown = ($dropdown) => {
     $dropdown.addClass('open').find('> .dropdown__toggle').attr('aria-expanded', 'true');
   };
 
@@ -76,7 +76,7 @@ $(document).ready(function () {
   });
 
   // close dropdown if user clicks outside
-  $(document).on('click', function (e) {
+  $(document).on('click', (e) => {
     if (!$(e.target).closest('.dropdown').length) {
       closeDropdowns($('.dropdown'));
     }
