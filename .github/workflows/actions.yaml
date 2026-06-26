@@ -13,8 +13,42 @@ on:
   pull_request: ~
 
 jobs:
-  qa:
+  qa-python:
     uses: EO-DataHub/github-actions/.github/workflows/qa-python.yaml@main
+
+  qa-frontend:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        with:
+          node-version: 22
+          cache: 'npm'
+          node-version-file: '.nvmrc'
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Lint and format JavaScript
+        run: npm run lint
+
+      # Uncomment when all warnings are fixed
+      # - name: Lint and format styles
+      #   run: npm run lint:css
+
+      - name: Build frontend assets
+        env:
+          GIT_REF_NAME: ${{ github.ref_name }}
+          GIT_SHA: ${{ github.sha }}
+        run: |
+          npm run build:icons
+          npm run build
 
   security-scan:
     name: Call Security Scan
@@ -22,10 +56,12 @@ jobs:
 
   unit-tests:
     name: Run unit tests
+    needs: qa-python
     uses: EO-DataHub/github-actions/.github/workflows/unit-tests-python-uv.yaml@main
 
   publish:
     name: Build and push Docker image
+    needs: [qa-frontend, unit-tests]
     uses: EO-DataHub/github-actions/.github/workflows/ecr-publish.yaml@main
     with:
       image_name: ${{ vars.IMAGE_NAME }}
