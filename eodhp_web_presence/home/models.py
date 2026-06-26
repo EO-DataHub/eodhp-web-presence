@@ -2,15 +2,19 @@ import datetime
 import logging
 from typing import ClassVar
 
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.utils import timezone
-from django.utils.text import slugify
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from django.utils.functional import cached_property
+from django.utils.html import strip_tags
+from django.utils.text import Truncator, slugify
+from modelcluster.fields import ParentalKey
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, PageChooserPanel
 from wagtail.fields import RichTextField, StreamField
-from wagtail.models import Page
+from wagtail.models import Orderable, Page
 from wagtail.snippets.models import register_snippet
 from wagtailcache.cache import WagtailCacheMixin, clear_cache
 
@@ -338,7 +342,150 @@ class HomePage(WagtailCacheMixin, Page):
             heading="Aim 4",
             classname="collapsed",
         ),
+        InlinePanel(
+            "featured_case_studies",
+            heading="Featured case studies (carousel)",
+            max_num=8,
+        ),
+        InlinePanel(
+            "hero_images",
+            heading="Hero imagery (background carousel)",
+            max_num=8,
+        ),
     ]
+
+    @property
+    def aims(self) -> list[dict]:
+        """The aim slots with a title set, as rendered by the platform tiles."""
+        slots = []
+        for i in range(1, 5):
+            title = getattr(self, f"aim_{i}_title")
+            if not title:
+                continue
+            slots.append(
+                {
+                    "title": title,
+                    "description": getattr(self, f"aim_{i}_description"),
+                    "image": getattr(self, f"aim_{i}_image"),
+                    "page": getattr(self, f"aim_{i}_page"),
+                }
+            )
+        return slots
+
+    @property
+    def featured_case_study_items(self) -> "models.QuerySet[FeaturedCaseStudy]":
+        return self.featured_case_studies.select_related("label", "image_override")
+
+
+class FeaturedCaseStudy(Orderable):
+    """Case study shown in the homepage carousel."""
+
+    SUMMARY_MAX_WORDS = 40
+    CASE_STUDIES_SECTION_SLUG = "case-studies"
+
+    page = ParentalKey(
+        "home.HomePage",
+        related_name="featured_case_studies",
+        on_delete=models.CASCADE,
+    )
+    case_study = models.ForeignKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="+",
+        help_text="A case study page (a page under the Case Studies section).",
+    )
+    label = models.ForeignKey(
+        "home.Label",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Optional sector badge shown on the slide.",
+    )
+    summary_override = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="Optional summary; defaults to the case study's intro text.",
+    )
+    image_override = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Optional image; defaults to the case study's hero image.",
+    )
+
+    panels: ClassVar[list] = [
+        PageChooserPanel("case_study", "home.GenericPage"),
+        FieldPanel("label"),
+        FieldPanel("summary_override"),
+        FieldPanel("image_override"),
+    ]
+
+    def clean(self) -> None:
+        super().clean()
+        if not self.case_study_id:
+            return
+        in_section = (
+            self.case_study.get_ancestors()
+            .filter(
+                models.Q(content_type=ContentType.objects.get_for_model(CaseStudiesPage))
+                | models.Q(slug=self.CASE_STUDIES_SECTION_SLUG)
+            )
+            .exists()
+        )
+        if not in_section:
+            raise ValidationError({"case_study": "Choose a page from the Case Studies section."})
+
+    @cached_property
+    def case_study_specific(self) -> Page:
+        return self.case_study.specific
+
+    @property
+    def display_image(self) -> models.Model | None:
+        if self.image_override:
+            return self.image_override
+        return getattr(self.case_study_specific, "hero_image", None)
+
+    @property
+    def display_summary(self) -> str:
+        if self.summary_override:
+            return self.summary_override
+        intro = getattr(self.case_study_specific, "intro", "")
+        return Truncator(strip_tags(str(intro))).words(self.SUMMARY_MAX_WORDS)
+
+    def __str__(self) -> str:
+        return f"Featured case study: {self.case_study}"
+
+
+class HeroCarouselImage(Orderable):
+    """An image shown in the homepage hero background carousel."""
+
+    page = ParentalKey(
+        "home.HomePage",
+        related_name="hero_images",
+        on_delete=models.CASCADE,
+    )
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        on_delete=models.CASCADE,
+        related_name="+",
+        help_text="Background image for the hero carousel.",
+    )
+    caption = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="Optional credit or caption shown on the slide.",
+    )
+
+    panels: ClassVar[list] = [
+        FieldPanel("image"),
+        FieldPanel("caption"),
+    ]
+
+    def __str__(self) -> str:
+        return f"Hero image: {self.image}"
 
 
 # ---------------------------------------------------------------------

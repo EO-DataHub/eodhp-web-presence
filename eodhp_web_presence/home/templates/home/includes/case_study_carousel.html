@@ -1,0 +1,57 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{% if items %}
+<div class="case-carousel case-carousel--cards"
+     data-carousel
+     {% if autoplay %}data-autoplay="{{ autoplay }}"{% endif %}
+     role="region"
+     aria-roledescription="carousel"
+     aria-label="Featured case studies">
+
+    <div class="case-carousel__viewport">
+        <ul class="case-carousel__track">
+            {% for item in items %}
+            <li class="case-carousel__slide"
+                role="group"
+                aria-roledescription="slide"
+                aria-label="{{ forloop.counter }} of {{ items|length }}">
+
+                <a class="case-carousel__card" href="{% pageurl item.case_study %}">
+                    <div class="case-carousel__media">
+                        {% if item.display_image %}
+                        {% image item.display_image fill-640x400 class="case-carousel__img" %}
+                        {% endif %}
+                    </div>
+                    <div class="case-carousel__body">
+                        {% if item.label %}
+                        <span class="case-carousel__badge case-carousel__badge--{{ item.label.color }}">{{ item.label.name }}</span>
+                        {% endif %}
+                        <h3 class="case-carousel__title">{{ item.case_study.title }}</h3>
+                        <p class="case-carousel__summary">{{ item.display_summary }}</p>
+                        <span class="more-link">
+                            Read case study
+                            <svg class="more-link__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                    </div>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="case-carousel__controls">
+        <button type="button" class="case-carousel__arrow case-carousel__arrow--prev" aria-label="Previous case study">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M15.5 4L6.5 12L15.5 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </button>
+        <div class="case-carousel__dots"></div>
+        <button type="button" class="case-carousel__arrow case-carousel__arrow--next" aria-label="Next case study">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M8.5 4L17.5 12L8.5 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </button>
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,45 @@
+// Reusable "more" link: a label + arrow with an animated underline and a
+// rightward nudge on hover. Theme-aware via CSS variables — set the
+// `--more-link-*` properties on an ancestor to recolour it,
+// otherwise it falls back to the site theme tokens.
+
+@mixin more-link-active {
+  color: var(--more-link-hover-color, var(--button-hover));
+  border-color: var(--more-link-hover-border, var(--button-hover));
+  text-decoration: none;
+
+  .more-link__arrow {
+    transform: translateX(4px);
+  }
+}
+
+.more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  color: var(--more-link-color, var(--button-bg));
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid var(--more-link-border, rgb(128 128 128 / 40%));
+  width: fit-content;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+
+  &__arrow {
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover {
+    @include more-link-active;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--more-link-focus-color, var(--button-bg, #4c72ba));
+    outline-offset: var(--more-link-focus-offset, 2px);
+  }
+}

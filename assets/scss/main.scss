@@ -3,6 +3,7 @@
 @use '../scss/fira';
 @use '../scss/menu';
 @use '../scss/footer';
+@use '../scss/components/more_link';
 @use '../scss/home';
 @use '../scss/components/button';
 @use '../scss/components/accordion';
@@ -17,4 +18,6 @@
 @use '../scss/components/mdi_icon';
 @use '../scss/components/cta_block';
 @use '../scss/components/notification_banner';
+@use '../scss/components/case_carousel';
+@use '../scss/components/section_kicker';
 @use '../scss/pages/accounts.scss';

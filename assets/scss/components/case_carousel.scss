@@ -1,0 +1,177 @@
+@use '../custom' as *;
+@use '../theme-colors' as *;
+@use 'more_link' as *;
+
+.case-carousel {
+  position: relative;
+
+  &__viewport {
+    overflow: hidden;
+    padding: 1rem 1rem 1.25rem;
+    margin: -1rem -1rem -1.25rem;
+  }
+
+  &__track {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  &__slide {
+    flex: 0 0 100%;
+    display: flex;
+    list-style: none;
+  }
+
+  &__badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: $radius-pill;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+    width: fit-content;
+  }
+
+  @each $name, $vals in $theme-colors {
+    &__badge--#{$name} {
+      background-color: nth($vals, 1);
+      color: nth($vals, 3);
+    }
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  &__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--text-primary);
+    border-radius: $radius-circle;
+    background: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition:
+      background-color 0.3s,
+      border-color 0.3s,
+      color 0.3s;
+
+    &:hover {
+      background-color: var(--button-bg);
+      border-color: var(--button-bg);
+      color: var(--button-text);
+    }
+
+    svg {
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+  }
+
+  &__dots {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__dot {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: none;
+    border-radius: $radius-circle;
+    background-color: rgb(128 128 128 / 35%);
+    cursor: pointer;
+    transition:
+      background-color 0.3s,
+      transform 0.3s;
+
+    &.is-active {
+      background-color: var(--button-bg);
+      transform: scale(1.25);
+    }
+  }
+
+  &__title {
+    margin: 0 !important;
+    color: var(--text-primary);
+    font-size: 1.15rem;
+    line-height: 1.4;
+  }
+
+  &__summary {
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  // ── Cards mode: sliding track of linked cards ─────────────────────
+  &--cards {
+    .case-carousel__slide {
+      flex-basis: calc((100% - 4rem) / 3);
+      margin-right: 2rem;
+
+      @media (max-width: $mobile-breakpoint) {
+        flex-basis: calc((100% - 2rem) / 2);
+      }
+
+      @media (width <= 767px) {
+        flex-basis: 100%;
+      }
+    }
+
+    .case-carousel__card {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      overflow: hidden;
+      border: var(--content-border);
+      border-radius: $radius-lg;
+      background-color: var(--background);
+      color: var(--text-primary);
+      text-decoration: none;
+      transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--card-shadow);
+        text-decoration: none;
+
+        .more-link {
+          @include more-link-active;
+        }
+      }
+    }
+
+    .case-carousel__img {
+      display: block;
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .case-carousel__body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1.5rem;
+    }
+
+    .case-carousel__summary {
+      color: var(--text-primary);
+      opacity: 0.75;
+    }
+  }
+}
