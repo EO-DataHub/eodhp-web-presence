@@ -27,8 +27,8 @@
     "jquery": "^4.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.29.6",
-    "@babel/preset-env": "7.29.2",
+    "@babel/core": "7.29.7",
+    "@babel/preset-env": "7.29.7",
     "@biomejs/biome": "2.5.1",
     "@mdi/svg": "^7.4.47",
     "babel-loader": "10.1.1",
