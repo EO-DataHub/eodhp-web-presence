@@ -56,7 +56,9 @@ function initCarousel(root) {
     $slides.each(function (i) {
       const hidden = i < visibleFrom || i >= visibleTo;
       $(this).attr('aria-hidden', hidden ? 'true' : 'false');
-      $(this).find('a, button').attr('tabindex', hidden ? -1 : 0);
+      $(this)
+        .find('a, button')
+        .attr('tabindex', hidden ? -1 : 0);
     });
   }
 

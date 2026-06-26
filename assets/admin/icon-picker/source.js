@@ -1,7 +1,7 @@
-import { openIconModal } from "./modal.js";
-import { isValidIconName, isValidSize, DEFAULT_SIZE } from "./icons.js";
+import { DEFAULT_SIZE, isValidIconName, isValidSize } from './icons.js';
+import { openIconModal } from './modal.js';
 
-const ZWSP = "\u200B";
+const ZWSP = '\u200B';
 
 export class IconSource extends window.React.Component {
   componentDidMount() {
@@ -21,19 +21,13 @@ export class IconSource extends window.React.Component {
             anchorKey: rawSelection.getFocusKey(),
             anchorOffset: rawSelection.getFocusOffset(),
           });
-      const contentWithEntity = content.createEntity(entityType.type, "IMMUTABLE", {
+      const contentWithEntity = content.createEntity(entityType.type, 'IMMUTABLE', {
         name: choice.name,
         size,
       });
       const entityKey = contentWithEntity.getLastCreatedEntityKey();
-      const newContent = Modifier.replaceText(
-        contentWithEntity,
-        selection,
-        ZWSP,
-        null,
-        entityKey,
-      );
-      const nextState = EditorState.push(editorState, newContent, "insert-characters");
+      const newContent = Modifier.replaceText(contentWithEntity, selection, ZWSP, null, entityKey);
+      const nextState = EditorState.push(editorState, newContent, 'insert-characters');
       onComplete(nextState);
     });
   }

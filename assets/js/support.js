@@ -10,7 +10,7 @@ const runSearch = (input) => {
     })
     .fail((error) => {
       console.log('Unable to search');
-      alert('Error: ' + error.statusText);
+      alert(`Error: ${error.statusText}`);
     });
 };
 

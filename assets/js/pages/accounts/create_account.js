@@ -1,22 +1,22 @@
 import $ from 'jquery';
 
-$(document).ready(function () {
-  $('#open-create-account').on('click', function () {
+$(document).ready(() => {
+  $('#open-create-account').on('click', () => {
     $('#create-account-modal').fadeIn();
   });
 
-  $('.close-button').on('click', function () {
+  $('.close-button').on('click', () => {
     $('#create-account-modal').fadeOut();
   });
 
-  $(window).on('click', function (e) {
+  $(window).on('click', (e) => {
     if ($(e.target).is('#create-account-modal')) {
       $('#create-account-modal').fadeOut();
     }
   });
 
   // On Submit
-  $('#create-account-form').on('submit', function (e) {
+  $('#create-account-form').on('submit', (e) => {
     e.preventDefault();
 
     const accountOwner = $('#account-owner').val().trim();
@@ -36,7 +36,7 @@ $(document).ready(function () {
       !agreeTerms
     ) {
       $('#create-account-message').text(
-        'Please complete all required fields and agree to the terms.'
+        'Please complete all required fields and agree to the terms.',
       );
       return;
     }
@@ -56,15 +56,15 @@ $(document).ready(function () {
       dataType: 'json',
       contentType: 'application/json',
       data: JSON.stringify(payload),
-      success: function (data) {
+      success: () => {
         $('#create-account-message')
           .css('color', '#4c72ba')
           .text('Account created successfully! Please wait while we refresh the list...');
-        setTimeout(function () {
+        setTimeout(() => {
           location.reload();
         }, 1500);
       },
-      error: function (xhr, status, error) {
+      error: () => {
         $('#create-account-message')
           .css('color', '#d9534f')
           .text('Failed to create account. Please try again.');

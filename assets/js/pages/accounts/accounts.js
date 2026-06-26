@@ -1,13 +1,13 @@
 import $ from 'jquery';
 
-$(document).ready(function () {
+$(document).ready(() => {
   function createAccountCard(account) {
     let workspacesHTML = '';
 
     if (account.workspaces && account.workspaces.length > 0) {
       workspacesHTML = '<ul>';
 
-      account.workspaces.forEach(function (ws) {
+      account.workspaces.forEach((ws) => {
         workspacesHTML += `<li>${ws.name}</li>`;
       });
 
@@ -43,7 +43,7 @@ $(document).ready(function () {
     if (data.length === 0) {
       container.append('<p class="placeholder">No accounts available.</p>');
     } else {
-      data.forEach(function (account) {
+      data.forEach((account) => {
         container.append(createAccountCard(account));
       });
     }
@@ -96,7 +96,7 @@ $(document).ready(function () {
       ],
     };
 
-    let accounts = [];
+    const accounts = [];
     for (let i = 0; i < placeholderAccountNum; i++) {
       accounts.push(account);
     }
@@ -107,11 +107,11 @@ $(document).ready(function () {
       url: '/api/accounts',
       method: 'GET',
       dataType: 'json',
-      success: function (data) {
+      success: (data) => {
         createAccountsContainer(data);
       },
 
-      error: function (xhr, status, error) {
+      error: (_xhr, _status, error) => {
         console.error('Error fetching accounts:', error);
 
         $('#accounts-container').html(

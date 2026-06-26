@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-$(document).ready(function () {
+$(document).ready(() => {
   var $banner = $('.notification-banner');
   if (!$banner.length) {
     return;
@@ -17,7 +17,7 @@ $(document).ready(function () {
     return;
   }
 
-  $banner.on('click', '.notification-banner__dismiss', function () {
+  $banner.on('click', '.notification-banner__dismiss', () => {
     localStorage.setItem('eodhp_banner_dismissed', dismissKey);
     $banner.remove();
   });

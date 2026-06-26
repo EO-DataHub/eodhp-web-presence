@@ -1,4 +1,4 @@
-import { loadIcons } from "./icons.js";
+import { loadIcons } from './icons.js';
 
 const PAGE_SIZE = 200;
 const SEARCH_DEBOUNCE_MS = 120;
@@ -11,12 +11,12 @@ const cellHtml = (i) =>
 
 export function openIconModal() {
   return new Promise((resolve) => {
-    const dialog = document.createElement("div");
-    dialog.className = "w-dialog";
-    dialog.setAttribute("aria-hidden", "true");
-    dialog.setAttribute("aria-modal", "true");
-    dialog.setAttribute("role", "dialog");
-    dialog.setAttribute("aria-label", "Insert Material Design icon");
+    const dialog = document.createElement('div');
+    dialog.className = 'w-dialog';
+    dialog.setAttribute('aria-hidden', 'true');
+    dialog.setAttribute('aria-modal', 'true');
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-label', 'Insert Material Design icon');
     dialog.innerHTML = `
       <div class="w-dialog__overlay"></div>
       <div class="w-dialog__box">
@@ -40,14 +40,14 @@ export function openIconModal() {
       </div>`;
     document.body.appendChild(dialog);
 
-    const overlay = dialog.querySelector(".w-dialog__overlay");
-    const closeBtn = dialog.querySelector(".mdi-picker__close");
-    const searchInput = dialog.querySelector(".mdi-picker__search");
-    const sizeButtons = dialog.querySelectorAll(".mdi-picker__size");
-    const grid = dialog.querySelector(".mdi-picker__grid");
-    const status = dialog.querySelector(".mdi-picker__status");
+    const overlay = dialog.querySelector('.w-dialog__overlay');
+    const closeBtn = dialog.querySelector('.mdi-picker__close');
+    const searchInput = dialog.querySelector('.mdi-picker__search');
+    const sizeButtons = dialog.querySelectorAll('.mdi-picker__size');
+    const grid = dialog.querySelector('.mdi-picker__grid');
+    const status = dialog.querySelector('.mdi-picker__status');
 
-    let selectedSize = "sm";
+    let selectedSize = 'sm';
     let allIcons = null;
     let filtered = null;
     let page = 0;
@@ -56,49 +56,52 @@ export function openIconModal() {
 
     const show = () => {
       previouslyFocused = document.activeElement;
-      dialog.removeAttribute("aria-hidden");
-      document.documentElement.style.overflowY = "hidden";
+      dialog.removeAttribute('aria-hidden');
+      document.documentElement.style.overflowY = 'hidden';
       searchInput.focus();
     };
 
     const close = (value) => {
-      document.removeEventListener("keydown", onKeydown);
-      dialog.setAttribute("aria-hidden", "true");
-      document.documentElement.style.overflowY = "";
+      document.removeEventListener('keydown', onKeydown);
+      dialog.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflowY = '';
       if (previouslyFocused) previouslyFocused.focus();
       dialog.remove();
       resolve(value);
     };
 
-    overlay.addEventListener("click", () => close(null));
-    closeBtn.addEventListener("click", () => close(null));
+    overlay.addEventListener('click', () => close(null));
+    closeBtn.addEventListener('click', () => close(null));
 
     const onKeydown = (e) => {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         e.preventDefault();
         close(null);
       }
     };
-    document.addEventListener("keydown", onKeydown);
+    document.addEventListener('keydown', onKeydown);
 
     const setSize = (size) => {
       selectedSize = size;
       sizeButtons.forEach((btn) => {
-        btn.setAttribute("aria-pressed", btn.dataset.size === size ? "true" : "false");
+        btn.setAttribute('aria-pressed', btn.dataset.size === size ? 'true' : 'false');
       });
     };
-    sizeButtons.forEach((btn) => btn.addEventListener("click", () => setSize(btn.dataset.size)));
+    sizeButtons.forEach((btn) => {
+      btn.addEventListener('click', () => setSize(btn.dataset.size));
+    });
 
     const renderPage = () => {
       if (!filtered) return;
       const end = Math.min((page + 1) * PAGE_SIZE, filtered.length);
       const slice = filtered.slice(page * PAGE_SIZE, end);
-      const fragment = slice.map(cellHtml).join("");
-      grid.insertAdjacentHTML("beforeend", fragment);
+      const fragment = slice.map(cellHtml).join('');
+      grid.insertAdjacentHTML('beforeend', fragment);
       page++;
       const loaded = Math.min(page * PAGE_SIZE, filtered.length);
       status.textContent =
-        `${filtered.length} icons` + (loaded < filtered.length ? ` — showing ${loaded}, scroll for more` : "");
+        `${filtered.length} icons` +
+        (loaded < filtered.length ? ` — showing ${loaded}, scroll for more` : '');
     };
 
     const filterIcons = (query) => {
@@ -106,23 +109,23 @@ export function openIconModal() {
       const q = query.toLowerCase().trim();
       filtered = q ? allIcons.filter((i) => i.searchText.includes(q)) : allIcons;
       page = 0;
-      grid.innerHTML = "";
+      grid.innerHTML = '';
       renderPage();
     };
 
-    searchInput.addEventListener("input", () => {
+    searchInput.addEventListener('input', () => {
       clearTimeout(searchTimer);
       searchTimer = setTimeout(() => filterIcons(searchInput.value), SEARCH_DEBOUNCE_MS);
     });
 
-    grid.addEventListener("scroll", () => {
+    grid.addEventListener('scroll', () => {
       if (grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 50) {
         renderPage();
       }
     });
 
-    grid.addEventListener("click", (e) => {
-      const cell = e.target.closest(".mdi-picker__cell");
+    grid.addEventListener('click', (e) => {
+      const cell = e.target.closest('.mdi-picker__cell');
       if (!cell) return;
       close({ name: cell.dataset.name, size: selectedSize });
     });
@@ -133,7 +136,7 @@ export function openIconModal() {
       .then((icons) => {
         allIcons = icons;
         filtered = icons;
-        grid.innerHTML = "";
+        grid.innerHTML = '';
         renderPage();
         show();
       })
