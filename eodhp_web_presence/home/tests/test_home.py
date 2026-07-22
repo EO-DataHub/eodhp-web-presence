@@ -243,8 +243,8 @@ class TestAccountsPage(TestCase):
         self.assertContains(response, "Your Profile")
         self.assertContains(response, "test-user")
         self.assertContains(response, "test-user@email.com")
-        self.assertContains(response, "Update Name")
-        self.assertContains(response, "Update Email")
+        self.assertContains(response, "Edit name")
+        self.assertContains(response, "Edit email")
         self.assertContains(response, reverse("keycloak_action", args=["update_profile"]))
         self.assertContains(response, reverse("keycloak_action", args=["update_email"]))
 

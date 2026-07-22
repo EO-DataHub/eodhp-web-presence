@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static mdi_tags %}
 
 {% block content %}
 
@@ -37,27 +37,31 @@
                 </div>
                 <div class="profile-card__info">
                     <h3>Name</h3>
-                    {% if profile.first_name or profile.last_name %}
-                    <p><strong>{{ profile.first_name }} {{ profile.last_name }}</strong></p>
-                    {% else %}
-                    <p class="placeholder">Not set</p>
-                    {% endif %}
+                    <div class="profile-card__value">
+                        {% if profile.first_name or profile.last_name %}
+                        <p><strong>{{ profile.first_name }} {{ profile.last_name }}</strong></p>
+                        {% else %}
+                        <p class="placeholder">Not set</p>
+                        {% endif %}
+                        <a href="{% url 'keycloak_action' 'update_profile' %}" class="profile-card__edit-link">
+                            {% mdi_icon "pencil-outline" %}
+                            <span>Edit name</span>
+                        </a>
+                    </div>
                 </div>
                 <div class="profile-card__info">
                     <h3>Email</h3>
-                    {% if profile.email %}
-                    <p><strong>{{ profile.email }}</strong></p>
-                    {% else %}
-                    <p class="placeholder">Not set</p>
-                    {% endif %}
-                </div>
-                <p class="profile-card__hint">
-                    Profile changes are completed securely in Keycloak. Changing your email address
-                    requires verification via Keycloak's &quot;Update email&quot; action.
-                </p>
-                <div class="profile-card__actions">
-                    <a href="{% url 'keycloak_action' 'update_profile' %}" class="button secondary-button">Update Name</a>
-                    <a href="{% url 'keycloak_action' 'update_email' %}" class="button secondary-button">Update Email</a>
+                    <div class="profile-card__value">
+                        {% if profile.email %}
+                        <p><strong>{{ profile.email }}</strong></p>
+                        {% else %}
+                        <p class="placeholder">Not set</p>
+                        {% endif %}
+                        <a href="{% url 'keycloak_action' 'update_email' %}" class="profile-card__edit-link">
+                            {% mdi_icon "pencil-outline" %}
+                            <span>Edit email</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
