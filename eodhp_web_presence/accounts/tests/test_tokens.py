@@ -46,6 +46,55 @@ class TestTokens(TestCase):
             tokens.UserClaims(username="test-user", email="test-user@email.com", admin=True),
         )
 
+    @override_settings(
+        OIDC_CLAIMS={
+            "ENABLED": True,
+            "USERNAME_PATH": "username",
+            "EMAIL_PATH": "email",
+            "GIVEN_NAME_PATH": "given_name",
+            "FAMILY_NAME_PATH": "family_name",
+            "ROLES_PATH": "roles",
+            "SUPERUSER_ROLE": "admin",
+            "MODERATOR_ROLE": "moderator",
+            "EDITOR_ROLE": "editor",
+        }
+    )
+    def test_extract_claims__valid_token_with_name__success(self):
+        bearer_token = "Bearer " + jwt.encode(
+            {
+                "username": "test-user",
+                "email": "test-user@email.com",
+                "given_name": "Test",
+                "family_name": "User",
+            },
+            "secret",
+            algorithm="HS256",
+        )
+        self.assertEqual(
+            tokens.extract_claims(bearer_token),
+            tokens.UserClaims(
+                username="test-user",
+                email="test-user@email.com",
+                given_name="Test",
+                family_name="User",
+            ),
+        )
+
+    def test_extract_claims__name_paths_not_configured__names_none(self):
+        bearer_token = "Bearer " + jwt.encode(
+            {
+                "username": "test-user",
+                "email": "test-user@email.com",
+                "given_name": "Test",
+                "family_name": "User",
+            },
+            "secret",
+            algorithm="HS256",
+        )
+        claims = tokens.extract_claims(bearer_token)
+        self.assertIsNone(claims.given_name)
+        self.assertIsNone(claims.family_name)
+
     def test_extract_claims__no_header__empty_claims(self):
         bearer_token = None
         self.assertEqual(

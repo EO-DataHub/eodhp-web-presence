@@ -13,6 +13,7 @@
 
             <br/><br/>
             To get started, create a new account using the button below or select an existing account to manage.
+            You can also view and update your personal profile below.
 
         </p>
 
@@ -21,6 +22,50 @@
                 <button id="open-create-account" class="button primary-button">Create New Account</button>
             </div>
         </section>
+    </section>
+    <section class="account-page__profile">
+        {% if profile %}
+        <div class="profile-card">
+            <div class="profile-card__avatar" aria-hidden="true">{{ profile.username|first|upper }}</div>
+            <div class="profile-card__details">
+                <div class="profile-card__header">
+                    <h2>Your Profile</h2>
+                </div>
+                <div class="profile-card__info">
+                    <h3>Username</h3>
+                    <p><strong>{{ profile.username }}</strong></p>
+                </div>
+                <div class="profile-card__info">
+                    <h3>Name</h3>
+                    {% if profile.first_name or profile.last_name %}
+                    <p><strong>{{ profile.first_name }} {{ profile.last_name }}</strong></p>
+                    {% else %}
+                    <p class="placeholder">Not set</p>
+                    {% endif %}
+                </div>
+                <div class="profile-card__info">
+                    <h3>Email</h3>
+                    {% if profile.email %}
+                    <p><strong>{{ profile.email }}</strong></p>
+                    {% else %}
+                    <p class="placeholder">Not set</p>
+                    {% endif %}
+                </div>
+                <p class="profile-card__hint">
+                    Profile changes are completed securely in Keycloak. Changing your email address
+                    requires verification via Keycloak's &quot;Update email&quot; action.
+                </p>
+                <div class="profile-card__actions">
+                    <a href="{% url 'keycloak_action' 'update_profile' %}" class="button secondary-button">Update Name</a>
+                    <a href="{% url 'keycloak_action' 'update_email' %}" class="button secondary-button">Update Email</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="profile-card profile-card--anonymous">
+            <p>You are not signed in. <a href="{% url 'sign_in' %}">Sign in</a> to view and manage your profile.</p>
+        </div>
+        {% endif %}
     </section>
     <section class="account-page__cards" id="accounts-container">
         <p class="loading-message">Loading accounts…</p>
@@ -66,4 +111,5 @@
       <div id="create-account-message" class="message"></div>
     </div>
   </div>
+
 {% endblock content %}

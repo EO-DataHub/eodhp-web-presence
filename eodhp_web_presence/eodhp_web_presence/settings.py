@@ -84,11 +84,22 @@ KEYCLOAK = {
     "LOGOUT_REDIRECT_URL": env("KEYCLOAK_LOGOUT_REDIRECT_URL", default="http://127.0.0.1"),
     "OAUTH2_PROXY_SIGNIN": env("OAUTH2_PROXY_SIGNIN", default="http://127.0.0.1/oauth2/start"),
     "OAUTH2_PROXY_SIGNOUT": env("OAUTH2_PROXY_SIGNOUT", default="http://127.0.0.1/oauth2/sign_out"),
+    # OIDC authorisation endpoint, used to trigger Keycloak required actions
+    # (e.g. UPDATE_EMAIL, UPDATE_PROFILE) via the kc_action parameter.
+    "AUTH_URL": env(
+        "KEYCLOAK_AUTH_URL",
+        default="http://127.0.0.1/keycloak/realms/master/protocol/openid-connect/auth",
+    ),
+    # Callback used after a required action completes. Defaults to the app's
+    # /accounts/kc-action/callback/ URL, which refreshes the oauth2-proxy session.
+    "KC_ACTION_REDIRECT_URL": env("KEYCLOAK_KC_ACTION_REDIRECT_URL", default=None),
 }
 OIDC_CLAIMS = {
     "ENABLED": env("OIDC_CLAIMS_ENABLED", cast=bool, default=False),
     "USERNAME_PATH": env("OIDC_CLAIMS_USERNAME_PATH", cast=str, default=None),
     "EMAIL_PATH": env("OIDC_CLAIMS_EMAIL_PATH", cast=str, default=None),
+    "GIVEN_NAME_PATH": env("OIDC_CLAIMS_GIVEN_NAME_PATH", cast=str, default=None),
+    "FAMILY_NAME_PATH": env("OIDC_CLAIMS_FAMILY_NAME_PATH", cast=str, default=None),
     "ROLES_PATH": env("OIDC_CLAIMS_ROLES_PATH", cast=str, default=None),
     "SUPERUSER_ROLE": env("OIDC_CLAIMS_SUPERUSER_ROLE", cast=str, default=None),
     "MODERATOR_ROLE": env("OIDC_CLAIMS_MODERATOR_ROLE", cast=str, default=None),

@@ -1,5 +1,6 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
+from django.views.decorators.cache import never_cache
 
 from eodhp_web_presence import settings
 
@@ -40,12 +41,27 @@ def eodhp_guide_page_view(request: HttpRequest) -> HttpResponse:
     )
 
 
+@never_cache
 def accounts_page_view(request: HttpRequest) -> HttpResponse:
     current_username = request.user.username
+
+    # Logged-in user's Keycloak profile, taken from the OIDC claims attached
+    # by the claims middleware when available, falling back to the user model.
+    claims = getattr(request, "claims", None)
+    profile = None
+    if request.user.is_authenticated:
+        profile = {
+            "username": current_username,
+            "first_name": (claims.given_name if claims else None) or request.user.first_name or "",
+            "last_name": (claims.family_name if claims else None) or request.user.last_name or "",
+            "email": (claims.email if claims else None) or request.user.email or "",
+        }
+
     return render(
         request=request,
         template_name="home/accounts_page.html",
         context={
             "username": current_username,
+            "profile": profile,
         },
     )

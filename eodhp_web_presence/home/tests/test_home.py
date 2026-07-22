@@ -1,6 +1,8 @@
 import pytest
+from accounts.models import User
 from django.core.exceptions import ValidationError
 from django.test import TestCase, override_settings
+from django.urls import reverse
 from wagtail.images.models import Image
 from wagtail.images.tests.utils import get_test_image_file
 
@@ -222,3 +224,32 @@ class TestFeaturedCaseStudy(FeaturedCaseStudiesTestMixin, TestCase):
 
         featured = FeaturedCaseStudy(page=self.home, case_study=renamed_case_study.page_ptr)
         featured.clean()
+
+
+@override_settings(WAGTAIL_CACHE=False)
+class TestAccountsPage(TestCase):
+    def test_profile_card_renders_for_authenticated_user(self):
+        user = User.objects.create(
+            username="test-user",
+            email="test-user@email.com",
+            first_name="Test",
+            last_name="User",
+        )
+        self.client.force_login(user)
+
+        response = self.client.get("/accounts/")
+
+        assert response.status_code == 200
+        self.assertContains(response, "Your Profile")
+        self.assertContains(response, "test-user")
+        self.assertContains(response, "test-user@email.com")
+        self.assertContains(response, "Update Name")
+        self.assertContains(response, "Update Email")
+        self.assertContains(response, reverse("keycloak_action", args=["update_profile"]))
+        self.assertContains(response, reverse("keycloak_action", args=["update_email"]))
+
+    def test_sign_in_prompt_renders_for_anonymous_user(self):
+        response = self.client.get("/accounts/")
+
+        assert response.status_code == 200
+        self.assertContains(response, "You are not signed in")
