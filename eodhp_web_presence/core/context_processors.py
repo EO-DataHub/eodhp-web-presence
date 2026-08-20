@@ -21,6 +21,7 @@ def menu_links(request: HttpRequest) -> dict[str, str]:
     return {
         "notebooks_url": settings.NOTEBOOKS["url"],
         "resource_catalogue_url": "/catalogue",
+        "sg_rc_ui_url": f"/static-apps/sg-rc-ui/{settings.ENV_NAME}/index.html",
         "workspaces_ui_url": get_workspaces_ui_url(request),
         "userdocs_url": userdocs_base,
         "userdocs_faqs_url": userdocs_base + settings.USERDOCS["faqs"],

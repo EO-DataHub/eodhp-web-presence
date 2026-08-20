@@ -218,6 +218,8 @@ if DATABASES["default"]["ENGINE"] == "django.db.backends.postgresql":
         "options": f"-c search_path={env('SQL_SCHEMA', default='public')}",
     }
 
+ENV_NAME = env("ENV_NAME", default="prod")
+
 RESOURCE_CATALOGUE = {
     "version": env("RESOURCE_CATALOGUE_VERSION", default="v1.0.0"),
     "url": env("RESOURCE_CATALOGUE_URL", default=None),

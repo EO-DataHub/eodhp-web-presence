@@ -20,6 +20,7 @@ class TestMenuTemplate(SimpleTestCase):
                 "notebooks_url": "/notebooks",
                 "workspaces_ui_url": "/workspaces",
                 "userdocs_url": "https://docs.example.com",
+                "sg_rc_ui_url": "/static-apps/sg-rc-ui/prod/index.html",
             },
         )
 
