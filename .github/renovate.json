@@ -6,6 +6,12 @@
       "matchPackageNames": ["stylelint", "/^stylelint-/"],
       "matchUpdateTypes": ["major", "minor", "patch"],
       "groupName": "stylelint"
+    },
+    {
+      "description": "wagtail-cache imports django.utils.cache.cc_delim_re, removed in Django 6.1; drop once coderedcorp/wagtail-cache#88 ships",
+      "matchManagers": ["pep621"],
+      "matchPackageNames": ["Django"],
+      "allowedVersions": "<6.1"
     }
   ]
 }

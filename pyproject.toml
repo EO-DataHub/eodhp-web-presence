@@ -39,7 +39,6 @@ dependencies = [
   "boto3",
   "django-storages",
   "pyjwt",
-  "jinja2>=3.1.4",
   "wagtailcodeblock>=1.29.0.2",
   "gunicorn",
   "gevent",
