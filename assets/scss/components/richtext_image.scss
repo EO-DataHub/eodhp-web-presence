@@ -1,0 +1,42 @@
+@use '../custom' as *;
+
+// Wagtail rich text images (`img.richtext-image full-width|left|right`) ship unstyled.
+.richtext-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-block: 1rem;
+  border-radius: $radius-md;
+
+  &.full-width {
+    width: 100%;
+  }
+
+  &.left {
+    float: left;
+    max-width: 50%;
+    margin-inline: 0 1rem;
+  }
+
+  &.right {
+    float: right;
+    max-width: 50%;
+    margin-inline: 1rem 0;
+  }
+
+  @media (max-width: 600px) {
+    &.left,
+    &.right {
+      float: none;
+      max-width: 100%;
+      margin-inline: 0;
+    }
+  }
+}
+
+// Contain floated rich text images within their block.
+.accordion__content,
+.content-block__paragraph,
+.generic-page__intro {
+  display: flow-root;
+}
