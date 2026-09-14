@@ -43,13 +43,8 @@ $(document).ready(() => {
     $('#mainMenu').toggleClass('open');
   });
 
-  const closeSubMenus = ($subs) => {
-    $subs.removeClass('open').find('> .dropdown__sub-toggle').attr('aria-expanded', 'false');
-  };
-
   const closeDropdowns = ($dropdowns) => {
     $dropdowns.removeClass('open').find('> .dropdown__toggle').attr('aria-expanded', 'false');
-    closeSubMenus($dropdowns.find('.dropdown__sub'));
   };
 
   const openDropdown = ($dropdown) => {
@@ -70,25 +65,6 @@ $(document).ready(() => {
       closeDropdowns($parent);
     } else {
       openDropdown($parent);
-    }
-  });
-
-  // Account menu sub-items (username, Workspace settings, My data) open on
-  // hover via CSS on desktop; this click handler covers touch/keyboard use.
-  $('.dropdown__sub-toggle').on('click', function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const $sub = $(this).closest('.dropdown__sub');
-    const isOpen = $sub.hasClass('open');
-
-    closeSubMenus($sub.siblings('.dropdown__sub'));
-
-    if (isOpen) {
-      closeSubMenus($sub);
-    } else {
-      $sub.addClass('open');
-      $(this).attr('aria-expanded', 'true');
     }
   });
 

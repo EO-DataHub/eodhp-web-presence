@@ -92,7 +92,8 @@
         <img class="arrow" src="{% static 'img/general/arrow-down.svg' %}" alt="" aria-hidden="true" />
       </button>
       <div class="dropdown__menu" id="account-menu-mobile">
-        {% include "account_menu_items.html" %}
+        <a href="/accounts">Manage Account</a>
+        <a href="{% url 'sign_out' %}">Sign out</a>
       </div>
     </div>
     {% else %}
@@ -139,7 +140,8 @@
         </svg>
       </button>
       <div class="dropdown__menu_r" id="account-menu-desktop">
-        {% include "account_menu_items.html" %}
+        <a href="/accounts">{{ user.username }}</a>
+        <a href="{% url 'sign_out' %}">Sign out</a>
       </div>
     </div>
     {% else %}
