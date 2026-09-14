@@ -1,0 +1,60 @@
+{% load static %}
+
+<div class="dropdown__sub">
+  <button type="button" class="dropdown__sub-toggle" aria-expanded="false" aria-haspopup="true">
+    <strong>{{ user.username }}</strong>
+    <img class="chevron" src="{% static 'img/general/arrow-down.svg' %}" alt="" aria-hidden="true" />
+  </button>
+  <div class="dropdown__sub-menu">
+    <a href="{{ sg_rc_ui_url }}#/profile/identity">Identity</a>
+    <a href="{{ sg_rc_ui_url }}#/profile/accounts">Accounts</a>
+    <a href="{{ sg_rc_ui_url }}#/profile/workspaces">Workspaces</a>
+  </div>
+</div>
+
+<hr class="dropdown__divider" />
+
+<div class="dropdown__sub">
+  <button type="button" class="dropdown__sub-toggle" aria-expanded="false" aria-haspopup="true">
+    <span>Workspace settings</span>
+    <img class="chevron" src="{% static 'img/general/arrow-down.svg' %}" alt="" aria-hidden="true" />
+  </button>
+  <div class="dropdown__sub-menu">
+    <a href="{{ sg_rc_ui_url }}#/settings/members">Members</a>
+    <a href="{{ sg_rc_ui_url }}#/settings/credentials">Credentials</a>
+    <a href="{{ sg_rc_ui_url }}#/settings/provider-accounts">Provider accounts</a>
+  </div>
+</div>
+
+<div class="dropdown__static-item" aria-disabled="true">
+  <span>Accounting / Billing</span>
+  <span class="badge">Soon</span>
+</div>
+
+<div class="dropdown__static-item" aria-disabled="true">
+  <span>Publishing</span>
+  <span class="badge">Soon</span>
+</div>
+
+<div class="dropdown__sub">
+  <button type="button" class="dropdown__sub-toggle" aria-expanded="false" aria-haspopup="true">
+    <span>My data</span>
+    <img class="chevron" src="{% static 'img/general/arrow-down.svg' %}" alt="" aria-hidden="true" />
+  </button>
+  <div class="dropdown__sub-menu">
+    <a href="{{ sg_rc_ui_url }}#/my-data/purchased">Purchased data</a>
+    <a href="{{ sg_rc_ui_url }}#/my-data/workflow-outputs">Workflow outputs</a>
+    <a href="{{ sg_rc_ui_url }}#/my-data/data-storage">Files</a>
+  </div>
+</div>
+
+<hr class="dropdown__divider" />
+
+<a class="dropdown__logout" href="{% url 'sign_out' %}">
+  <span>Log out</span>
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <path
+      d="M1.5 1.5H6.5V2.5H2.5V12.5H6.5V13.5H1.5C1.22386 13.5 1 13.2761 1 13V2C1 1.72386 1.22386 1.5 1.5 1.5ZM10.2929 4.29289L13.6464 7.64645C13.8417 7.84171 13.8417 8.15829 13.6464 8.35355L10.2929 11.7071L9.58579 11L11.6716 8.91421H5V7.91421H11.6716L9.58579 6.00711L10.2929 4.29289Z"
+      fill="currentColor" />
+  </svg>
+</a>
