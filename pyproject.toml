@@ -28,7 +28,7 @@ classifiers = [
 ]
 
 dependencies = [
-  "Django>=5.2.12",
+  "Django>=5.2.12,<6.1", # wagtail-cache imports django.utils.cache.cc_delim_re, removed in 6.1
   "wagtail>=7.3.1",
   "psycopg2-binary",
   "django-environ",
