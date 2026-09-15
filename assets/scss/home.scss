@@ -14,7 +14,7 @@
     overflow: hidden;
     color: #fff;
 
-    @media (max-width: $mobile-breakpoint) {
+    @media (max-width: $menu-breakpoint) {
       margin-top: -45px;
     }
 
@@ -97,7 +97,7 @@
       width: 100%;
       padding: 74px clamp(1.5rem, 6vw, 5rem) 0;
 
-      @media (max-width: $mobile-breakpoint) {
+      @media (max-width: $menu-breakpoint) {
         padding-top: 45px;
       }
 
@@ -262,7 +262,7 @@
     margin-top: -74px;
     overflow: hidden;
 
-    @media (max-width: $mobile-breakpoint) {
+    @media (max-width: $menu-breakpoint) {
       margin-top: -45px;
     }
 
@@ -296,7 +296,7 @@
       width: 80%;
       padding-top: 74px;
 
-      @media (max-width: $mobile-breakpoint) {
+      @media (max-width: $menu-breakpoint) {
         padding-top: 45px;
       }
     }
