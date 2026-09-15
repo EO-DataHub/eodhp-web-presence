@@ -170,10 +170,8 @@
       padding-top: 0;
     }
 
-    // One measure for headings, paragraphs and lists; spacing the `html *` reset removed.
+    // Restores the paragraph spacing the `html *` reset removed.
     &-content {
-      max-width: 860px;
-
       > * + * {
         margin-top: 1rem;
       }
