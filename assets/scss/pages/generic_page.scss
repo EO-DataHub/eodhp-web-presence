@@ -170,11 +170,23 @@
       padding-top: 0;
     }
 
-    p {
+    // One measure for headings, paragraphs and lists; spacing the `html *` reset removed.
+    &-content {
       max-width: 860px;
-      font-size: 1.2rem;
-      line-height: 1.65;
-      margin: 0;
+
+      > * + * {
+        margin-top: 1rem;
+      }
+
+      p,
+      li {
+        font-size: 1.2rem;
+        line-height: 1.65;
+      }
+
+      p:empty {
+        display: none;
+      }
     }
   }
 

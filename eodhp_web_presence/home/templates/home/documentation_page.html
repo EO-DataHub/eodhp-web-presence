@@ -16,7 +16,7 @@
     {% if page.intro %}
     <section class="generic-page__intro {% bg_classes page.intro_background_color page.intro_full_width_background %}">
         {% include "breadcrumbs.html" %}
-        <p>{{ page.intro|richtext }}</p>
+        <div class="generic-page__intro-content">{{ page.intro|richtext }}</div>
     </section>
     {% else %}
     {% include "breadcrumbs.html" %}
