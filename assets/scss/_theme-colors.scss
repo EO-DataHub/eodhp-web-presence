@@ -2,17 +2,18 @@
 
 // ── Primary colour palette ─────────────────────────────────────────
 // Reusable map for any component that needs palette-based modifiers.
-// Each entry: slug → (primary, hover, text-color, secondary)
+// Each entry: slug → (primary, hover, text-color, secondary, link-color)
+// link-color needs ≥ 4.5:1 on primary (hence black on orange).
 
 $theme-colors: (
-  "nceo-purple": (#4c72ba, #3f64ab, #fff, #1a273f),
-  "navy":        (#1a273f, #2a3559, #fff, #4c72ba),
-  "light-grey":  (#f3f3f3, #e6e8ec, #000, #637189),
-  "steel":       (#637189, #56647a, #fff, #1a273f),
-  "blue":        (#2a3559, #34416b, #fff, #4c72ba),
-  "green":       (#2e7d32, #388e3c, #fff, #1b5e20),
-  "orange":      (#e65100, #ef6c00, #fff, #bf360c),
-  "red":         (#c62828, #d32f2f, #fff, #8e0000),
+  "nceo-purple": (#4c72ba, #3f64ab, #fff, #1a273f, #fff),
+  "navy":        (#1a273f, #2a3559, #fff, #4c72ba, #c7d4f5),
+  "light-grey":  (#f3f3f3, #e6e8ec, #000, #637189, #2c4f8f),
+  "steel":       (#637189, #56647a, #fff, #1a273f, #fff),
+  "blue":        (#2a3559, #34416b, #fff, #4c72ba, #c7d4f5),
+  "green":       (#2e7d32, #388e3c, #fff, #1b5e20, #fff),
+  "orange":      (#e65100, #ef6c00, #fff, #bf360c, #000),
+  "red":         (#c62828, #d32f2f, #fff, #8e0000, #fff),
 );
 
 // ── Generic background utility classes ─────────────────────────────
@@ -21,14 +22,38 @@ $theme-colors: (
   $bg:   nth($vals, 1);
   $sec:  nth($vals, 4);
   $text: nth($vals, 3);
+  $link: nth($vals, 5);
+
+  // Underline links on white-text backgrounds so they differ from body text.
+  $link-decoration: none;
+  @if $text == #fff {
+    $link-decoration: underline;
+  }
 
   .bg--#{$name} {
     background-color: #{$bg};
     color: #{$text};
     --theme-primary: #{$bg};
     --theme-secondary: #{$sec};
+    --theme-link-color: #{$link};
+    --theme-link-decoration: #{$link-decoration};
     padding: 1.25rem;
     border-radius: $radius-md;
+  }
+}
+
+// ── Rich text links inside themed sections ─────────────────────────
+// (0,2,2) beats `.content-page a` (0,2,1); the custom properties inherit
+// from the nearest .bg--* ancestor. Accordion panels handle their own.
+.content-page [class*="bg--"] :is(p, li, h1, h2, h3, h4, h5, h6, blockquote, figcaption, dd, td) a:where(:not(.accordion__content *, .faq-card *, .breadcrumbs *)) {
+  color: var(--theme-link-color);
+  text-decoration: var(--theme-link-decoration);
+  text-decoration-color: color-mix(in srgb, var(--theme-link-color) 55%, transparent);
+  text-underline-offset: 3px;
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-color: currentcolor;
   }
 }
 

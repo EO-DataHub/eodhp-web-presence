@@ -105,11 +105,32 @@ details[open] > .accordion__header .accordion__chevron {
 @each $name, $vals in $theme-colors {
     $bg:   nth($vals, 1);
     $text: nth($vals, 3);
+    $link: nth($vals, 5);
+
+    $link-decoration: none;
+    @if $text == #fff {
+        $link-decoration: underline;
+    }
 
     .accordion--content-#{$name} {
         .accordion__content {
             --accordion-content-bg: #{$bg};
+            --theme-link-color: #{$link};
+            --theme-link-decoration: #{$link-decoration};
             color: #{$text};
         }
+    }
+}
+
+// Coloured panels: links follow the panel palette. (0,2,2) beats `.content-page a`.
+[class*="accordion--content-"] .accordion__content :is(p, li, h1, h2, h3, h4, h5, h6, blockquote, figcaption, dd, td) a {
+    color: var(--theme-link-color);
+    text-decoration: var(--theme-link-decoration);
+    text-decoration-color: color-mix(in srgb, var(--theme-link-color) 55%, transparent);
+    text-underline-offset: 3px;
+
+    &:hover {
+        text-decoration: underline;
+        text-decoration-color: currentcolor;
     }
 }

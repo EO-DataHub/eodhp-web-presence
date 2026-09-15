@@ -219,6 +219,10 @@
       color: var(--inverse-text);
       border-left: 4px solid var(--button-bg);
       font-style: italic;
+
+      // Links follow the inverse background, not the enclosing .bg--* palette.
+      --theme-link-color: var(--inverse-link);
+      --theme-link-decoration: underline;
     }
 
     .content-block {
