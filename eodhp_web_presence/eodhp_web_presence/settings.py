@@ -75,6 +75,8 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",  # Keep the default backend for admin access
 ]
 
+_KEYCLOAK_REALM = env("KEYCLOAK_REALM", default="eodhp")
+
 KEYCLOAK = {
     "CLIENT_ID": env("KEYCLOAK_CLIENT_ID", default="oauth2-proxy"),
     "LOGOUT_URL": env(
@@ -84,6 +86,17 @@ KEYCLOAK = {
     "LOGOUT_REDIRECT_URL": env("KEYCLOAK_LOGOUT_REDIRECT_URL", default="http://127.0.0.1"),
     "OAUTH2_PROXY_SIGNIN": env("OAUTH2_PROXY_SIGNIN", default="http://127.0.0.1/oauth2/start"),
     "OAUTH2_PROXY_SIGNOUT": env("OAUTH2_PROXY_SIGNOUT", default="http://127.0.0.1/oauth2/sign_out"),
+    "REALM": _KEYCLOAK_REALM,
+    # Keycloak is hosted alongside the app at the same domain (BASE_URL), under /keycloak.
+    # Used to verify JWT signatures rather than trusting them unchecked. Overridable directly
+    # for deployments where Keycloak lives elsewhere.
+    "CERTS_URL": env(
+        "KEYCLOAK_CERTS_URL",
+        default="{base_url}/keycloak/realms/{realm}/protocol/openid-connect/certs".format(
+            base_url=env("BASE_URL", default="http://127.0.0.1"),
+            realm=_KEYCLOAK_REALM,
+        ),
+    ),
 }
 OIDC_CLAIMS = {
     "ENABLED": env("OIDC_CLAIMS_ENABLED", cast=bool, default=False),

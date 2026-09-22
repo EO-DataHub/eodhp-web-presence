@@ -1,14 +1,35 @@
 import logging
 import re
 from dataclasses import dataclass
+from functools import lru_cache
 
 import jwt
 from django.conf import settings
+from jwt import PyJWKClient, PyJWTError
 
 logger = logging.getLogger(__name__)
 
 
 CLAIMS_KEY_PATTERN = re.compile(r"(?<!\\)\.")  # delimit on '.' but not '\.'
+
+# The client IDs tokens for this platform are actually issued under, per the reference
+# implementation in eodh-ac-api/wf-catalogue-service/accounting-service. The deployment's
+# configured client ID (settings.KEYCLOAK["CLIENT_ID"]) is always included too, in case it
+# differs from this reference list.
+_REFERENCE_AUDIENCE = ["oauth2-proxy-workspaces", "oauth2-proxy", "account"]
+
+
+def _jwt_audience() -> list[str]:
+    return list(dict.fromkeys([settings.KEYCLOAK["CLIENT_ID"], *_REFERENCE_AUDIENCE]))
+
+
+@lru_cache
+def _jwks_client() -> PyJWKClient:
+    """One client per process, so the JWKS document is cached rather than re-fetched from
+    Keycloak on every request. PyJWKClient does this caching internally, but only across
+    calls on the same instance.
+    """
+    return PyJWKClient(settings.KEYCLOAK["CERTS_URL"])
 
 
 @dataclass(frozen=True)
@@ -39,8 +60,15 @@ def extract_claims(auth_header: str | None) -> UserClaims:
 
     token = auth_header.removeprefix("Bearer ")
     try:
-        data: dict[str, str | dict] = jwt.decode(token, options={"verify_signature": False}, algorithms=["HS256"])
-    except (jwt.DecodeError, jwt.ExpiredSignatureError, jwt.InvalidSignatureError):
+        signing_key = _jwks_client().get_signing_key_from_jwt(token)
+        data: dict[str, str | dict] = jwt.decode(
+            token,
+            signing_key.key,
+            audience=_jwt_audience(),
+            algorithms=["RS256"],
+        )
+    except PyJWTError:
+        logger.warning("JWT signature verification failed", exc_info=True)
         return UserClaims()
 
     # Extract claims from the token, validate types
