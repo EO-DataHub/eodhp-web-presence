@@ -86,6 +86,23 @@ set -a  # enable export of all env vars from shell
 
 This is not necessary for `make run` or other make targets.
 
+### Hub users (Keycloak admin API)
+
+Superusers (Keycloak users holding the role named by `OIDC_CLAIMS_SUPERUSER_ROLE`) get a read-only "Hub users" page in the Wagtail admin with a CSV download. It reads live from the Keycloak Admin REST API and stores nothing. The feature is off, and the menu item hidden, until `KEYCLOAK_ADMIN_CLIENT_SECRET` is set.
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `KEYCLOAK_ADMIN_BASE_URL` | `http://localhost:8080` | Keycloak root, including any relative path (e.g. `https://<domain>/keycloak`) |
+| `KEYCLOAK_REALM` | `eodhp` | Realm whose users are listed |
+| `KEYCLOAK_ADMIN_CLIENT_ID` | `web-presence-admin` | Confidential client with a service account |
+| `KEYCLOAK_ADMIN_CLIENT_SECRET` | unset | Client secret; enables the feature |
+| `KEYCLOAK_ADMIN_TIMEOUT` | `10` | HTTP timeout in seconds |
+| `KEYCLOAK_ADMIN_PAGE_SIZE` | `200` | Rows fetched per Keycloak request |
+
+The Keycloak client must be confidential with service accounts enabled and standard, implicit and direct-access flows disabled. Its service account must hold only the `realm-management` client roles `view-users` and `query-users`. Do not grant it anything else.
+
+Access is checked against the bearer token on every request, and that token is trusted without signature verification, so the app must only be reachable through oauth2-proxy.
+
 ## Testing
 
 ```bash
