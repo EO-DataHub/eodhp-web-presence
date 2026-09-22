@@ -7,6 +7,7 @@ from django.conf import settings
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
 from django.urls import reverse
+from wagtail.users.models import UserProfile
 
 from ..keycloak_admin import HubUser, KeycloakAdminUnavailable
 from ..models import User
@@ -236,6 +237,18 @@ class HubUsersViewsTestCase(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.BAD_GATEWAY)
         self.assertNotIn("=cmd", response.content.decode())
         self.assertNotIn("Content-Disposition", response)
+
+    @override_settings(KEYCLOAK=KEYCLOAK_ENABLED, OIDC_CLAIMS=OIDC_CLAIMS_DISABLED)
+    def test_index__created_shown_in_utc_regardless_of_profile_timezone(self):
+        profile = UserProfile.get_for_user(self.superuser)
+        profile.current_time_zone = "Pacific/Auckland"
+        profile.save()
+        self.client.force_login(self.superuser)
+
+        response = self.client.get(self.index_url)
+
+        self.assertContains(response, "2024-01-02 03:04 UTC")
+        self.assertNotContains(response, "2024-01-02 16:04")
 
     @override_settings(KEYCLOAK=KEYCLOAK_ENABLED, OIDC_CLAIMS=OIDC_CLAIMS_DISABLED)
     def test_index__search_form_submits_with_visible_button(self):

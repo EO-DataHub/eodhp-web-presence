@@ -1,5 +1,5 @@
 {% extends "wagtailadmin/generic/base.html" %}
-{% load wagtailadmin_tags %}
+{% load tz wagtailadmin_tags %}
 
 {% block main_header %}
     {% include "wagtailadmin/shared/header.html" with title=page_title icon=header_icon action_url=export_url action_text="Download CSV" action_icon="download" only %}
@@ -41,7 +41,7 @@
                         </td>
                         <td>{{ user.first_name|default:"" }} {{ user.last_name|default:"" }}</td>
                         <td>{% if user.enabled %}Yes{% else %}No{% endif %}</td>
-                        <td>{% if user.created %}{{ user.created|date:"Y-m-d H:i" }} UTC{% endif %}</td>
+                        <td>{% if user.created %}{% localtime off %}{{ user.created|date:"Y-m-d H:i" }}{% endlocaltime %} UTC{% endif %}</td>
                     </tr>
                 {% endfor %}
             </tbody>
