@@ -2,10 +2,15 @@
 {% load wagtailadmin_tags %}
 
 {% block main_header %}
-    {% include "wagtailadmin/shared/header.html" with title=page_title icon=header_icon search_url="hub_users_index" search_form=search_form search_disable_async=True action_url=export_url action_text="Download CSV" action_icon="download" only %}
+    {% include "wagtailadmin/shared/header.html" with title=page_title icon=header_icon action_url=export_url action_text="Download CSV" action_icon="download" only %}
 {% endblock %}
 
 {% block main_content %}
+    <form method="get" action="{% url 'hub_users_index' %}" role="search" class="w-flex w-items-end w-gap-3 w-mb-4">
+        {% formattedfield field=search_form.q classname="w-mb-0" sr_only_label=True icon="search" %}
+        <button type="submit" class="button">Search</button>
+    </form>
+
     <p>
         {% if search %}
             {{ total }} user{{ total|pluralize }} matching "{{ search }}"

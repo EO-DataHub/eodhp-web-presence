@@ -1,13 +1,13 @@
 import csv
+import io
 import logging
-from collections.abc import Iterator
 from datetime import UTC, datetime
 from urllib.parse import quote, urlencode
 
 from django.conf import settings
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect, StreamingHttpResponse
+from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from wagtail.admin.forms.search import SearchForm
@@ -85,11 +85,6 @@ def hub_users_index(request: HttpRequest) -> HttpResponse:
     )
 
 
-class Echo:
-    def write(self, value: str) -> str:
-        return value
-
-
 def csv_cell(value: object) -> str:
     if value is None:
         return ""
@@ -125,31 +120,21 @@ def hub_users_export(request: HttpRequest) -> HttpResponse:
     search = request.GET.get("q", "").strip()
     username = request.user.get_username()
 
+    # Fetch everything first so a Keycloak failure gives an error, not a short CSV that looks complete
     try:
-        users = client.iter_users(search=search or None)
-        first_user = next(users, None)
+        users = list(client.iter_users(search=search or None))
     except KeycloakAdminError:
         logger.exception("Could not export hub users")
         return HttpResponse("Could not reach the identity service.", status=502, content_type="text/plain")
 
-    def rows() -> Iterator[str]:
-        writer = csv.writer(Echo())
-        count = 0
-        yield writer.writerow(CSV_COLUMNS)
-        try:
-            for user in [first_user] if first_user else []:
-                count += 1
-                yield writer.writerow(csv_row(user))
-            for user in users:
-                count += 1
-                yield writer.writerow(csv_row(user))
-        except KeycloakAdminError:
-            logger.exception("Hub users export interrupted after %d rows", count)
-        finally:
-            audit_logger.info("hub-users export by user=%s search=%r rows=%d", username, search, count)
+    buffer = io.StringIO()
+    writer = csv.writer(buffer)
+    writer.writerow(CSV_COLUMNS)
+    writer.writerows(csv_row(user) for user in users)
+    audit_logger.info("hub-users export by user=%s search=%r rows=%d", username, search, len(users))
 
     stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
-    response = StreamingHttpResponse(rows(), content_type="text/csv; charset=utf-8")
+    response = HttpResponse(buffer.getvalue(), content_type="text/csv; charset=utf-8")
     response["Content-Disposition"] = f'attachment; filename="eodh-hub-users-{stamp}.csv"'
     response["Cache-Control"] = "no-store"
     response["X-Content-Type-Options"] = "nosniff"

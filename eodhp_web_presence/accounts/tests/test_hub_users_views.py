@@ -192,7 +192,7 @@ class HubUsersViewsTestCase(TestCase):
 
         with self.assertLogs("accounts.audit", level="INFO") as logs:
             response = self.client.get(self.export_url, {"q": "x"})
-            body = b"".join(response.streaming_content).decode()
+            body = response.content.decode()
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(response["Content-Type"], "text/csv; charset=utf-8")
@@ -219,6 +219,34 @@ class HubUsersViewsTestCase(TestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.BAD_GATEWAY)
         self.assertNotIn("Content-Disposition", response)
+
+    @override_settings(KEYCLOAK=KEYCLOAK_ENABLED, OIDC_CLAIMS=OIDC_CLAIMS_DISABLED)
+    def test_export__keycloak_error_after_first_page__502_not_partial_csv(self):
+        self.client.force_login(self.superuser)
+
+        def users_then_error():
+            yield USERS[0]
+            raise KeycloakAdminUnavailable("down")
+
+        self.get_client.return_value.iter_users.return_value = users_then_error()
+
+        with self.assertNoLogs("accounts.audit", level="INFO"):
+            response = self.client.get(self.export_url)
+
+        self.assertEqual(response.status_code, HTTPStatus.BAD_GATEWAY)
+        self.assertNotIn("=cmd", response.content.decode())
+        self.assertNotIn("Content-Disposition", response)
+
+    @override_settings(KEYCLOAK=KEYCLOAK_ENABLED, OIDC_CLAIMS=OIDC_CLAIMS_DISABLED)
+    def test_index__search_form_submits_with_visible_button(self):
+        self.client.force_login(self.superuser)
+
+        response = self.client.get(self.index_url, {"q": "zo"})
+
+        self.assertContains(response, f'<form method="get" action="{self.index_url}" role="search"')
+        self.assertContains(response, '<button type="submit" class="button">Search</button>')
+        self.assertNotContains(response, "<input disabled")
+        self.assertContains(response, 'value="zo"')
 
     @override_settings(KEYCLOAK=KEYCLOAK_ENABLED, OIDC_CLAIMS=OIDC_CLAIMS_DISABLED)
     def test_export__anonymous_redirected(self):
