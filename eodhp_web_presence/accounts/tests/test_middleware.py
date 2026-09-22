@@ -1,7 +1,6 @@
 from http import HTTPStatus
 from unittest import mock
 
-import jwt
 from django.contrib.auth.middleware import AuthenticationMiddleware
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.sessions.middleware import SessionMiddleware
@@ -12,6 +11,7 @@ from django.test.utils import override_settings
 from ..middleware import ClaimsMiddleware
 from ..models import User
 from ..tokens import UserClaims
+from .jwt_helpers import mock_jwks, sign_token
 
 factory = RequestFactory()
 
@@ -29,6 +29,10 @@ factory = RequestFactory()
 )
 class ClaimsMiddlewareTestCase(TestCase):
     def setUp(self):
+        self._mock_jwks = mock_jwks()
+        self._mock_jwks.__enter__()
+        self.addCleanup(self._mock_jwks.__exit__, None, None, None)
+
         self.view = mock.MagicMock(return_value=HttpResponse("OK", status=200))
         self.middleware = SessionMiddleware(
             get_response=AuthenticationMiddleware(
@@ -39,13 +43,9 @@ class ClaimsMiddlewareTestCase(TestCase):
         )
 
     def test_call__valid_token__auth(self):
-        auth_header = "Bearer " + jwt.encode(
-            {
-                "username": "test-user",
-                "email": "test-user@email.com",
-            },
-            "secret",
-            algorithm="HS256",
+        auth_header = "Bearer " + sign_token(
+            username="test-user",
+            email="test-user@email.com",
         )
         request = factory.get("/", headers={"Authorization": auth_header})
 
@@ -89,13 +89,9 @@ class ClaimsMiddlewareTestCase(TestCase):
 
     def test_call__auth_user_doesnt_match_claims__log_in_claims_user(self):
         auth_user = User.objects.create_user(username="user-1")
-        auth_header = "Bearer " + jwt.encode(
-            {
-                "username": "test-user",
-                "email": "test-user@email.com",
-            },
-            "secret",
-            algorithm="HS256",
+        auth_header = "Bearer " + sign_token(
+            username="test-user",
+            email="test-user@email.com",
         )
         request = factory.get("/", user=auth_user, headers={"Authorization": auth_header})
 
