@@ -12,11 +12,12 @@ logger = logging.getLogger(__name__)
 
 CLAIMS_KEY_PATTERN = re.compile(r"(?<!\\)\.")  # delimit on '.' but not '\.'
 
-# The client IDs tokens for this platform are actually issued under, per the reference
-# implementation in eodh-ac-api/wf-catalogue-service/accounting-service. The deployment's
+# The Keycloak client IDs platform tokens are issued for (the audience mappers on the eodh and
+# eodh-workspaces clients, eodhp-argocd-deployment apps/keycloak/base/realms.yaml). This list is
+# duplicated across the platform's services, so change them together. The deployment's
 # configured client ID (settings.KEYCLOAK["CLIENT_ID"]) is always included too, in case it
-# differs from this reference list.
-_REFERENCE_AUDIENCE = ["oauth2-proxy-workspaces", "oauth2-proxy", "account"]
+# differs from this list.
+_REFERENCE_AUDIENCE = ["eodh", "eodh-workspaces"]
 
 
 def _jwt_audience() -> list[str]:

@@ -19,7 +19,7 @@ from .. import tokens
 PRIVATE_KEY = rsa.generate_private_key(public_exponent=65537, key_size=2048)
 
 
-def sign_token(key: RSAPrivateKey = PRIVATE_KEY, aud: str = "account", **claims: object) -> str:
+def sign_token(key: RSAPrivateKey = PRIVATE_KEY, aud: str = "eodh", **claims: object) -> str:
     return jwt.encode({"aud": aud, **claims}, key, algorithm="RS256")
 
 

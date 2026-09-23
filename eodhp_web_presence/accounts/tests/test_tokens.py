@@ -69,7 +69,7 @@ class TestTokens(TestCase):
         including one that is not cryptographically valid at all - was accepted.
         """
         header = jwt.utils.base64url_encode(b'{"alg":"RS256","typ":"JWT"}').decode()
-        payload = jwt.utils.base64url_encode(b'{"username":"attacker","roles":["admin"],"aud":"account"}').decode()
+        payload = jwt.utils.base64url_encode(b'{"username":"attacker","roles":["admin"],"aud":"eodh"}').decode()
         forged_signature = jwt.utils.base64url_encode(b"not-a-real-signature").decode()
         forged_token = "Bearer " + f"{header}.{payload}.{forged_signature}"
 
