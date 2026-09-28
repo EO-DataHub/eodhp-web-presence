@@ -97,7 +97,14 @@ KEYCLOAK = {
             realm=_KEYCLOAK_REALM,
         ),
     ),
+    # Read-only admin API access for the hub-users list; off until the client secret is set
+    "ADMIN_BASE_URL": env("KEYCLOAK_ADMIN_BASE_URL", default="http://localhost:8080"),
+    "ADMIN_CLIENT_ID": env("KEYCLOAK_ADMIN_CLIENT_ID", default="web-presence-admin"),
+    "ADMIN_CLIENT_SECRET": env("KEYCLOAK_ADMIN_CLIENT_SECRET", default=None),
+    "ADMIN_TIMEOUT": env("KEYCLOAK_ADMIN_TIMEOUT", cast=float, default=10.0),
+    "ADMIN_PAGE_SIZE": env("KEYCLOAK_ADMIN_PAGE_SIZE", cast=int, default=200),
 }
+KEYCLOAK["USER_LIST_ENABLED"] = bool(KEYCLOAK["ADMIN_CLIENT_SECRET"])
 OIDC_CLAIMS = {
     "ENABLED": env("OIDC_CLAIMS_ENABLED", cast=bool, default=False),
     "USERNAME_PATH": env("OIDC_CLAIMS_USERNAME_PATH", cast=str, default=None),
@@ -384,6 +391,7 @@ LOGGING = {
     },
     "loggers": {
         "accounts": {"handlers": ["console"], "level": LOG_LEVEL},
+        "accounts.audit": {"handlers": ["console"], "level": "INFO", "propagate": False},
         "core": {"handlers": ["console"], "level": LOG_LEVEL},
         "eodhp_web_presence": {"handlers": ["console"], "level": LOG_LEVEL},
         "home": {"handlers": ["console"], "level": LOG_LEVEL},
