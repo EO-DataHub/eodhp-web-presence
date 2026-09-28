@@ -75,6 +75,8 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",  # Keep the default backend for admin access
 ]
 
+_KEYCLOAK_REALM = env("KEYCLOAK_REALM", default="eodhp")
+
 KEYCLOAK = {
     "CLIENT_ID": env("KEYCLOAK_CLIENT_ID", default="oauth2-proxy"),
     "LOGOUT_URL": env(
@@ -84,9 +86,19 @@ KEYCLOAK = {
     "LOGOUT_REDIRECT_URL": env("KEYCLOAK_LOGOUT_REDIRECT_URL", default="http://127.0.0.1"),
     "OAUTH2_PROXY_SIGNIN": env("OAUTH2_PROXY_SIGNIN", default="http://127.0.0.1/oauth2/start"),
     "OAUTH2_PROXY_SIGNOUT": env("OAUTH2_PROXY_SIGNOUT", default="http://127.0.0.1/oauth2/sign_out"),
+    "REALM": _KEYCLOAK_REALM,
+    # Keycloak is hosted alongside the app at the same domain (BASE_URL), under /keycloak.
+    # Used to verify JWT signatures rather than trusting them unchecked. Overridable directly
+    # for deployments where Keycloak lives elsewhere.
+    "CERTS_URL": env(
+        "KEYCLOAK_CERTS_URL",
+        default="{base_url}/keycloak/realms/{realm}/protocol/openid-connect/certs".format(
+            base_url=env("BASE_URL", default="http://127.0.0.1"),
+            realm=_KEYCLOAK_REALM,
+        ),
+    ),
     # Read-only admin API access for the hub-users list; off until the client secret is set
     "ADMIN_BASE_URL": env("KEYCLOAK_ADMIN_BASE_URL", default="http://localhost:8080"),
-    "REALM": env("KEYCLOAK_REALM", default="eodhp"),
     "ADMIN_CLIENT_ID": env("KEYCLOAK_ADMIN_CLIENT_ID", default="web-presence-admin"),
     "ADMIN_CLIENT_SECRET": env("KEYCLOAK_ADMIN_CLIENT_SECRET", default=None),
     "ADMIN_TIMEOUT": env("KEYCLOAK_ADMIN_TIMEOUT", cast=float, default=10.0),

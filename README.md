@@ -101,7 +101,7 @@ Superusers (Keycloak users holding the role named by `OIDC_CLAIMS_SUPERUSER_ROLE
 
 The Keycloak client must be confidential with service accounts enabled and standard, implicit and direct-access flows disabled. Its service account must hold only the `realm-management` client roles `view-users` and `query-users`. Do not grant it anything else.
 
-Access is checked against the bearer token on every request, and that token is trusted without signature verification, so the app must only be reachable through oauth2-proxy.
+Access is checked against the bearer token on every request. The app verifies the token's signature against Keycloak's published keys and checks its audience before it trusts any claims.
 
 ## Testing
 

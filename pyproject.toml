@@ -38,7 +38,7 @@ dependencies = [
   "django-webpack-loader",
   "boto3",
   "django-storages",
-  "pyjwt",
+  "pyjwt[crypto]",
   "wagtailcodeblock>=1.29.0.2",
   "gunicorn[gevent]",
   "urllib3>=2.6.3",

@@ -2,7 +2,6 @@ from datetime import UTC, datetime
 from http import HTTPStatus
 from unittest import mock
 
-import jwt
 from django.conf import settings
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
@@ -12,8 +11,11 @@ from wagtail.users.models import UserProfile
 from ..keycloak_admin import HubUser, KeycloakAdminUnavailable
 from ..models import User
 from ..wagtail_hooks import HubUsersMenuItem
+from .jwt_helpers import mock_jwks, sign_token
 
 KEYCLOAK_ENABLED = {
+    "CLIENT_ID": "eodh",
+    "CERTS_URL": "https://keycloak.example/keycloak/realms/test/protocol/openid-connect/certs",
     "USER_LIST_ENABLED": True,
     "ADMIN_BASE_URL": "https://keycloak.example/keycloak",
     "REALM": "test",
@@ -70,11 +72,8 @@ def claims_middleware():
 
 
 def bearer(username, roles=()):
-    return "Bearer " + jwt.encode(
-        {"username": username, "email": f"{username}@example.com", "roles": list(roles)},
-        "secret",
-        algorithm="HS256",
-    )
+    # Signed with the throwaway test key; tests run inside mock_jwks() so it verifies.
+    return "Bearer " + sign_token(username=username, email=f"{username}@example.com", roles=list(roles))
 
 
 def fake_client(users=USERS):
@@ -93,6 +92,9 @@ class HubUsersViewsTestCase(TestCase):
         self.client_patch = mock.patch("accounts.views.get_client", return_value=fake_client())
         self.get_client = self.client_patch.start()
         self.addCleanup(self.client_patch.stop)
+        jwks = mock_jwks()
+        jwks.__enter__()
+        self.addCleanup(jwks.__exit__, None, None, None)
 
     @override_settings(KEYCLOAK=KEYCLOAK_DISABLED, OIDC_CLAIMS=OIDC_CLAIMS_DISABLED)
     def test_disabled__404_and_menu_hidden(self):
