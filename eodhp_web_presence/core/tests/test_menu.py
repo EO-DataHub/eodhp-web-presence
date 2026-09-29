@@ -76,4 +76,7 @@ class TestMenuTemplate(SimpleTestCase):
             '<button type="button" class="dropdown__toggle" aria-expanded="false" '
             'aria-controls="account-menu-desktop" aria-label="Account menu">'
         ) in html
-        assert '<a href="/accounts">test-user</a>' in html
+        assert (
+            '<button type="button" class="dropdown__sub-toggle" aria-expanded="false" aria-haspopup="true">'
+        ) in html
+        assert "<strong>test-user</strong>" in html
