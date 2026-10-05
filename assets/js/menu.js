@@ -73,8 +73,9 @@ $(document).ready(() => {
     }
   });
 
-  // Account menu sub-items (username, Workspace settings, My data) open on
-  // hover via CSS on desktop; this click handler covers touch/keyboard use.
+  // Account menu sub-items (username, Workspace settings, Accounting / Billing,
+  // My data) open on hover via CSS on desktop; this click handler covers
+  // touch/keyboard use.
   $('.dropdown__sub-toggle').on('click', function (e) {
     e.preventDefault();
     e.stopPropagation();

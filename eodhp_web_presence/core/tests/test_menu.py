@@ -80,3 +80,10 @@ class TestMenuTemplate(SimpleTestCase):
             '<button type="button" class="dropdown__sub-toggle" aria-expanded="false" aria-haspopup="true">'
         ) in html
         assert "<strong>test-user</strong>" in html
+
+    def test_account_menu_links_accounting_pages_in_rc_ui(self):
+        html = self.render_menu(User(username="test-user"))
+
+        assert "<span>Accounting / Billing</span>" in html
+        assert '<a href="/static-apps/sg-rc-ui/prod/index.html#/accounting/credits">Credits</a>' in html
+        assert '<a href="/static-apps/sg-rc-ui/prod/index.html#/accounting/usage">Usage</a>' in html
