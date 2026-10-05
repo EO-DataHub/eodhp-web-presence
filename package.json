@@ -34,7 +34,7 @@
     "babel-loader": "10.1.1",
     "css-loader": "7.1.5",
     "prettier": "3.9.9",
-    "sass": "1.104.1",
+    "sass": "1.105.0",
     "sass-loader": "17.0.1",
     "style-loader": "4.0.0",
     "stylelint": "17.15.0",
