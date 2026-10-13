@@ -21,7 +21,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "jquery": "^4.0.0"
