@@ -143,7 +143,7 @@ class KeycloakAdminClientTestCase(SimpleTestCase):
             self.client.count_users()
         self.assertEqual(len(self.calls("GET")), 0)
 
-    def test_list_users__sends_brief_representation_and_search(self):
+    def test_list_users__requests_attributes_and_sends_search(self):
         self.http.request.side_effect = [token_response(), response(200, [])]
 
         self.client.list_users(search="bob", first=10, max=5)
@@ -152,7 +152,7 @@ class KeycloakAdminClientTestCase(SimpleTestCase):
         self.assertEqual(call.args[1], USERS_URL)
         self.assertEqual(
             call.kwargs["fields"],
-            {"briefRepresentation": "true", "first": "10", "max": "5", "search": "bob"},
+            {"briefRepresentation": "false", "first": "10", "max": "5", "search": "bob"},
         )
 
     def test_count_users__forwards_search_only_when_set(self):
@@ -351,7 +351,7 @@ class HubUserTestCase(SimpleTestCase):
                 "lastName": "Example",
                 "enabled": True,
                 "createdTimestamp": 1700000000000,
-                "attributes": {"secret": ["ignored"]},
+                "attributes": {"secret": ["ignored"], "lastLoginTime": ["1788251400000"]},
             }
         )
 
@@ -366,6 +366,7 @@ class HubUserTestCase(SimpleTestCase):
                 last_name="Example",
                 enabled=True,
                 created=datetime(2023, 11, 14, 22, 13, 20, tzinfo=UTC),
+                last_login=datetime(2026, 9, 1, 8, 30, tzinfo=UTC),
             ),
         )
 
@@ -376,8 +377,36 @@ class HubUserTestCase(SimpleTestCase):
         self.assertIsNone(user.first_name)
         self.assertIsNone(user.last_name)
         self.assertIsNone(user.created)
+        self.assertIsNone(user.last_login)
         self.assertFalse(user.email_verified)
         self.assertFalse(user.enabled)
+
+    def test_from_json__last_login_ignores_non_numeric_values(self):
+        user = HubUser.from_json({"id": "abc", "username": "ann", "attributes": {"lastLoginTime": ["", "soon", "-1"]}})
+
+        self.assertIsNone(user.last_login)
+
+    def test_from_json__last_login_takes_largest_value(self):
+        user = HubUser.from_json(
+            {
+                "id": "abc",
+                "username": "ann",
+                "attributes": {"lastLoginTime": ["1788251400000", "bad", "1788220800000"]},
+            }
+        )
+
+        self.assertEqual(user.last_login, datetime(2026, 9, 1, 8, 30, tzinfo=UTC))
+
+    def test_from_json__last_login_ignores_out_of_range_values(self):
+        user = HubUser.from_json(
+            {
+                "id": "abc",
+                "username": "ann",
+                "attributes": {"lastLoginTime": ["9223372036854775807", "1788251400000"]},
+            }
+        )
+
+        self.assertEqual(user.last_login, datetime(2026, 9, 1, 8, 30, tzinfo=UTC))
 
 
 class GetClientTestCase(SimpleTestCase):

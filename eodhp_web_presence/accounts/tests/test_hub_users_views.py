@@ -46,6 +46,7 @@ USERS = [
         last_name=None,
         enabled=True,
         created=datetime(2024, 1, 2, 3, 4, 5, tzinfo=UTC),
+        last_login=datetime(2026, 9, 30, 22, 15, 30, tzinfo=UTC),
     ),
     HubUser(
         id="id-2",
@@ -250,9 +251,9 @@ class HubUsersViewsTestCase(TestCase):
         self.assertEqual(
             body.splitlines(),
             [
-                "id,username,email,email_verified,first_name,last_name,enabled,created",
-                "id-1,'=cmd,cmd@example.com,true,'+Plus,,true,2024-01-02T03:04:05Z",
-                "id-2,zoe,,false,Zoe,Smith,false,",
+                "id,username,email,email_verified,first_name,last_name,enabled,created,last_login",
+                "id-1,'=cmd,cmd@example.com,true,'+Plus,,true,2024-01-02T03:04:05Z,2026-09-30T22:15:30Z",
+                "id-2,zoe,,false,Zoe,Smith,false,,",
             ],
         )
         self.get_client.return_value.iter_users.assert_called_once_with(search="x")
@@ -296,6 +297,19 @@ class HubUsersViewsTestCase(TestCase):
 
         self.assertContains(response, "2024-01-02 03:04 UTC")
         self.assertNotContains(response, "2024-01-02 16:04")
+
+    @override_settings(KEYCLOAK=KEYCLOAK_ENABLED, OIDC_CLAIMS=OIDC_CLAIMS_DISABLED)
+    def test_index__last_login_shown_in_utc_regardless_of_profile_timezone(self):
+        profile = UserProfile.get_for_user(self.superuser)
+        profile.current_time_zone = "Pacific/Auckland"
+        profile.save()
+        self.client.force_login(self.superuser)
+
+        response = self.client.get(self.index_url)
+
+        self.assertContains(response, "<th>Last login</th>", html=True)
+        self.assertContains(response, "2026-09-30 22:15 UTC")
+        self.assertNotContains(response, "2026-10-01 11:15")
 
     @override_settings(KEYCLOAK=KEYCLOAK_ENABLED, OIDC_CLAIMS=OIDC_CLAIMS_DISABLED)
     def test_index__search_form_submits_with_visible_button(self):

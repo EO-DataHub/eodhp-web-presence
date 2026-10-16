@@ -33,6 +33,7 @@
                     <th>Name</th>
                     <th>Enabled</th>
                     <th>Created</th>
+                    <th>Last login</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +47,7 @@
                         <td>{{ user.first_name|default:"" }} {{ user.last_name|default:"" }}</td>
                         <td>{% if user.enabled %}Yes{% else %}No{% endif %}</td>
                         <td>{% if user.created %}{% localtime off %}{{ user.created|date:"Y-m-d H:i" }}{% endlocaltime %} UTC{% endif %}</td>
+                        <td>{% if user.last_login %}{% localtime off %}{{ user.last_login|date:"Y-m-d H:i" }}{% endlocaltime %} UTC{% endif %}</td>
                     </tr>
                 {% endfor %}
             </tbody>
