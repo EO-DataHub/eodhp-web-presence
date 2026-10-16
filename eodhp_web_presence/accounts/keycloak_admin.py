@@ -12,6 +12,20 @@ from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
+LAST_LOGIN_ATTRIBUTE = "lastLoginTime"
+
+
+def _last_login(values: Sequence[object]) -> datetime | None:
+    times = []
+    for value in values:
+        if not str(value).isdecimal():
+            continue
+        try:
+            times.append(datetime.fromtimestamp(int(value) / 1000, tz=UTC))
+        except (OverflowError, OSError, ValueError):
+            continue
+    return max(times, default=None)
+
 
 @dataclass(frozen=True)
 class HubUser:
@@ -23,6 +37,7 @@ class HubUser:
     last_name: str | None
     enabled: bool
     created: datetime | None
+    last_login: datetime | None = None
 
     @classmethod
     def from_json(cls, data: dict[str, Any]) -> "HubUser":
@@ -36,6 +51,7 @@ class HubUser:
             last_name=data.get("lastName") or None,
             enabled=bool(data.get("enabled", False)),
             created=datetime.fromtimestamp(created_ms / 1000, tz=UTC) if created_ms is not None else None,
+            last_login=_last_login((data.get("attributes") or {}).get(LAST_LOGIN_ATTRIBUTE) or []),
         )
 
 
@@ -121,7 +137,7 @@ class KeycloakAdminClient:
 
     def list_users(self, *, search: str | None = None, first: int = 0, max: int | None = None) -> list[HubUser]:
         params: dict[str, str] = {
-            "briefRepresentation": "true",
+            "briefRepresentation": "false",
             "first": str(first),
             "max": str(max if max is not None else self.page_size),
         }

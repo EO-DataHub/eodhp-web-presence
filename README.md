@@ -101,6 +101,8 @@ Superusers (Keycloak users holding the role named by `OIDC_CLAIMS_SUPERUSER_ROLE
 
 The Keycloak client must be confidential with service accounts enabled and standard, implicit and direct-access flows disabled. Its service account must hold only the `realm-management` client roles `view-users`, `query-users` and `view-events`. Do not grant it anything else. If the client has "Full scope allowed" turned off, add the same three roles to its dedicated client scope as well, or Keycloak leaves them out of the token and the admin API returns 403.
 
+The "Last login" column (`last_login` in the CSV) is each user's latest successful sign-in to any Hub app, including single sign-on into a second app but not token refreshes. It comes from the admin-only `lastLoginTime` user attribute that eodh-keycloak's `eodh-last-login` event listener writes, so it needs no extra roles. It is blank for users who have not signed in since the listener was enabled.
+
 #### Login activity
 
 The Hub users page links to a "Login activity" page. Pick a month (the current month, to date, or one of the previous 12) and download either:

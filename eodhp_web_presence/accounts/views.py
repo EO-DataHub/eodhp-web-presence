@@ -31,7 +31,17 @@ logger = logging.getLogger(__name__)
 audit_logger = logging.getLogger("accounts.audit")
 
 USERS_PER_PAGE = 50
-CSV_COLUMNS = ("id", "username", "email", "email_verified", "first_name", "last_name", "enabled", "created")
+CSV_COLUMNS = (
+    "id",
+    "username",
+    "email",
+    "email_verified",
+    "first_name",
+    "last_name",
+    "enabled",
+    "created",
+    "last_login",
+)
 
 
 def sign_in(request: HttpRequest) -> HttpResponseRedirect:
@@ -106,6 +116,7 @@ def csv_row(user: HubUser) -> list[str]:
         csv_cell(user.last_name),
         csv_cell(user.enabled),
         csv_cell(user.created),
+        csv_cell(user.last_login),
     ]
 
 
