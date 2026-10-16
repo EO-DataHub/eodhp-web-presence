@@ -99,7 +99,18 @@ Superusers (Keycloak users holding the role named by `OIDC_CLAIMS_SUPERUSER_ROLE
 | `KEYCLOAK_ADMIN_TIMEOUT` | `10` | HTTP timeout in seconds |
 | `KEYCLOAK_ADMIN_PAGE_SIZE` | `200` | Rows fetched per Keycloak request |
 
-The Keycloak client must be confidential with service accounts enabled and standard, implicit and direct-access flows disabled. Its service account must hold only the `realm-management` client roles `view-users` and `query-users`. Do not grant it anything else.
+The Keycloak client must be confidential with service accounts enabled and standard, implicit and direct-access flows disabled. Its service account must hold only the `realm-management` client roles `view-users`, `query-users` and `view-events`. Do not grant it anything else. If the client has "Full scope allowed" turned off, add the same three roles to its dedicated client scope as well, or Keycloak leaves them out of the token and the admin API returns 403.
+
+#### Login activity
+
+The Hub users page links to a "Login activity" page. Pick a month (the current month, to date, or one of the previous 12) and download either:
+
+- the logins CSV, one row per sign-in: `login_time_utc`, `user_id`, `username`, `email`, `first_name`, `last_name`, `identity_provider`, `client_id`, `new_user`, `first_login_of_new_user`, `registered_via`, `account_created_utc`, `user_deleted`
+- the per-user CSV, one row per user who signed in: `user_id`, `username`, `email`, `first_name`, `last_name`, `new_user`, `account_created_utc`, `login_count`, `first_login_utc`, `last_login_utc`, `identity_providers`, `clients`, `user_deleted`
+
+The data comes from Keycloak's stored `LOGIN` and `REGISTER` user events, so the realm must have event saving turned on for those types. Times are UTC. User details are current values, and users deleted since are flagged in `user_deleted`. Keycloak keeps events for 400 days and has nothing from before saving was enabled. Signing in to several apps through single sign-on records several logins, so the number of distinct users is the best headline figure. IP addresses are not exported.
+
+To try this locally, run the [eodh-keycloak](https://github.com/EO-DataHub/eodh-keycloak) dev stack, which imports a `test` realm with events and a `web-presence-admin` client already set up, and set `KEYCLOAK_REALM=test` and `KEYCLOAK_ADMIN_CLIENT_SECRET=web-presence-admin-local-secret`.
 
 Access is checked against the bearer token on every request. The app verifies the token's signature against Keycloak's published keys and checks its audience before it trusts any claims.
 

@@ -7,6 +7,7 @@ from django.test import SimpleTestCase
 from django.test.utils import override_settings
 
 from ..keycloak_admin import (
+    HubEvent,
     HubUser,
     KeycloakAdminAuthError,
     KeycloakAdminClient,
@@ -18,6 +19,8 @@ from ..keycloak_admin import (
 BASE_URL = "https://keycloak.example/keycloak"
 TOKEN_URL = f"{BASE_URL}/realms/test/protocol/openid-connect/token"
 USERS_URL = f"{BASE_URL}/admin/realms/test/users"
+EVENTS_URL = f"{BASE_URL}/admin/realms/test/events"
+SEPTEMBER = (datetime(2026, 9, 1, tzinfo=UTC), datetime(2026, 10, 1, tzinfo=UTC))
 
 
 def response(status=200, data=None):
@@ -30,6 +33,13 @@ def token_response(token="token-1", expires_in=300):
 
 def user_json(username, **extra):
     return {"id": f"id-{username}", "username": username, "enabled": True, **extra}
+
+
+SEPTEMBER_MS = 1788220800000
+
+
+def event_json(event_id, time=SEPTEMBER_MS, **extra):
+    return {"id": event_id, "type": "LOGIN", "time": time, "userId": "id-ann", **extra}
 
 
 def make_client(http, page_size=2):
@@ -186,6 +196,148 @@ class KeycloakAdminClientTestCase(SimpleTestCase):
         self.assertEqual(list(self.client.iter_users()), [])
         self.assertEqual(len(self.calls("GET")), 1)
 
+    def test_iter_events__sends_window_and_repeated_types(self):
+        self.http.request.side_effect = [token_response(), response(200, [])]
+
+        list(self.client.iter_events(start=SEPTEMBER[0], end=SEPTEMBER[1]))
+
+        call = self.calls("GET")[0]
+        self.assertEqual(call.args[1], EVENTS_URL)
+        self.assertEqual(
+            call.kwargs["fields"],
+            [
+                ("type", "LOGIN"),
+                ("type", "REGISTER"),
+                ("dateFrom", "1788220800000"),
+                ("dateTo", "1790812799999"),
+                ("direction", "asc"),
+                ("first", "0"),
+                ("max", "2"),
+            ],
+        )
+
+    def test_iter_events__pages_from_last_event_time(self):
+        self.http.request.side_effect = [
+            token_response(),
+            response(200, [event_json("e1", SEPTEMBER_MS + 1), event_json("e2", SEPTEMBER_MS + 5)]),
+            response(200, [event_json("e2", SEPTEMBER_MS + 5), event_json("e3", SEPTEMBER_MS + 9)]),
+            response(200, [event_json("e3", SEPTEMBER_MS + 9)]),
+        ]
+
+        events = list(self.client.iter_events(start=SEPTEMBER[0], end=SEPTEMBER[1]))
+
+        self.assertEqual([event.id for event in events], ["e1", "e2", "e3"])
+        for call, date_from in zip(self.calls("GET"), (SEPTEMBER_MS, SEPTEMBER_MS + 5, SEPTEMBER_MS + 9), strict=True):
+            self.assertEqual(
+                call.kwargs["fields"],
+                [
+                    ("type", "LOGIN"),
+                    ("type", "REGISTER"),
+                    ("dateFrom", str(date_from)),
+                    ("dateTo", "1790812799999"),
+                    ("direction", "asc"),
+                    ("first", "0"),
+                    ("max", "2"),
+                ],
+            )
+
+    def test_iter_events__ties_across_page_boundary_not_skipped(self):
+        # e2 and e3 share a millisecond and Keycloak may order them either way; offset paging could
+        # return e2 on both pages and never return e3
+        tie = SEPTEMBER_MS + 5
+        self.http.request.side_effect = [
+            token_response(),
+            response(200, [event_json("e1", SEPTEMBER_MS + 1), event_json("e2", tie)]),
+            response(200, [event_json("e3", tie), event_json("e4", tie + 1)]),
+            response(200, [event_json("e4", tie + 1)]),
+        ]
+
+        events = list(self.client.iter_events(start=SEPTEMBER[0], end=SEPTEMBER[1]))
+
+        self.assertEqual([event.id for event in events], ["e1", "e2", "e3", "e4"])
+        date_froms = [dict(call.kwargs["fields"])["dateFrom"] for call in self.calls("GET")]
+        self.assertEqual(date_froms, [str(SEPTEMBER_MS), str(tie), str(tie + 1)])
+
+    def test_iter_events__full_page_in_one_millisecond__raises(self):
+        self.http.request.side_effect = [
+            token_response(),
+            response(200, [event_json("e1", SEPTEMBER_MS + 5), event_json("e2", SEPTEMBER_MS + 5)]),
+            response(200, [event_json("e1", SEPTEMBER_MS + 5), event_json("e2", SEPTEMBER_MS + 5)]),
+        ]
+
+        with pytest.raises(KeycloakAdminError, match="At least 2 events"):
+            list(self.client.iter_events(start=SEPTEMBER[0], end=SEPTEMBER[1]))
+        self.assertEqual(len(self.calls("GET")), 2)
+
+    def test_iter_events__id_less_events_kept_once(self):
+        self.http.request.side_effect = [
+            token_response(),
+            response(200, [event_json(None, SEPTEMBER_MS + 1), event_json(None, SEPTEMBER_MS + 5)]),
+            response(200, [event_json(None, SEPTEMBER_MS + 5), event_json(None, SEPTEMBER_MS + 9, userId="id-bob")]),
+            response(200, [event_json(None, SEPTEMBER_MS + 9, userId="id-bob")]),
+        ]
+
+        events = list(self.client.iter_events(start=SEPTEMBER[0], end=SEPTEMBER[1]))
+
+        self.assertEqual([event.user_id for event in events], ["id-ann", "id-ann", "id-bob"])
+
+    def test_iter_events__empty(self):
+        self.http.request.side_effect = [token_response(), response(200, [])]
+
+        self.assertEqual(list(self.client.iter_events(start=SEPTEMBER[0], end=SEPTEMBER[1])), [])
+        self.assertEqual(len(self.calls("GET")), 1)
+
+    def test_iter_events_403__raises_auth_error(self):
+        self.http.request.side_effect = [token_response(), response(403)]
+
+        with pytest.raises(KeycloakAdminAuthError):
+            list(self.client.iter_events(start=SEPTEMBER[0], end=SEPTEMBER[1]))
+
+
+class HubEventTestCase(SimpleTestCase):
+    def test_from_json__maps_fields(self):
+        event = HubEvent.from_json(
+            {
+                "id": "e1",
+                "type": "REGISTER",
+                "time": 1788251400000,
+                "userId": "id-ann",
+                "clientId": "portal",
+                "ipAddress": "192.0.2.1",
+                "sessionId": "s1",
+                "details": {
+                    "identity_provider": "github",
+                    "register_method": "form",
+                    "username": "ann",
+                    "redirect_uri": "https://example.com",
+                },
+            }
+        )
+
+        self.assertEqual(
+            event,
+            HubEvent(
+                id="e1",
+                type="REGISTER",
+                time=datetime(2026, 9, 1, 8, 30, tzinfo=UTC),
+                user_id="id-ann",
+                client_id="portal",
+                identity_provider="github",
+                register_method="form",
+                username="ann",
+            ),
+        )
+
+    def test_from_json__missing_details_are_none(self):
+        event = HubEvent.from_json({"type": "LOGIN", "time": 1788220800000})
+
+        self.assertIsNone(event.id)
+        self.assertIsNone(event.user_id)
+        self.assertIsNone(event.client_id)
+        self.assertIsNone(event.identity_provider)
+        self.assertIsNone(event.register_method)
+        self.assertIsNone(event.username)
+
 
 class HubUserTestCase(SimpleTestCase):
     def test_from_json__maps_fields(self):
@@ -249,4 +401,5 @@ class GetClientTestCase(SimpleTestCase):
 
         self.assertIsInstance(client, KeycloakAdminClient)
         self.assertEqual(client.users_url, USERS_URL)
+        self.assertEqual(client.events_url, EVENTS_URL)
         self.assertEqual(client.page_size, 50)

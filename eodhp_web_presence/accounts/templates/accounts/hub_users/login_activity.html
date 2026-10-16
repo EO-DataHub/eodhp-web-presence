@@ -1,0 +1,20 @@
+{% extends "wagtailadmin/generic/base.html" %}
+{% load wagtailadmin_tags %}
+
+{% block main_header %}
+    {% include "wagtailadmin/shared/header.html" with title=page_title icon=header_icon only %}
+{% endblock %}
+
+{% block main_content %}
+    <form method="get" action="{% url 'hub_users_login_activity_export' %}" class="w-mb-4">
+        {% formattedfield field=form.month %}
+        <button type="submit" name="kind" value="logins" class="button">Download logins CSV</button>
+        <button type="submit" name="kind" value="users" class="button button-secondary">Download per-user CSV</button>
+    </form>
+
+    <p>The logins CSV has one row per sign-in. The per-user CSV has one row per user who signed in that month. Signing in to several apps through single sign-on records several logins, so the number of distinct users is the best headline figure.</p>
+    <p>All times are UTC. User details are current values, not those at the time of sign-in. IP addresses are not exported.</p>
+    <p>Keycloak keeps login events for 400 days, and has nothing from before event saving was enabled.</p>
+
+    <p><a href="{{ hub_users_url }}">Back to Hub users</a></p>
+{% endblock %}

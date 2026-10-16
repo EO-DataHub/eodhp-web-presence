@@ -18,6 +18,12 @@ def register_hub_users_urls() -> list[URLPattern]:
     return [
         path("hub-users/", views.hub_users_index, name="hub_users_index"),
         path("hub-users/export.csv", views.hub_users_export, name="hub_users_export"),
+        path("hub-users/login-activity/", views.hub_users_login_activity, name="hub_users_login_activity"),
+        path(
+            "hub-users/login-activity/export.csv",
+            views.hub_users_login_activity_export,
+            name="hub_users_login_activity_export",
+        ),
     ]
 
 
