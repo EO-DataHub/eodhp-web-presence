@@ -1,9 +1,11 @@
 import csv
 import io
 import logging
-from datetime import UTC, datetime
+from collections.abc import Iterable, Sequence
+from datetime import UTC, date, datetime
 from urllib.parse import quote, urlencode
 
+from django import forms
 from django.conf import settings
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -12,7 +14,17 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from wagtail.admin.forms.search import SearchForm
 
-from .keycloak_admin import HubUser, KeycloakAdminError, get_client
+from .csv_utils import csv_cell
+from .keycloak_admin import HubUser, KeycloakAdminAuthError, KeycloakAdminError, get_client
+from .login_activity import (
+    LOGIN_COLUMNS,
+    PER_USER_COLUMNS,
+    aggregate_per_user,
+    build_login_rows,
+    month_choices,
+    month_window,
+    previous_month,
+)
 from .permissions import hub_admin_required
 
 logger = logging.getLogger(__name__)
@@ -20,7 +32,6 @@ audit_logger = logging.getLogger("accounts.audit")
 
 USERS_PER_PAGE = 50
 CSV_COLUMNS = ("id", "username", "email", "email_verified", "first_name", "last_name", "enabled", "created")
-FORMULA_PREFIXES = ("=", "+", "-", "@", "\t", "\r")
 
 
 def sign_in(request: HttpRequest) -> HttpResponseRedirect:
@@ -85,20 +96,6 @@ def hub_users_index(request: HttpRequest) -> HttpResponse:
     )
 
 
-def csv_cell(value: object) -> str:
-    if value is None:
-        return ""
-    if isinstance(value, bool):
-        return "true" if value else "false"
-    if isinstance(value, datetime):
-        return value.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
-    text = str(value)
-    # Stop spreadsheets from evaluating user-supplied cells as formulas
-    if text.startswith(FORMULA_PREFIXES):
-        return "'" + text
-    return text
-
-
 def csv_row(user: HubUser) -> list[str]:
     return [
         csv_cell(user.id),
@@ -127,15 +124,87 @@ def hub_users_export(request: HttpRequest) -> HttpResponse:
         logger.exception("Could not export hub users")
         return HttpResponse("Could not reach the identity service.", status=502, content_type="text/plain")
 
+    audit_logger.info("hub-users export by user=%s search=%r rows=%d", username, search, len(users))
+    stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
+    return _csv_response(CSV_COLUMNS, (csv_row(user) for user in users), f"eodh-hub-users-{stamp}.csv")
+
+
+class LoginActivityForm(forms.Form):
+    month = forms.ChoiceField(label="Month")
+    kind = forms.ChoiceField(choices=[("logins", "Logins"), ("users", "Per user")])
+
+    def __init__(self, *args: object, today: date, **kwargs: object) -> None:
+        super().__init__(*args, **kwargs)
+        self.fields["month"].choices = month_choices(today)
+
+
+@hub_admin_required
+def hub_users_login_activity(request: HttpRequest) -> HttpResponse:
+    if get_client() is None:
+        raise Http404
+    today = datetime.now(UTC).date()
+    form = LoginActivityForm(initial={"month": previous_month(today)}, today=today)
+
+    return render(
+        request,
+        "accounts/hub_users/login_activity.html",
+        {
+            "page_title": "Login activity",
+            "header_title": "Login activity",
+            "header_icon": "history",
+            "form": form,
+            "hub_users_url": reverse("hub_users_index"),
+        },
+    )
+
+
+@hub_admin_required
+def hub_users_login_activity_export(request: HttpRequest) -> HttpResponse:
+    client = get_client()
+    if client is None:
+        raise Http404
+    form = LoginActivityForm(request.GET, today=datetime.now(UTC).date())
+    if not form.is_valid():
+        message = "Invalid month." if "month" in form.errors else "Invalid export type."
+        return HttpResponse(message, status=400, content_type="text/plain")
+    month = form.cleaned_data["month"]
+    kind = form.cleaned_data["kind"]
+    start, end = month_window(month)
+    username = request.user.get_username()
+
+    # Fetch everything first so a Keycloak failure gives an error, not a short CSV that looks complete
+    try:
+        events = list(client.iter_events(start=start, end=end))
+        users = {user.id: user for user in client.iter_users()}
+    except KeycloakAdminAuthError:
+        logger.exception("Keycloak refused access to login events")
+        return HttpResponse(
+            "The identity service refused access to login events.", status=502, content_type="text/plain"
+        )
+    except KeycloakAdminError:
+        logger.exception("Could not export login activity")
+        return HttpResponse("Could not reach the identity service.", status=502, content_type="text/plain")
+
+    rows = build_login_rows(events, users, start, end)
+    columns, filename = LOGIN_COLUMNS, f"eodh-hub-logins-{month}.csv"
+    if kind == "users":
+        rows = aggregate_per_user(rows)
+        columns, filename = PER_USER_COLUMNS, f"eodh-hub-login-users-{month}.csv"
+
+    audit_logger.info(
+        "hub-users login-activity export by user=%s month=%s kind=%s rows=%d", username, month, kind, len(rows)
+    )
+    return _csv_response(columns, ([csv_cell(row[column]) for column in columns] for row in rows), filename)
+
+
+def _csv_response(header: Sequence[str], rows: Iterable[Sequence[str]], filename: str) -> HttpResponse:
     buffer = io.StringIO()
     writer = csv.writer(buffer)
-    writer.writerow(CSV_COLUMNS)
-    writer.writerows(csv_row(user) for user in users)
-    audit_logger.info("hub-users export by user=%s search=%r rows=%d", username, search, len(users))
+    writer.writerow(header)
+    writer.writerows(rows)
 
-    stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     response = HttpResponse(buffer.getvalue(), content_type="text/csv; charset=utf-8")
-    response["Content-Disposition"] = f'attachment; filename="eodh-hub-users-{stamp}.csv"'
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
     response["Cache-Control"] = "no-store"
     response["X-Content-Type-Options"] = "nosniff"
     return response

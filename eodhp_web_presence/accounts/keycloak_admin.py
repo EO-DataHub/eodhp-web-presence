@@ -1,7 +1,7 @@
 import base64
 import logging
 import time
-from collections.abc import Iterator
+from collections.abc import Iterator, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Any
@@ -37,6 +37,35 @@ class HubUser:
             enabled=bool(data.get("enabled", False)),
             created=datetime.fromtimestamp(created_ms / 1000, tz=UTC) if created_ms is not None else None,
         )
+
+
+@dataclass(frozen=True)
+class HubEvent:
+    id: str | None
+    type: str
+    time: datetime
+    user_id: str | None
+    client_id: str | None
+    identity_provider: str | None
+    register_method: str | None
+    username: str | None
+
+    @classmethod
+    def from_json(cls, data: dict[str, Any]) -> "HubEvent":
+        details = data.get("details") or {}
+        return cls(
+            id=data.get("id") or None,
+            type=str(data.get("type", "")),
+            time=datetime.fromtimestamp(data.get("time", 0) / 1000, tz=UTC),
+            user_id=data.get("userId") or None,
+            client_id=data.get("clientId") or None,
+            identity_provider=details.get("identity_provider") or None,
+            register_method=details.get("register_method") or None,
+            username=details.get("username") or None,
+        )
+
+
+Params = Mapping[str, str] | Sequence[tuple[str, str]]
 
 
 class KeycloakAdminError(Exception):
@@ -82,6 +111,10 @@ class KeycloakAdminClient:
     def users_url(self) -> str:
         return f"{self.base_url}/admin/realms/{self.realm}/users"
 
+    @property
+    def events_url(self) -> str:
+        return f"{self.base_url}/admin/realms/{self.realm}/events"
+
     def count_users(self, search: str | None = None) -> int:
         params = {"search": search} if search else {}
         return int(self._get(f"{self.users_url}/count", params).json())
@@ -106,7 +139,41 @@ class KeycloakAdminClient:
                 return
             first += self.page_size
 
-    def _get(self, url: str, params: dict[str, str]) -> urllib3.BaseHTTPResponse:
+    def iter_events(
+        self, *, start: datetime, end: datetime, types: Sequence[str] = ("LOGIN", "REGISTER")
+    ) -> Iterator[HubEvent]:
+        types_params = [("type", event_type) for event_type in types]
+        cursor_ms = int(start.timestamp() * 1000)
+        # dateTo is inclusive, so stop a millisecond short of the half-open end
+        end_ms = int(end.timestamp() * 1000) - 1
+        # Keycloak orders by time only, so offset paging can skip or repeat events that share a millisecond.
+        # Page by time instead: restart each page at the last event's millisecond and drop the ones already seen.
+        seen: set[str | HubEvent] = set()
+        while True:
+            params = [
+                *types_params,
+                ("dateFrom", str(cursor_ms)),
+                ("dateTo", str(end_ms)),
+                ("direction", "asc"),
+                ("first", "0"),
+                ("max", str(self.page_size)),
+            ]
+            page = self._get(self.events_url, params).json()
+            for item in page:
+                event = HubEvent.from_json(item)
+                key = event.id if event.id is not None else event
+                if key not in seen:
+                    seen.add(key)
+                    yield event
+            if len(page) < self.page_size:
+                return
+            last_ms = int(page[-1]["time"])
+            if last_ms == cursor_ms:
+                # A whole page in one millisecond would fetch the same page forever
+                raise KeycloakAdminError(f"At least {self.page_size} events at {cursor_ms} ms; raise the page size")
+            cursor_ms = last_ms
+
+    def _get(self, url: str, params: Params) -> urllib3.BaseHTTPResponse:
         response = self._request(url, params, self._get_token())
         if response.status == 401:
             response = self._request(url, params, self._get_token(force=True))
@@ -118,7 +185,7 @@ class KeycloakAdminClient:
             raise KeycloakAdminError(f"Keycloak admin API returned {response.status} for {url}")
         return response
 
-    def _request(self, url: str, params: dict[str, str], token: str) -> urllib3.BaseHTTPResponse:
+    def _request(self, url: str, params: Params, token: str) -> urllib3.BaseHTTPResponse:
         try:
             return self._http.request(
                 "GET",
