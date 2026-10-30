@@ -29,20 +29,20 @@
   "devDependencies": {
     "@babel/core": "8.0.7",
     "@babel/preset-env": "8.0.7",
-    "@biomejs/biome": "2.5.15",
+    "@biomejs/biome": "2.6.2",
     "@mdi/svg": "7.4.47",
     "babel-loader": "10.1.1",
     "css-loader": "7.1.5",
     "prettier": "3.9.10",
-    "sass": "1.105.1",
+    "sass": "1.106.1",
     "sass-loader": "17.0.1",
     "style-loader": "4.0.0",
     "stylelint": "17.16.0",
     "stylelint-config-standard": "40.0.0",
     "stylelint-config-standard-scss": "17.0.0",
     "stylelint-prettier": "5.0.3",
-    "webpack": "5.111.1",
+    "webpack": "5.112.2",
     "webpack-cli": "7.2.3",
-    "webpack-dev-server": "6.0.0"
+    "webpack-dev-server": "6.1.0"
   }
 }
