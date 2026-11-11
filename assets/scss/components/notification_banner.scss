@@ -35,6 +35,19 @@
     white-space: nowrap;
   }
 
+  &__toggle {
+    display: none;
+    appearance: none;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
   &__dismiss {
     appearance: none;
     background: transparent;
@@ -53,6 +66,52 @@
 
     svg {
       display: block;
+    }
+  }
+
+  @media (width <= 576px) {
+    font-size: 0.875rem;
+
+    &__inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.25rem 0.75rem;
+    }
+
+    &__title {
+      white-space: normal;
+    }
+
+    &__link {
+      grid-column: 1;
+      justify-self: start;
+    }
+
+    &__toggle {
+      grid-column: 2;
+    }
+
+    &--truncated &__toggle {
+      display: block;
+    }
+
+    &__dismiss {
+      grid-area: 1 / 2;
+      align-self: start;
+      justify-self: end;
+    }
+
+    &__title + &__message {
+      grid-column: 1 / -1;
+    }
+
+    // Without a title the message is the only copy, so it stays unclamped.
+    &:not(&--expanded) &__title + &__message {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      overflow: hidden;
     }
   }
 
