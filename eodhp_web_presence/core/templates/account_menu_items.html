@@ -22,6 +22,7 @@
   <div class="dropdown__sub-menu">
     <a href="{{ sg_rc_ui_url }}#/settings/members">Members</a>
     <a href="{{ sg_rc_ui_url }}#/settings/credentials">Credentials</a>
+    <a href="{{ sg_rc_ui_url }}#/settings/s3-credentials">S3 credentials</a>
     <a href="{{ sg_rc_ui_url }}#/settings/provider-accounts">Provider accounts</a>
   </div>
 </div>
@@ -34,12 +35,10 @@
   <div class="dropdown__sub-menu">
     <a href="{{ sg_rc_ui_url }}#/accounting/credits">Credits</a>
     <a href="{{ sg_rc_ui_url }}#/accounting/usage">Usage</a>
+    {% if is_hub_admin %}
+    <a href="{{ sg_rc_ui_url }}#/accounting/hub">All workspaces</a>
+    {% endif %}
   </div>
-</div>
-
-<div class="dropdown__static-item" aria-disabled="true">
-  <span>Publishing</span>
-  <span class="badge">Soon</span>
 </div>
 
 <div class="dropdown__sub">
@@ -51,6 +50,7 @@
     <a href="{{ sg_rc_ui_url }}#/my-data/purchased">Purchased data</a>
     <a href="{{ sg_rc_ui_url }}#/my-data/workflow-outputs">Workflow outputs</a>
     <a href="{{ sg_rc_ui_url }}#/my-data/data-storage">Files</a>
+    <a href="{{ sg_rc_ui_url }}#/my-data/saved-sets">Saved sets</a>
   </div>
 </div>
 

@@ -12,11 +12,12 @@ from django.test import SimpleTestCase, override_settings
     }
 )
 class TestMenuTemplate(SimpleTestCase):
-    def render_menu(self, user=None) -> str:
+    def render_menu(self, user=None, is_hub_admin=False) -> str:
         return render_to_string(
             "menu.html",
             {
                 "user": user or AnonymousUser(),
+                "is_hub_admin": is_hub_admin,
                 "notebooks_url": "/notebooks",
                 "workspaces_ui_url": "/workspaces",
                 "userdocs_url": "https://docs.example.com",
@@ -87,3 +88,24 @@ class TestMenuTemplate(SimpleTestCase):
         assert "<span>Accounting / Billing</span>" in html
         assert '<a href="/static-apps/sg-rc-ui/prod/index.html#/accounting/credits">Credits</a>' in html
         assert '<a href="/static-apps/sg-rc-ui/prod/index.html#/accounting/usage">Usage</a>' in html
+
+    def test_account_menu_links_hub_usage_for_hub_admins_only(self):
+        hub_link = '<a href="/static-apps/sg-rc-ui/prod/index.html#/accounting/hub">All workspaces</a>'
+
+        assert hub_link not in self.render_menu(User(username="test-user"))
+        assert self.render_menu(User(username="test-user"), is_hub_admin=True).count(hub_link) == 2
+
+    def test_account_menu_links_saved_sets(self):
+        html = self.render_menu(User(username="test-user"))
+
+        assert '<a href="/static-apps/sg-rc-ui/prod/index.html#/my-data/saved-sets">Saved sets</a>' in html
+
+    def test_account_menu_has_no_publishing_placeholder(self):
+        html = self.render_menu(User(username="test-user"))
+
+        assert "Publishing" not in html
+
+    def test_account_menu_links_s3_credentials(self):
+        html = self.render_menu(User(username="test-user"))
+
+        assert '<a href="/static-apps/sg-rc-ui/prod/index.html#/settings/s3-credentials">S3 credentials</a>' in html

@@ -1,6 +1,7 @@
 import logging
 from urllib.parse import urlencode
 
+from accounts.permissions import is_hub_admin
 from django.http import HttpRequest
 from home.models import NotificationBanner
 
@@ -32,6 +33,12 @@ def menu_links(request: HttpRequest) -> dict[str, str]:
         "linkedin_url": settings.SOCIALS["linkedin_url"],
         "mailing_list_url": settings.SOCIALS["mailing_list_url"],
     }
+
+
+def hub_admin(request: HttpRequest) -> dict[str, bool]:
+    # Shows hub-admin links in the account menu. The RC UI checks the role again before
+    # it shows the page, and the accounting API enforces it.
+    return {"is_hub_admin": is_hub_admin(request)}
 
 
 def notification_banner(request: HttpRequest) -> dict[str, object]:
